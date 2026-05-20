@@ -9,8 +9,68 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VerifyMethodRouteImport } from './routes/verify-method'
+import { Route as SmsVerifyRouteImport } from './routes/sms-verify'
+import { Route as SmsPhoneRouteImport } from './routes/sms-phone'
+import { Route as PasswordRouteImport } from './routes/password'
+import { Route as ExpiredRouteImport } from './routes/expired'
+import { Route as CompleteSkippedRouteImport } from './routes/complete-skipped'
+import { Route as CompleteRouteImport } from './routes/complete'
+import { Route as AuthenticatorVerifyRouteImport } from './routes/authenticator-verify'
+import { Route as AuthenticatorQrRouteImport } from './routes/authenticator-qr'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 
+const VerifyMethodRoute = VerifyMethodRouteImport.update({
+  id: '/verify-method',
+  path: '/verify-method',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SmsVerifyRoute = SmsVerifyRouteImport.update({
+  id: '/sms-verify',
+  path: '/sms-verify',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SmsPhoneRoute = SmsPhoneRouteImport.update({
+  id: '/sms-phone',
+  path: '/sms-phone',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PasswordRoute = PasswordRouteImport.update({
+  id: '/password',
+  path: '/password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExpiredRoute = ExpiredRouteImport.update({
+  id: '/expired',
+  path: '/expired',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CompleteSkippedRoute = CompleteSkippedRouteImport.update({
+  id: '/complete-skipped',
+  path: '/complete-skipped',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CompleteRoute = CompleteRouteImport.update({
+  id: '/complete',
+  path: '/complete',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatorVerifyRoute = AuthenticatorVerifyRouteImport.update({
+  id: '/authenticator-verify',
+  path: '/authenticator-verify',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatorQrRoute = AuthenticatorQrRouteImport.update({
+  id: '/authenticator-qr',
+  path: '/authenticator-qr',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +79,172 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/authenticator-qr': typeof AuthenticatorQrRoute
+  '/authenticator-verify': typeof AuthenticatorVerifyRoute
+  '/complete': typeof CompleteRoute
+  '/complete-skipped': typeof CompleteSkippedRoute
+  '/expired': typeof ExpiredRoute
+  '/password': typeof PasswordRoute
+  '/sms-phone': typeof SmsPhoneRoute
+  '/sms-verify': typeof SmsVerifyRoute
+  '/verify-method': typeof VerifyMethodRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/authenticator-qr': typeof AuthenticatorQrRoute
+  '/authenticator-verify': typeof AuthenticatorVerifyRoute
+  '/complete': typeof CompleteRoute
+  '/complete-skipped': typeof CompleteSkippedRoute
+  '/expired': typeof ExpiredRoute
+  '/password': typeof PasswordRoute
+  '/sms-phone': typeof SmsPhoneRoute
+  '/sms-verify': typeof SmsVerifyRoute
+  '/verify-method': typeof VerifyMethodRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/authenticator-qr': typeof AuthenticatorQrRoute
+  '/authenticator-verify': typeof AuthenticatorVerifyRoute
+  '/complete': typeof CompleteRoute
+  '/complete-skipped': typeof CompleteSkippedRoute
+  '/expired': typeof ExpiredRoute
+  '/password': typeof PasswordRoute
+  '/sms-phone': typeof SmsPhoneRoute
+  '/sms-verify': typeof SmsVerifyRoute
+  '/verify-method': typeof VerifyMethodRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/authenticator-qr'
+    | '/authenticator-verify'
+    | '/complete'
+    | '/complete-skipped'
+    | '/expired'
+    | '/password'
+    | '/sms-phone'
+    | '/sms-verify'
+    | '/verify-method'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/admin'
+    | '/authenticator-qr'
+    | '/authenticator-verify'
+    | '/complete'
+    | '/complete-skipped'
+    | '/expired'
+    | '/password'
+    | '/sms-phone'
+    | '/sms-verify'
+    | '/verify-method'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/authenticator-qr'
+    | '/authenticator-verify'
+    | '/complete'
+    | '/complete-skipped'
+    | '/expired'
+    | '/password'
+    | '/sms-phone'
+    | '/sms-verify'
+    | '/verify-method'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
+  AuthenticatorQrRoute: typeof AuthenticatorQrRoute
+  AuthenticatorVerifyRoute: typeof AuthenticatorVerifyRoute
+  CompleteRoute: typeof CompleteRoute
+  CompleteSkippedRoute: typeof CompleteSkippedRoute
+  ExpiredRoute: typeof ExpiredRoute
+  PasswordRoute: typeof PasswordRoute
+  SmsPhoneRoute: typeof SmsPhoneRoute
+  SmsVerifyRoute: typeof SmsVerifyRoute
+  VerifyMethodRoute: typeof VerifyMethodRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/verify-method': {
+      id: '/verify-method'
+      path: '/verify-method'
+      fullPath: '/verify-method'
+      preLoaderRoute: typeof VerifyMethodRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sms-verify': {
+      id: '/sms-verify'
+      path: '/sms-verify'
+      fullPath: '/sms-verify'
+      preLoaderRoute: typeof SmsVerifyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sms-phone': {
+      id: '/sms-phone'
+      path: '/sms-phone'
+      fullPath: '/sms-phone'
+      preLoaderRoute: typeof SmsPhoneRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/password': {
+      id: '/password'
+      path: '/password'
+      fullPath: '/password'
+      preLoaderRoute: typeof PasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/expired': {
+      id: '/expired'
+      path: '/expired'
+      fullPath: '/expired'
+      preLoaderRoute: typeof ExpiredRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/complete-skipped': {
+      id: '/complete-skipped'
+      path: '/complete-skipped'
+      fullPath: '/complete-skipped'
+      preLoaderRoute: typeof CompleteSkippedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/complete': {
+      id: '/complete'
+      path: '/complete'
+      fullPath: '/complete'
+      preLoaderRoute: typeof CompleteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/authenticator-verify': {
+      id: '/authenticator-verify'
+      path: '/authenticator-verify'
+      fullPath: '/authenticator-verify'
+      preLoaderRoute: typeof AuthenticatorVerifyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/authenticator-qr': {
+      id: '/authenticator-qr'
+      path: '/authenticator-qr'
+      fullPath: '/authenticator-qr'
+      preLoaderRoute: typeof AuthenticatorQrRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,17 +257,17 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
+  AuthenticatorQrRoute: AuthenticatorQrRoute,
+  AuthenticatorVerifyRoute: AuthenticatorVerifyRoute,
+  CompleteRoute: CompleteRoute,
+  CompleteSkippedRoute: CompleteSkippedRoute,
+  ExpiredRoute: ExpiredRoute,
+  PasswordRoute: PasswordRoute,
+  SmsPhoneRoute: SmsPhoneRoute,
+  SmsVerifyRoute: SmsVerifyRoute,
+  VerifyMethodRoute: VerifyMethodRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
