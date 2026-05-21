@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Page, H, Body, StepBar, PrimaryButton, WF_MID, WF_DARK, WF_LIGHT } from "@/components/wireframe";
+import { Page, H, Body, StepBar, PrimaryButton, BackLink, RestartLink, WF_MID, WF_DARK, WF_LIGHT } from "@/components/wireframe";
 import type { ReactNode } from "react";
 
 export const Route = createFileRoute("/complete-skipped")({ component: Screen6B });
@@ -54,6 +54,8 @@ function Screen6B() {
         </SummaryRow>
       </div>
       <PrimaryButton to="/admin">Go to Admin section</PrimaryButton>
+      <BackLink to="/verify-method" />
+      <RestartLink />
     </Page>
   );
 }

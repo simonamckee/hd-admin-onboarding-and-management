@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Page, H, Body, StepBar, PrimaryButton, FieldLabel, TextInput, EyeIcon, CheckCircle, TestingLink, WF_MID, WF_DARK } from "@/components/wireframe";
+import { Page, H, Body, StepBar, PrimaryButton, FieldLabel, TextInput, EyeIcon, CheckCircle, TestingLink, BackLink, WF_MID, WF_DARK } from "@/components/wireframe";
 
 export const Route = createFileRoute("/password")({ component: Screen2 });
 
@@ -78,6 +78,7 @@ function Screen2() {
       )}
 
       <TestingLink to="/verify-method">skip to next screen →</TestingLink>
+      <BackLink to="/" />
     </Page>
   );
 }
