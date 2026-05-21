@@ -262,3 +262,39 @@ export function CopyIcon() {
     </svg>
   );
 }
+
+export function BackLink({ to }: { to: string }) {
+  return (
+    <div style={{ textAlign: "center", marginTop: 16 }}>
+      <Link
+        to={to}
+        style={{
+          fontSize: 12,
+          fontStyle: "italic",
+          color: WF_MID,
+          textDecoration: "underline",
+        }}
+      >
+        [ ← Back (prototype navigation only) ]
+      </Link>
+    </div>
+  );
+}
+
+export function RestartLink() {
+  return (
+    <div style={{ textAlign: "center", marginTop: 8 }}>
+      <Link
+        to="/"
+        style={{
+          fontSize: 12,
+          fontStyle: "italic",
+          color: WF_MID,
+          textDecoration: "underline",
+        }}
+      >
+        [ ← Restart flow (prototype navigation only) ]
+      </Link>
+    </div>
+  );
+}
