@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Page, H, Body, StepBar, PrimaryButton, SecondaryButton, TestingLink, WF_MID, WF_DARK, WF_LIGHT } from "@/components/wireframe";
+import { Page, H, Body, StepBar, PrimaryButton, SecondaryButton, TestingLink, BackLink, WF_MID, WF_DARK, WF_LIGHT } from "@/components/wireframe";
 
 export const Route = createFileRoute("/verify-method")({ component: Screen3 });
 
@@ -72,6 +72,7 @@ function Screen3() {
         You can enable 2-step verification later in My Profile → Security.
       </div>
       <TestingLink to="/sms-phone">test SMS flow →</TestingLink>
+      <BackLink to="/password" />
     </Page>
   );
 }

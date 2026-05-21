@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Page, H, Body, StepBar, PrimaryButton, SecondaryButton, FieldLabel, WF_MID, WF_DARK } from "@/components/wireframe";
+import { Page, H, Body, StepBar, PrimaryButton, SecondaryButton, FieldLabel, BackLink, WF_MID, WF_DARK } from "@/components/wireframe";
 
 export const Route = createFileRoute("/sms-phone")({ component: Screen5A });
 
@@ -50,6 +50,7 @@ function Screen5A() {
 
       <PrimaryButton to="/sms-verify">Send verification code</PrimaryButton>
       <SecondaryButton to="/verify-method">Go back</SecondaryButton>
+      <BackLink to="/verify-method" />
     </Page>
   );
 }

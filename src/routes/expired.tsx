@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Page, H, Body, PrimaryButton, WF_MID, WF_DARK, WF_LIGHT } from "@/components/wireframe";
+import { Page, H, Body, PrimaryButton, BackLink, WF_MID, WF_DARK, WF_LIGHT } from "@/components/wireframe";
 
 export const Route = createFileRoute("/expired")({ component: Screen1B });
 
@@ -35,6 +35,7 @@ function Screen1B() {
       <div style={{ textAlign: "center", fontSize: 12, color: WF_MID, marginTop: 16 }}>
         Email us at <span style={{ color: WF_DARK }}>support@haibudiabetes.com</span> and we'll send a new invitation.
       </div>
+      <BackLink to="/" />
     </Page>
   );
 }

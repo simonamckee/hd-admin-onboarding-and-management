@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Page, WF_MID, WF_DARK } from "@/components/wireframe";
+import { Page, BackLink, RestartLink, WF_MID, WF_DARK } from "@/components/wireframe";
 
 export const Route = createFileRoute("/admin")({ component: Screen7 });
 
@@ -24,6 +24,8 @@ function Screen7() {
         <Link to="/complete" style={{ fontSize: 12, color: WF_DARK, textDecoration: "underline", marginTop: 20 }}>
           ← Back to setup complete
         </Link>
+        <BackLink to="/complete" />
+        <RestartLink />
       </div>
     </Page>
   );

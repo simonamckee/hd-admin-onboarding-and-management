@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Page, H, Body, StepBar, PrimaryButton, SecondaryButton, CopyIcon, WF_MID, WF_DARK, WF_LIGHT } from "@/components/wireframe";
+import { Page, H, Body, StepBar, PrimaryButton, SecondaryButton, CopyIcon, BackLink, WF_MID, WF_DARK, WF_LIGHT } from "@/components/wireframe";
 
 export const Route = createFileRoute("/authenticator-qr")({ component: Screen4A });
 
@@ -73,6 +73,7 @@ function Screen4A() {
 
       <PrimaryButton to="/authenticator-verify">Continue to verification</PrimaryButton>
       <SecondaryButton to="/verify-method">Go back</SecondaryButton>
+      <BackLink to="/verify-method" />
     </Page>
   );
 }

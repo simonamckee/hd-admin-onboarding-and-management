@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
-import { Page, H, Body, StepBar, PrimaryButton, SecondaryButton, Divider, TestingLink, WF_MID, WF_DARK } from "@/components/wireframe";
+import { Page, H, Body, StepBar, PrimaryButton, SecondaryButton, Divider, TestingLink, BackLink, WF_MID, WF_DARK } from "@/components/wireframe";
 import { OtpBoxes } from "./authenticator-verify";
 
 export const Route = createFileRoute("/sms-verify")({ component: Screen5B });
@@ -37,6 +37,7 @@ function Screen5B() {
         </Link>
       </div>
       <TestingLink to="/complete">skip to setup complete →</TestingLink>
+      <BackLink to="/sms-phone" />
     </Page>
   );
 }
