@@ -58,7 +58,7 @@ function FormsList() {
     <AdminShell heading="">
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
         <h1 style={{ fontSize: 20, fontWeight: 500, color: WF_DARK, margin: 0 }}>Form library</h1>
-        <Btn primary to="/admin/forms/$id" params={{ id: "new" }}>+ Add form</Btn>
+        <Btn primary to="/admin/forms/new">+ Add form</Btn>
       </div>
 
       {banner && bannerOpen && (
@@ -169,7 +169,7 @@ function EmptyState() {
       <div style={{ width: 48, height: 48, border: `1.5px solid ${WF_MID}`, borderRadius: "50%", margin: "0 auto 16px", display: "flex", alignItems: "center", justifyContent: "center", color: WF_MID, fontSize: 22 }}>○</div>
       <div style={{ fontSize: 16, color: WF_DARK, marginBottom: 6 }}>No forms yet</div>
       <div style={{ fontSize: 13, color: WF_MID, marginBottom: 20 }}>Add your first form to make it available to clinicians.</div>
-      <Btn primary to="/admin/forms/$id" params={{ id: "new" }}>+ Add form</Btn>
+      <Btn primary to="/admin/forms/new">+ Add form</Btn>
     </div>
   );
 }
