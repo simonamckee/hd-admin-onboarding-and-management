@@ -21,6 +21,7 @@ import { Route as AuthenticatorQrRouteImport } from './routes/authenticator-qr'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminPatientsRouteImport } from './routes/admin.patients'
+import { Route as AdminCliniciansRouteImport } from './routes/admin.clinicians'
 
 const VerifyMethodRoute = VerifyMethodRouteImport.update({
   id: '/verify-method',
@@ -82,6 +83,11 @@ const AdminPatientsRoute = AdminPatientsRouteImport.update({
   path: '/patients',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminCliniciansRoute = AdminCliniciansRouteImport.update({
+  id: '/clinicians',
+  path: '/clinicians',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -95,6 +101,7 @@ export interface FileRoutesByFullPath {
   '/sms-phone': typeof SmsPhoneRoute
   '/sms-verify': typeof SmsVerifyRoute
   '/verify-method': typeof VerifyMethodRoute
+  '/admin/clinicians': typeof AdminCliniciansRoute
   '/admin/patients': typeof AdminPatientsRoute
 }
 export interface FileRoutesByTo {
@@ -109,6 +116,7 @@ export interface FileRoutesByTo {
   '/sms-phone': typeof SmsPhoneRoute
   '/sms-verify': typeof SmsVerifyRoute
   '/verify-method': typeof VerifyMethodRoute
+  '/admin/clinicians': typeof AdminCliniciansRoute
   '/admin/patients': typeof AdminPatientsRoute
 }
 export interface FileRoutesById {
@@ -124,6 +132,7 @@ export interface FileRoutesById {
   '/sms-phone': typeof SmsPhoneRoute
   '/sms-verify': typeof SmsVerifyRoute
   '/verify-method': typeof VerifyMethodRoute
+  '/admin/clinicians': typeof AdminCliniciansRoute
   '/admin/patients': typeof AdminPatientsRoute
 }
 export interface FileRouteTypes {
@@ -140,6 +149,7 @@ export interface FileRouteTypes {
     | '/sms-phone'
     | '/sms-verify'
     | '/verify-method'
+    | '/admin/clinicians'
     | '/admin/patients'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -154,6 +164,7 @@ export interface FileRouteTypes {
     | '/sms-phone'
     | '/sms-verify'
     | '/verify-method'
+    | '/admin/clinicians'
     | '/admin/patients'
   id:
     | '__root__'
@@ -168,6 +179,7 @@ export interface FileRouteTypes {
     | '/sms-phone'
     | '/sms-verify'
     | '/verify-method'
+    | '/admin/clinicians'
     | '/admin/patients'
   fileRoutesById: FileRoutesById
 }
@@ -271,14 +283,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminPatientsRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/clinicians': {
+      id: '/admin/clinicians'
+      path: '/clinicians'
+      fullPath: '/admin/clinicians'
+      preLoaderRoute: typeof AdminCliniciansRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
 interface AdminRouteChildren {
+  AdminCliniciansRoute: typeof AdminCliniciansRoute
   AdminPatientsRoute: typeof AdminPatientsRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminCliniciansRoute: AdminCliniciansRoute,
   AdminPatientsRoute: AdminPatientsRoute,
 }
 
