@@ -26,6 +26,7 @@ import { Route as AdminPatientsRouteImport } from './routes/admin.patients'
 import { Route as AdminFormsRouteImport } from './routes/admin.forms'
 import { Route as AdminDashboardsRouteImport } from './routes/admin.dashboards'
 import { Route as AdminCliniciansRouteImport } from './routes/admin.clinicians'
+import { Route as AdminAuditRouteImport } from './routes/admin.audit'
 
 const VerifyMethodRoute = VerifyMethodRouteImport.update({
   id: '/verify-method',
@@ -112,6 +113,11 @@ const AdminCliniciansRoute = AdminCliniciansRouteImport.update({
   path: '/clinicians',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminAuditRoute = AdminAuditRouteImport.update({
+  id: '/audit',
+  path: '/audit',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -125,6 +131,7 @@ export interface FileRoutesByFullPath {
   '/sms-phone': typeof SmsPhoneRoute
   '/sms-verify': typeof SmsVerifyRoute
   '/verify-method': typeof VerifyMethodRoute
+  '/admin/audit': typeof AdminAuditRoute
   '/admin/clinicians': typeof AdminCliniciansRoute
   '/admin/dashboards': typeof AdminDashboardsRoute
   '/admin/forms': typeof AdminFormsRoute
@@ -144,6 +151,7 @@ export interface FileRoutesByTo {
   '/sms-phone': typeof SmsPhoneRoute
   '/sms-verify': typeof SmsVerifyRoute
   '/verify-method': typeof VerifyMethodRoute
+  '/admin/audit': typeof AdminAuditRoute
   '/admin/clinicians': typeof AdminCliniciansRoute
   '/admin/dashboards': typeof AdminDashboardsRoute
   '/admin/forms': typeof AdminFormsRoute
@@ -164,6 +172,7 @@ export interface FileRoutesById {
   '/sms-phone': typeof SmsPhoneRoute
   '/sms-verify': typeof SmsVerifyRoute
   '/verify-method': typeof VerifyMethodRoute
+  '/admin/audit': typeof AdminAuditRoute
   '/admin/clinicians': typeof AdminCliniciansRoute
   '/admin/dashboards': typeof AdminDashboardsRoute
   '/admin/forms': typeof AdminFormsRoute
@@ -185,6 +194,7 @@ export interface FileRouteTypes {
     | '/sms-phone'
     | '/sms-verify'
     | '/verify-method'
+    | '/admin/audit'
     | '/admin/clinicians'
     | '/admin/dashboards'
     | '/admin/forms'
@@ -204,6 +214,7 @@ export interface FileRouteTypes {
     | '/sms-phone'
     | '/sms-verify'
     | '/verify-method'
+    | '/admin/audit'
     | '/admin/clinicians'
     | '/admin/dashboards'
     | '/admin/forms'
@@ -223,6 +234,7 @@ export interface FileRouteTypes {
     | '/sms-phone'
     | '/sms-verify'
     | '/verify-method'
+    | '/admin/audit'
     | '/admin/clinicians'
     | '/admin/dashboards'
     | '/admin/forms'
@@ -366,10 +378,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminCliniciansRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/audit': {
+      id: '/admin/audit'
+      path: '/audit'
+      fullPath: '/admin/audit'
+      preLoaderRoute: typeof AdminAuditRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
 interface AdminRouteChildren {
+  AdminAuditRoute: typeof AdminAuditRoute
   AdminCliniciansRoute: typeof AdminCliniciansRoute
   AdminDashboardsRoute: typeof AdminDashboardsRoute
   AdminFormsRoute: typeof AdminFormsRoute
@@ -379,6 +399,7 @@ interface AdminRouteChildren {
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminAuditRoute: AdminAuditRoute,
   AdminCliniciansRoute: AdminCliniciansRoute,
   AdminDashboardsRoute: AdminDashboardsRoute,
   AdminFormsRoute: AdminFormsRoute,
