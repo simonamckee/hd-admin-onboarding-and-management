@@ -20,6 +20,7 @@ import { Route as AuthenticatorVerifyRouteImport } from './routes/authenticator-
 import { Route as AuthenticatorQrRouteImport } from './routes/authenticator-qr'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminResourcesRouteImport } from './routes/admin.resources'
 import { Route as AdminPlatformRouteImport } from './routes/admin.platform'
 import { Route as AdminPatientsRouteImport } from './routes/admin.patients'
 import { Route as AdminFormsRouteImport } from './routes/admin.forms'
@@ -80,6 +81,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminResourcesRoute = AdminResourcesRouteImport.update({
+  id: '/resources',
+  path: '/resources',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminPlatformRoute = AdminPlatformRouteImport.update({
   id: '/platform',
   path: '/platform',
@@ -117,6 +123,7 @@ export interface FileRoutesByFullPath {
   '/admin/forms': typeof AdminFormsRoute
   '/admin/patients': typeof AdminPatientsRoute
   '/admin/platform': typeof AdminPlatformRoute
+  '/admin/resources': typeof AdminResourcesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -134,6 +141,7 @@ export interface FileRoutesByTo {
   '/admin/forms': typeof AdminFormsRoute
   '/admin/patients': typeof AdminPatientsRoute
   '/admin/platform': typeof AdminPlatformRoute
+  '/admin/resources': typeof AdminResourcesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -152,6 +160,7 @@ export interface FileRoutesById {
   '/admin/forms': typeof AdminFormsRoute
   '/admin/patients': typeof AdminPatientsRoute
   '/admin/platform': typeof AdminPlatformRoute
+  '/admin/resources': typeof AdminResourcesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -171,6 +180,7 @@ export interface FileRouteTypes {
     | '/admin/forms'
     | '/admin/patients'
     | '/admin/platform'
+    | '/admin/resources'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -188,6 +198,7 @@ export interface FileRouteTypes {
     | '/admin/forms'
     | '/admin/patients'
     | '/admin/platform'
+    | '/admin/resources'
   id:
     | '__root__'
     | '/'
@@ -205,6 +216,7 @@ export interface FileRouteTypes {
     | '/admin/forms'
     | '/admin/patients'
     | '/admin/platform'
+    | '/admin/resources'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -300,6 +312,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/resources': {
+      id: '/admin/resources'
+      path: '/resources'
+      fullPath: '/admin/resources'
+      preLoaderRoute: typeof AdminResourcesRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/platform': {
       id: '/admin/platform'
       path: '/platform'
@@ -336,6 +355,7 @@ interface AdminRouteChildren {
   AdminFormsRoute: typeof AdminFormsRoute
   AdminPatientsRoute: typeof AdminPatientsRoute
   AdminPlatformRoute: typeof AdminPlatformRoute
+  AdminResourcesRoute: typeof AdminResourcesRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
@@ -343,6 +363,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminFormsRoute: AdminFormsRoute,
   AdminPatientsRoute: AdminPatientsRoute,
   AdminPlatformRoute: AdminPlatformRoute,
+  AdminResourcesRoute: AdminResourcesRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
