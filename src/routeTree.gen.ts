@@ -20,6 +20,7 @@ import { Route as AuthenticatorVerifyRouteImport } from './routes/authenticator-
 import { Route as AuthenticatorQrRouteImport } from './routes/authenticator-qr'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminPatientsRouteImport } from './routes/admin.patients'
 
 const VerifyMethodRoute = VerifyMethodRouteImport.update({
   id: '/verify-method',
@@ -76,10 +77,15 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminPatientsRoute = AdminPatientsRouteImport.update({
+  id: '/patients',
+  path: '/patients',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/authenticator-qr': typeof AuthenticatorQrRoute
   '/authenticator-verify': typeof AuthenticatorVerifyRoute
   '/complete': typeof CompleteRoute
@@ -89,10 +95,11 @@ export interface FileRoutesByFullPath {
   '/sms-phone': typeof SmsPhoneRoute
   '/sms-verify': typeof SmsVerifyRoute
   '/verify-method': typeof VerifyMethodRoute
+  '/admin/patients': typeof AdminPatientsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/authenticator-qr': typeof AuthenticatorQrRoute
   '/authenticator-verify': typeof AuthenticatorVerifyRoute
   '/complete': typeof CompleteRoute
@@ -102,11 +109,12 @@ export interface FileRoutesByTo {
   '/sms-phone': typeof SmsPhoneRoute
   '/sms-verify': typeof SmsVerifyRoute
   '/verify-method': typeof VerifyMethodRoute
+  '/admin/patients': typeof AdminPatientsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/authenticator-qr': typeof AuthenticatorQrRoute
   '/authenticator-verify': typeof AuthenticatorVerifyRoute
   '/complete': typeof CompleteRoute
@@ -116,6 +124,7 @@ export interface FileRoutesById {
   '/sms-phone': typeof SmsPhoneRoute
   '/sms-verify': typeof SmsVerifyRoute
   '/verify-method': typeof VerifyMethodRoute
+  '/admin/patients': typeof AdminPatientsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -131,6 +140,7 @@ export interface FileRouteTypes {
     | '/sms-phone'
     | '/sms-verify'
     | '/verify-method'
+    | '/admin/patients'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -144,6 +154,7 @@ export interface FileRouteTypes {
     | '/sms-phone'
     | '/sms-verify'
     | '/verify-method'
+    | '/admin/patients'
   id:
     | '__root__'
     | '/'
@@ -157,11 +168,12 @@ export interface FileRouteTypes {
     | '/sms-phone'
     | '/sms-verify'
     | '/verify-method'
+    | '/admin/patients'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdminRoute: typeof AdminRoute
+  AdminRoute: typeof AdminRouteWithChildren
   AuthenticatorQrRoute: typeof AuthenticatorQrRoute
   AuthenticatorVerifyRoute: typeof AuthenticatorVerifyRoute
   CompleteRoute: typeof CompleteRoute
@@ -252,12 +264,29 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/patients': {
+      id: '/admin/patients'
+      path: '/patients'
+      fullPath: '/admin/patients'
+      preLoaderRoute: typeof AdminPatientsRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
+interface AdminRouteChildren {
+  AdminPatientsRoute: typeof AdminPatientsRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminPatientsRoute: AdminPatientsRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdminRoute: AdminRoute,
+  AdminRoute: AdminRouteWithChildren,
   AuthenticatorQrRoute: AuthenticatorQrRoute,
   AuthenticatorVerifyRoute: AuthenticatorVerifyRoute,
   CompleteRoute: CompleteRoute,
