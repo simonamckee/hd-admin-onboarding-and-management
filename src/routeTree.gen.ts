@@ -20,6 +20,7 @@ import { Route as AuthenticatorVerifyRouteImport } from './routes/authenticator-
 import { Route as AuthenticatorQrRouteImport } from './routes/authenticator-qr'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminPlatformRouteImport } from './routes/admin.platform'
 import { Route as AdminPatientsRouteImport } from './routes/admin.patients'
 import { Route as AdminCliniciansRouteImport } from './routes/admin.clinicians'
 
@@ -78,6 +79,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminPlatformRoute = AdminPlatformRouteImport.update({
+  id: '/platform',
+  path: '/platform',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminPatientsRoute = AdminPatientsRouteImport.update({
   id: '/patients',
   path: '/patients',
@@ -103,6 +109,7 @@ export interface FileRoutesByFullPath {
   '/verify-method': typeof VerifyMethodRoute
   '/admin/clinicians': typeof AdminCliniciansRoute
   '/admin/patients': typeof AdminPatientsRoute
+  '/admin/platform': typeof AdminPlatformRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -118,6 +125,7 @@ export interface FileRoutesByTo {
   '/verify-method': typeof VerifyMethodRoute
   '/admin/clinicians': typeof AdminCliniciansRoute
   '/admin/patients': typeof AdminPatientsRoute
+  '/admin/platform': typeof AdminPlatformRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -134,6 +142,7 @@ export interface FileRoutesById {
   '/verify-method': typeof VerifyMethodRoute
   '/admin/clinicians': typeof AdminCliniciansRoute
   '/admin/patients': typeof AdminPatientsRoute
+  '/admin/platform': typeof AdminPlatformRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -151,6 +160,7 @@ export interface FileRouteTypes {
     | '/verify-method'
     | '/admin/clinicians'
     | '/admin/patients'
+    | '/admin/platform'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -166,6 +176,7 @@ export interface FileRouteTypes {
     | '/verify-method'
     | '/admin/clinicians'
     | '/admin/patients'
+    | '/admin/platform'
   id:
     | '__root__'
     | '/'
@@ -181,6 +192,7 @@ export interface FileRouteTypes {
     | '/verify-method'
     | '/admin/clinicians'
     | '/admin/patients'
+    | '/admin/platform'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -276,6 +288,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/platform': {
+      id: '/admin/platform'
+      path: '/platform'
+      fullPath: '/admin/platform'
+      preLoaderRoute: typeof AdminPlatformRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/patients': {
       id: '/admin/patients'
       path: '/patients'
@@ -296,11 +315,13 @@ declare module '@tanstack/react-router' {
 interface AdminRouteChildren {
   AdminCliniciansRoute: typeof AdminCliniciansRoute
   AdminPatientsRoute: typeof AdminPatientsRoute
+  AdminPlatformRoute: typeof AdminPlatformRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminCliniciansRoute: AdminCliniciansRoute,
   AdminPatientsRoute: AdminPatientsRoute,
+  AdminPlatformRoute: AdminPlatformRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
