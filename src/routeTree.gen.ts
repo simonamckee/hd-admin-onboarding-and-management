@@ -28,6 +28,7 @@ import { Route as AdminDashboardsRouteImport } from './routes/admin.dashboards'
 import { Route as AdminCliniciansRouteImport } from './routes/admin.clinicians'
 import { Route as AdminAuditRouteImport } from './routes/admin.audit'
 import { Route as AdminPatientsNewRouteImport } from './routes/admin.patients.new'
+import { Route as AdminPatientsIdRouteImport } from './routes/admin.patients.$id'
 import { Route as AdminPatientsNewSupportersRouteImport } from './routes/admin.patients.new.supporters'
 import { Route as AdminPatientsNewReviewRouteImport } from './routes/admin.patients.new.review'
 import { Route as AdminPatientsNewDoneRouteImport } from './routes/admin.patients.new.done'
@@ -127,6 +128,11 @@ const AdminPatientsNewRoute = AdminPatientsNewRouteImport.update({
   path: '/new',
   getParentRoute: () => AdminPatientsRoute,
 } as any)
+const AdminPatientsIdRoute = AdminPatientsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AdminPatientsRoute,
+} as any)
 const AdminPatientsNewSupportersRoute =
   AdminPatientsNewSupportersRouteImport.update({
     id: '/supporters',
@@ -163,6 +169,7 @@ export interface FileRoutesByFullPath {
   '/admin/patients': typeof AdminPatientsRouteWithChildren
   '/admin/platform': typeof AdminPlatformRoute
   '/admin/resources': typeof AdminResourcesRoute
+  '/admin/patients/$id': typeof AdminPatientsIdRoute
   '/admin/patients/new': typeof AdminPatientsNewRouteWithChildren
   '/admin/patients/new/done': typeof AdminPatientsNewDoneRoute
   '/admin/patients/new/review': typeof AdminPatientsNewReviewRoute
@@ -187,6 +194,7 @@ export interface FileRoutesByTo {
   '/admin/patients': typeof AdminPatientsRouteWithChildren
   '/admin/platform': typeof AdminPlatformRoute
   '/admin/resources': typeof AdminResourcesRoute
+  '/admin/patients/$id': typeof AdminPatientsIdRoute
   '/admin/patients/new': typeof AdminPatientsNewRouteWithChildren
   '/admin/patients/new/done': typeof AdminPatientsNewDoneRoute
   '/admin/patients/new/review': typeof AdminPatientsNewReviewRoute
@@ -212,6 +220,7 @@ export interface FileRoutesById {
   '/admin/patients': typeof AdminPatientsRouteWithChildren
   '/admin/platform': typeof AdminPlatformRoute
   '/admin/resources': typeof AdminResourcesRoute
+  '/admin/patients/$id': typeof AdminPatientsIdRoute
   '/admin/patients/new': typeof AdminPatientsNewRouteWithChildren
   '/admin/patients/new/done': typeof AdminPatientsNewDoneRoute
   '/admin/patients/new/review': typeof AdminPatientsNewReviewRoute
@@ -238,6 +247,7 @@ export interface FileRouteTypes {
     | '/admin/patients'
     | '/admin/platform'
     | '/admin/resources'
+    | '/admin/patients/$id'
     | '/admin/patients/new'
     | '/admin/patients/new/done'
     | '/admin/patients/new/review'
@@ -262,6 +272,7 @@ export interface FileRouteTypes {
     | '/admin/patients'
     | '/admin/platform'
     | '/admin/resources'
+    | '/admin/patients/$id'
     | '/admin/patients/new'
     | '/admin/patients/new/done'
     | '/admin/patients/new/review'
@@ -286,6 +297,7 @@ export interface FileRouteTypes {
     | '/admin/patients'
     | '/admin/platform'
     | '/admin/resources'
+    | '/admin/patients/$id'
     | '/admin/patients/new'
     | '/admin/patients/new/done'
     | '/admin/patients/new/review'
@@ -441,6 +453,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminPatientsNewRouteImport
       parentRoute: typeof AdminPatientsRoute
     }
+    '/admin/patients/$id': {
+      id: '/admin/patients/$id'
+      path: '/$id'
+      fullPath: '/admin/patients/$id'
+      preLoaderRoute: typeof AdminPatientsIdRouteImport
+      parentRoute: typeof AdminPatientsRoute
+    }
     '/admin/patients/new/supporters': {
       id: '/admin/patients/new/supporters'
       path: '/supporters'
@@ -481,10 +500,12 @@ const AdminPatientsNewRouteWithChildren =
   AdminPatientsNewRoute._addFileChildren(AdminPatientsNewRouteChildren)
 
 interface AdminPatientsRouteChildren {
+  AdminPatientsIdRoute: typeof AdminPatientsIdRoute
   AdminPatientsNewRoute: typeof AdminPatientsNewRouteWithChildren
 }
 
 const AdminPatientsRouteChildren: AdminPatientsRouteChildren = {
+  AdminPatientsIdRoute: AdminPatientsIdRoute,
   AdminPatientsNewRoute: AdminPatientsNewRouteWithChildren,
 }
 
