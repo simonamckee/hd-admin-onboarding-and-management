@@ -20,6 +20,7 @@ import { Route as AuthenticatorVerifyRouteImport } from './routes/authenticator-
 import { Route as AuthenticatorQrRouteImport } from './routes/authenticator-qr'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AdminResourcesRouteImport } from './routes/admin.resources'
 import { Route as AdminPlatformRouteImport } from './routes/admin.platform'
 import { Route as AdminPatientsRouteImport } from './routes/admin.patients'
@@ -87,6 +88,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminResourcesRoute = AdminResourcesRouteImport.update({
   id: '/resources',
@@ -169,6 +175,7 @@ export interface FileRoutesByFullPath {
   '/admin/patients': typeof AdminPatientsRouteWithChildren
   '/admin/platform': typeof AdminPlatformRoute
   '/admin/resources': typeof AdminResourcesRoute
+  '/admin/': typeof AdminIndexRoute
   '/admin/patients/$id': typeof AdminPatientsIdRoute
   '/admin/patients/new': typeof AdminPatientsNewRouteWithChildren
   '/admin/patients/new/done': typeof AdminPatientsNewDoneRoute
@@ -177,7 +184,6 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRouteWithChildren
   '/authenticator-qr': typeof AuthenticatorQrRoute
   '/authenticator-verify': typeof AuthenticatorVerifyRoute
   '/complete': typeof CompleteRoute
@@ -194,6 +200,7 @@ export interface FileRoutesByTo {
   '/admin/patients': typeof AdminPatientsRouteWithChildren
   '/admin/platform': typeof AdminPlatformRoute
   '/admin/resources': typeof AdminResourcesRoute
+  '/admin': typeof AdminIndexRoute
   '/admin/patients/$id': typeof AdminPatientsIdRoute
   '/admin/patients/new': typeof AdminPatientsNewRouteWithChildren
   '/admin/patients/new/done': typeof AdminPatientsNewDoneRoute
@@ -220,6 +227,7 @@ export interface FileRoutesById {
   '/admin/patients': typeof AdminPatientsRouteWithChildren
   '/admin/platform': typeof AdminPlatformRoute
   '/admin/resources': typeof AdminResourcesRoute
+  '/admin/': typeof AdminIndexRoute
   '/admin/patients/$id': typeof AdminPatientsIdRoute
   '/admin/patients/new': typeof AdminPatientsNewRouteWithChildren
   '/admin/patients/new/done': typeof AdminPatientsNewDoneRoute
@@ -247,6 +255,7 @@ export interface FileRouteTypes {
     | '/admin/patients'
     | '/admin/platform'
     | '/admin/resources'
+    | '/admin/'
     | '/admin/patients/$id'
     | '/admin/patients/new'
     | '/admin/patients/new/done'
@@ -255,7 +264,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/admin'
     | '/authenticator-qr'
     | '/authenticator-verify'
     | '/complete'
@@ -272,6 +280,7 @@ export interface FileRouteTypes {
     | '/admin/patients'
     | '/admin/platform'
     | '/admin/resources'
+    | '/admin'
     | '/admin/patients/$id'
     | '/admin/patients/new'
     | '/admin/patients/new/done'
@@ -297,6 +306,7 @@ export interface FileRouteTypes {
     | '/admin/patients'
     | '/admin/platform'
     | '/admin/resources'
+    | '/admin/'
     | '/admin/patients/$id'
     | '/admin/patients/new'
     | '/admin/patients/new/done'
@@ -396,6 +406,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/admin/resources': {
       id: '/admin/resources'
@@ -521,6 +538,7 @@ interface AdminRouteChildren {
   AdminPatientsRoute: typeof AdminPatientsRouteWithChildren
   AdminPlatformRoute: typeof AdminPlatformRoute
   AdminResourcesRoute: typeof AdminResourcesRoute
+  AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
@@ -531,6 +549,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminPatientsRoute: AdminPatientsRouteWithChildren,
   AdminPlatformRoute: AdminPlatformRoute,
   AdminResourcesRoute: AdminResourcesRoute,
+  AdminIndexRoute: AdminIndexRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
