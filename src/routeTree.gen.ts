@@ -30,6 +30,8 @@ import { Route as AdminCliniciansRouteImport } from './routes/admin.clinicians'
 import { Route as AdminAuditRouteImport } from './routes/admin.audit'
 import { Route as AdminPatientsNewRouteImport } from './routes/admin.patients.new'
 import { Route as AdminPatientsIdRouteImport } from './routes/admin.patients.$id'
+import { Route as AdminCliniciansNewRouteImport } from './routes/admin.clinicians.new'
+import { Route as AdminCliniciansIdRouteImport } from './routes/admin.clinicians.$id'
 import { Route as AdminPatientsNewSupportersRouteImport } from './routes/admin.patients.new.supporters'
 import { Route as AdminPatientsNewReviewRouteImport } from './routes/admin.patients.new.review'
 import { Route as AdminPatientsNewDoneRouteImport } from './routes/admin.patients.new.done'
@@ -139,6 +141,16 @@ const AdminPatientsIdRoute = AdminPatientsIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => AdminPatientsRoute,
 } as any)
+const AdminCliniciansNewRoute = AdminCliniciansNewRouteImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => AdminCliniciansRoute,
+} as any)
+const AdminCliniciansIdRoute = AdminCliniciansIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AdminCliniciansRoute,
+} as any)
 const AdminPatientsNewSupportersRoute =
   AdminPatientsNewSupportersRouteImport.update({
     id: '/supporters',
@@ -169,13 +181,15 @@ export interface FileRoutesByFullPath {
   '/sms-verify': typeof SmsVerifyRoute
   '/verify-method': typeof VerifyMethodRoute
   '/admin/audit': typeof AdminAuditRoute
-  '/admin/clinicians': typeof AdminCliniciansRoute
+  '/admin/clinicians': typeof AdminCliniciansRouteWithChildren
   '/admin/dashboards': typeof AdminDashboardsRoute
   '/admin/forms': typeof AdminFormsRoute
   '/admin/patients': typeof AdminPatientsRouteWithChildren
   '/admin/platform': typeof AdminPlatformRoute
   '/admin/resources': typeof AdminResourcesRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/clinicians/$id': typeof AdminCliniciansIdRoute
+  '/admin/clinicians/new': typeof AdminCliniciansNewRoute
   '/admin/patients/$id': typeof AdminPatientsIdRoute
   '/admin/patients/new': typeof AdminPatientsNewRouteWithChildren
   '/admin/patients/new/done': typeof AdminPatientsNewDoneRoute
@@ -194,13 +208,15 @@ export interface FileRoutesByTo {
   '/sms-verify': typeof SmsVerifyRoute
   '/verify-method': typeof VerifyMethodRoute
   '/admin/audit': typeof AdminAuditRoute
-  '/admin/clinicians': typeof AdminCliniciansRoute
+  '/admin/clinicians': typeof AdminCliniciansRouteWithChildren
   '/admin/dashboards': typeof AdminDashboardsRoute
   '/admin/forms': typeof AdminFormsRoute
   '/admin/patients': typeof AdminPatientsRouteWithChildren
   '/admin/platform': typeof AdminPlatformRoute
   '/admin/resources': typeof AdminResourcesRoute
   '/admin': typeof AdminIndexRoute
+  '/admin/clinicians/$id': typeof AdminCliniciansIdRoute
+  '/admin/clinicians/new': typeof AdminCliniciansNewRoute
   '/admin/patients/$id': typeof AdminPatientsIdRoute
   '/admin/patients/new': typeof AdminPatientsNewRouteWithChildren
   '/admin/patients/new/done': typeof AdminPatientsNewDoneRoute
@@ -221,13 +237,15 @@ export interface FileRoutesById {
   '/sms-verify': typeof SmsVerifyRoute
   '/verify-method': typeof VerifyMethodRoute
   '/admin/audit': typeof AdminAuditRoute
-  '/admin/clinicians': typeof AdminCliniciansRoute
+  '/admin/clinicians': typeof AdminCliniciansRouteWithChildren
   '/admin/dashboards': typeof AdminDashboardsRoute
   '/admin/forms': typeof AdminFormsRoute
   '/admin/patients': typeof AdminPatientsRouteWithChildren
   '/admin/platform': typeof AdminPlatformRoute
   '/admin/resources': typeof AdminResourcesRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/clinicians/$id': typeof AdminCliniciansIdRoute
+  '/admin/clinicians/new': typeof AdminCliniciansNewRoute
   '/admin/patients/$id': typeof AdminPatientsIdRoute
   '/admin/patients/new': typeof AdminPatientsNewRouteWithChildren
   '/admin/patients/new/done': typeof AdminPatientsNewDoneRoute
@@ -256,6 +274,8 @@ export interface FileRouteTypes {
     | '/admin/platform'
     | '/admin/resources'
     | '/admin/'
+    | '/admin/clinicians/$id'
+    | '/admin/clinicians/new'
     | '/admin/patients/$id'
     | '/admin/patients/new'
     | '/admin/patients/new/done'
@@ -281,6 +301,8 @@ export interface FileRouteTypes {
     | '/admin/platform'
     | '/admin/resources'
     | '/admin'
+    | '/admin/clinicians/$id'
+    | '/admin/clinicians/new'
     | '/admin/patients/$id'
     | '/admin/patients/new'
     | '/admin/patients/new/done'
@@ -307,6 +329,8 @@ export interface FileRouteTypes {
     | '/admin/platform'
     | '/admin/resources'
     | '/admin/'
+    | '/admin/clinicians/$id'
+    | '/admin/clinicians/new'
     | '/admin/patients/$id'
     | '/admin/patients/new'
     | '/admin/patients/new/done'
@@ -477,6 +501,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminPatientsIdRouteImport
       parentRoute: typeof AdminPatientsRoute
     }
+    '/admin/clinicians/new': {
+      id: '/admin/clinicians/new'
+      path: '/new'
+      fullPath: '/admin/clinicians/new'
+      preLoaderRoute: typeof AdminCliniciansNewRouteImport
+      parentRoute: typeof AdminCliniciansRoute
+    }
+    '/admin/clinicians/$id': {
+      id: '/admin/clinicians/$id'
+      path: '/$id'
+      fullPath: '/admin/clinicians/$id'
+      preLoaderRoute: typeof AdminCliniciansIdRouteImport
+      parentRoute: typeof AdminCliniciansRoute
+    }
     '/admin/patients/new/supporters': {
       id: '/admin/patients/new/supporters'
       path: '/supporters'
@@ -500,6 +538,20 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface AdminCliniciansRouteChildren {
+  AdminCliniciansIdRoute: typeof AdminCliniciansIdRoute
+  AdminCliniciansNewRoute: typeof AdminCliniciansNewRoute
+}
+
+const AdminCliniciansRouteChildren: AdminCliniciansRouteChildren = {
+  AdminCliniciansIdRoute: AdminCliniciansIdRoute,
+  AdminCliniciansNewRoute: AdminCliniciansNewRoute,
+}
+
+const AdminCliniciansRouteWithChildren = AdminCliniciansRoute._addFileChildren(
+  AdminCliniciansRouteChildren,
+)
 
 interface AdminPatientsNewRouteChildren {
   AdminPatientsNewDoneRoute: typeof AdminPatientsNewDoneRoute
@@ -532,7 +584,7 @@ const AdminPatientsRouteWithChildren = AdminPatientsRoute._addFileChildren(
 
 interface AdminRouteChildren {
   AdminAuditRoute: typeof AdminAuditRoute
-  AdminCliniciansRoute: typeof AdminCliniciansRoute
+  AdminCliniciansRoute: typeof AdminCliniciansRouteWithChildren
   AdminDashboardsRoute: typeof AdminDashboardsRoute
   AdminFormsRoute: typeof AdminFormsRoute
   AdminPatientsRoute: typeof AdminPatientsRouteWithChildren
@@ -543,7 +595,7 @@ interface AdminRouteChildren {
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminAuditRoute: AdminAuditRoute,
-  AdminCliniciansRoute: AdminCliniciansRoute,
+  AdminCliniciansRoute: AdminCliniciansRouteWithChildren,
   AdminDashboardsRoute: AdminDashboardsRoute,
   AdminFormsRoute: AdminFormsRoute,
   AdminPatientsRoute: AdminPatientsRouteWithChildren,
