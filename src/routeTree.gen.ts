@@ -20,6 +20,13 @@ import { Route as AuthenticatorVerifyRouteImport } from './routes/authenticator-
 import { Route as AuthenticatorQrRouteImport } from './routes/authenticator-qr'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminResourcesRouteImport } from './routes/admin.resources'
+import { Route as AdminPlatformRouteImport } from './routes/admin.platform'
+import { Route as AdminPatientsRouteImport } from './routes/admin.patients'
+import { Route as AdminFormsRouteImport } from './routes/admin.forms'
+import { Route as AdminDashboardsRouteImport } from './routes/admin.dashboards'
+import { Route as AdminCliniciansRouteImport } from './routes/admin.clinicians'
+import { Route as AdminAuditRouteImport } from './routes/admin.audit'
 
 const VerifyMethodRoute = VerifyMethodRouteImport.update({
   id: '/verify-method',
@@ -76,10 +83,45 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminResourcesRoute = AdminResourcesRouteImport.update({
+  id: '/resources',
+  path: '/resources',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPlatformRoute = AdminPlatformRouteImport.update({
+  id: '/platform',
+  path: '/platform',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPatientsRoute = AdminPatientsRouteImport.update({
+  id: '/patients',
+  path: '/patients',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminFormsRoute = AdminFormsRouteImport.update({
+  id: '/forms',
+  path: '/forms',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminDashboardsRoute = AdminDashboardsRouteImport.update({
+  id: '/dashboards',
+  path: '/dashboards',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminCliniciansRoute = AdminCliniciansRouteImport.update({
+  id: '/clinicians',
+  path: '/clinicians',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAuditRoute = AdminAuditRouteImport.update({
+  id: '/audit',
+  path: '/audit',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/authenticator-qr': typeof AuthenticatorQrRoute
   '/authenticator-verify': typeof AuthenticatorVerifyRoute
   '/complete': typeof CompleteRoute
@@ -89,10 +131,17 @@ export interface FileRoutesByFullPath {
   '/sms-phone': typeof SmsPhoneRoute
   '/sms-verify': typeof SmsVerifyRoute
   '/verify-method': typeof VerifyMethodRoute
+  '/admin/audit': typeof AdminAuditRoute
+  '/admin/clinicians': typeof AdminCliniciansRoute
+  '/admin/dashboards': typeof AdminDashboardsRoute
+  '/admin/forms': typeof AdminFormsRoute
+  '/admin/patients': typeof AdminPatientsRoute
+  '/admin/platform': typeof AdminPlatformRoute
+  '/admin/resources': typeof AdminResourcesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/authenticator-qr': typeof AuthenticatorQrRoute
   '/authenticator-verify': typeof AuthenticatorVerifyRoute
   '/complete': typeof CompleteRoute
@@ -102,11 +151,18 @@ export interface FileRoutesByTo {
   '/sms-phone': typeof SmsPhoneRoute
   '/sms-verify': typeof SmsVerifyRoute
   '/verify-method': typeof VerifyMethodRoute
+  '/admin/audit': typeof AdminAuditRoute
+  '/admin/clinicians': typeof AdminCliniciansRoute
+  '/admin/dashboards': typeof AdminDashboardsRoute
+  '/admin/forms': typeof AdminFormsRoute
+  '/admin/patients': typeof AdminPatientsRoute
+  '/admin/platform': typeof AdminPlatformRoute
+  '/admin/resources': typeof AdminResourcesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/authenticator-qr': typeof AuthenticatorQrRoute
   '/authenticator-verify': typeof AuthenticatorVerifyRoute
   '/complete': typeof CompleteRoute
@@ -116,6 +172,13 @@ export interface FileRoutesById {
   '/sms-phone': typeof SmsPhoneRoute
   '/sms-verify': typeof SmsVerifyRoute
   '/verify-method': typeof VerifyMethodRoute
+  '/admin/audit': typeof AdminAuditRoute
+  '/admin/clinicians': typeof AdminCliniciansRoute
+  '/admin/dashboards': typeof AdminDashboardsRoute
+  '/admin/forms': typeof AdminFormsRoute
+  '/admin/patients': typeof AdminPatientsRoute
+  '/admin/platform': typeof AdminPlatformRoute
+  '/admin/resources': typeof AdminResourcesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -131,6 +194,13 @@ export interface FileRouteTypes {
     | '/sms-phone'
     | '/sms-verify'
     | '/verify-method'
+    | '/admin/audit'
+    | '/admin/clinicians'
+    | '/admin/dashboards'
+    | '/admin/forms'
+    | '/admin/patients'
+    | '/admin/platform'
+    | '/admin/resources'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -144,6 +214,13 @@ export interface FileRouteTypes {
     | '/sms-phone'
     | '/sms-verify'
     | '/verify-method'
+    | '/admin/audit'
+    | '/admin/clinicians'
+    | '/admin/dashboards'
+    | '/admin/forms'
+    | '/admin/patients'
+    | '/admin/platform'
+    | '/admin/resources'
   id:
     | '__root__'
     | '/'
@@ -157,11 +234,18 @@ export interface FileRouteTypes {
     | '/sms-phone'
     | '/sms-verify'
     | '/verify-method'
+    | '/admin/audit'
+    | '/admin/clinicians'
+    | '/admin/dashboards'
+    | '/admin/forms'
+    | '/admin/patients'
+    | '/admin/platform'
+    | '/admin/resources'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdminRoute: typeof AdminRoute
+  AdminRoute: typeof AdminRouteWithChildren
   AuthenticatorQrRoute: typeof AuthenticatorQrRoute
   AuthenticatorVerifyRoute: typeof AuthenticatorVerifyRoute
   CompleteRoute: typeof CompleteRoute
@@ -252,12 +336,83 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/resources': {
+      id: '/admin/resources'
+      path: '/resources'
+      fullPath: '/admin/resources'
+      preLoaderRoute: typeof AdminResourcesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/platform': {
+      id: '/admin/platform'
+      path: '/platform'
+      fullPath: '/admin/platform'
+      preLoaderRoute: typeof AdminPlatformRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/patients': {
+      id: '/admin/patients'
+      path: '/patients'
+      fullPath: '/admin/patients'
+      preLoaderRoute: typeof AdminPatientsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/forms': {
+      id: '/admin/forms'
+      path: '/forms'
+      fullPath: '/admin/forms'
+      preLoaderRoute: typeof AdminFormsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/dashboards': {
+      id: '/admin/dashboards'
+      path: '/dashboards'
+      fullPath: '/admin/dashboards'
+      preLoaderRoute: typeof AdminDashboardsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/clinicians': {
+      id: '/admin/clinicians'
+      path: '/clinicians'
+      fullPath: '/admin/clinicians'
+      preLoaderRoute: typeof AdminCliniciansRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/audit': {
+      id: '/admin/audit'
+      path: '/audit'
+      fullPath: '/admin/audit'
+      preLoaderRoute: typeof AdminAuditRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
+interface AdminRouteChildren {
+  AdminAuditRoute: typeof AdminAuditRoute
+  AdminCliniciansRoute: typeof AdminCliniciansRoute
+  AdminDashboardsRoute: typeof AdminDashboardsRoute
+  AdminFormsRoute: typeof AdminFormsRoute
+  AdminPatientsRoute: typeof AdminPatientsRoute
+  AdminPlatformRoute: typeof AdminPlatformRoute
+  AdminResourcesRoute: typeof AdminResourcesRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminAuditRoute: AdminAuditRoute,
+  AdminCliniciansRoute: AdminCliniciansRoute,
+  AdminDashboardsRoute: AdminDashboardsRoute,
+  AdminFormsRoute: AdminFormsRoute,
+  AdminPatientsRoute: AdminPatientsRoute,
+  AdminPlatformRoute: AdminPlatformRoute,
+  AdminResourcesRoute: AdminResourcesRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdminRoute: AdminRoute,
+  AdminRoute: AdminRouteWithChildren,
   AuthenticatorQrRoute: AuthenticatorQrRoute,
   AuthenticatorVerifyRoute: AuthenticatorVerifyRoute,
   CompleteRoute: CompleteRoute,
