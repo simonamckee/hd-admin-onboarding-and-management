@@ -158,12 +158,27 @@ function PatientDetail() {
           <Field label="Last login"><ReadOnly>{base.lastLogin}</ReadOnly></Field>
 
           <div style={{ marginTop: 12, paddingTop: 12, borderTop: `0.5px solid ${WF_MID}` }}>
-            {base.status === "Invited" && (
+            {base.status === "Invited" && !base.bounced && (
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <div style={{ fontSize: 13, color: WF_DARK }}>
                   Invitation sent {base.inviteDate} — pending acceptance
                 </div>
                 <Btn small>Resend invitation</Btn>
+              </div>
+            )}
+            {base.status === "Invited" && base.bounced && (
+              <div>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12 }}>
+                  <div>
+                    <div style={{ fontSize: 13, color: WF_DARK, fontWeight: 600 }}>
+                      Invitation sent {base.inviteDate} — bounced
+                    </div>
+                    <div style={{ fontSize: 11, color: WF_MID, marginTop: 4, lineHeight: 1.5 }}>
+                      The invitation email could not be delivered. Check the email address above and resend.
+                    </div>
+                  </div>
+                  <Btn small primary>Resend invitation</Btn>
+                </div>
               </div>
             )}
             {base.status === "Not yet invited" && (
