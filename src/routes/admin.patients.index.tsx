@@ -184,7 +184,7 @@ function PatientList() {
                   <td style={{ padding: "12px 14px", color: WF_DARK, fontFamily: "ui-monospace, monospace" }}>
                     •••• {p.last4}
                   </td>
-                  <td style={{ padding: "12px 14px" }}>{statusPill(p.status)}</td>
+                  <td style={{ padding: "12px 14px" }}><StatusCell p={p} /></td>
                   <td style={{ padding: "12px 14px", color: WF_DARK }}>{p.added}</td>
                   <td style={{ padding: "12px 14px", color: p.lastLogin === "Never" ? WF_MID : WF_DARK }}>
                     {p.lastLogin}
