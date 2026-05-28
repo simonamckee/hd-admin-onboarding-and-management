@@ -6,7 +6,7 @@ import { WF_DARK, WF_MID } from "@/components/wireframe";
 
 type StateMode = "default" | "empty" | "noresults" | "loading";
 
-export const Route = createFileRoute("/admin/patients")({
+export const Route = createFileRoute("/admin/patients/")({
   validateSearch: (s: Record<string, unknown>) => ({
     state: (s.state as StateMode) || "default",
     banner: (s.banner as string) || "",
