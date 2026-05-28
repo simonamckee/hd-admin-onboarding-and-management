@@ -81,7 +81,7 @@ function PatientList() {
         <h1 style={{ fontSize: 20, fontWeight: 500, color: WF_DARK, margin: 0 }}>
           Patient management
         </h1>
-        <Btn primary to="/admin/patients/new">+ Add new patient</Btn>
+        <AddPatientSplitButton />
       </div>
 
       {/* Success banner */}
