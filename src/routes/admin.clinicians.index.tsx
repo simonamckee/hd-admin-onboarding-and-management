@@ -153,7 +153,7 @@ function ClinicianList() {
                       <span style={{ color: WF_MID, fontSize: 12 }}>—</span>
                     ) : (
                       <span style={{ display: "inline-flex", gap: 12 }}>
-                        <Link to="/admin/clinicians/$id" params={{ id: c.id }} style={{ fontSize: 13, color: WF_DARK, textDecoration: "underline" }}>Edit</Link>
+                        <Link to="/admin/clinicians/$id" params={{ id: c.id }} search={{ sso }} style={{ fontSize: 13, color: WF_DARK, textDecoration: "underline" }}>Edit</Link>
                         {!ssoOn && (
                           <Link to="/admin/clinicians" search={{ state: "default", sso: "off", banner: `${c.name} has been deactivated.` }} style={{ fontSize: 13, color: WF_DARK, textDecoration: "underline" }}>Deactivate</Link>
                         )}
