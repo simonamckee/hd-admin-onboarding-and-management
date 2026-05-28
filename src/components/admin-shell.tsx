@@ -4,12 +4,12 @@ import { WF_BG, WF_DARK, WF_MID } from "./wireframe";
 
 const NAV: Array<{ label: string; to: string }> = [
   { label: "Clinic information", to: "/admin" },
-  { label: "Patient management", to: "/admin/patients" },
-  { label: "Clinician management", to: "/admin/clinicians" },
   { label: "Platform configuration", to: "/admin/platform" },
+  { label: "Dashboard templates", to: "/admin/dashboards" },
+  { label: "Clinician management", to: "/admin/clinicians" },
+  { label: "Patient management", to: "/admin/patients" },
   { label: "Form library", to: "/admin/forms" },
   { label: "Resource library", to: "/admin/resources" },
-  { label: "Dashboard templates", to: "/admin/dashboards" },
   { label: "Audit log", to: "/admin/audit" },
 ];
 
