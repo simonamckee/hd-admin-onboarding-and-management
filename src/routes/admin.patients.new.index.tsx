@@ -7,7 +7,7 @@ import {
 import { WF_DARK, WF_MID } from "@/components/wireframe";
 import { loadDraft, saveDraft, ageFromDob, clearDraft, type PatientDraft } from "@/lib/patient-store";
 
-export const Route = createFileRoute("/admin/patients/new")({ component: Step1 });
+export const Route = createFileRoute("/admin/patients/new/")({ component: Step1 });
 
 const CLINICIANS = [
   "Dr. Sarah Chen",
