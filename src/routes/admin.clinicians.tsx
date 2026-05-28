@@ -1,19 +1,7 @@
-import { createFileRoute, Link, useSearch } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
-import { AdminShell, PrototypeBack } from "@/components/admin-shell";
-import { Btn, Input, Select, Pill, TextLink } from "@/components/patient-ui";
-import { WF_DARK, WF_MID } from "@/components/wireframe";
-
-type StateMode = "default" | "empty" | "noresults" | "loading";
-type SsoMode = "off" | "on";
+import { createFileRoute, Outlet } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/admin/clinicians")({
-  validateSearch: (s: Record<string, unknown>) => ({
-    state: (s.state as StateMode) || "default",
-    sso: (s.sso as SsoMode) || "off",
-    banner: (s.banner as string) || "",
-  }),
-  component: ClinicianList,
+  component: () => <Outlet />,
 });
 
 type Clinician = {
