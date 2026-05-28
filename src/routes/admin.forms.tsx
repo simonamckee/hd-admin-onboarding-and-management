@@ -155,9 +155,11 @@ function FormList() {
           <Btn onClick={() => setConfirm(null)}>Cancel</Btn>
           <Btn
             primary
-            to="/admin/forms"
-            search={{ state: "default", banner: confirm ? `${confirm.name} has been archived.` : "" }}
-            onClick={() => setConfirm(null)}
+            onClick={() => {
+              const name = confirm?.name;
+              setConfirm(null);
+              navigate({ to: "/admin/forms", search: { state: "default", banner: name ? `${name} has been archived.` : "" } });
+            }}
           >
             Archive form
           </Btn>
