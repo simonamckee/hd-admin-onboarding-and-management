@@ -29,6 +29,7 @@ import { Route as AdminDashboardsRouteImport } from './routes/admin.dashboards'
 import { Route as AdminCliniciansRouteImport } from './routes/admin.clinicians'
 import { Route as AdminAuditRouteImport } from './routes/admin.audit'
 import { Route as AdminPatientsIndexRouteImport } from './routes/admin.patients.index'
+import { Route as AdminFormsIndexRouteImport } from './routes/admin.forms.index'
 import { Route as AdminCliniciansIndexRouteImport } from './routes/admin.clinicians.index'
 import { Route as AdminResourcesNewRouteImport } from './routes/admin.resources.new'
 import { Route as AdminResourcesIdRouteImport } from './routes/admin.resources.$id'
@@ -144,6 +145,11 @@ const AdminPatientsIndexRoute = AdminPatientsIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminPatientsRoute,
 } as any)
+const AdminFormsIndexRoute = AdminFormsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminFormsRoute,
+} as any)
 const AdminCliniciansIndexRoute = AdminCliniciansIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -245,6 +251,7 @@ export interface FileRoutesByFullPath {
   '/admin/resources/$id': typeof AdminResourcesIdRoute
   '/admin/resources/new': typeof AdminResourcesNewRoute
   '/admin/clinicians/': typeof AdminCliniciansIndexRoute
+  '/admin/forms/': typeof AdminFormsIndexRoute
   '/admin/patients/': typeof AdminPatientsIndexRoute
   '/admin/patients/new/batch': typeof AdminPatientsNewBatchRoute
   '/admin/patients/new/done': typeof AdminPatientsNewDoneRoute
@@ -265,7 +272,6 @@ export interface FileRoutesByTo {
   '/verify-method': typeof VerifyMethodRoute
   '/admin/audit': typeof AdminAuditRoute
   '/admin/dashboards': typeof AdminDashboardsRoute
-  '/admin/forms': typeof AdminFormsRouteWithChildren
   '/admin/platform': typeof AdminPlatformRoute
   '/admin/resources': typeof AdminResourcesRouteWithChildren
   '/admin': typeof AdminIndexRoute
@@ -277,6 +283,7 @@ export interface FileRoutesByTo {
   '/admin/resources/$id': typeof AdminResourcesIdRoute
   '/admin/resources/new': typeof AdminResourcesNewRoute
   '/admin/clinicians': typeof AdminCliniciansIndexRoute
+  '/admin/forms': typeof AdminFormsIndexRoute
   '/admin/patients': typeof AdminPatientsIndexRoute
   '/admin/patients/new/batch': typeof AdminPatientsNewBatchRoute
   '/admin/patients/new/done': typeof AdminPatientsNewDoneRoute
@@ -314,6 +321,7 @@ export interface FileRoutesById {
   '/admin/resources/$id': typeof AdminResourcesIdRoute
   '/admin/resources/new': typeof AdminResourcesNewRoute
   '/admin/clinicians/': typeof AdminCliniciansIndexRoute
+  '/admin/forms/': typeof AdminFormsIndexRoute
   '/admin/patients/': typeof AdminPatientsIndexRoute
   '/admin/patients/new/batch': typeof AdminPatientsNewBatchRoute
   '/admin/patients/new/done': typeof AdminPatientsNewDoneRoute
@@ -352,6 +360,7 @@ export interface FileRouteTypes {
     | '/admin/resources/$id'
     | '/admin/resources/new'
     | '/admin/clinicians/'
+    | '/admin/forms/'
     | '/admin/patients/'
     | '/admin/patients/new/batch'
     | '/admin/patients/new/done'
@@ -372,7 +381,6 @@ export interface FileRouteTypes {
     | '/verify-method'
     | '/admin/audit'
     | '/admin/dashboards'
-    | '/admin/forms'
     | '/admin/platform'
     | '/admin/resources'
     | '/admin'
@@ -384,6 +392,7 @@ export interface FileRouteTypes {
     | '/admin/resources/$id'
     | '/admin/resources/new'
     | '/admin/clinicians'
+    | '/admin/forms'
     | '/admin/patients'
     | '/admin/patients/new/batch'
     | '/admin/patients/new/done'
@@ -420,6 +429,7 @@ export interface FileRouteTypes {
     | '/admin/resources/$id'
     | '/admin/resources/new'
     | '/admin/clinicians/'
+    | '/admin/forms/'
     | '/admin/patients/'
     | '/admin/patients/new/batch'
     | '/admin/patients/new/done'
@@ -584,6 +594,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminPatientsIndexRouteImport
       parentRoute: typeof AdminPatientsRoute
     }
+    '/admin/forms/': {
+      id: '/admin/forms/'
+      path: '/'
+      fullPath: '/admin/forms/'
+      preLoaderRoute: typeof AdminFormsIndexRouteImport
+      parentRoute: typeof AdminFormsRoute
+    }
     '/admin/clinicians/': {
       id: '/admin/clinicians/'
       path: '/'
@@ -704,11 +721,13 @@ const AdminCliniciansRouteWithChildren = AdminCliniciansRoute._addFileChildren(
 interface AdminFormsRouteChildren {
   AdminFormsIdRoute: typeof AdminFormsIdRoute
   AdminFormsNewRoute: typeof AdminFormsNewRoute
+  AdminFormsIndexRoute: typeof AdminFormsIndexRoute
 }
 
 const AdminFormsRouteChildren: AdminFormsRouteChildren = {
   AdminFormsIdRoute: AdminFormsIdRoute,
   AdminFormsNewRoute: AdminFormsNewRoute,
+  AdminFormsIndexRoute: AdminFormsIndexRoute,
 }
 
 const AdminFormsRouteWithChildren = AdminFormsRoute._addFileChildren(
@@ -804,3 +823,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
