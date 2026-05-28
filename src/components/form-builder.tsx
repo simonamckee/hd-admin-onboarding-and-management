@@ -36,33 +36,16 @@ const DEFAULTS: Record<QType, Omit<Question, "id">> = {
 let uid = 100;
 const nextId = () => `q${++uid}`;
 
-const PLACEHOLDER_NAME = "Untitled form";
-
 export function FormBuilder({ mode, existing }: { mode: "new" | "edit"; existing?: FormDraft }) {
   const navigate = useNavigate();
-  const [name, setName] = useState(existing?.name ?? PLACEHOLDER_NAME);
+  const [name, setName] = useState(existing?.name ?? "New form");
   const [editingName, setEditingName] = useState(false);
-  const [draftName, setDraftName] = useState(name);
   const [status] = useState<"Draft" | "Active">(existing?.status ?? "Draft");
   const [questions, setQuestions] = useState<Question[]>(existing?.questions ?? []);
   const [selectedId, setSelectedId] = useState<string | null>(existing?.questions?.[0]?.id ?? null);
   const [pickerOpen, setPickerOpen] = useState(false);
   const [dragId, setDragId] = useState<string | null>(null);
   const [overId, setOverId] = useState<string | null>(null);
-
-  const isPlaceholder = name === PLACEHOLDER_NAME;
-  const startEdit = () => {
-    setDraftName(isPlaceholder ? "" : name);
-    setEditingName(true);
-  };
-  const commitEdit = () => {
-    const v = draftName.trim();
-    setName(v.length ? v : PLACEHOLDER_NAME);
-    setEditingName(false);
-  };
-  const cancelEdit = () => {
-    setEditingName(false);
-  };
 
   const selected = questions.find((q) => q.id === selectedId) || null;
 
