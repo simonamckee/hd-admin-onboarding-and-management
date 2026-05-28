@@ -41,7 +41,7 @@ function statusPill(s: Patient["status"]) {
 }
 
 function PatientList() {
-  const { state, banner } = useSearch({ from: "/admin/patients" });
+  const { state, banner } = useSearch({ from: "/admin/patients/" });
   const [q, setQ] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [bannerOpen, setBannerOpen] = useState(true);
