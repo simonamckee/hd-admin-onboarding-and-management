@@ -402,6 +402,7 @@ const cellStyle = { padding: "12px", color: WF_DARK, verticalAlign: "top" as con
 // ---------- STATE 3 ----------
 
 function DoneState() {
+  const navigate = useNavigate();
   return (
     <div style={{ padding: "60px 20px", textAlign: "center", maxWidth: 560, margin: "0 auto" }}>
       <div
@@ -435,11 +436,18 @@ function DoneState() {
       <div style={{ display: "flex", gap: 12, justifyContent: "center" }}>
         <Btn
           primary
-          to={`/admin/patients?state=default&banner=${encodeURIComponent("4 patients uploaded. 3 invitations sent.")}`}
+          onClick={() =>
+            navigate({
+              to: "/admin/patients",
+              search: { state: "default", banner: "4 patients uploaded. 3 invitations sent." },
+            })
+          }
         >
           Back to Patient management
         </Btn>
-        <Btn to="/admin/patients/new/batch?stage=upload">Upload another CSV</Btn>
+        <Btn onClick={() => navigate({ to: "/admin/patients/new/batch", search: { stage: "upload" } })}>
+          Upload another CSV
+        </Btn>
       </div>
     </div>
   );
