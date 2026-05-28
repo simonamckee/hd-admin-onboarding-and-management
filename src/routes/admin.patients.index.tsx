@@ -109,6 +109,34 @@ function PatientList() {
         </div>
       )}
 
+      {/* Expiry action banner — persistent */}
+      {PATIENTS.some((p) => p.status === "Expired") && (
+        <div
+          style={{
+            border: `2px solid ${WF_DARK}`,
+            background: "#fff",
+            padding: "12px 16px",
+            fontSize: 13,
+            color: WF_DARK,
+            margin: "16px 0",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <span>
+            {PATIENTS.filter((p) => p.status === "Expired").length} invitation
+            {PATIENTS.filter((p) => p.status === "Expired").length === 1 ? "" : "s"} have expired and need your attention.
+          </span>
+          <button
+            onClick={() => setStatusFilter("Expired")}
+            style={{ background: "none", border: "none", cursor: "pointer", color: WF_DARK, fontSize: 13, textDecoration: "underline", fontFamily: "inherit", padding: 0 }}
+          >
+            Review
+          </button>
+        </div>
+      )}
+
       {/* Subheader row */}
       <div style={{ display: "flex", gap: 12, alignItems: "center", marginTop: 20, marginBottom: 16 }}>
         <div style={{ flex: 1, maxWidth: 360 }}>
@@ -123,6 +151,7 @@ function PatientList() {
           <option>Active</option>
           <option>Invited</option>
           <option>Not yet invited</option>
+          <option>Expired</option>
         </Select>
         <div style={{ flex: 1, textAlign: "right", fontSize: 12, color: WF_MID }}>
           {state === "empty" ? "0 patients" : `${PATIENTS.length} patients`}
