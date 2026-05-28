@@ -155,6 +155,7 @@ function FormList() {
           <Btn
             primary
             to="/admin/forms"
+            search={{ state: "default", banner: confirm ? `${confirm.name} has been archived.` : "" }}
             onClick={() => setConfirm(null)}
           >
             Archive form
