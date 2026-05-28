@@ -42,6 +42,7 @@ import { Route as AdminPatientsNewIndexRouteImport } from './routes/admin.patien
 import { Route as AdminPatientsNewSupportersRouteImport } from './routes/admin.patients.new.supporters'
 import { Route as AdminPatientsNewReviewRouteImport } from './routes/admin.patients.new.review'
 import { Route as AdminPatientsNewDoneRouteImport } from './routes/admin.patients.new.done'
+import { Route as AdminPatientsNewBatchRouteImport } from './routes/admin.patients.new.batch'
 
 const VerifyMethodRoute = VerifyMethodRouteImport.update({
   id: '/verify-method',
@@ -209,6 +210,11 @@ const AdminPatientsNewDoneRoute = AdminPatientsNewDoneRouteImport.update({
   path: '/done',
   getParentRoute: () => AdminPatientsNewRoute,
 } as any)
+const AdminPatientsNewBatchRoute = AdminPatientsNewBatchRouteImport.update({
+  id: '/batch',
+  path: '/batch',
+  getParentRoute: () => AdminPatientsNewRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -240,6 +246,7 @@ export interface FileRoutesByFullPath {
   '/admin/resources/new': typeof AdminResourcesNewRoute
   '/admin/clinicians/': typeof AdminCliniciansIndexRoute
   '/admin/patients/': typeof AdminPatientsIndexRoute
+  '/admin/patients/new/batch': typeof AdminPatientsNewBatchRoute
   '/admin/patients/new/done': typeof AdminPatientsNewDoneRoute
   '/admin/patients/new/review': typeof AdminPatientsNewReviewRoute
   '/admin/patients/new/supporters': typeof AdminPatientsNewSupportersRoute
@@ -271,6 +278,7 @@ export interface FileRoutesByTo {
   '/admin/resources/new': typeof AdminResourcesNewRoute
   '/admin/clinicians': typeof AdminCliniciansIndexRoute
   '/admin/patients': typeof AdminPatientsIndexRoute
+  '/admin/patients/new/batch': typeof AdminPatientsNewBatchRoute
   '/admin/patients/new/done': typeof AdminPatientsNewDoneRoute
   '/admin/patients/new/review': typeof AdminPatientsNewReviewRoute
   '/admin/patients/new/supporters': typeof AdminPatientsNewSupportersRoute
@@ -307,6 +315,7 @@ export interface FileRoutesById {
   '/admin/resources/new': typeof AdminResourcesNewRoute
   '/admin/clinicians/': typeof AdminCliniciansIndexRoute
   '/admin/patients/': typeof AdminPatientsIndexRoute
+  '/admin/patients/new/batch': typeof AdminPatientsNewBatchRoute
   '/admin/patients/new/done': typeof AdminPatientsNewDoneRoute
   '/admin/patients/new/review': typeof AdminPatientsNewReviewRoute
   '/admin/patients/new/supporters': typeof AdminPatientsNewSupportersRoute
@@ -344,6 +353,7 @@ export interface FileRouteTypes {
     | '/admin/resources/new'
     | '/admin/clinicians/'
     | '/admin/patients/'
+    | '/admin/patients/new/batch'
     | '/admin/patients/new/done'
     | '/admin/patients/new/review'
     | '/admin/patients/new/supporters'
@@ -375,6 +385,7 @@ export interface FileRouteTypes {
     | '/admin/resources/new'
     | '/admin/clinicians'
     | '/admin/patients'
+    | '/admin/patients/new/batch'
     | '/admin/patients/new/done'
     | '/admin/patients/new/review'
     | '/admin/patients/new/supporters'
@@ -410,6 +421,7 @@ export interface FileRouteTypes {
     | '/admin/resources/new'
     | '/admin/clinicians/'
     | '/admin/patients/'
+    | '/admin/patients/new/batch'
     | '/admin/patients/new/done'
     | '/admin/patients/new/review'
     | '/admin/patients/new/supporters'
@@ -663,6 +675,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminPatientsNewDoneRouteImport
       parentRoute: typeof AdminPatientsNewRoute
     }
+    '/admin/patients/new/batch': {
+      id: '/admin/patients/new/batch'
+      path: '/batch'
+      fullPath: '/admin/patients/new/batch'
+      preLoaderRoute: typeof AdminPatientsNewBatchRouteImport
+      parentRoute: typeof AdminPatientsNewRoute
+    }
   }
 }
 
@@ -697,6 +716,7 @@ const AdminFormsRouteWithChildren = AdminFormsRoute._addFileChildren(
 )
 
 interface AdminPatientsNewRouteChildren {
+  AdminPatientsNewBatchRoute: typeof AdminPatientsNewBatchRoute
   AdminPatientsNewDoneRoute: typeof AdminPatientsNewDoneRoute
   AdminPatientsNewReviewRoute: typeof AdminPatientsNewReviewRoute
   AdminPatientsNewSupportersRoute: typeof AdminPatientsNewSupportersRoute
@@ -704,6 +724,7 @@ interface AdminPatientsNewRouteChildren {
 }
 
 const AdminPatientsNewRouteChildren: AdminPatientsNewRouteChildren = {
+  AdminPatientsNewBatchRoute: AdminPatientsNewBatchRoute,
   AdminPatientsNewDoneRoute: AdminPatientsNewDoneRoute,
   AdminPatientsNewReviewRoute: AdminPatientsNewReviewRoute,
   AdminPatientsNewSupportersRoute: AdminPatientsNewSupportersRoute,
