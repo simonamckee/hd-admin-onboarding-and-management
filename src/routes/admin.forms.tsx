@@ -34,6 +34,7 @@ const FORMS: Form[] = [
 
 function FormList() {
   const { state, banner } = useSearch({ from: "/admin/forms" });
+  const navigate = useNavigate();
   const [q, setQ] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [bannerOpen, setBannerOpen] = useState(true);
