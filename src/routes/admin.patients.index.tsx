@@ -57,6 +57,123 @@ function StatusCell({ p }: { p: Patient }) {
   );
 }
 
+function AddPatientSplitButton() {
+  const [open, setOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const handle = (e: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handle);
+    return () => document.removeEventListener("mousedown", handle);
+  }, [open]);
+
+  const baseHeight = 36;
+  const shared: React.CSSProperties = {
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    height: baseHeight,
+    fontSize: 13,
+    fontFamily: "inherit",
+    border: `1px solid ${WF_DARK}`,
+    background: WF_DARK,
+    color: "#fff",
+    cursor: "pointer",
+    textDecoration: "none",
+    boxSizing: "border-box",
+    padding: "0 14px",
+  };
+
+  return (
+    <div ref={containerRef} style={{ position: "relative", display: "inline-flex" }}>
+      <Link
+        to="/admin/patients/new"
+        style={{
+          ...shared,
+          borderRight: "none",
+          borderRadius: "4px 0 0 4px",
+          paddingRight: 12,
+        }}
+      >
+        + Add new patient
+      </Link>
+      <button
+        onClick={() => setOpen((v) => !v)}
+        style={{
+          ...shared,
+          width: baseHeight,
+          padding: 0,
+          borderRadius: "0 4px 4px 0",
+          borderLeft: `1px solid rgba(255,255,255,0.25)`,
+        }}
+        aria-label="Add patient options"
+      >
+        <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
+          <path d="M1 1l4 4 4-4" stroke="#fff" strokeWidth="1.5" />
+        </svg>
+      </button>
+
+      {open && (
+        <div
+          style={{
+            position: "absolute",
+            top: baseHeight + 4,
+            right: 0,
+            background: "#fff",
+            border: `1px solid ${WF_MID}`,
+            borderRadius: 4,
+            boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+            zIndex: 50,
+            minWidth: 160,
+            overflow: "hidden",
+          }}
+        >
+          <Link
+            to="/admin/patients/new"
+            onClick={() => setOpen(false)}
+            style={{
+              display: "block",
+              padding: "10px 14px",
+              fontSize: 13,
+              color: WF_DARK,
+              textDecoration: "none",
+              whiteSpace: "nowrap",
+              cursor: "pointer",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = "#F5F5F5")}
+            onMouseLeave={(e) => (e.currentTarget.style.background = "#fff")}
+          >
+            Add individually
+          </Link>
+          <div style={{ height: 1, background: WF_MID, opacity: 0.3 }} />
+          <Link
+            to="/admin/patients/new/batch"
+            onClick={() => setOpen(false)}
+            style={{
+              display: "block",
+              padding: "10px 14px",
+              fontSize: 13,
+              color: WF_DARK,
+              textDecoration: "none",
+              whiteSpace: "nowrap",
+              cursor: "pointer",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = "#F5F5F5")}
+            onMouseLeave={(e) => (e.currentTarget.style.background = "#fff")}
+          >
+            Upload CSV
+          </Link>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function PatientList() {
   const { state, banner } = useSearch({ from: "/admin/patients/" });
   const [q, setQ] = useState("");
