@@ -32,12 +32,12 @@ import { Route as AdminPatientsIndexRouteImport } from './routes/admin.patients.
 import { Route as AdminCliniciansIndexRouteImport } from './routes/admin.clinicians.index'
 import { Route as AdminResourcesNewRouteImport } from './routes/admin.resources.new'
 import { Route as AdminResourcesIdRouteImport } from './routes/admin.resources.$id'
-import { Route as AdminPatientsNewRouteImport } from './routes/admin.patients.new'
 import { Route as AdminPatientsIdRouteImport } from './routes/admin.patients.$id'
 import { Route as AdminFormsNewRouteImport } from './routes/admin.forms.new'
 import { Route as AdminFormsIdRouteImport } from './routes/admin.forms.$id'
 import { Route as AdminCliniciansNewRouteImport } from './routes/admin.clinicians.new'
 import { Route as AdminCliniciansIdRouteImport } from './routes/admin.clinicians.$id'
+import { Route as AdminPatientsNewIndexRouteImport } from './routes/admin.patients.new.index'
 import { Route as AdminPatientsNewSupportersRouteImport } from './routes/admin.patients.new.supporters'
 import { Route as AdminPatientsNewReviewRouteImport } from './routes/admin.patients.new.review'
 import { Route as AdminPatientsNewDoneRouteImport } from './routes/admin.patients.new.done'
@@ -157,11 +157,6 @@ const AdminResourcesIdRoute = AdminResourcesIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => AdminResourcesRoute,
 } as any)
-const AdminPatientsNewRoute = AdminPatientsNewRouteImport.update({
-  id: '/new',
-  path: '/new',
-  getParentRoute: () => AdminPatientsRoute,
-} as any)
 const AdminPatientsIdRoute = AdminPatientsIdRouteImport.update({
   id: '/$id',
   path: '/$id',
@@ -187,21 +182,26 @@ const AdminCliniciansIdRoute = AdminCliniciansIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => AdminCliniciansRoute,
 } as any)
+const AdminPatientsNewIndexRoute = AdminPatientsNewIndexRouteImport.update({
+  id: '/new/',
+  path: '/new/',
+  getParentRoute: () => AdminPatientsRoute,
+} as any)
 const AdminPatientsNewSupportersRoute =
   AdminPatientsNewSupportersRouteImport.update({
-    id: '/supporters',
-    path: '/supporters',
-    getParentRoute: () => AdminPatientsNewRoute,
+    id: '/new/supporters',
+    path: '/new/supporters',
+    getParentRoute: () => AdminPatientsRoute,
   } as any)
 const AdminPatientsNewReviewRoute = AdminPatientsNewReviewRouteImport.update({
-  id: '/review',
-  path: '/review',
-  getParentRoute: () => AdminPatientsNewRoute,
+  id: '/new/review',
+  path: '/new/review',
+  getParentRoute: () => AdminPatientsRoute,
 } as any)
 const AdminPatientsNewDoneRoute = AdminPatientsNewDoneRouteImport.update({
-  id: '/done',
-  path: '/done',
-  getParentRoute: () => AdminPatientsNewRoute,
+  id: '/new/done',
+  path: '/new/done',
+  getParentRoute: () => AdminPatientsRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -229,7 +229,6 @@ export interface FileRoutesByFullPath {
   '/admin/forms/$id': typeof AdminFormsIdRoute
   '/admin/forms/new': typeof AdminFormsNewRoute
   '/admin/patients/$id': typeof AdminPatientsIdRoute
-  '/admin/patients/new': typeof AdminPatientsNewRouteWithChildren
   '/admin/resources/$id': typeof AdminResourcesIdRoute
   '/admin/resources/new': typeof AdminResourcesNewRoute
   '/admin/clinicians/': typeof AdminCliniciansIndexRoute
@@ -237,6 +236,7 @@ export interface FileRoutesByFullPath {
   '/admin/patients/new/done': typeof AdminPatientsNewDoneRoute
   '/admin/patients/new/review': typeof AdminPatientsNewReviewRoute
   '/admin/patients/new/supporters': typeof AdminPatientsNewSupportersRoute
+  '/admin/patients/new/': typeof AdminPatientsNewIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -260,7 +260,6 @@ export interface FileRoutesByTo {
   '/admin/forms/$id': typeof AdminFormsIdRoute
   '/admin/forms/new': typeof AdminFormsNewRoute
   '/admin/patients/$id': typeof AdminPatientsIdRoute
-  '/admin/patients/new': typeof AdminPatientsNewRouteWithChildren
   '/admin/resources/$id': typeof AdminResourcesIdRoute
   '/admin/resources/new': typeof AdminResourcesNewRoute
   '/admin/clinicians': typeof AdminCliniciansIndexRoute
@@ -268,6 +267,7 @@ export interface FileRoutesByTo {
   '/admin/patients/new/done': typeof AdminPatientsNewDoneRoute
   '/admin/patients/new/review': typeof AdminPatientsNewReviewRoute
   '/admin/patients/new/supporters': typeof AdminPatientsNewSupportersRoute
+  '/admin/patients/new': typeof AdminPatientsNewIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -295,7 +295,6 @@ export interface FileRoutesById {
   '/admin/forms/$id': typeof AdminFormsIdRoute
   '/admin/forms/new': typeof AdminFormsNewRoute
   '/admin/patients/$id': typeof AdminPatientsIdRoute
-  '/admin/patients/new': typeof AdminPatientsNewRouteWithChildren
   '/admin/resources/$id': typeof AdminResourcesIdRoute
   '/admin/resources/new': typeof AdminResourcesNewRoute
   '/admin/clinicians/': typeof AdminCliniciansIndexRoute
@@ -303,6 +302,7 @@ export interface FileRoutesById {
   '/admin/patients/new/done': typeof AdminPatientsNewDoneRoute
   '/admin/patients/new/review': typeof AdminPatientsNewReviewRoute
   '/admin/patients/new/supporters': typeof AdminPatientsNewSupportersRoute
+  '/admin/patients/new/': typeof AdminPatientsNewIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -331,7 +331,6 @@ export interface FileRouteTypes {
     | '/admin/forms/$id'
     | '/admin/forms/new'
     | '/admin/patients/$id'
-    | '/admin/patients/new'
     | '/admin/resources/$id'
     | '/admin/resources/new'
     | '/admin/clinicians/'
@@ -339,6 +338,7 @@ export interface FileRouteTypes {
     | '/admin/patients/new/done'
     | '/admin/patients/new/review'
     | '/admin/patients/new/supporters'
+    | '/admin/patients/new/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -362,7 +362,6 @@ export interface FileRouteTypes {
     | '/admin/forms/$id'
     | '/admin/forms/new'
     | '/admin/patients/$id'
-    | '/admin/patients/new'
     | '/admin/resources/$id'
     | '/admin/resources/new'
     | '/admin/clinicians'
@@ -370,6 +369,7 @@ export interface FileRouteTypes {
     | '/admin/patients/new/done'
     | '/admin/patients/new/review'
     | '/admin/patients/new/supporters'
+    | '/admin/patients/new'
   id:
     | '__root__'
     | '/'
@@ -396,7 +396,6 @@ export interface FileRouteTypes {
     | '/admin/forms/$id'
     | '/admin/forms/new'
     | '/admin/patients/$id'
-    | '/admin/patients/new'
     | '/admin/resources/$id'
     | '/admin/resources/new'
     | '/admin/clinicians/'
@@ -404,6 +403,7 @@ export interface FileRouteTypes {
     | '/admin/patients/new/done'
     | '/admin/patients/new/review'
     | '/admin/patients/new/supporters'
+    | '/admin/patients/new/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -583,13 +583,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminResourcesIdRouteImport
       parentRoute: typeof AdminResourcesRoute
     }
-    '/admin/patients/new': {
-      id: '/admin/patients/new'
-      path: '/new'
-      fullPath: '/admin/patients/new'
-      preLoaderRoute: typeof AdminPatientsNewRouteImport
-      parentRoute: typeof AdminPatientsRoute
-    }
     '/admin/patients/$id': {
       id: '/admin/patients/$id'
       path: '/$id'
@@ -625,26 +618,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminCliniciansIdRouteImport
       parentRoute: typeof AdminCliniciansRoute
     }
+    '/admin/patients/new/': {
+      id: '/admin/patients/new/'
+      path: '/new'
+      fullPath: '/admin/patients/new/'
+      preLoaderRoute: typeof AdminPatientsNewIndexRouteImport
+      parentRoute: typeof AdminPatientsRoute
+    }
     '/admin/patients/new/supporters': {
       id: '/admin/patients/new/supporters'
-      path: '/supporters'
+      path: '/new/supporters'
       fullPath: '/admin/patients/new/supporters'
       preLoaderRoute: typeof AdminPatientsNewSupportersRouteImport
-      parentRoute: typeof AdminPatientsNewRoute
+      parentRoute: typeof AdminPatientsRoute
     }
     '/admin/patients/new/review': {
       id: '/admin/patients/new/review'
-      path: '/review'
+      path: '/new/review'
       fullPath: '/admin/patients/new/review'
       preLoaderRoute: typeof AdminPatientsNewReviewRouteImport
-      parentRoute: typeof AdminPatientsNewRoute
+      parentRoute: typeof AdminPatientsRoute
     }
     '/admin/patients/new/done': {
       id: '/admin/patients/new/done'
-      path: '/done'
+      path: '/new/done'
       fullPath: '/admin/patients/new/done'
       preLoaderRoute: typeof AdminPatientsNewDoneRouteImport
-      parentRoute: typeof AdminPatientsNewRoute
+      parentRoute: typeof AdminPatientsRoute
     }
   }
 }
@@ -679,31 +679,22 @@ const AdminFormsRouteWithChildren = AdminFormsRoute._addFileChildren(
   AdminFormsRouteChildren,
 )
 
-interface AdminPatientsNewRouteChildren {
+interface AdminPatientsRouteChildren {
+  AdminPatientsIdRoute: typeof AdminPatientsIdRoute
+  AdminPatientsIndexRoute: typeof AdminPatientsIndexRoute
   AdminPatientsNewDoneRoute: typeof AdminPatientsNewDoneRoute
   AdminPatientsNewReviewRoute: typeof AdminPatientsNewReviewRoute
   AdminPatientsNewSupportersRoute: typeof AdminPatientsNewSupportersRoute
-}
-
-const AdminPatientsNewRouteChildren: AdminPatientsNewRouteChildren = {
-  AdminPatientsNewDoneRoute: AdminPatientsNewDoneRoute,
-  AdminPatientsNewReviewRoute: AdminPatientsNewReviewRoute,
-  AdminPatientsNewSupportersRoute: AdminPatientsNewSupportersRoute,
-}
-
-const AdminPatientsNewRouteWithChildren =
-  AdminPatientsNewRoute._addFileChildren(AdminPatientsNewRouteChildren)
-
-interface AdminPatientsRouteChildren {
-  AdminPatientsIdRoute: typeof AdminPatientsIdRoute
-  AdminPatientsNewRoute: typeof AdminPatientsNewRouteWithChildren
-  AdminPatientsIndexRoute: typeof AdminPatientsIndexRoute
+  AdminPatientsNewIndexRoute: typeof AdminPatientsNewIndexRoute
 }
 
 const AdminPatientsRouteChildren: AdminPatientsRouteChildren = {
   AdminPatientsIdRoute: AdminPatientsIdRoute,
-  AdminPatientsNewRoute: AdminPatientsNewRouteWithChildren,
   AdminPatientsIndexRoute: AdminPatientsIndexRoute,
+  AdminPatientsNewDoneRoute: AdminPatientsNewDoneRoute,
+  AdminPatientsNewReviewRoute: AdminPatientsNewReviewRoute,
+  AdminPatientsNewSupportersRoute: AdminPatientsNewSupportersRoute,
+  AdminPatientsNewIndexRoute: AdminPatientsNewIndexRoute,
 }
 
 const AdminPatientsRouteWithChildren = AdminPatientsRoute._addFileChildren(
