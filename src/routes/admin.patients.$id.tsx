@@ -12,7 +12,7 @@ const CLINICIANS = ["Dr. Sarah Chen", "Dr. James Okafor", "Nurse Priya Mehta", "
 const MOCK: Record<string, {
   name: string; first: string; last: string; dob: string; gender: string; diagnosis: string;
   health: string; email: string; phone: string; status: "Active" | "Invited" | "Not yet invited";
-  lastLogin: string; clinicians: string[]; inviteDate: string; activeSince: string;
+  lastLogin: string; clinicians: string[]; inviteDate: string; activeSince: string; bounced?: boolean;
   supporters: { name: string; relationship: string; status: string }[];
 }> = {
   "emma-tremblay": {
@@ -31,6 +31,13 @@ const MOCK: Record<string, {
       { name: "Erik Andersen", relationship: "Parent", status: "Invited" },
       { name: "Lena Andersen", relationship: "Parent", status: "Active" },
     ],
+  },
+  "lucas-fernandez": {
+    name: "Lucas Fernandez", first: "Lucas", last: "Fernandez", dob: "2013-11-22", gender: "Male",
+    diagnosis: "2024-05-18", health: "1234563312", email: "lucas.fernandez@exmple.com", phone: "",
+    status: "Invited", lastLogin: "Never", clinicians: ["Dr. Lisa Bouchard"],
+    inviteDate: "Apr 12, 2026", activeSince: "", bounced: true,
+    supporters: [{ name: "Sofia Fernandez", relationship: "Parent", status: "Active" }],
   },
 };
 
