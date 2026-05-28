@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
-import { Btn, Input, Select } from "@/components/patient-ui";
+import { Btn, Select } from "@/components/patient-ui";
 import { WF_DARK, WF_MID } from "@/components/wireframe";
 
 export const Route = createFileRoute("/admin/platform")({
