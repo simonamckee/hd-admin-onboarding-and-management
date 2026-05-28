@@ -8,7 +8,7 @@ type StateMode = "default" | "empty" | "noresults" | "loading";
 type ResType = "Document" | "Link" | "Video";
 type Status = "Active" | "Archived";
 
-export const Route = createFileRoute("/admin/resources")({
+export const Route = createFileRoute("/admin/resources/")({
   validateSearch: (s: Record<string, unknown>) => ({
     state: (s.state as StateMode) || "default",
     banner: (s.banner as string) || "",
