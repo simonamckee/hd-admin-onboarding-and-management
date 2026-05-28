@@ -18,9 +18,10 @@ type Patient = {
   id: string;
   name: string;
   last4: string;
-  status: "Active" | "Invited" | "Not yet invited";
+  status: "Active" | "Invited" | "Not yet invited" | "Expired";
   added: string;
   lastLogin: string;
+  bounced?: boolean;
 };
 
 const PATIENTS: Patient[] = [
@@ -32,12 +33,28 @@ const PATIENTS: Patient[] = [
   { id: "aiden-nakamura", name: "Aiden Nakamura", last4: "2289", status: "Active", added: "May 1, 2026", lastLogin: "Today" },
   { id: "isla-macpherson", name: "Isla MacPherson", last4: "5503", status: "Invited", added: "May 10, 2026", lastLogin: "Never" },
   { id: "noah-mensah", name: "Noah Mensah", last4: "8874", status: "Not yet invited", added: "May 15, 2026", lastLogin: "Never" },
+  { id: "lucas-fernandez", name: "Lucas Fernandez", last4: "3312", status: "Invited", added: "Apr 12, 2026", lastLogin: "Never", bounced: true },
+  { id: "maya-thornton", name: "Maya Thornton", last4: "6628", status: "Expired", added: "Feb 3, 2026", lastLogin: "Never" },
 ];
 
 function statusPill(s: Patient["status"]) {
   if (s === "Active") return <Pill label="Active" weight="dark" />;
   if (s === "Invited") return <Pill label="Invited" weight="mid" />;
+  if (s === "Expired") return <Pill label="Expired" weight="light" />;
   return <Pill label="Not yet invited" weight="light" />;
+}
+
+function StatusCell({ p }: { p: Patient }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "flex-start" }}>
+      {statusPill(p.status)}
+      {p.bounced && (
+        <span style={{ fontSize: 10, color: WF_DARK, fontWeight: 600, border: `1.5px solid ${WF_DARK}`, padding: "1px 6px", textTransform: "uppercase", letterSpacing: 0.5 }}>
+          Bounced
+        </span>
+      )}
+    </div>
+  );
 }
 
 function PatientList() {
@@ -92,6 +109,34 @@ function PatientList() {
         </div>
       )}
 
+      {/* Expiry action banner — persistent */}
+      {PATIENTS.some((p) => p.status === "Expired") && (
+        <div
+          style={{
+            border: `2px solid ${WF_DARK}`,
+            background: "#fff",
+            padding: "12px 16px",
+            fontSize: 13,
+            color: WF_DARK,
+            margin: "16px 0",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <span>
+            {PATIENTS.filter((p) => p.status === "Expired").length} invitation
+            {PATIENTS.filter((p) => p.status === "Expired").length === 1 ? "" : "s"} have expired and need your attention.
+          </span>
+          <button
+            onClick={() => setStatusFilter("Expired")}
+            style={{ background: "none", border: "none", cursor: "pointer", color: WF_DARK, fontSize: 13, textDecoration: "underline", fontFamily: "inherit", padding: 0 }}
+          >
+            Review
+          </button>
+        </div>
+      )}
+
       {/* Subheader row */}
       <div style={{ display: "flex", gap: 12, alignItems: "center", marginTop: 20, marginBottom: 16 }}>
         <div style={{ flex: 1, maxWidth: 360 }}>
@@ -106,6 +151,7 @@ function PatientList() {
           <option>Active</option>
           <option>Invited</option>
           <option>Not yet invited</option>
+          <option>Expired</option>
         </Select>
         <div style={{ flex: 1, textAlign: "right", fontSize: 12, color: WF_MID }}>
           {state === "empty" ? "0 patients" : `${PATIENTS.length} patients`}
@@ -138,7 +184,7 @@ function PatientList() {
                   <td style={{ padding: "12px 14px", color: WF_DARK, fontFamily: "ui-monospace, monospace" }}>
                     •••• {p.last4}
                   </td>
-                  <td style={{ padding: "12px 14px" }}>{statusPill(p.status)}</td>
+                  <td style={{ padding: "12px 14px" }}><StatusCell p={p} /></td>
                   <td style={{ padding: "12px 14px", color: WF_DARK }}>{p.added}</td>
                   <td style={{ padding: "12px 14px", color: p.lastLogin === "Never" ? WF_MID : WF_DARK }}>
                     {p.lastLogin}
