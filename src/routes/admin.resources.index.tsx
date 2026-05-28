@@ -59,7 +59,7 @@ function typePill(t: ResType) {
 }
 
 function ResourceList() {
-  const { state, banner } = useSearch({ from: "/admin/resources" });
+  const { state, banner } = useSearch({ from: "/admin/resources/" });
   const [q, setQ] = useState("");
   const [typeFilter, setTypeFilter] = useState("All");
   const [catFilter, setCatFilter] = useState("All");
