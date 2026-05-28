@@ -7,19 +7,20 @@ import { WF_DARK, WF_MID } from "@/components/wireframe";
 export const Route = createFileRoute("/admin/dashboards")({ component: DashboardTemplates });
 
 type Tab = "clinician" | "patient";
+type Col = "left" | "right";
 
-type Module = { id: string; name: string; description?: string; required?: boolean };
+type Module = { id: string; name: string; required?: boolean };
 
-const CLINICIAN_LEFT: Module[] = [
-  { id: "at-risk", name: "At-risk patients", required: true, description: "Patients flagged based on recent glucose trends or overdue reviews" },
-  { id: "recent-activity", name: "Recent patient activity", required: true, description: "Latest data syncs, form submissions, and recommendation responses" },
-  { id: "appointments", name: "Upcoming appointments", description: "Next 7 days of scheduled appointments" },
+const CLINICIAN_LEFT_DEFAULT: Module[] = [
+  { id: "glucose", name: "Glucose", required: true },
+  { id: "insulin", name: "Insulin", required: true },
 ];
-const CLINICIAN_RIGHT: Module[] = [
-  { id: "tasks", name: "Pending tasks", required: true, description: "Tasks assigned to this clinician" },
-  { id: "messages", name: "Messages", required: true, description: "Unread patient messages" },
-  { id: "quick-stats", name: "Quick stats", description: "Summary counts — active patients, at-risk, pending tasks, overdue reviews" },
+const CLINICIAN_RIGHT_DEFAULT: Module[] = [
+  { id: "recs", name: "Recommendations", required: true },
+  { id: "todo", name: "Things to do", required: true },
+  { id: "resources", name: "Resources" },
 ];
+const CLINICIAN_ALL = [...CLINICIAN_LEFT_DEFAULT, ...CLINICIAN_RIGHT_DEFAULT];
 
 const PATIENT_DEFAULT: Module[] = [
   { id: "glucose", name: "Glucose", required: true },
@@ -27,18 +28,22 @@ const PATIENT_DEFAULT: Module[] = [
   { id: "todo", name: "Things to do", required: true },
   { id: "recs", name: "Recommendations" },
   { id: "resources", name: "Resources" },
-  { id: "messages-p", name: "Messages" },
+  { id: "messages", name: "Messages" },
 ];
 
 function DashboardTemplates() {
   const [tab, setTab] = useState<Tab>("clinician");
 
+  const helper =
+    tab === "clinician"
+      ? "Define how the patient dashboard is laid out when a clinician opens it. Changes apply to new clinician accounts only — existing layouts are not affected."
+      : "Define how the patient dashboard is laid out when a patient opens it. Changes apply to new patient accounts only — existing layouts are not affected.";
+
   return (
     <AdminShell heading="">
       <h1 style={{ fontSize: 22, fontWeight: 500, margin: "0 0 16px", color: WF_DARK }}>Dashboard templates</h1>
 
-      {/* Tabs */}
-      <div style={{ display: "flex", borderBottom: `1px solid ${WF_MID}`, marginBottom: 24 }}>
+      <div style={{ display: "flex", borderBottom: `1px solid ${WF_MID}`, marginBottom: 16 }}>
         {(["clinician", "patient"] as Tab[]).map((t) => {
           const active = tab === t;
           return (
@@ -58,11 +63,13 @@ function DashboardTemplates() {
                 marginBottom: -1,
               }}
             >
-              {t === "clinician" ? "Clinician dashboard" : "Patient dashboard"}
+              {t === "clinician" ? "Clinician view" : "Patient view"}
             </button>
           );
         })}
       </div>
+
+      <p style={{ fontSize: 13, color: WF_MID, margin: "0 0 24px", lineHeight: 1.5 }}>{helper}</p>
 
       {tab === "clinician" ? <ClinicianTab /> : <PatientTab />}
 
@@ -74,20 +81,20 @@ function DashboardTemplates() {
 /* ----------------- Clinician tab ----------------- */
 
 function ClinicianTab() {
-  const [left, setLeft] = useState<Module[]>(CLINICIAN_LEFT);
-  const [right, setRight] = useState<Module[]>(CLINICIAN_RIGHT);
+  const [left, setLeft] = useState<Module[]>(CLINICIAN_LEFT_DEFAULT);
+  const [right, setRight] = useState<Module[]>(CLINICIAN_RIGHT_DEFAULT);
   const [removed, setRemoved] = useState<Module[]>([]);
   const [showPreview, setShowPreview] = useState(false);
 
-  const move = (mod: Module, fromCol: "left" | "right", toCol: "left" | "right") => {
-    if (fromCol === toCol) return;
-    if (fromCol === "left") setLeft((l) => l.filter((m) => m.id !== mod.id));
+  const moveBetween = (mod: Module, from: Col, to: Col) => {
+    if (from === to) return;
+    if (from === "left") setLeft((l) => l.filter((m) => m.id !== mod.id));
     else setRight((r) => r.filter((m) => m.id !== mod.id));
-    if (toCol === "left") setLeft((l) => [...l, mod]);
+    if (to === "left") setLeft((l) => [...l, mod]);
     else setRight((r) => [...r, mod]);
   };
 
-  const remove = (mod: Module, col: "left" | "right") => {
+  const remove = (mod: Module, col: Col) => {
     if (mod.required) return;
     if (col === "left") setLeft((l) => l.filter((m) => m.id !== mod.id));
     else setRight((r) => r.filter((m) => m.id !== mod.id));
@@ -96,7 +103,7 @@ function ClinicianTab() {
 
   const addBack = (mod: Module) => {
     setRemoved((r) => r.filter((m) => m.id !== mod.id));
-    setLeft((l) => [...l, mod]);
+    setRight((r) => [...r, mod]);
   };
 
   const reorder = (col: Module[], setCol: (v: Module[]) => void, fromIdx: number, toIdx: number) => {
@@ -108,35 +115,31 @@ function ClinicianTab() {
 
   return (
     <>
-      <p style={{ fontSize: 13, color: WF_MID, margin: "0 0 24px", lineHeight: 1.5 }}>
-        Define the default module layout for clinician dashboards at this clinic. Changes apply to new clinician accounts only — existing dashboards are not affected.
-      </p>
-
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 24 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
         <Column
-          label="Left column"
+          label="Patient data"
           modules={left}
-          onMoveAcross={(m) => move(m, "left", "right")}
           onRemove={(m) => remove(m, "left")}
           onReorder={(f, t) => reorder(left, setLeft, f, t)}
-          acceptFrom="right"
-          onDropFromOther={(m) => move(m, "right", "left")}
+          onDropFromOther={(m) => moveBetween(m, "right", "left")}
           col="left"
         />
         <Column
-          label="Right column"
+          label="Clinical actions"
           modules={right}
-          onMoveAcross={(m) => move(m, "right", "left")}
           onRemove={(m) => remove(m, "right")}
           onReorder={(f, t) => reorder(right, setRight, f, t)}
-          acceptFrom="left"
-          onDropFromOther={(m) => move(m, "left", "right")}
+          onDropFromOther={(m) => moveBetween(m, "left", "right")}
           col="right"
         />
       </div>
 
+      <MessagesInfoRow />
+
       {removed.length > 0 && (
-        <RemovedSection modules={removed} onAddBack={addBack} />
+        <div style={{ marginTop: 20 }}>
+          <RemovedSection modules={removed} onAddBack={addBack} />
+        </div>
       )}
 
       <PreviewToggle open={showPreview} onToggle={() => setShowPreview((s) => !s)} />
@@ -171,14 +174,10 @@ function PatientTab() {
 
   return (
     <>
-      <p style={{ fontSize: 13, color: WF_MID, margin: "0 0 24px", lineHeight: 1.5 }}>
-        Define the default module layout for new patient dashboards at this clinic. Changes apply to new patient accounts only — existing dashboards are not affected.
-      </p>
-
       <div style={{ maxWidth: 560, marginBottom: 24 }}>
         <div style={{ fontSize: 13, color: WF_DARK, fontWeight: 600, marginBottom: 4 }}>Module order</div>
-        <div style={{ fontSize: 12, color: WF_MID, marginBottom: 12 }}>
-          Drag to reorder. Required modules cannot be removed.
+        <div style={{ fontSize: 12, color: WF_MID, marginBottom: 12, lineHeight: 1.5 }}>
+          Drag to reorder. Required modules cannot be removed. Patients can reorder after their first login — this sets their starting view.
         </div>
 
         <ReorderableList modules={list} onReorder={reorder} onRemove={remove} />
@@ -188,10 +187,6 @@ function PatientTab() {
             <RemovedSection modules={removed} onAddBack={addBack} />
           </div>
         )}
-
-        <div style={{ marginTop: 16, fontSize: 12, color: WF_MID, fontStyle: "italic", lineHeight: 1.5 }}>
-          Patients can reorder modules after their first login. This template sets their starting view.
-        </div>
       </div>
 
       <SaveFooter tab="patient" />
@@ -206,12 +201,10 @@ function Column({
 }: {
   label: string;
   modules: Module[];
-  onMoveAcross: (m: Module) => void;
   onRemove: (m: Module) => void;
   onReorder: (fromIdx: number, toIdx: number) => void;
-  acceptFrom: "left" | "right";
   onDropFromOther: (m: Module) => void;
-  col: "left" | "right";
+  col: Col;
 }) {
   const [dragOver, setDragOver] = useState(false);
 
@@ -229,15 +222,14 @@ function Column({
           if (!data) return;
           const { id, fromCol } = JSON.parse(data);
           if (fromCol !== col) {
-            const allMods = [...CLINICIAN_LEFT, ...CLINICIAN_RIGHT];
-            const mod = allMods.find((m) => m.id === id);
+            const mod = CLINICIAN_ALL.find((m) => m.id === id);
             if (mod) onDropFromOther(mod);
           }
         }}
         style={{
           minHeight: 200,
           border: `${dragOver ? 2 : 1}px ${dragOver ? "solid" : "dashed"} ${WF_MID}`,
-          background: dragOver ? "#F5F5F5" : "#fff",
+          background: dragOver ? "#F0F0F0" : "#FAFAFA",
           padding: 12,
           display: "flex",
           flexDirection: "column",
@@ -252,9 +244,42 @@ function Column({
             onRemove={() => onRemove(m)}
             onReorder={onReorder}
             dragPayload={JSON.stringify({ id: m.id, fromCol: col, fromIdx: i })}
-            withDescription
           />
         ))}
+      </div>
+    </div>
+  );
+}
+
+function MessagesInfoRow() {
+  return (
+    <div style={{ marginTop: 8 }}>
+      <div style={{ borderTop: `1px dashed ${WF_MID}`, marginBottom: 12 }} />
+      <div
+        title="Messages opens as a panel from the patient header bar. It is always available to clinicians and does not need to be placed in the layout."
+        style={{
+          background: "#F5F5F5",
+          border: `1px dashed ${WF_MID}`,
+          padding: "10px 12px",
+          display: "flex",
+          alignItems: "center",
+          gap: 10,
+          cursor: "default",
+          opacity: 0.85,
+        }}
+      >
+        <div style={{ flex: 1, display: "flex", alignItems: "center", gap: 6 }}>
+          <span style={{ fontSize: 13, color: WF_MID }}>Messages</span>
+          <span
+            title="Messages opens as a panel from the patient header bar. It is always available to clinicians and does not need to be placed in the layout."
+            style={{ fontSize: 11, color: WF_MID, border: `1px solid ${WF_MID}`, borderRadius: "50%", width: 14, height: 14, display: "inline-flex", alignItems: "center", justifyContent: "center", cursor: "help" }}
+          >
+            i
+          </span>
+        </div>
+        <span style={{ fontSize: 11, color: WF_MID, fontStyle: "italic" }}>
+          Always accessible from the patient header
+        </span>
       </div>
     </div>
   );
@@ -284,14 +309,13 @@ function ReorderableList({
 }
 
 function ModuleCard({
-  module: m, index, onRemove, onReorder, dragPayload, withDescription,
+  module: m, index, onRemove, onReorder, dragPayload,
 }: {
   module: Module;
   index: number;
   onRemove: () => void;
   onReorder: (fromIdx: number, toIdx: number) => void;
   dragPayload: string;
-  withDescription?: boolean;
 }) {
   const [dragging, setDragging] = useState(false);
   const [over, setOver] = useState(false);
@@ -322,27 +346,21 @@ function ModuleCard({
         border: `${over ? 2 : 1}px solid ${over ? WF_DARK : WF_MID}`,
         padding: "10px 12px",
         display: "flex",
-        alignItems: withDescription ? "flex-start" : "center",
+        alignItems: "center",
         gap: 10,
         opacity: dragging ? 0.4 : 1,
         cursor: "grab",
       }}
     >
-      <div style={{ color: WF_MID, fontSize: 14, lineHeight: 1, marginTop: withDescription ? 2 : 0 }}>⋮⋮</div>
-      <div style={{ flex: 1 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <span style={{ fontSize: 13, color: WF_DARK }}>{m.name}</span>
-          {m.required && (
-            <span style={{ fontSize: 10, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, border: `1px solid ${WF_MID}`, padding: "1px 6px" }}>
-              Required
-            </span>
-          )}
-        </div>
-        {withDescription && m.description && (
-          <div style={{ fontSize: 11, color: WF_MID, marginTop: 4, lineHeight: 1.4 }}>{m.description}</div>
-        )}
+      <div style={{ color: WF_MID, fontSize: 14, lineHeight: 1 }}>⋮⋮</div>
+      <div style={{ flex: 1, display: "flex", alignItems: "center", gap: 8 }}>
+        <span style={{ fontSize: 13, color: WF_DARK }}>{m.name}</span>
       </div>
-      {!m.required && (
+      {m.required ? (
+        <span style={{ fontSize: 10, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, border: `1px solid ${WF_MID}`, padding: "1px 6px" }}>
+          Required
+        </span>
+      ) : (
         <button
           onClick={onRemove}
           style={{ background: "none", border: "none", color: WF_MID, fontSize: 16, cursor: "pointer" }}
@@ -391,12 +409,12 @@ function RemovedSection({ modules, onAddBack }: { modules: Module[]; onAddBack: 
 
 function PreviewToggle({ open, onToggle }: { open: boolean; onToggle: () => void }) {
   return (
-    <div style={{ borderTop: `1px solid ${WF_MID}`, paddingTop: 16, marginTop: 8, marginBottom: open ? 16 : 0 }}>
+    <div style={{ borderTop: `1px solid ${WF_MID}`, paddingTop: 16, marginTop: 24, marginBottom: open ? 16 : 0 }}>
       <button
         onClick={onToggle}
         style={{ background: "none", border: "none", padding: 0, color: WF_DARK, fontSize: 13, cursor: "pointer", fontFamily: "inherit", textDecoration: "underline" }}
       >
-        {open ? "Hide preview" : "Show preview"} — how this layout will appear to clinicians
+        {open ? "Hide preview" : "Show preview"} — clinician view of a patient dashboard
       </button>
     </div>
   );
@@ -406,8 +424,8 @@ function SaveFooter({ tab }: { tab: Tab }) {
   const [state, setState] = useState<"idle" | "saved" | "error">("idle");
   const callout =
     tab === "clinician"
-      ? "This template applies to new clinician accounts. Existing clinician dashboards will not be changed."
-      : "This template applies to new patient accounts. Existing patient dashboards will not be changed.";
+      ? "Applies to new clinician accounts. Existing clinician dashboard layouts will not be changed."
+      : "Applies to new patient accounts. Existing patient dashboard layouts will not be changed.";
 
   const save = () => {
     setState("saved");
@@ -454,135 +472,209 @@ function SaveFooter({ tab }: { tab: Tab }) {
 /* ----------------- Clinician dashboard preview ----------------- */
 
 function ClinicianPreview() {
+  const [msgOpen, setMsgOpen] = useState(false);
+
   return (
-    <div style={{ background: "#F5F5F5", border: `1px dashed ${WF_MID}`, padding: 20, marginBottom: 24 }}>
+    <div style={{ position: "relative", background: "#F5F5F5", border: `1px dashed ${WF_MID}`, padding: 20, marginBottom: 24 }}>
       <div style={{ fontSize: 11, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 12, fontStyle: "italic" }}>
         Preview — read-only
       </div>
 
-      {/* Quick stats row */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12, marginBottom: 16 }}>
-        {[
-          { label: "Active patients", n: 8 },
-          { label: "At-risk patients", n: 3 },
-          { label: "Pending tasks", n: 5 },
-          { label: "Overdue reviews", n: 2 },
-        ].map((s) => (
-          <PreviewCard key={s.label}>
-            <div style={{ fontSize: 28, fontWeight: 500, color: WF_DARK }}>{s.n}</div>
-            <div style={{ fontSize: 11, color: WF_MID, marginTop: 4 }}>{s.label}</div>
-          </PreviewCard>
-        ))}
+      {/* Patient header */}
+      <div style={{ background: "#fff", border: `1px solid ${WF_MID}`, padding: 14, marginBottom: 12, display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12 }}>
+        <div>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
+            <span style={{ fontSize: 16, fontWeight: 600, color: WF_DARK }}>Emma Tremblay</span>
+            <span style={{ fontSize: 10, color: WF_DARK, textTransform: "uppercase", letterSpacing: 0.5, border: `1px solid ${WF_DARK}`, padding: "1px 6px" }}>
+              Active
+            </span>
+          </div>
+          <div style={{ fontSize: 11, color: WF_MID }}>
+            DOB: March 4, 2018 · Diagnosed: June 12, 2020 · Last sync: 2h ago
+          </div>
+        </div>
+        <button
+          onClick={() => setMsgOpen(true)}
+          style={{ background: "#fff", border: `1px solid ${WF_DARK}`, padding: "6px 12px", fontSize: 12, color: WF_DARK, cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}
+        >
+          <span>💬</span> Messages
+        </button>
       </div>
 
       {/* 2-column grid */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+        {/* LEFT — Patient data */}
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-          {/* At-risk */}
           <PreviewCard>
-            <CardHeader title="At-risk patients" subtitle="Patients flagged for review" right="View all →" />
-            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
-              <thead>
-                <tr style={{ borderBottom: `0.5px solid ${WF_MID}` }}>
-                  {["Name", "Last sync", "Flag reason"].map((h) => (
-                    <th key={h} style={{ padding: "6px 4px", textAlign: "left", fontSize: 10, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, fontWeight: 500 }}>
-                      {h}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {[
-                  ["Emma Tremblay", "2 days ago", "No data synced in 48h"],
-                  ["Sofia Andersen", "5 days ago", "Invitation not yet accepted"],
-                  ["Mateo Rivera", "1 week ago", "Invitation not yet accepted"],
-                ].map((r, i) => (
-                  <tr key={i} style={{ borderBottom: `0.5px solid ${WF_MID}` }}>
-                    {r.map((c, j) => (
-                      <td key={j} style={{ padding: "6px 4px", color: WF_DARK }}>{c}</td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <CardHeader title="Glucose" right="Last 7 days ▾" />
+            <LineChartStub />
+            <div style={{ display: "flex", gap: 8, marginTop: 10, flexWrap: "wrap" }}>
+              {["Avg: 7.4 mmol/L", "Time in range: 68%", "Lows: 3 events"].map((s) => (
+                <StatChip key={s}>{s}</StatChip>
+              ))}
+            </div>
           </PreviewCard>
 
-          {/* Recent activity */}
           <PreviewCard>
-            <CardHeader title="Recent patient activity" />
-            <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-              {[
-                ["Lucas Okonkwo", "Submitted Monthly Check-in form", "1 hour ago"],
-                ["Aiden Nakamura", "Glucose data synced via CGM", "3 hours ago"],
-                ["Emma Tremblay", "Declined recommendation: adjust basal rate", "Yesterday"],
-                ["Isla MacPherson", "Accepted invitation", "2 days ago"],
-              ].map((r, i) => (
-                <li key={i} style={{ padding: "8px 0", borderBottom: `0.5px solid ${WF_MID}`, fontSize: 12 }}>
-                  <div style={{ color: WF_DARK }}>{r[0]} — {r[1]}</div>
-                  <div style={{ color: WF_MID, fontSize: 11, marginTop: 2 }}>{r[2]}</div>
-                </li>
+            <CardHeader title="Insulin" right="Last 7 days ▾" />
+            <BarChartStub />
+            <div style={{ display: "flex", gap: 8, marginTop: 10, flexWrap: "wrap" }}>
+              {["Avg daily dose: 42U", "Basal/Bolus: 55% / 45%"].map((s) => (
+                <StatChip key={s}>{s}</StatChip>
               ))}
-            </ul>
+            </div>
           </PreviewCard>
         </div>
 
+        {/* RIGHT — Clinical actions */}
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-          {/* Pending tasks */}
           <PreviewCard>
-            <CardHeader title="Pending tasks" right="View all →" />
+            <CardHeader title="Recommendations" right="+ Add" />
             <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
               {[
-                ["Review monthly check-in response", "Emma Tremblay"],
-                ["Follow up: declined recommendation", "Isla MacPherson"],
-                ["Send updated carb guide", "Aiden Nakamura"],
+                { text: "Increase evening basal by 1U", meta: "sent May 20", status: "Accepted" },
+                { text: "Review carb ratios at breakfast", meta: "sent May 22", status: "Pending" },
               ].map((r, i) => (
-                <li key={i} style={{ padding: "8px 0", borderBottom: `0.5px solid ${WF_MID}`, fontSize: 12, display: "flex", gap: 8, alignItems: "flex-start" }}>
-                  <span style={{ width: 12, height: 12, border: `1px solid ${WF_DARK}`, display: "inline-block", marginTop: 2 }} />
+                <li key={i} style={{ padding: "8px 0", borderBottom: `0.5px solid ${WF_MID}`, fontSize: 12, display: "flex", justifyContent: "space-between", gap: 8 }}>
                   <div>
-                    <div style={{ color: WF_DARK }}>{r[0]}</div>
-                    <div style={{ color: WF_MID, fontSize: 11, marginTop: 2 }}>{r[1]}</div>
+                    <div style={{ color: WF_DARK }}>{r.text}</div>
+                    <div style={{ color: WF_MID, fontSize: 11, marginTop: 2 }}>{r.meta}</div>
                   </div>
+                  <span style={{ fontSize: 10, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, border: `1px solid ${WF_MID}`, padding: "1px 6px", alignSelf: "flex-start", whiteSpace: "nowrap" }}>
+                    {r.status}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <div style={{ fontSize: 11, color: WF_MID, marginTop: 8, fontStyle: "italic" }}>
+              No further recommendations
+            </div>
+          </PreviewCard>
+
+          <PreviewCard>
+            <CardHeader title="Things to do" right="+ Add task" />
+            <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+              {[
+                { text: "Review monthly check-in response", done: false },
+                { text: "Confirm CGM calibration schedule", done: true },
+                { text: "Send updated sick day plan", done: false },
+              ].map((r, i) => (
+                <li key={i} style={{ padding: "8px 0", borderBottom: `0.5px solid ${WF_MID}`, fontSize: 12, display: "flex", gap: 8, alignItems: "center" }}>
+                  <span style={{
+                    width: 12, height: 12, border: `1px solid ${WF_DARK}`,
+                    display: "inline-flex", alignItems: "center", justifyContent: "center",
+                    fontSize: 10, color: WF_DARK,
+                    background: r.done ? WF_DARK : "transparent",
+                  }}>
+                    {r.done && <span style={{ color: "#fff", fontSize: 9 }}>✓</span>}
+                  </span>
+                  <span style={{ color: r.done ? WF_MID : WF_DARK, textDecoration: r.done ? "line-through" : "none" }}>
+                    {r.text}
+                  </span>
                 </li>
               ))}
             </ul>
           </PreviewCard>
 
-          {/* Messages */}
           <PreviewCard>
-            <CardHeader title="Messages" right="View all →" />
+            <CardHeader title="Resources" right="+ Share resource" />
             <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
               {[
-                { name: "Emma Tremblay", unread: true, snippet: "Quick question about my insulin dose…", time: "30 mins ago" },
-                { name: "Lucas Okonkwo", unread: false, snippet: "Thanks for the resource, it was…", time: "Yesterday" },
-                { name: "Aiden Nakamura", unread: false, snippet: "Feeling much better this week!", time: "2 days ago" },
+                { name: "Carb Counting Guide", meta: "shared May 15", status: "Viewed" },
+                { name: "How to Use Your CGM", meta: "shared May 10", status: "Not yet viewed" },
               ].map((r, i) => (
-                <li key={i} style={{ padding: "8px 0", borderBottom: `0.5px solid ${WF_MID}`, fontSize: 12 }}>
-                  <div style={{ display: "flex", justifyContent: "space-between" }}>
-                    <span style={{ color: WF_DARK, fontWeight: r.unread ? 600 : 400 }}>{r.name}</span>
-                    <span style={{ color: WF_MID, fontSize: 11 }}>{r.time}</span>
+                <li key={i} style={{ padding: "8px 0", borderBottom: `0.5px solid ${WF_MID}`, fontSize: 12, display: "flex", justifyContent: "space-between", gap: 8 }}>
+                  <div>
+                    <div style={{ color: WF_DARK }}>{r.name}</div>
+                    <div style={{ color: WF_MID, fontSize: 11, marginTop: 2 }}>{r.meta}</div>
                   </div>
-                  <div style={{ color: WF_MID, fontSize: 11, marginTop: 2 }}>{r.snippet}</div>
-                </li>
-              ))}
-            </ul>
-          </PreviewCard>
-
-          {/* Appointments */}
-          <PreviewCard>
-            <CardHeader title="Upcoming appointments" />
-            <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-              {[
-                ["Emma Tremblay", "June 3, 2026 at 10:00 AM"],
-                ["Lucas Okonkwo", "June 5, 2026 at 2:30 PM"],
-              ].map((r, i) => (
-                <li key={i} style={{ padding: "8px 0", borderBottom: `0.5px solid ${WF_MID}`, fontSize: 12, display: "flex", justifyContent: "space-between" }}>
-                  <span style={{ color: WF_DARK }}>{r[0]}</span>
-                  <span style={{ color: WF_MID }}>{r[1]}</span>
+                  <span style={{ fontSize: 11, color: WF_MID, alignSelf: "flex-start", whiteSpace: "nowrap" }}>
+                    {r.status}
+                  </span>
                 </li>
               ))}
             </ul>
           </PreviewCard>
         </div>
+      </div>
+
+      {msgOpen && <MessagesPanel onClose={() => setMsgOpen(false)} />}
+    </div>
+  );
+}
+
+function MessagesPanel({ onClose }: { onClose: () => void }) {
+  return (
+    <div
+      style={{
+        position: "absolute",
+        inset: 0,
+        background: "rgba(0,0,0,0.25)",
+        display: "flex",
+        justifyContent: "flex-end",
+        zIndex: 5,
+      }}
+      onClick={onClose}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          width: 340,
+          background: "#fff",
+          borderLeft: `1px solid ${WF_DARK}`,
+          padding: 16,
+          display: "flex",
+          flexDirection: "column",
+          gap: 10,
+        }}
+      >
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: `1px solid ${WF_MID}`, paddingBottom: 8 }}>
+          <span style={{ fontSize: 13, fontWeight: 600, color: WF_DARK }}>Messages — Emma Tremblay</span>
+          <button
+            onClick={onClose}
+            style={{ background: "none", border: "none", color: WF_MID, fontSize: 18, cursor: "pointer" }}
+            aria-label="Close"
+          >
+            ×
+          </button>
+        </div>
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 8, overflow: "auto" }}>
+          <Bubble from="patient">Hi, my glucose was really low this morning before breakfast. Should I change anything?</Bubble>
+          <Bubble from="patient">It was around 3.6 mmol/L when I woke up.</Bubble>
+          <Bubble from="clinician">Thanks for letting me know — let's reduce your evening basal by 1U starting tonight and see how tomorrow looks.</Bubble>
+        </div>
+        <div style={{ borderTop: `1px solid ${WF_MID}`, paddingTop: 8, display: "flex", gap: 6 }}>
+          <input
+            placeholder="Type a message"
+            style={{ flex: 1, border: `1px solid ${WF_MID}`, padding: "6px 8px", fontSize: 12, fontFamily: "inherit" }}
+          />
+          <button
+            style={{ background: WF_DARK, color: "#fff", border: "none", padding: "6px 12px", fontSize: 12, cursor: "pointer" }}
+          >
+            Send
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Bubble({ from, children }: { from: "patient" | "clinician"; children: React.ReactNode }) {
+  const isClinician = from === "clinician";
+  return (
+    <div style={{ display: "flex", justifyContent: isClinician ? "flex-end" : "flex-start" }}>
+      <div
+        style={{
+          maxWidth: "80%",
+          background: isClinician ? WF_DARK : "#F0F0F0",
+          color: isClinician ? "#fff" : WF_DARK,
+          border: isClinician ? "none" : `1px solid ${WF_MID}`,
+          padding: "6px 10px",
+          fontSize: 12,
+          lineHeight: 1.4,
+        }}
+      >
+        {children}
       </div>
     </div>
   );
@@ -596,14 +688,66 @@ function PreviewCard({ children }: { children: React.ReactNode }) {
   );
 }
 
-function CardHeader({ title, subtitle, right }: { title: string; subtitle?: string; right?: string }) {
+function CardHeader({ title, right }: { title: string; subtitle?: string; right?: string }) {
   return (
-    <div style={{ marginBottom: 10 }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-        <span style={{ fontSize: 13, fontWeight: 600, color: WF_DARK }}>{title}</span>
-        {right && <span style={{ fontSize: 11, color: WF_MID }}>{right}</span>}
-      </div>
-      {subtitle && <div style={{ fontSize: 11, color: WF_MID, marginTop: 2 }}>{subtitle}</div>}
+    <div style={{ marginBottom: 10, display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+      <span style={{ fontSize: 13, fontWeight: 600, color: WF_DARK }}>{title}</span>
+      {right && <span style={{ fontSize: 11, color: WF_MID }}>{right}</span>}
     </div>
+  );
+}
+
+function StatChip({ children }: { children: React.ReactNode }) {
+  return (
+    <span style={{ fontSize: 11, color: WF_DARK, border: `1px solid ${WF_MID}`, padding: "2px 8px", background: "#FAFAFA" }}>
+      {children}
+    </span>
+  );
+}
+
+function LineChartStub() {
+  return (
+    <svg viewBox="0 0 240 80" style={{ width: "100%", height: 80, border: `0.5px solid ${WF_MID}` }}>
+      {/* axes */}
+      <line x1="22" y1="70" x2="235" y2="70" stroke={WF_MID} strokeWidth="0.5" />
+      <line x1="22" y1="6" x2="22" y2="70" stroke={WF_MID} strokeWidth="0.5" />
+      {/* gridlines */}
+      {[20, 40, 60].map((y) => (
+        <line key={y} x1="22" y1={y} x2="235" y2={y} stroke={WF_MID} strokeWidth="0.25" strokeDasharray="2 2" />
+      ))}
+      {/* line */}
+      <polyline
+        fill="none"
+        stroke={WF_DARK}
+        strokeWidth="1.2"
+        points="22,50 50,45 80,30 110,48 140,20 170,42 200,38 230,52"
+      />
+      <text x="2" y="12" fontSize="6" fill={WF_MID}>mmol/L</text>
+      <text x="210" y="78" fontSize="6" fill={WF_MID}>Time</text>
+    </svg>
+  );
+}
+
+function BarChartStub() {
+  const bars = [38, 44, 40, 50, 42, 36, 48];
+  return (
+    <svg viewBox="0 0 240 80" style={{ width: "100%", height: 80, border: `0.5px solid ${WF_MID}` }}>
+      <line x1="22" y1="70" x2="235" y2="70" stroke={WF_MID} strokeWidth="0.5" />
+      <line x1="22" y1="6" x2="22" y2="70" stroke={WF_MID} strokeWidth="0.5" />
+      {bars.map((h, i) => (
+        <rect
+          key={i}
+          x={32 + i * 28}
+          y={70 - h}
+          width={18}
+          height={h}
+          fill="#fff"
+          stroke={WF_DARK}
+          strokeWidth="0.6"
+        />
+      ))}
+      <text x="2" y="12" fontSize="6" fill={WF_MID}>Units</text>
+      <text x="210" y="78" fontSize="6" fill={WF_MID}>Day</text>
+    </svg>
   );
 }
