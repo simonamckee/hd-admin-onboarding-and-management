@@ -18,9 +18,10 @@ type Patient = {
   id: string;
   name: string;
   last4: string;
-  status: "Active" | "Invited" | "Not yet invited";
+  status: "Active" | "Invited" | "Not yet invited" | "Expired";
   added: string;
   lastLogin: string;
+  bounced?: boolean;
 };
 
 const PATIENTS: Patient[] = [
@@ -32,12 +33,28 @@ const PATIENTS: Patient[] = [
   { id: "aiden-nakamura", name: "Aiden Nakamura", last4: "2289", status: "Active", added: "May 1, 2026", lastLogin: "Today" },
   { id: "isla-macpherson", name: "Isla MacPherson", last4: "5503", status: "Invited", added: "May 10, 2026", lastLogin: "Never" },
   { id: "noah-mensah", name: "Noah Mensah", last4: "8874", status: "Not yet invited", added: "May 15, 2026", lastLogin: "Never" },
+  { id: "lucas-fernandez", name: "Lucas Fernandez", last4: "3312", status: "Invited", added: "Apr 12, 2026", lastLogin: "Never", bounced: true },
+  { id: "maya-thornton", name: "Maya Thornton", last4: "6628", status: "Expired", added: "Feb 3, 2026", lastLogin: "Never" },
 ];
 
 function statusPill(s: Patient["status"]) {
   if (s === "Active") return <Pill label="Active" weight="dark" />;
   if (s === "Invited") return <Pill label="Invited" weight="mid" />;
+  if (s === "Expired") return <Pill label="Expired" weight="light" />;
   return <Pill label="Not yet invited" weight="light" />;
+}
+
+function StatusCell({ p }: { p: Patient }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "flex-start" }}>
+      {statusPill(p.status)}
+      {p.bounced && (
+        <span style={{ fontSize: 10, color: WF_DARK, fontWeight: 600, border: `1.5px solid ${WF_DARK}`, padding: "1px 6px", textTransform: "uppercase", letterSpacing: 0.5 }}>
+          Bounced
+        </span>
+      )}
+    </div>
+  );
 }
 
 function PatientList() {
