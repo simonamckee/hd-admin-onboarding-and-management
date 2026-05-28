@@ -1,7 +1,7 @@
 import { useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
-import { Btn, Input, TextLink, Pill } from "@/components/patient-ui";
+import { Btn, Input, TextLink, Pill, Modal } from "@/components/patient-ui";
 import { WF_DARK, WF_MID } from "@/components/wireframe";
 
 export type QType = "Yes / No" | "Free text" | "Number / Rating" | "Multiple choice" | "Date";
@@ -15,6 +15,10 @@ export type Question = {
   multi?: boolean;
   min?: number;
   max?: number;
+  minLabel?: string;
+  maxLabel?: string;
+  limitLength?: boolean;
+  maxLength?: number;
 };
 
 export type FormDraft = {
@@ -27,8 +31,8 @@ const Q_TYPES: QType[] = ["Yes / No", "Free text", "Number / Rating", "Multiple 
 
 const DEFAULTS: Record<QType, Omit<Question, "id">> = {
   "Yes / No": { type: "Yes / No", text: "New yes/no question", required: false },
-  "Free text": { type: "Free text", text: "New free text question", required: false },
-  "Number / Rating": { type: "Number / Rating", text: "New rating question", required: false, min: 1, max: 10 },
+  "Free text": { type: "Free text", text: "New free text question", required: false, limitLength: false, maxLength: 500 },
+  "Number / Rating": { type: "Number / Rating", text: "New rating question", required: false, min: 1, max: 10, minLabel: "", maxLabel: "" },
   "Multiple choice": { type: "Multiple choice", text: "How often do you check your blood glucose?", required: false, options: ["Less than once a day", "1–3 times a day", "4 or more times a day"], multi: false },
   "Date": { type: "Date", text: "New date question", required: false },
 };
@@ -36,16 +40,39 @@ const DEFAULTS: Record<QType, Omit<Question, "id">> = {
 let uid = 100;
 const nextId = () => `q${++uid}`;
 
+const UNTITLED = "Untitled form";
+
+type DeletedSnapshot = { q: Question; index: number };
+
 export function FormBuilder({ mode, existing }: { mode: "new" | "edit"; existing?: FormDraft }) {
   const navigate = useNavigate();
-  const [name, setName] = useState(existing?.name ?? "New form");
+  const initialName = existing?.name ?? UNTITLED;
+  const initialStatus = existing?.status ?? "Draft";
+  const initialQuestions = existing?.questions ?? [];
+
+  const [name, setName] = useState(initialName);
   const [editingName, setEditingName] = useState(false);
-  const [status] = useState<"Draft" | "Active">(existing?.status ?? "Draft");
-  const [questions, setQuestions] = useState<Question[]>(existing?.questions ?? []);
-  const [selectedId, setSelectedId] = useState<string | null>(existing?.questions?.[0]?.id ?? null);
+  const [status, setStatus] = useState<"Draft" | "Active">(initialStatus);
+  const [questions, setQuestions] = useState<Question[]>(initialQuestions);
+  const [selectedId, setSelectedId] = useState<string | null>(initialQuestions[0]?.id ?? null);
   const [pickerOpen, setPickerOpen] = useState(false);
   const [dragId, setDragId] = useState<string | null>(null);
   const [overId, setOverId] = useState<string | null>(null);
+  const [discardOpen, setDiscardOpen] = useState(false);
+  const [publishOpen, setPublishOpen] = useState(false);
+  const [savedFlash, setSavedFlash] = useState(false);
+  const [deleted, setDeleted] = useState<DeletedSnapshot | null>(null);
+  const undoTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const dirty = useMemo(() => {
+    return (
+      name !== initialName ||
+      JSON.stringify(questions) !== JSON.stringify(initialQuestions)
+    );
+  }, [name, questions, initialName, initialQuestions]);
+
+  const titleIsBlank = !name.trim() || name.trim() === UNTITLED;
+  const canPublish = !titleIsBlank && questions.length > 0;
 
   const selected = questions.find((q) => q.id === selectedId) || null;
 
@@ -61,9 +88,29 @@ export function FormBuilder({ mode, existing }: { mode: "new" | "edit"; existing
   };
 
   const removeQuestion = (id: string) => {
+    const idx = questions.findIndex((q) => q.id === id);
+    if (idx < 0) return;
+    const snap: DeletedSnapshot = { q: questions[idx], index: idx };
     setQuestions((arr) => arr.filter((q) => q.id !== id));
     if (selectedId === id) setSelectedId(null);
+    setDeleted(snap);
+    if (undoTimer.current) clearTimeout(undoTimer.current);
+    undoTimer.current = setTimeout(() => setDeleted(null), 5000);
   };
+
+  const undoDelete = () => {
+    if (!deleted) return;
+    setQuestions((arr) => {
+      const next = [...arr];
+      next.splice(deleted.index, 0, deleted.q);
+      return next;
+    });
+    setSelectedId(deleted.q.id);
+    setDeleted(null);
+    if (undoTimer.current) clearTimeout(undoTimer.current);
+  };
+
+  useEffect(() => () => { if (undoTimer.current) clearTimeout(undoTimer.current); }, []);
 
   const onDrop = (targetId: string) => {
     if (!dragId || dragId === targetId) return;
@@ -78,16 +125,28 @@ export function FormBuilder({ mode, existing }: { mode: "new" | "edit"; existing
     setOverId(null);
   };
 
-  const save = (publish: boolean) => {
+  const saveDraft = () => {
+    setStatus("Draft");
+    setSavedFlash(true);
+    setTimeout(() => setSavedFlash(false), 2000);
+  };
+
+  const publish = () => {
+    setPublishOpen(false);
     navigate({
       to: "/admin/forms",
-      search: {
-        state: "default",
-        banner: publish
-          ? `${name} has been published and is available to clinicians.`
-          : `${name} has been saved as a draft.`,
-      },
+      search: { state: "default", banner: `${name} has been published.` },
     });
+  };
+
+  const cancel = () => {
+    if (dirty) setDiscardOpen(true);
+    else navigate({ to: "/admin/forms", search: { state: "default", banner: "" } });
+  };
+
+  const discardAndLeave = () => {
+    setDiscardOpen(false);
+    navigate({ to: "/admin/forms", search: { state: "default", banner: "" } });
   };
 
   return (
@@ -100,91 +159,72 @@ export function FormBuilder({ mode, existing }: { mode: "new" | "edit"; existing
               value={name}
               onChange={(e) => setName(e.target.value)}
               onBlur={() => setEditingName(false)}
-              onKeyDown={(e) => { if (e.key === "Enter") setEditingName(false); }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") setEditingName(false);
+                if (e.key === "Escape") { setName(initialName); setEditingName(false); }
+              }}
               style={{ fontSize: 22, fontWeight: 500, maxWidth: 420 }}
             />
           ) : (
             <h1
               onClick={() => setEditingName(true)}
               title="Click to rename"
-              style={{ fontSize: 22, fontWeight: 500, margin: 0, cursor: "text", borderBottom: `1px dashed transparent` }}
+              style={{
+                fontSize: 22,
+                fontWeight: 500,
+                margin: 0,
+                cursor: "text",
+                color: titleIsBlank ? WF_MID : WF_DARK,
+                borderBottom: `1px dashed transparent`,
+              }}
               onMouseEnter={(e) => (e.currentTarget.style.borderBottom = `1px dashed ${WF_MID}`)}
               onMouseLeave={(e) => (e.currentTarget.style.borderBottom = `1px dashed transparent`)}
             >
-              {name}
+              {name || UNTITLED}
             </h1>
           )}
           <Pill label={status} weight={status === "Active" ? "dark" : "light"} />
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 360px", gap: 24, marginTop: 24, alignItems: "start" }}>
+        <div style={{ borderBottom: `0.5px solid ${WF_MID}`, marginTop: 16 }} />
+
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1px 360px", gap: 24, marginTop: 24, alignItems: "start" }}>
           {/* Left: question list */}
           <div>
             <div style={{ fontSize: 11, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 8 }}>
               Questions
             </div>
-            {questions.length === 0 && (
-              <div style={{ border: `1px dashed ${WF_MID}`, background: "#fff", padding: 30, textAlign: "center", fontSize: 13, color: WF_MID, marginBottom: 12 }}>
-                No questions yet. Add your first question below.
+            {questions.length === 0 ? (
+              <div style={{ border: `1px dashed ${WF_MID}`, background: "#fff", padding: "48px 24px", textAlign: "center", marginBottom: 12 }}>
+                <div style={{ width: 44, height: 44, border: `1.5px solid ${WF_MID}`, borderRadius: "50%", margin: "0 auto 14px", display: "flex", alignItems: "center", justifyContent: "center", color: WF_MID, fontSize: 20 }}>?</div>
+                <div style={{ fontSize: 14, color: WF_DARK, marginBottom: 4 }}>No questions yet</div>
+                <div style={{ fontSize: 12, color: WF_MID, marginBottom: 16 }}>Click "+ Add question" to get started.</div>
+              </div>
+            ) : (
+              <div>
+                {questions.map((q, idx) => {
+                  const isSelected = selectedId === q.id;
+                  const isOver = overId === q.id && dragId !== q.id;
+                  return (
+                    <QuestionRow
+                      key={q.id}
+                      q={q}
+                      idx={idx}
+                      isSelected={isSelected}
+                      isOver={isOver}
+                      isDragging={dragId === q.id}
+                      onDragStart={() => setDragId(q.id)}
+                      onDragOver={(e) => { e.preventDefault(); setOverId(q.id); }}
+                      onDragLeave={() => setOverId((v) => (v === q.id ? null : v))}
+                      onDrop={(e) => { e.preventDefault(); onDrop(q.id); }}
+                      onDragEnd={() => { setDragId(null); setOverId(null); }}
+                      onSelect={() => setSelectedId(q.id)}
+                      onDelete={() => removeQuestion(q.id)}
+                    />
+                  );
+                })}
               </div>
             )}
-            <div>
-              {questions.map((q, idx) => {
-                const isSelected = selectedId === q.id;
-                const isOver = overId === q.id && dragId !== q.id;
-                return (
-                  <div
-                    key={q.id}
-                    draggable
-                    onDragStart={() => setDragId(q.id)}
-                    onDragOver={(e) => { e.preventDefault(); setOverId(q.id); }}
-                    onDragLeave={() => setOverId((v) => (v === q.id ? null : v))}
-                    onDrop={(e) => { e.preventDefault(); onDrop(q.id); }}
-                    onDragEnd={() => { setDragId(null); setOverId(null); }}
-                    onClick={() => setSelectedId(q.id)}
-                    style={{
-                      display: "flex",
-                      alignItems: "flex-start",
-                      gap: 12,
-                      padding: "12px 14px",
-                      background: "#fff",
-                      border: isOver
-                        ? `1.5px dashed ${WF_DARK}`
-                        : isSelected
-                        ? `1.5px solid ${WF_DARK}`
-                        : `1px solid ${WF_MID}`,
-                      borderBottom: isOver ? `1.5px dashed ${WF_DARK}` : isSelected ? `1.5px solid ${WF_DARK}` : "none",
-                      cursor: "pointer",
-                      marginBottom: -1,
-                      opacity: dragId === q.id ? 0.5 : 1,
-                    }}
-                  >
-                    <span style={{ color: WF_MID, fontSize: 14, cursor: "grab", userSelect: "none", lineHeight: "20px" }}>⋮⋮</span>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontSize: 13, color: WF_DARK }}>
-                        {idx + 1}. {q.text}
-                        {q.required && <span style={{ color: WF_DARK, marginLeft: 4 }}>*</span>}
-                      </div>
-                      <div style={{ fontSize: 11, color: WF_MID, marginTop: 2 }}>{q.type}</div>
-                    </div>
-                    <div style={{ display: "flex", gap: 8, opacity: 0.85 }}>
-                      <button
-                        onClick={(e) => { e.stopPropagation(); setSelectedId(q.id); }}
-                        style={{ background: "none", border: "none", color: WF_DARK, fontSize: 12, textDecoration: "underline", cursor: "pointer", fontFamily: "inherit" }}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={(e) => { e.stopPropagation(); removeQuestion(q.id); }}
-                        style={{ background: "none", border: "none", color: WF_DARK, fontSize: 12, textDecoration: "underline", cursor: "pointer", fontFamily: "inherit" }}
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
 
             <div style={{ marginTop: 16, position: "relative" }}>
               <button
@@ -231,32 +271,165 @@ export function FormBuilder({ mode, existing }: { mode: "new" | "edit"; existing
             </div>
           </div>
 
+          {/* Vertical divider */}
+          <div style={{ background: WF_MID, width: 1, alignSelf: "stretch", minHeight: 320, opacity: 0.6 }} />
+
           {/* Right: settings panel */}
-          <div style={{ background: "#fff", border: `1px solid ${WF_MID}`, padding: 18, position: "sticky", top: 24 }}>
+          <div style={{ position: "sticky", top: 24 }}>
             <div style={{ fontSize: 11, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 12 }}>
               Question settings
             </div>
             {!selected ? (
-              <div style={{ fontSize: 13, color: WF_MID }}>
-                Select a question to edit its settings, or add a new one.
+              <div style={{ background: "#fff", border: `1px dashed ${WF_MID}`, padding: "48px 18px", textAlign: "center", fontSize: 13, color: WF_MID }}>
+                Select a question to edit its settings
               </div>
             ) : (
-              <QuestionSettings q={selected} onChange={(p) => updateQuestion(selected.id, p)} />
+              <div style={{ background: "#fff", border: `1px solid ${WF_MID}`, padding: 18 }}>
+                <QuestionSettings q={selected} onChange={(p) => updateQuestion(selected.id, p)} />
+              </div>
             )}
           </div>
         </div>
 
         {/* Sticky footer */}
         <div style={{ position: "fixed", left: 240, right: 0, bottom: 0, background: "#fff", borderTop: `1px solid ${WF_DARK}`, padding: "12px 32px", display: "flex", justifyContent: "space-between", alignItems: "center", zIndex: 20 }}>
-          <TextLink to="/admin/forms">Cancel</TextLink>
-          <div style={{ display: "flex", gap: 10 }}>
-            <Btn onClick={() => save(false)}>Save as draft</Btn>
-            <Btn primary onClick={() => save(true)} disabled={questions.length === 0}>Publish form</Btn>
+          <TextLink onClick={cancel}>Cancel</TextLink>
+          <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+            {savedFlash && (
+              <span style={{ fontSize: 12, color: WF_MID, marginRight: 4 }}>Saved</span>
+            )}
+            <Btn onClick={saveDraft}>Save as draft</Btn>
+            <Btn
+              primary
+              onClick={() => setPublishOpen(true)}
+              disabled={!canPublish}
+            >
+              Publish form
+            </Btn>
           </div>
         </div>
+
+        {/* Undo toast */}
+        {deleted && (
+          <div style={{ position: "fixed", left: "50%", bottom: 80, transform: "translateX(-50%)", background: WF_DARK, color: "#fff", padding: "10px 16px", fontSize: 13, display: "flex", alignItems: "center", gap: 16, zIndex: 30 }}>
+            <span>Question deleted</span>
+            <button
+              onClick={undoDelete}
+              style={{ background: "none", border: "none", color: "#fff", textDecoration: "underline", cursor: "pointer", fontFamily: "inherit", fontSize: 13, padding: 0 }}
+            >
+              Undo
+            </button>
+          </div>
+        )}
       </div>
+
+      <Modal open={discardOpen} title="Discard changes?" onClose={() => setDiscardOpen(false)}>
+        <p style={{ fontSize: 13, color: WF_DARK, margin: "0 0 20px", lineHeight: 1.5 }}>
+          Any unsaved changes will be lost.
+        </p>
+        <div style={{ display: "flex", justifyContent: "flex-end", gap: 8 }}>
+          <Btn onClick={() => setDiscardOpen(false)}>Keep editing</Btn>
+          <Btn primary onClick={discardAndLeave}>Discard</Btn>
+        </div>
+      </Modal>
+
+      <Modal open={publishOpen} title={`Publish ${name || UNTITLED}?`} onClose={() => setPublishOpen(false)}>
+        <p style={{ fontSize: 13, color: WF_DARK, margin: "0 0 20px", lineHeight: 1.5 }}>
+          This form will be available for clinicians to assign to patients.
+        </p>
+        <div style={{ display: "flex", justifyContent: "flex-end", gap: 8 }}>
+          <Btn onClick={() => setPublishOpen(false)}>Cancel</Btn>
+          <Btn primary onClick={publish}>Publish</Btn>
+        </div>
+      </Modal>
+
       <PrototypeBack to="/admin/forms" />
     </AdminShell>
+  );
+}
+
+function QuestionRow({
+  q,
+  idx,
+  isSelected,
+  isOver,
+  isDragging,
+  onDragStart,
+  onDragOver,
+  onDragLeave,
+  onDrop,
+  onDragEnd,
+  onSelect,
+  onDelete,
+}: {
+  q: Question;
+  idx: number;
+  isSelected: boolean;
+  isOver: boolean;
+  isDragging: boolean;
+  onDragStart: () => void;
+  onDragOver: (e: React.DragEvent) => void;
+  onDragLeave: () => void;
+  onDrop: (e: React.DragEvent) => void;
+  onDragEnd: () => void;
+  onSelect: () => void;
+  onDelete: () => void;
+}) {
+  const [hover, setHover] = useState(false);
+  return (
+    <div
+      draggable
+      onDragStart={onDragStart}
+      onDragOver={onDragOver}
+      onDragLeave={onDragLeave}
+      onDrop={onDrop}
+      onDragEnd={onDragEnd}
+      onClick={onSelect}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      style={{
+        display: "flex",
+        alignItems: "flex-start",
+        gap: 12,
+        padding: "12px 14px",
+        background: isSelected ? "#F5F5F5" : "#fff",
+        border: isOver
+          ? `1.5px dashed ${WF_DARK}`
+          : isSelected
+          ? `1.5px solid ${WF_DARK}`
+          : `1px solid ${WF_MID}`,
+        borderBottom: isOver ? `1.5px dashed ${WF_DARK}` : isSelected ? `1.5px solid ${WF_DARK}` : "none",
+        cursor: "pointer",
+        marginBottom: -1,
+        opacity: isDragging ? 0.5 : 1,
+        position: "relative",
+      }}
+    >
+      <span style={{ color: WF_MID, fontSize: 14, cursor: "grab", userSelect: "none", lineHeight: "20px" }}>⠿</span>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ fontSize: 13, color: WF_DARK }}>
+          {idx + 1}. {q.text}
+          {q.required && <span style={{ color: WF_DARK, marginLeft: 4 }}>*</span>}
+        </div>
+        <div style={{ fontSize: 11, color: WF_MID, marginTop: 2 }}>{q.type}</div>
+      </div>
+      <div style={{ display: "flex", gap: 10, opacity: hover || isSelected ? 1 : 0, transition: "opacity 120ms" }}>
+        <button
+          aria-label="Edit"
+          onClick={(e) => { e.stopPropagation(); onSelect(); }}
+          style={{ background: "none", border: "none", color: WF_DARK, fontSize: 13, cursor: "pointer", padding: 2, fontFamily: "inherit" }}
+        >
+          ✎
+        </button>
+        <button
+          aria-label="Delete"
+          onClick={(e) => { e.stopPropagation(); onDelete(); }}
+          style={{ background: "none", border: "none", color: WF_DARK, fontSize: 13, cursor: "pointer", padding: 2, fontFamily: "inherit" }}
+        >
+          🗑
+        </button>
+      </div>
+    </div>
   );
 }
 
@@ -272,6 +445,21 @@ function QuestionSettings({ q, onChange }: { q: Question; onChange: (p: Partial<
         <span style={{ fontSize: 13, color: WF_DARK }}>Required</span>
         <Toggle on={q.required} onClick={() => onChange({ required: !q.required })} />
       </div>
+
+      {q.type === "Free text" && (
+        <>
+          <div style={{ marginBottom: 14, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <span style={{ fontSize: 13, color: WF_DARK }}>Limit response length</span>
+            <Toggle on={!!q.limitLength} onClick={() => onChange({ limitLength: !q.limitLength })} />
+          </div>
+          {q.limitLength && (
+            <div style={{ marginBottom: 14 }}>
+              <label style={{ display: "block", fontSize: 12, color: WF_DARK, marginBottom: 4 }}>Max characters</label>
+              <Input type="number" value={q.maxLength ?? 500} onChange={(e) => onChange({ maxLength: Number(e.target.value) })} />
+            </div>
+          )}
+        </>
+      )}
 
       {q.type === "Multiple choice" && (
         <>
@@ -308,16 +496,29 @@ function QuestionSettings({ q, onChange }: { q: Question; onChange: (p: Partial<
       )}
 
       {q.type === "Number / Rating" && (
-        <div style={{ display: "flex", gap: 10, marginBottom: 14 }}>
-          <div style={{ flex: 1 }}>
-            <label style={{ display: "block", fontSize: 12, color: WF_DARK, marginBottom: 4 }}>Min</label>
-            <Input type="number" value={q.min ?? 1} onChange={(e) => onChange({ min: Number(e.target.value) })} />
+        <>
+          <div style={{ display: "flex", gap: 10, marginBottom: 14 }}>
+            <div style={{ flex: 1 }}>
+              <label style={{ display: "block", fontSize: 12, color: WF_DARK, marginBottom: 4 }}>Min value</label>
+              <Input type="number" value={q.min ?? 1} onChange={(e) => onChange({ min: Number(e.target.value) })} />
+            </div>
+            <div style={{ flex: 1 }}>
+              <label style={{ display: "block", fontSize: 12, color: WF_DARK, marginBottom: 4 }}>Max value</label>
+              <Input type="number" value={q.max ?? 10} onChange={(e) => onChange({ max: Number(e.target.value) })} />
+            </div>
           </div>
-          <div style={{ flex: 1 }}>
-            <label style={{ display: "block", fontSize: 12, color: WF_DARK, marginBottom: 4 }}>Max</label>
-            <Input type="number" value={q.max ?? 10} onChange={(e) => onChange({ max: Number(e.target.value) })} />
+          <div style={{ marginBottom: 10 }}>
+            <label style={{ display: "block", fontSize: 12, color: WF_DARK, marginBottom: 4 }}>Label for min (optional)</label>
+            <Input value={q.minLabel ?? ""} onChange={(e) => onChange({ minLabel: e.target.value })} placeholder="e.g. Very poor" />
           </div>
-        </div>
+          <div style={{ marginBottom: 10 }}>
+            <label style={{ display: "block", fontSize: 12, color: WF_DARK, marginBottom: 4 }}>Label for max (optional)</label>
+            <Input value={q.maxLabel ?? ""} onChange={(e) => onChange({ maxLabel: e.target.value })} placeholder="e.g. Excellent" />
+          </div>
+          <div style={{ fontSize: 11, color: WF_MID, fontStyle: "italic", marginBottom: 8 }}>
+            Shown as a number input or slider — display decided at build time.
+          </div>
+        </>
       )}
 
       <div style={{ marginTop: 8, fontSize: 11, color: WF_MID, fontStyle: "italic" }}>Type: {q.type}</div>

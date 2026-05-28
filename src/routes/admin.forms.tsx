@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useSearch } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
 import { Btn, Input, Select, TextLink, Modal, Pill } from "@/components/patient-ui";
@@ -34,6 +34,7 @@ const FORMS: Form[] = [
 
 function FormList() {
   const { state, banner } = useSearch({ from: "/admin/forms" });
+  const navigate = useNavigate();
   const [q, setQ] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [bannerOpen, setBannerOpen] = useState(true);
@@ -154,8 +155,11 @@ function FormList() {
           <Btn onClick={() => setConfirm(null)}>Cancel</Btn>
           <Btn
             primary
-            to="/admin/forms"
-            onClick={() => setConfirm(null)}
+            onClick={() => {
+              const name = confirm?.name;
+              setConfirm(null);
+              navigate({ to: "/admin/forms", search: { state: "default", banner: name ? `${name} has been archived.` : "" } });
+            }}
           >
             Archive form
           </Btn>

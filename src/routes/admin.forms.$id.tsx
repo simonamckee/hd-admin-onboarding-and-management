@@ -6,9 +6,9 @@ const MOCK: Record<string, FormDraft> = {
     name: "Monthly Check-in",
     status: "Active",
     questions: [
-      { id: "q1", type: "Yes / No", text: "Have you had any hypoglycaemic episodes this month?", required: true },
-      { id: "q2", type: "Number / Rating", text: "How would you rate your overall wellbeing this month?", required: true, min: 1, max: 10 },
-      { id: "q3", type: "Free text", text: "Is there anything else you'd like your care team to know?", required: false },
+      { id: "q1", type: "Multiple choice", text: "How often do you check your blood glucose?", required: true, options: ["Less than once a day", "1–3 times a day", "4 or more times a day"], multi: false },
+      { id: "q2", type: "Number / Rating", text: "How would you rate your overall wellbeing this month?", required: true, min: 1, max: 10, minLabel: "Very poor", maxLabel: "Excellent" },
+      { id: "q3", type: "Free text", text: "Is there anything else you'd like your care team to know?", required: false, limitLength: false, maxLength: 500 },
     ],
   },
   "initial-assessment": {
