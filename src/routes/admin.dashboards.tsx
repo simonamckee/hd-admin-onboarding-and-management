@@ -89,16 +89,16 @@ function ClinicianBuilder() {
   const [left, setLeft] = useState<Module[]>(CLIN_LEFT_DEFAULT);
   const [right, setRight] = useState<Module[]>(CLIN_RIGHT_DEFAULT);
   const [showPreview, setShowPreview] = useState(false);
+  const [drag, setDrag] = useState<{ id: string; col: Col } | null>(null);
+  const [dropIdx, setDropIdx] = useState<{ col: Col; index: number } | null>(null);
 
   const present = new Set([...left, ...right].map((m) => m.id));
   const removed = CLIN_ALL.filter((m) => !present.has(m.id) && !m.required);
 
-  const move = (id: string, dir: "up" | "down" | "left" | "right") => {
+  const move = (id: string, dir: "up" | "down") => {
     const inLeft = left.find((m) => m.id === id);
     const list = inLeft ? left : right;
     const setList = inLeft ? setLeft : setRight;
-    const other = inLeft ? right : left;
-    const setOther = inLeft ? setRight : setLeft;
     const idx = list.findIndex((m) => m.id === id);
     if (dir === "up" && idx > 0) {
       const a = [...list];
@@ -108,10 +108,6 @@ function ClinicianBuilder() {
       const a = [...list];
       [a[idx], a[idx + 1]] = [a[idx + 1], a[idx]];
       setList(a);
-    } else if ((dir === "left" && !inLeft) || (dir === "right" && inLeft)) {
-      const mod = list[idx];
-      setList(list.filter((m) => m.id !== id));
-      setOther([...other, mod]);
     }
   };
 
@@ -127,11 +123,65 @@ function ClinicianBuilder() {
     else setRight([...right, orig]);
   };
 
+  const onDragStart = (id: string, col: Col) => setDrag({ id, col });
+  const onDragOverItem = (col: Col, index: number) => {
+    if (!drag || drag.col !== col) return;
+    setDropIdx({ col, index });
+  };
+  const onDragEnd = () => {
+    setDrag(null);
+    setDropIdx(null);
+  };
+  const onDropCol = (col: Col) => {
+    if (!drag || drag.col !== col || !dropIdx || dropIdx.col !== col) {
+      onDragEnd();
+      return;
+    }
+    const list = col === "left" ? left : right;
+    const setList = col === "left" ? setLeft : setRight;
+    const from = list.findIndex((m) => m.id === drag.id);
+    if (from < 0) {
+      onDragEnd();
+      return;
+    }
+    let to = dropIdx.index;
+    const a = [...list];
+    const [moved] = a.splice(from, 1);
+    if (to > from) to -= 1;
+    a.splice(to, 0, moved);
+    setList(a);
+    onDragEnd();
+  };
+
   return (
     <>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
-        <ColumnZone label="Patient data" col="left" modules={left} onMove={move} onRemove={remove} />
-        <ColumnZone label="Clinical actions" col="right" modules={right} onMove={move} onRemove={remove} />
+        <ColumnZone
+          label="Patient data"
+          col="left"
+          modules={left}
+          onMove={move}
+          onRemove={remove}
+          drag={drag}
+          dropIdx={dropIdx}
+          onDragStart={onDragStart}
+          onDragOverItem={onDragOverItem}
+          onDragEnd={onDragEnd}
+          onDropCol={onDropCol}
+        />
+        <ColumnZone
+          label="Clinical actions"
+          col="right"
+          modules={right}
+          onMove={move}
+          onRemove={remove}
+          drag={drag}
+          dropIdx={dropIdx}
+          onDragStart={onDragStart}
+          onDragOverItem={onDragOverItem}
+          onDragEnd={onDragEnd}
+          onDropCol={onDropCol}
+        />
       </div>
 
       <MessagesInfoRow
@@ -153,21 +203,53 @@ function ClinicianBuilder() {
   );
 }
 
+function DropIndicator({ active }: { active: boolean }) {
+  return (
+    <div
+      style={{
+        height: active ? 0 : 0,
+        borderTop: active ? `2px dashed ${WF_DARK}` : "none",
+        margin: active ? "3px 0" : 0,
+      }}
+    />
+  );
+}
+
 function ColumnZone({
   label,
   col,
   modules,
   onMove,
   onRemove,
+  drag,
+  dropIdx,
+  onDragStart,
+  onDragOverItem,
+  onDragEnd,
+  onDropCol,
 }: {
   label: string;
   col: Col;
   modules: Module[];
-  onMove: (id: string, dir: "up" | "down" | "left" | "right") => void;
+  onMove: (id: string, dir: "up" | "down") => void;
   onRemove: (id: string) => void;
+  drag: { id: string; col: Col } | null;
+  dropIdx: { col: Col; index: number } | null;
+  onDragStart: (id: string, col: Col) => void;
+  onDragOverItem: (col: Col, index: number) => void;
+  onDragEnd: () => void;
+  onDropCol: (col: Col) => void;
 }) {
+  const sameCol = drag?.col === col;
   return (
     <div
+      onDragOver={(e) => {
+        if (sameCol) e.preventDefault();
+      }}
+      onDrop={(e) => {
+        e.preventDefault();
+        onDropCol(col);
+      }}
       style={{
         background: WF_BG,
         border: `1px dashed ${WF_MID}`,
@@ -188,18 +270,33 @@ function ColumnZone({
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
         {modules.map((m, i) => (
-          <ModuleCard
+          <div
             key={m.id}
-            module={m}
-            onRemove={() => onRemove(m.id)}
-            canMoveUp={i > 0}
-            canMoveDown={i < modules.length - 1}
-            onUp={() => onMove(m.id, "up")}
-            onDown={() => onMove(m.id, "down")}
-            onSwap={() => onMove(m.id, col === "left" ? "right" : "left")}
-            swapLabel={col === "left" ? "→" : "←"}
-          />
+            onDragOver={(e) => {
+              if (!sameCol) return;
+              e.preventDefault();
+              e.stopPropagation();
+              const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
+              const before = e.clientY < rect.top + rect.height / 2;
+              onDragOverItem(col, before ? i : i + 1);
+            }}
+          >
+            <DropIndicator active={sameCol && dropIdx?.col === col && dropIdx?.index === i} />
+            <ModuleCard
+              module={m}
+              onRemove={() => onRemove(m.id)}
+              canMoveUp={i > 0}
+              canMoveDown={i < modules.length - 1}
+              onUp={() => onMove(m.id, "up")}
+              onDown={() => onMove(m.id, "down")}
+              draggable
+              dragging={drag?.id === m.id}
+              onDragStart={() => onDragStart(m.id, col)}
+              onDragEnd={onDragEnd}
+            />
+          </div>
         ))}
+        <DropIndicator active={sameCol && dropIdx?.col === col && dropIdx?.index === modules.length} />
       </div>
     </div>
   );
@@ -212,8 +309,10 @@ function ModuleCard({
   canMoveDown,
   onUp,
   onDown,
-  onSwap,
-  swapLabel,
+  draggable,
+  dragging,
+  onDragStart,
+  onDragEnd,
 }: {
   module: Module;
   onRemove: () => void;
@@ -221,17 +320,24 @@ function ModuleCard({
   canMoveDown: boolean;
   onUp: () => void;
   onDown: () => void;
-  onSwap?: () => void;
-  swapLabel?: string;
+  draggable?: boolean;
+  dragging?: boolean;
+  onDragStart?: () => void;
+  onDragEnd?: () => void;
 }) {
   return (
     <div
+      draggable={draggable}
+      onDragStart={onDragStart}
+      onDragEnd={onDragEnd}
       style={{
         ...CARD,
         padding: "10px 12px",
         display: "flex",
         alignItems: "center",
         gap: 10,
+        opacity: dragging ? 0.4 : 1,
+        cursor: draggable ? "grab" : "default",
       }}
     >
       <span style={{ color: WF_MID, cursor: "grab", fontSize: 14, userSelect: "none" }}>⋮⋮</span>
@@ -247,11 +353,6 @@ function ModuleCard({
       <button onClick={onDown} disabled={!canMoveDown} style={iconBtnStyle(canMoveDown)} title="Move down">
         ↓
       </button>
-      {onSwap && (
-        <button onClick={onSwap} style={iconBtnStyle(true)} title="Move to other column">
-          {swapLabel}
-        </button>
-      )}
       {!m.required && (
         <button onClick={onRemove} style={{ ...iconBtnStyle(true), color: WF_DARK }} title="Remove">
           ×
