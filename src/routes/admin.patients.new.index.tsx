@@ -14,6 +14,10 @@ import {
 import {
   SaveDraftButton, ResumeDraftBanner, useDraftPersistence,
 } from "@/components/draft-guard";
+import {
+  formatPHN, phnDigits, isValidPHN,
+  PHN_LABEL, PHN_HELPER, PHN_LENGTH_ERROR,
+} from "@/lib/phn";
 
 export const Route = createFileRoute("/admin/patients/new/")({ component: Step1 });
 
@@ -33,7 +37,7 @@ function Step1() {
   const navigate = useNavigate();
   const [d, setD] = useState<PatientDraft>(loadDraft());
   const [touched, setTouched] = useState<Record<string, boolean>>({});
-  const [healthErr, setHealthErr] = useState<"same" | "cross" | null>(null);
+  const [healthErr, setHealthErr] = useState<"same" | "cross" | "length" | null>(null);
   const [cancelOpen, setCancelOpen] = useState(false);
   const [showBanner, setShowBanner] = useState(false);
 
@@ -56,15 +60,18 @@ function Step1() {
     setD((p) => ({ ...p, [k]: v }));
 
   const checkHealth = (v: string) => {
-    if (v === "1234567890") setHealthErr("same");
-    else if (v === "9999999999") setHealthErr("cross");
+    const digits = phnDigits(v);
+    if (digits.length === 0) { setHealthErr(null); return; }
+    if (digits.length < 10) { setHealthErr("length"); return; }
+    if (digits === "1234567890") setHealthErr("same");
+    else if (digits === "9999999999") setHealthErr("cross");
     else setHealthErr(null);
   };
 
   const age = ageFromDob(d.dob);
   const requiredOk =
-    d.firstName && d.lastName && d.dob && d.gender && d.diagnosisDate && d.healthNumber &&
-    !healthErr &&
+    d.firstName && d.lastName && d.dob && d.gender && d.diagnosisDate &&
+    isValidPHN(d.healthNumber) && !healthErr &&
     (d.invite === "no" || (d.email && d.channel));
 
   const toggleClinician = (c: string) => {
@@ -144,10 +151,12 @@ function Step1() {
             <Input type="date" value={d.diagnosisDate} onChange={(e) => update("diagnosisDate", e.target.value)} />
           </Field>
           <Field
-            label="Provincial health number"
+            label={PHN_LABEL}
             required
             error={
-              healthErr === "same" ? (
+              healthErr === "length" ? (
+                <span>{PHN_LENGTH_ERROR}</span>
+              ) : healthErr === "same" ? (
                 <span>
                   A patient with this health number already exists in your clinic.{" "}
                   <a href="#" target="_blank" rel="noreferrer" style={{ color: WF_DARK }}>
@@ -160,12 +169,21 @@ function Step1() {
                 </span>
               ) : null
             }
-            helper="Try 1234567890 (same-clinic) or 9999999999 (cross-clinic) to see errors"
+            helper={PHN_HELPER}
           >
             <Input
-              value={d.healthNumber}
+              value={formatPHN(d.healthNumber)}
               errored={!!healthErr}
-              onChange={(e) => { update("healthNumber", e.target.value); if (touched.health) checkHealth(e.target.value); }}
+              inputMode="numeric"
+              autoComplete="off"
+              placeholder="1234 567 890"
+              maxLength={12}
+              style={{ fontFamily: "ui-monospace, monospace", letterSpacing: 0.5 }}
+              onChange={(e) => {
+                const digits = phnDigits(e.target.value);
+                update("healthNumber", digits);
+                if (touched.health) checkHealth(digits);
+              }}
               onBlur={(e) => { setTouched((t) => ({ ...t, health: true })); checkHealth(e.target.value); }}
             />
           </Field>

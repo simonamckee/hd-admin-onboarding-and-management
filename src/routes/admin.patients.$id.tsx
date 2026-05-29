@@ -3,6 +3,10 @@ import { useState } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
 import { Btn, Card, Field, Input, Select, Pill, Modal, TextLink, DangerDivider } from "@/components/patient-ui";
 import { WF_DARK, WF_MID } from "@/components/wireframe";
+import {
+  formatPHN, phnDigits, isValidPHN,
+  PHN_LABEL, PHN_HELPER, PHN_LENGTH_ERROR,
+} from "@/lib/phn";
 
 export const Route = createFileRoute("/admin/patients/$id")({ component: PatientDetail });
 
@@ -17,20 +21,27 @@ const MOCK: Record<string, {
 }> = {
   "emma-tremblay": {
     name: "Emma Tremblay", first: "Emma", last: "Tremblay", dob: "2012-06-14", gender: "Female",
-    diagnosis: "2024-09-01", health: "1234564821", email: "emma.t@example.com", phone: "+1 604 555 0182",
+    diagnosis: "2024-09-01", health: "9999000001", email: "emma.t@example.com", phone: "+1 604 555 0182",
     status: "Active", lastLogin: "2 days ago", clinicians: ["Dr. Sarah Chen"],
     inviteDate: "", activeSince: "Jan 16, 2026",
     supporters: [{ name: "Marie Tremblay", relationship: "Parent", status: "Active" }],
   },
   "sofia-andersen": {
     name: "Sofia Andersen", first: "Sofia", last: "Andersen", dob: "2014-02-09", gender: "Female",
-    diagnosis: "2025-01-10", health: "1234569103", email: "sofia.a@example.com", phone: "",
+    diagnosis: "2025-01-10", health: "9999000003", email: "sofia.a@example.com", phone: "",
     status: "Invited", lastLogin: "Never", clinicians: ["Dr. James Okafor", "Nurse Priya Mehta"],
     inviteDate: "Mar 20, 2026", activeSince: "",
     supporters: [
       { name: "Erik Andersen", relationship: "Parent", status: "Invited" },
       { name: "Lena Andersen", relationship: "Parent", status: "Active" },
     ],
+  },
+  "lucas-okonkwo": {
+    name: "Lucas Okonkwo", first: "Lucas", last: "Okonkwo", dob: "2013-08-04", gender: "Male",
+    diagnosis: "2024-11-12", health: "9999000002", email: "lucas.o@example.com", phone: "",
+    status: "Active", lastLogin: "1 week ago", clinicians: ["Dr. Sarah Chen"],
+    inviteDate: "", activeSince: "Feb 5, 2026",
+    supporters: [],
   },
   "lucas-fernandez": {
     name: "Lucas Fernandez", first: "Lucas", last: "Fernandez", dob: "2013-11-22", gender: "Male",
@@ -105,18 +116,25 @@ function PatientDetail() {
 
           <div style={{ marginTop: 16 }}>
             <Field
-              label="Health number"
+              label={PHN_LABEL}
               error={healthErr}
-              helper="Try 1234567890 (same-clinic) or 9999999999 (cross-clinic)"
+              helper={PHN_HELPER}
             >
               <Input
-                value={health}
+                value={formatPHN(health)}
                 errored={!!healthErr}
-                onChange={(e) => setHealth(e.target.value)}
+                inputMode="numeric"
+                autoComplete="off"
+                placeholder="1234 567 890"
+                maxLength={12}
+                style={{ fontFamily: "ui-monospace, monospace", letterSpacing: 0.5 }}
+                onChange={(e) => setHealth(phnDigits(e.target.value))}
                 onBlur={(e) => {
-                  const v = e.target.value;
-                  if (v === "1234567890") setHealthErr("A patient with this health number already exists in your clinic.");
-                  else if (v === "9999999999") setHealthErr("A patient with this health number already exists in Haibu Diabetes. Contact support@haibudiabetes.com to arrange a transfer.");
+                  const digits = phnDigits(e.target.value);
+                  if (digits.length === 0) { setHealthErr(null); return; }
+                  if (digits.length < 10) { setHealthErr(PHN_LENGTH_ERROR); return; }
+                  if (digits === "1234567890") setHealthErr("A patient with this health number already exists in your clinic.");
+                  else if (digits === "9999999999") setHealthErr("A patient with this health number already exists in Haibu Diabetes. Contact support@haibudiabetes.com to arrange a transfer.");
                   else setHealthErr(null);
                 }}
               />

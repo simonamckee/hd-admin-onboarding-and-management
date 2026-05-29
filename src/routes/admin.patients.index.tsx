@@ -25,9 +25,9 @@ type Patient = {
 };
 
 const PATIENTS: Patient[] = [
-  { id: "emma-tremblay", name: "Emma Tremblay", last4: "4821", status: "Active", added: "Jan 14, 2026", lastLogin: "2 days ago" },
-  { id: "lucas-okonkwo", name: "Lucas Okonkwo", last4: "3347", status: "Active", added: "Feb 3, 2026", lastLogin: "1 week ago" },
-  { id: "sofia-andersen", name: "Sofia Andersen", last4: "9103", status: "Invited", added: "Mar 20, 2026", lastLogin: "Never" },
+  { id: "emma-tremblay", name: "Emma Tremblay", last4: "0001", status: "Active", added: "Jan 14, 2026", lastLogin: "2 days ago" },
+  { id: "lucas-okonkwo", name: "Lucas Okonkwo", last4: "0002", status: "Active", added: "Feb 3, 2026", lastLogin: "1 week ago" },
+  { id: "sofia-andersen", name: "Sofia Andersen", last4: "0003", status: "Invited", added: "Mar 20, 2026", lastLogin: "Never" },
   { id: "mateo-rivera", name: "Mateo Rivera", last4: "6612", status: "Invited", added: "Apr 5, 2026", lastLogin: "Never" },
   { id: "chloe-bergeron", name: "Chloe Bergeron", last4: "7754", status: "Not yet invited", added: "Apr 28, 2026", lastLogin: "Never" },
   { id: "aiden-nakamura", name: "Aiden Nakamura", last4: "2289", status: "Active", added: "May 1, 2026", lastLogin: "Today" },
