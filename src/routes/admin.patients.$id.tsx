@@ -3,6 +3,10 @@ import { useState } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
 import { Btn, Card, Field, Input, Select, Pill, Modal, TextLink, DangerDivider } from "@/components/patient-ui";
 import { WF_DARK, WF_MID } from "@/components/wireframe";
+import {
+  formatPHN, phnDigits, isValidPHN,
+  PHN_LABEL, PHN_HELPER, PHN_LENGTH_ERROR,
+} from "@/lib/phn";
 
 export const Route = createFileRoute("/admin/patients/$id")({ component: PatientDetail });
 
