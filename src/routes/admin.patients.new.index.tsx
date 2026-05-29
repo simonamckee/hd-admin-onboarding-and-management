@@ -4,6 +4,7 @@ import { AdminShell, PrototypeBack } from "@/components/admin-shell";
 import {
   Btn, Field, Input, Select, StepIndicator, Callout, Modal, TextLink,
 } from "@/components/patient-ui";
+import { Info } from "lucide-react";
 import { WF_DARK, WF_MID } from "@/components/wireframe";
 import {
   loadDraft, saveDraft, ageFromDob, clearDraft,
@@ -104,10 +105,29 @@ function Step1() {
         <StepIndicator step={1} />
 
         <div style={{ maxWidth: 600 }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "flex-start",
+              gap: 10,
+              border: `1px solid ${WF_MID}`,
+              borderRadius: 8,
+              padding: "12px 14px",
+              marginBottom: 20,
+              background: "#F5F5F5",
+              fontSize: 12,
+              color: WF_DARK,
+              lineHeight: 1.5,
+            }}
+          >
+            <Info size={16} style={{ flexShrink: 0, marginTop: 2 }} />
+            <span>Enter all patient information exactly as it appears on their health card.</span>
+          </div>
+
           <Field label="First name" required>
             <Input value={d.firstName} onChange={(e) => update("firstName", e.target.value)} />
           </Field>
-          <Field label="Last name" required helper="As it appears on health card">
+          <Field label="Last name" required>
             <Input value={d.lastName} onChange={(e) => update("lastName", e.target.value)} />
           </Field>
           <Field label="Date of birth" required>
