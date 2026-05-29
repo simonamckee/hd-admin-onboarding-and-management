@@ -14,6 +14,10 @@ import {
 import {
   SaveDraftButton, ResumeDraftBanner, useDraftPersistence,
 } from "@/components/draft-guard";
+import {
+  formatPHN, phnDigits, isValidPHN,
+  PHN_LABEL, PHN_HELPER, PHN_LENGTH_ERROR,
+} from "@/lib/phn";
 
 export const Route = createFileRoute("/admin/patients/new/")({ component: Step1 });
 
