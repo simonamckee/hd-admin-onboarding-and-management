@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useBlocker } from "@tanstack/react-router";
 import { Btn, Modal, TextLink } from "./patient-ui";
 import { WF_DARK, WF_MID } from "./wireframe";
@@ -57,23 +57,34 @@ export function useDraftPersistence<T>(args: {
   const { current, scopePrefix, persist, onLeaveDiscard } = args;
   const [baseline, setBaseline] = useState<T>(current);
   const [flash, setFlash] = useState(false);
+  const dirtyRef = useRef(false);
 
   const dirty = useMemo(
     () => JSON.stringify(current) !== JSON.stringify(baseline),
     [current, baseline],
   );
+  useEffect(() => { dirtyRef.current = dirty; }, [dirty]);
 
   const save = () => {
     persist(current);
     setBaseline(current);
+    dirtyRef.current = false;
     setFlash(true);
     window.setTimeout(() => setFlash(false), 2000);
   };
 
+  // Allow callers (e.g. Cancel confirm) to bypass the blocker for the
+  // next navigation without waiting for React to flush state.
+  const markClean = () => {
+    setBaseline(current);
+    dirtyRef.current = false;
+  };
+
   const blocker = useBlocker({
-    shouldBlockFn: ({ next }) => dirty && !next.pathname.startsWith(scopePrefix),
+    shouldBlockFn: ({ next }) =>
+      dirtyRef.current && !next.pathname.startsWith(scopePrefix),
     withResolver: true,
-    enableBeforeUnload: () => dirty,
+    enableBeforeUnload: () => dirtyRef.current,
   });
 
   // Reset flash on unmount
