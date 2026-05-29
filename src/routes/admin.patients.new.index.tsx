@@ -1,11 +1,18 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
 import {
   Btn, Field, Input, Select, StepIndicator, Callout, Modal, TextLink,
 } from "@/components/patient-ui";
 import { WF_DARK, WF_MID } from "@/components/wireframe";
-import { loadDraft, saveDraft, ageFromDob, clearDraft, type PatientDraft } from "@/lib/patient-store";
+import {
+  loadDraft, saveDraft, ageFromDob, clearDraft,
+  loadPersistedDraft, savePersistedDraft, clearPersistedDraft,
+  blankDraft, type PatientDraft,
+} from "@/lib/patient-store";
+import {
+  SaveDraftButton, ResumeDraftBanner, useDraftPersistence,
+} from "@/components/draft-guard";
 
 export const Route = createFileRoute("/admin/patients/new/")({ component: Step1 });
 
@@ -17,14 +24,32 @@ const CLINICIANS = [
   "Dietician Tom Park",
 ];
 
+function isBlank(d: PatientDraft) {
+  return JSON.stringify(d) === JSON.stringify(blankDraft);
+}
+
 function Step1() {
   const navigate = useNavigate();
   const [d, setD] = useState<PatientDraft>(loadDraft());
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [healthErr, setHealthErr] = useState<"same" | "cross" | null>(null);
   const [cancelOpen, setCancelOpen] = useState(false);
+  const [showBanner, setShowBanner] = useState(false);
+
+  // Show resume banner if a persisted draft exists AND no in-flight session work.
+  useEffect(() => {
+    const session = loadDraft();
+    if (isBlank(session) && loadPersistedDraft()) setShowBanner(true);
+  }, []);
 
   useEffect(() => { saveDraft(d); }, [d]);
+
+  const { save, flash, modal, markClean } = useDraftPersistence<PatientDraft>({
+    current: d,
+    scopePrefix: "/admin/patients/new",
+    persist: savePersistedDraft,
+    onLeaveDiscard: () => { clearDraft(); },
+  });
 
   const update = <K extends keyof PatientDraft>(k: K, v: PatientDraft[K]) =>
     setD((p) => ({ ...p, [k]: v }));
@@ -46,11 +71,35 @@ function Step1() {
     else if (d.clinicians.length < 4) update("clinicians", [...d.clinicians, c]);
   };
 
+  const resumeDraft = () => {
+    const persisted = loadPersistedDraft();
+    if (persisted) {
+      setD(persisted);
+      saveDraft(persisted);
+    }
+    setShowBanner(false);
+  };
+
+  const startFresh = () => {
+    clearPersistedDraft();
+    clearDraft();
+    setD(blankDraft);
+    setShowBanner(false);
+  };
+
   return (
     <AdminShell heading="">
       <div style={{ maxWidth: 720 }}>
         <h1 style={{ fontSize: 22, fontWeight: 500, margin: "0 0 6px" }}>Add a new patient</h1>
         <div style={{ fontSize: 12, color: WF_MID, marginBottom: 24 }}>Step 1 of 4 — Patient information</div>
+
+        {showBanner && (
+          <ResumeDraftBanner
+            message="You have an unfinished patient profile."
+            onResume={resumeDraft}
+            onStartFresh={startFresh}
+          />
+        )}
 
         <StepIndicator step={1} />
 
@@ -183,8 +232,9 @@ function Step1() {
             Patient ethnicity is not collected here. It will be offered as an optional self-reported step during the patient&apos;s own onboarding.
           </Callout>
 
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 28 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 28, gap: 12 }}>
             <TextLink onClick={() => setCancelOpen(true)}>Cancel</TextLink>
+            <SaveDraftButton onSave={save} flash={flash} />
             <Btn
               primary
               disabled={!requiredOk}
@@ -204,12 +254,19 @@ function Step1() {
           <Btn onClick={() => setCancelOpen(false)}>Cancel</Btn>
           <Btn
             primary
-            onClick={() => { clearDraft(); navigate({ to: "/admin/patients", search: { state: "default", banner: "" } }); }}
+            onClick={() => {
+              clearDraft();
+              clearPersistedDraft();
+              markClean();
+              navigate({ to: "/admin/patients", search: { state: "default", banner: "" } });
+            }}
           >
             Confirm
           </Btn>
         </div>
       </Modal>
+
+      {modal}
 
       <PrototypeBack to="/admin/patients" />
     </AdminShell>

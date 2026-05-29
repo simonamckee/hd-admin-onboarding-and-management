@@ -1,8 +1,15 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
 import { Btn, Field, Input, Select, TextLink, Callout } from "@/components/patient-ui";
 import { WF_DARK, WF_MID } from "@/components/wireframe";
+import {
+  blankClinicianDraft, type ClinicianDraft,
+  loadPersistedClinicianDraft, savePersistedClinicianDraft, clearPersistedClinicianDraft,
+} from "@/lib/clinician-store";
+import {
+  SaveDraftButton, ResumeDraftBanner, useDraftPersistence,
+} from "@/components/draft-guard";
 
 export const Route = createFileRoute("/admin/clinicians/new")({ component: AddClinician });
 
@@ -48,11 +55,42 @@ function AddClinician() {
 }
 
 function IndividualForm({ navigate }: { navigate: ReturnType<typeof useNavigate> }) {
-  const [f, setF] = useState({ first: "", last: "", email: "", title: "", role: "Clinician" });
+  const [f, setF] = useState<ClinicianDraft>(blankClinicianDraft);
+  const [showBanner, setShowBanner] = useState(false);
   const valid = f.first && f.last && f.email && f.title && f.role;
+
+  useEffect(() => {
+    if (loadPersistedClinicianDraft()) setShowBanner(true);
+  }, []);
+
+  const { save, flash, modal, markClean } = useDraftPersistence<ClinicianDraft>({
+    current: f,
+    scopePrefix: "/admin/clinicians/new",
+    persist: savePersistedClinicianDraft,
+  });
+
+  const resumeDraft = () => {
+    const persisted = loadPersistedClinicianDraft();
+    if (persisted) setF(persisted);
+    setShowBanner(false);
+  };
+
+  const startFresh = () => {
+    clearPersistedClinicianDraft();
+    setF(blankClinicianDraft);
+    setShowBanner(false);
+  };
 
   return (
     <div style={{ maxWidth: 560 }}>
+      {showBanner && (
+        <ResumeDraftBanner
+          message="You have an unfinished clinician profile."
+          onResume={resumeDraft}
+          onStartFresh={startFresh}
+        />
+      )}
+
       <Field label="First name" required>
         <Input value={f.first} onChange={(e) => setF({ ...f, first: e.target.value })} />
       </Field>
@@ -72,12 +110,25 @@ function IndividualForm({ navigate }: { navigate: ReturnType<typeof useNavigate>
         </Select>
       </Field>
 
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 28 }}>
-        <TextLink to="/admin/clinicians">Cancel</TextLink>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 28, gap: 12 }}>
+        <TextLink
+          onClick={() => {
+            markClean();
+            navigate({
+              to: "/admin/clinicians",
+              search: { state: "default", sso: "off", banner: "" },
+            });
+          }}
+        >
+          Cancel
+        </TextLink>
+        <SaveDraftButton onSave={save} flash={flash} />
         <Btn
           primary
           disabled={!valid}
-          onClick={() =>
+          onClick={() => {
+            clearPersistedClinicianDraft();
+            markClean();
             navigate({
               to: "/admin/clinicians",
               search: {
@@ -85,12 +136,13 @@ function IndividualForm({ navigate }: { navigate: ReturnType<typeof useNavigate>
                 sso: "off",
                 banner: `Invitation sent to ${f.first} ${f.last} at ${f.email}.`,
               },
-            })
-          }
+            });
+          }}
         >
           Send invitation
         </Btn>
       </div>
+      {modal}
     </div>
   );
 }

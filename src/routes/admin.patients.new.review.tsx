@@ -3,7 +3,8 @@ import { useState } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
 import { Btn, Card, StepIndicator, TextLink } from "@/components/patient-ui";
 import { WF_DARK, WF_MID } from "@/components/wireframe";
-import { loadDraft } from "@/lib/patient-store";
+import { loadDraft, savePersistedDraft } from "@/lib/patient-store";
+import { SaveDraftButton, useDraftPersistence } from "@/components/draft-guard";
 
 export const Route = createFileRoute("/admin/patients/new/review")({ component: Step3 });
 
@@ -21,6 +22,11 @@ function Step3() {
   const [d] = useState(loadDraft());
   const last4 = d.healthNumber.slice(-4) || "0000";
   const inviteYes = d.invite === "yes";
+  const { save, flash, modal } = useDraftPersistence({
+    current: d,
+    scopePrefix: "/admin/patients/new",
+    persist: savePersistedDraft,
+  });
 
   return (
     <AdminShell heading="">
@@ -76,10 +82,12 @@ function Step3() {
           {inviteYes ? "Send invitations" : "Save patient profile"}
         </Btn>
 
-        <div style={{ display: "flex", justifyContent: "space-between", marginTop: 20 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 20 }}>
           <TextLink onClick={() => navigate({ to: "/admin/patients/new/supporters" })}>← Back</TextLink>
+          <SaveDraftButton onSave={save} flash={flash} />
         </div>
       </div>
+      {modal}
       <PrototypeBack to="/admin/patients/new/supporters" />
     </AdminShell>
   );

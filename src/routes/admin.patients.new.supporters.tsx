@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
 import { Btn, Field, Input, Select, StepIndicator, Banner, TextLink } from "@/components/patient-ui";
 import { WF_DARK, WF_MID } from "@/components/wireframe";
-import { loadDraft, saveDraft, type Supporter } from "@/lib/patient-store";
+import { loadDraft, saveDraft, savePersistedDraft, type PatientDraft, type Supporter } from "@/lib/patient-store";
+import { SaveDraftButton, useDraftPersistence } from "@/components/draft-guard";
 
 type BannerMode = "required" | "advisory" | "optional";
 
@@ -26,12 +27,19 @@ function Step2() {
     d.supporters.length ? d.supporters : [blankSupporter],
   );
 
+  const merged: PatientDraft = { ...d, supporters };
+
   useEffect(() => {
-    const next = { ...d, supporters };
-    setD(next);
-    saveDraft(next);
+    setD(merged);
+    saveDraft(merged);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [supporters]);
+
+  const { save, flash, modal } = useDraftPersistence<PatientDraft>({
+    current: merged,
+    scopePrefix: "/admin/patients/new",
+    persist: savePersistedDraft,
+  });
 
   const updateS = (i: number, patch: Partial<Supporter>) =>
     setSupporters((arr) => arr.map((s, idx) => (idx === i ? { ...s, ...patch } : s)));
@@ -129,8 +137,9 @@ function Step2() {
           </div>
         )}
 
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 32 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 32, gap: 12 }}>
           <TextLink onClick={() => navigate({ to: "/admin/patients/new" })}>← Back</TextLink>
+          <SaveDraftButton onSave={save} flash={flash} />
           <Btn
             primary
             disabled={!canContinue}
@@ -140,6 +149,7 @@ function Step2() {
           </Btn>
         </div>
       </div>
+      {modal}
       <PrototypeBack to="/admin/patients/new" />
     </AdminShell>
   );
