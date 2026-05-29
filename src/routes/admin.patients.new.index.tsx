@@ -151,10 +151,12 @@ function Step1() {
             <Input type="date" value={d.diagnosisDate} onChange={(e) => update("diagnosisDate", e.target.value)} />
           </Field>
           <Field
-            label="Provincial health number"
+            label={PHN_LABEL}
             required
             error={
-              healthErr === "same" ? (
+              healthErr === "length" ? (
+                <span>{PHN_LENGTH_ERROR}</span>
+              ) : healthErr === "same" ? (
                 <span>
                   A patient with this health number already exists in your clinic.{" "}
                   <a href="#" target="_blank" rel="noreferrer" style={{ color: WF_DARK }}>
@@ -167,12 +169,21 @@ function Step1() {
                 </span>
               ) : null
             }
-            helper="Try 1234567890 (same-clinic) or 9999999999 (cross-clinic) to see errors"
+            helper={PHN_HELPER}
           >
             <Input
-              value={d.healthNumber}
+              value={formatPHN(d.healthNumber)}
               errored={!!healthErr}
-              onChange={(e) => { update("healthNumber", e.target.value); if (touched.health) checkHealth(e.target.value); }}
+              inputMode="numeric"
+              autoComplete="off"
+              placeholder="1234 567 890"
+              maxLength={12}
+              style={{ fontFamily: "ui-monospace, monospace", letterSpacing: 0.5 }}
+              onChange={(e) => {
+                const digits = phnDigits(e.target.value);
+                update("healthNumber", digits);
+                if (touched.health) checkHealth(digits);
+              }}
               onBlur={(e) => { setTouched((t) => ({ ...t, health: true })); checkHealth(e.target.value); }}
             />
           </Field>
