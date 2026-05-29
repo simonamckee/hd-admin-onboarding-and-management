@@ -28,13 +28,20 @@ const MOCK: Record<string, {
   },
   "sofia-andersen": {
     name: "Sofia Andersen", first: "Sofia", last: "Andersen", dob: "2014-02-09", gender: "Female",
-    diagnosis: "2025-01-10", health: "1234569103", email: "sofia.a@example.com", phone: "",
+    diagnosis: "2025-01-10", health: "9999000003", email: "sofia.a@example.com", phone: "",
     status: "Invited", lastLogin: "Never", clinicians: ["Dr. James Okafor", "Nurse Priya Mehta"],
     inviteDate: "Mar 20, 2026", activeSince: "",
     supporters: [
       { name: "Erik Andersen", relationship: "Parent", status: "Invited" },
       { name: "Lena Andersen", relationship: "Parent", status: "Active" },
     ],
+  },
+  "lucas-okonkwo": {
+    name: "Lucas Okonkwo", first: "Lucas", last: "Okonkwo", dob: "2013-08-04", gender: "Male",
+    diagnosis: "2024-11-12", health: "9999000002", email: "lucas.o@example.com", phone: "",
+    status: "Active", lastLogin: "1 week ago", clinicians: ["Dr. Sarah Chen"],
+    inviteDate: "", activeSince: "Feb 5, 2026",
+    supporters: [],
   },
   "lucas-fernandez": {
     name: "Lucas Fernandez", first: "Lucas", last: "Fernandez", dob: "2013-11-22", gender: "Male",
