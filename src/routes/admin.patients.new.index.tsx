@@ -4,6 +4,7 @@ import { AdminShell, PrototypeBack } from "@/components/admin-shell";
 import {
   Btn, Field, Input, Select, StepIndicator, Callout, Modal, TextLink,
 } from "@/components/patient-ui";
+import { Info } from "lucide-react";
 import { WF_DARK, WF_MID } from "@/components/wireframe";
 import {
   loadDraft, saveDraft, ageFromDob, clearDraft,
