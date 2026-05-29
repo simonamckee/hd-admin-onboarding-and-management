@@ -60,15 +60,18 @@ function Step1() {
     setD((p) => ({ ...p, [k]: v }));
 
   const checkHealth = (v: string) => {
-    if (v === "1234567890") setHealthErr("same");
-    else if (v === "9999999999") setHealthErr("cross");
+    const digits = phnDigits(v);
+    if (digits.length === 0) { setHealthErr(null); return; }
+    if (digits.length < 10) { setHealthErr("length"); return; }
+    if (digits === "1234567890") setHealthErr("same");
+    else if (digits === "9999999999") setHealthErr("cross");
     else setHealthErr(null);
   };
 
   const age = ageFromDob(d.dob);
   const requiredOk =
-    d.firstName && d.lastName && d.dob && d.gender && d.diagnosisDate && d.healthNumber &&
-    !healthErr &&
+    d.firstName && d.lastName && d.dob && d.gender && d.diagnosisDate &&
+    isValidPHN(d.healthNumber) && !healthErr &&
     (d.invite === "no" || (d.email && d.channel));
 
   const toggleClinician = (c: string) => {
