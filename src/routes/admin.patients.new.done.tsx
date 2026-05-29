@@ -3,7 +3,7 @@ import { useState } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
 import { Btn } from "@/components/patient-ui";
 import { WF_DARK, WF_MID } from "@/components/wireframe";
-import { loadDraft, clearDraft } from "@/lib/patient-store";
+import { loadDraft, clearDraft, clearPersistedDraft } from "@/lib/patient-store";
 
 export const Route = createFileRoute("/admin/patients/new/done")({ component: Step4 });
 
@@ -19,6 +19,7 @@ function Step4() {
       ? `Invitations sent to ${patientName} and ${supporterCount} supporter(s).`
       : `Patient profile saved for ${patientName}.`;
     clearDraft();
+    clearPersistedDraft();
     navigate({ to: "/admin/patients", search: { state: "default", banner: msg } });
   };
 
