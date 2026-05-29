@@ -39,6 +39,7 @@ import { Route as AdminPatientsIdRouteImport } from './routes/admin.patients.$id
 import { Route as AdminFormsNewRouteImport } from './routes/admin.forms.new'
 import { Route as AdminFormsIdRouteImport } from './routes/admin.forms.$id'
 import { Route as AdminCliniciansNewRouteImport } from './routes/admin.clinicians.new'
+import { Route as AdminCliniciansBatchRouteImport } from './routes/admin.clinicians.batch'
 import { Route as AdminCliniciansIdRouteImport } from './routes/admin.clinicians.$id'
 import { Route as AdminPatientsNewIndexRouteImport } from './routes/admin.patients.new.index'
 import { Route as AdminPatientsNewSupportersRouteImport } from './routes/admin.patients.new.supporters'
@@ -196,6 +197,11 @@ const AdminCliniciansNewRoute = AdminCliniciansNewRouteImport.update({
   path: '/new',
   getParentRoute: () => AdminCliniciansRoute,
 } as any)
+const AdminCliniciansBatchRoute = AdminCliniciansBatchRouteImport.update({
+  id: '/batch',
+  path: '/batch',
+  getParentRoute: () => AdminCliniciansRoute,
+} as any)
 const AdminCliniciansIdRoute = AdminCliniciansIdRouteImport.update({
   id: '/$id',
   path: '/$id',
@@ -249,6 +255,7 @@ export interface FileRoutesByFullPath {
   '/admin/resources': typeof AdminResourcesRouteWithChildren
   '/admin/': typeof AdminIndexRoute
   '/admin/clinicians/$id': typeof AdminCliniciansIdRoute
+  '/admin/clinicians/batch': typeof AdminCliniciansBatchRoute
   '/admin/clinicians/new': typeof AdminCliniciansNewRoute
   '/admin/forms/$id': typeof AdminFormsIdRoute
   '/admin/forms/new': typeof AdminFormsNewRoute
@@ -282,6 +289,7 @@ export interface FileRoutesByTo {
   '/admin/platform': typeof AdminPlatformRoute
   '/admin': typeof AdminIndexRoute
   '/admin/clinicians/$id': typeof AdminCliniciansIdRoute
+  '/admin/clinicians/batch': typeof AdminCliniciansBatchRoute
   '/admin/clinicians/new': typeof AdminCliniciansNewRoute
   '/admin/forms/$id': typeof AdminFormsIdRoute
   '/admin/forms/new': typeof AdminFormsNewRoute
@@ -320,6 +328,7 @@ export interface FileRoutesById {
   '/admin/resources': typeof AdminResourcesRouteWithChildren
   '/admin/': typeof AdminIndexRoute
   '/admin/clinicians/$id': typeof AdminCliniciansIdRoute
+  '/admin/clinicians/batch': typeof AdminCliniciansBatchRoute
   '/admin/clinicians/new': typeof AdminCliniciansNewRoute
   '/admin/forms/$id': typeof AdminFormsIdRoute
   '/admin/forms/new': typeof AdminFormsNewRoute
@@ -360,6 +369,7 @@ export interface FileRouteTypes {
     | '/admin/resources'
     | '/admin/'
     | '/admin/clinicians/$id'
+    | '/admin/clinicians/batch'
     | '/admin/clinicians/new'
     | '/admin/forms/$id'
     | '/admin/forms/new'
@@ -393,6 +403,7 @@ export interface FileRouteTypes {
     | '/admin/platform'
     | '/admin'
     | '/admin/clinicians/$id'
+    | '/admin/clinicians/batch'
     | '/admin/clinicians/new'
     | '/admin/forms/$id'
     | '/admin/forms/new'
@@ -430,6 +441,7 @@ export interface FileRouteTypes {
     | '/admin/resources'
     | '/admin/'
     | '/admin/clinicians/$id'
+    | '/admin/clinicians/batch'
     | '/admin/clinicians/new'
     | '/admin/forms/$id'
     | '/admin/forms/new'
@@ -674,6 +686,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminCliniciansNewRouteImport
       parentRoute: typeof AdminCliniciansRoute
     }
+    '/admin/clinicians/batch': {
+      id: '/admin/clinicians/batch'
+      path: '/batch'
+      fullPath: '/admin/clinicians/batch'
+      preLoaderRoute: typeof AdminCliniciansBatchRouteImport
+      parentRoute: typeof AdminCliniciansRoute
+    }
     '/admin/clinicians/$id': {
       id: '/admin/clinicians/$id'
       path: '/$id'
@@ -721,12 +740,14 @@ declare module '@tanstack/react-router' {
 
 interface AdminCliniciansRouteChildren {
   AdminCliniciansIdRoute: typeof AdminCliniciansIdRoute
+  AdminCliniciansBatchRoute: typeof AdminCliniciansBatchRoute
   AdminCliniciansNewRoute: typeof AdminCliniciansNewRoute
   AdminCliniciansIndexRoute: typeof AdminCliniciansIndexRoute
 }
 
 const AdminCliniciansRouteChildren: AdminCliniciansRouteChildren = {
   AdminCliniciansIdRoute: AdminCliniciansIdRoute,
+  AdminCliniciansBatchRoute: AdminCliniciansBatchRoute,
   AdminCliniciansNewRoute: AdminCliniciansNewRoute,
   AdminCliniciansIndexRoute: AdminCliniciansIndexRoute,
 }
