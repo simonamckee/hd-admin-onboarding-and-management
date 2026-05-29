@@ -82,7 +82,7 @@ function ClinicianList() {
         <h1 style={{ fontSize: 20, fontWeight: 500, color: WF_DARK, margin: 0 }}>
           Clinician management
         </h1>
-        {!ssoOn && <Btn primary to="/admin/clinicians/new">+ Add clinician</Btn>}
+        {!ssoOn && <AddClinicianSplitButton />}
       </div>
 
       {/* SSO info banner */}
