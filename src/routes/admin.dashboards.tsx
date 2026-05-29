@@ -16,7 +16,7 @@ const CLIN_LEFT_DEFAULT: Module[] = [
 const CLIN_RIGHT_DEFAULT: Module[] = [
   { id: "recs", name: "Recommendations", required: true },
   { id: "todo", name: "Things to do", required: true },
-  { id: "resources", name: "Resources" },
+  { id: "resources", name: "Resources", required: true },
 ];
 const CLIN_ALL = [...CLIN_LEFT_DEFAULT, ...CLIN_RIGHT_DEFAULT];
 
@@ -24,8 +24,8 @@ const PATIENT_DEFAULT: Module[] = [
   { id: "glucose", name: "Glucose", required: true },
   { id: "insulin", name: "Insulin", required: true },
   { id: "todo", name: "Things to do", required: true },
-  { id: "recs", name: "Recommendations" },
-  { id: "resources", name: "Resources" },
+  { id: "recs", name: "Recommendations", required: true },
+  { id: "resources", name: "Resources", required: true },
 ];
 
 const CARD: React.CSSProperties = {
@@ -189,7 +189,6 @@ function ClinicianBuilder() {
         tooltip="Messages opens as a panel from the patient header bar. It is always available to clinicians and does not need to be placed in the layout."
       />
 
-      <RemovedModules removed={removed} onAddBack={addBack} />
 
       <PreviewToggle
         label="Preview — clinician view of a patient dashboard"
@@ -866,7 +865,7 @@ function PatientBuilder() {
         tooltip="On mobile, Messages appears as a floating chat button fixed to the bottom of the screen. It is always accessible and does not need to be placed in the layout."
       />
 
-      <RemovedModules removed={removed} onAddBack={addBack} />
+      
 
       <PreviewToggle
         label="Preview — patient view on mobile"
