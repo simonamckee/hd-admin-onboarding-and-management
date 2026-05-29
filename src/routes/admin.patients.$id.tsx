@@ -116,18 +116,25 @@ function PatientDetail() {
 
           <div style={{ marginTop: 16 }}>
             <Field
-              label="Health number"
+              label={PHN_LABEL}
               error={healthErr}
-              helper="Try 1234567890 (same-clinic) or 9999999999 (cross-clinic)"
+              helper={PHN_HELPER}
             >
               <Input
-                value={health}
+                value={formatPHN(health)}
                 errored={!!healthErr}
-                onChange={(e) => setHealth(e.target.value)}
+                inputMode="numeric"
+                autoComplete="off"
+                placeholder="1234 567 890"
+                maxLength={12}
+                style={{ fontFamily: "ui-monospace, monospace", letterSpacing: 0.5 }}
+                onChange={(e) => setHealth(phnDigits(e.target.value))}
                 onBlur={(e) => {
-                  const v = e.target.value;
-                  if (v === "1234567890") setHealthErr("A patient with this health number already exists in your clinic.");
-                  else if (v === "9999999999") setHealthErr("A patient with this health number already exists in Haibu Diabetes. Contact support@haibudiabetes.com to arrange a transfer.");
+                  const digits = phnDigits(e.target.value);
+                  if (digits.length === 0) { setHealthErr(null); return; }
+                  if (digits.length < 10) { setHealthErr(PHN_LENGTH_ERROR); return; }
+                  if (digits === "1234567890") setHealthErr("A patient with this health number already exists in your clinic.");
+                  else if (digits === "9999999999") setHealthErr("A patient with this health number already exists in Haibu Diabetes. Contact support@haibudiabetes.com to arrange a transfer.");
                   else setHealthErr(null);
                 }}
               />
