@@ -309,8 +309,10 @@ function ModuleCard({
   canMoveDown,
   onUp,
   onDown,
-  onSwap,
-  swapLabel,
+  draggable,
+  dragging,
+  onDragStart,
+  onDragEnd,
 }: {
   module: Module;
   onRemove: () => void;
@@ -318,17 +320,24 @@ function ModuleCard({
   canMoveDown: boolean;
   onUp: () => void;
   onDown: () => void;
-  onSwap?: () => void;
-  swapLabel?: string;
+  draggable?: boolean;
+  dragging?: boolean;
+  onDragStart?: () => void;
+  onDragEnd?: () => void;
 }) {
   return (
     <div
+      draggable={draggable}
+      onDragStart={onDragStart}
+      onDragEnd={onDragEnd}
       style={{
         ...CARD,
         padding: "10px 12px",
         display: "flex",
         alignItems: "center",
         gap: 10,
+        opacity: dragging ? 0.4 : 1,
+        cursor: draggable ? "grab" : "default",
       }}
     >
       <span style={{ color: WF_MID, cursor: "grab", fontSize: 14, userSelect: "none" }}>⋮⋮</span>
@@ -344,11 +353,6 @@ function ModuleCard({
       <button onClick={onDown} disabled={!canMoveDown} style={iconBtnStyle(canMoveDown)} title="Move down">
         ↓
       </button>
-      {onSwap && (
-        <button onClick={onSwap} style={iconBtnStyle(true)} title="Move to other column">
-          {swapLabel}
-        </button>
-      )}
       {!m.required && (
         <button onClick={onRemove} style={{ ...iconBtnStyle(true), color: WF_DARK }} title="Remove">
           ×
