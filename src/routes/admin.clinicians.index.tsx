@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useSearch } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
 import { Btn, Input, Select, Pill, TextLink } from "@/components/patient-ui";
 import { WF_DARK, WF_MID } from "@/components/wireframe";
@@ -39,6 +39,118 @@ function statusPill(s: Clinician["status"]) {
   if (s === "Active") return <Pill label="Active" weight="dark" />;
   if (s === "Pending") return <Pill label="Pending" weight="mid" />;
   return <Pill label="Archived" weight="light" />;
+}
+
+function AddClinicianSplitButton() {
+  const [open, setOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const handle = (e: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handle);
+    return () => document.removeEventListener("mousedown", handle);
+  }, [open]);
+
+  const baseHeight = 36;
+  const shared: React.CSSProperties = {
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    height: baseHeight,
+    fontSize: 13,
+    fontFamily: "inherit",
+    border: `1px solid ${WF_DARK}`,
+    background: WF_DARK,
+    color: "#fff",
+    cursor: "pointer",
+    textDecoration: "none",
+    boxSizing: "border-box",
+    padding: "0 14px",
+  };
+
+  const itemStyle: React.CSSProperties = {
+    display: "block",
+    padding: "10px 14px",
+    fontSize: 13,
+    color: WF_DARK,
+    textDecoration: "none",
+    whiteSpace: "nowrap",
+    cursor: "pointer",
+  };
+
+  return (
+    <div ref={containerRef} style={{ position: "relative", display: "inline-flex" }}>
+      <Link
+        to="/admin/clinicians/new"
+        style={{
+          ...shared,
+          borderRight: "none",
+          borderRadius: "4px 0 0 4px",
+          paddingRight: 12,
+        }}
+      >
+        + Add clinician
+      </Link>
+      <button
+        onClick={() => setOpen((v) => !v)}
+        style={{
+          ...shared,
+          width: baseHeight,
+          padding: 0,
+          borderRadius: "0 4px 4px 0",
+          borderLeft: `1px solid rgba(255,255,255,0.25)`,
+        }}
+        aria-label="Add clinician options"
+      >
+        <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
+          <path d="M1 1l4 4 4-4" stroke="#fff" strokeWidth="1.5" />
+        </svg>
+      </button>
+
+      {open && (
+        <div
+          style={{
+            position: "absolute",
+            top: baseHeight + 4,
+            right: 0,
+            background: "#fff",
+            border: `1px solid ${WF_MID}`,
+            borderRadius: 4,
+            boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+            zIndex: 50,
+            minWidth: 160,
+            overflow: "hidden",
+          }}
+        >
+          <Link
+            to="/admin/clinicians/new"
+            onClick={() => setOpen(false)}
+            style={itemStyle}
+            onMouseEnter={(e) => (e.currentTarget.style.background = "#F5F5F5")}
+            onMouseLeave={(e) => (e.currentTarget.style.background = "#fff")}
+          >
+            Add individually
+          </Link>
+          <div style={{ height: 1, background: WF_MID, opacity: 0.3 }} />
+          <Link
+            to="/admin/clinicians/batch"
+            search={{ stage: "upload" }}
+            onClick={() => setOpen(false)}
+            style={itemStyle}
+            onMouseEnter={(e) => (e.currentTarget.style.background = "#F5F5F5")}
+            onMouseLeave={(e) => (e.currentTarget.style.background = "#fff")}
+          >
+            Upload CSV
+          </Link>
+        </div>
+      )}
+    </div>
+  );
 }
 
 function ClinicianList() {
@@ -82,7 +194,7 @@ function ClinicianList() {
         <h1 style={{ fontSize: 20, fontWeight: 500, color: WF_DARK, margin: 0 }}>
           Clinician management
         </h1>
-        {!ssoOn && <Btn primary to="/admin/clinicians/new">+ Add clinician</Btn>}
+        {!ssoOn && <AddClinicianSplitButton />}
       </div>
 
       {/* SSO info banner */}
