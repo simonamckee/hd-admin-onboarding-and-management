@@ -121,7 +121,7 @@ export function useDraftPersistence<T>(args: {
       </Modal>
     ) : null;
 
-  return { save, flash, dirty, modal };
+  return { save, flash, dirty, modal, markClean };
 }
 
 // ---------- Resume-draft banner shown on the initial form ----------
