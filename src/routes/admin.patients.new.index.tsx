@@ -37,7 +37,7 @@ function Step1() {
   const navigate = useNavigate();
   const [d, setD] = useState<PatientDraft>(loadDraft());
   const [touched, setTouched] = useState<Record<string, boolean>>({});
-  const [healthErr, setHealthErr] = useState<"same" | "cross" | null>(null);
+  const [healthErr, setHealthErr] = useState<"same" | "cross" | "length" | null>(null);
   const [cancelOpen, setCancelOpen] = useState(false);
   const [showBanner, setShowBanner] = useState(false);
 
