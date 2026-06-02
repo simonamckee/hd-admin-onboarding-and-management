@@ -22,7 +22,7 @@ const MOCK: Record<string, {
   "emma-tremblay": {
     name: "Emma Tremblay", first: "Emma", last: "Tremblay", dob: "2012-06-14", gender: "Female",
     diagnosis: "2024-09-01", health: "9999000001", email: "emma.t@example.com", phone: "+1 604 555 0182",
-    status: "Active", lastLogin: "2 days ago", clinicians: ["Dr. Sarah Chen"],
+    status: "Active", lastLogin: "2 days ago", clinicians: ["Dr. James Okafor"],
     inviteDate: "", activeSince: "Jan 16, 2026",
     supporters: [{ name: "Marie Tremblay", relationship: "Parent", status: "Active" }],
   },
