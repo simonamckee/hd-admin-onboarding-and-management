@@ -21,7 +21,7 @@ function BatchUploadPage() {
       <div style={{ marginBottom: 12 }}>
         <Link
           to="/admin/patients"
-          search={{ state: "default", banner: "" }}
+          search={{ state: "default", banner: "", assignedTo: "" }}
           style={{ fontSize: 12, color: WF_DARK, textDecoration: "none" }}
         >
           ← Patient management
@@ -169,7 +169,7 @@ function UploadState() {
 
       <StickyFooter
         left={
-          <Link to="/admin/patients" search={{ state: "default", banner: "" }} style={footerLinkStyle}>
+          <Link to="/admin/patients" search={{ state: "default", banner: "", assignedTo: "" }} style={footerLinkStyle}>
             Cancel
           </Link>
         }

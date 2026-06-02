@@ -95,7 +95,7 @@ function PatientDetail() {
   return (
     <AdminShell heading="">
       <div style={{ maxWidth: 800 }}>
-        <Link to="/admin/patients" search={{ state: "default", banner: "" }} style={{ fontSize: 12, color: WF_MID, textDecoration: "none" }}>
+        <Link to="/admin/patients" search={{ state: "default", banner: "", assignedTo: "" }} style={{ fontSize: 12, color: WF_MID, textDecoration: "none" }}>
           ← Patient management
         </Link>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", margin: "12px 0 24px" }}>

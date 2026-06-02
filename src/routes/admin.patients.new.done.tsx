@@ -20,7 +20,7 @@ function Step4() {
       : `Patient profile saved for ${patientName}.`;
     clearDraft();
     clearPersistedDraft();
-    navigate({ to: "/admin/patients", search: { state: "default", banner: msg } });
+    navigate({ to: "/admin/patients", search: { state: "default", banner: msg, assignedTo: "" } });
   };
 
   return (
