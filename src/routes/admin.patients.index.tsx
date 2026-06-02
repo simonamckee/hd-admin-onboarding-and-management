@@ -376,7 +376,7 @@ function PatientList() {
             <Link
               key={s}
               to="/admin/patients"
-              search={{ state: s, banner: "" }}
+              search={{ state: s, banner: "", assignedTo: "" }}
               style={{
                 fontSize: 11,
                 color: state === s ? WF_DARK : WF_MID,
