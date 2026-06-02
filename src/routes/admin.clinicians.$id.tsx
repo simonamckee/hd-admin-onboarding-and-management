@@ -45,7 +45,9 @@ function EditClinician() {
 
   const [title, setTitle] = useState(base.title);
   const [role, setRole] = useState<Row["role"]>(base.role);
+  const [warn, setWarn] = useState(false);
   const [confirm, setConfirm] = useState(false);
+  const assignedPatients = ASSIGNED_PATIENTS[id] || [];
 
   const titleDirty = title !== base.title;
   const roleDirty = role !== base.role;
