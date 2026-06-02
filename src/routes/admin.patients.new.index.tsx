@@ -296,7 +296,7 @@ function Step1() {
               clearDraft();
               clearPersistedDraft();
               markClean();
-              navigate({ to: "/admin/patients", search: { state: "default", banner: "" } });
+              navigate({ to: "/admin/patients", search: { state: "default", banner: "", assignedTo: "" } });
             }}
           >
             Confirm

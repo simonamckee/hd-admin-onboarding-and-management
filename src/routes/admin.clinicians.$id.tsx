@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
 import { Btn, Card, Field, Input, Select, Pill, Modal, TextLink, DangerDivider } from "@/components/patient-ui";
 import { WF_DARK, WF_MID } from "@/components/wireframe";
+import { ASSIGNED_PATIENTS, deactivateClinician } from "@/lib/clinician-assignments";
 
 export const Route = createFileRoute("/admin/clinicians/$id")({
   validateSearch: (s: Record<string, unknown>) => ({ sso: (s.sso as "on" | "off") || "off" }),
@@ -44,7 +45,9 @@ function EditClinician() {
 
   const [title, setTitle] = useState(base.title);
   const [role, setRole] = useState<Row["role"]>(base.role);
+  const [warn, setWarn] = useState(false);
   const [confirm, setConfirm] = useState(false);
+  const assignedPatients = ASSIGNED_PATIENTS[id] || [];
 
   const titleDirty = title !== base.title;
   const roleDirty = role !== base.role;
@@ -135,11 +138,58 @@ function EditClinician() {
                 in your identity provider. Haibu will reflect the change automatically.
               </div>
             ) : (
-              <Btn onClick={() => setConfirm(true)}>Deactivate clinician</Btn>
+              <Btn onClick={() => (assignedPatients.length > 0 ? setWarn(true) : setConfirm(true))}>Deactivate clinician</Btn>
             )}
           </>
         )}
       </div>
+
+      <Modal open={warn} title={`${base.name} is assigned to ${assignedPatients.length} patient${assignedPatients.length === 1 ? "" : "s"}`} onClose={() => setWarn(false)}>
+        <p style={{ fontSize: 13, color: WF_DARK, margin: "0 0 14px", lineHeight: 1.5 }}>
+          These patients will need to be reassigned to another clinician. You can reassign
+          them now or proceed with the deactivation.
+        </p>
+        <ul style={{ margin: "0 0 18px 18px", padding: 0, fontSize: 12, color: WF_DARK, lineHeight: 1.5 }}>
+          {assignedPatients.slice(0, 5).map((n) => (
+            <li key={n}>{n}</li>
+          ))}
+        </ul>
+        {assignedPatients.length > 5 && (
+          <div style={{ fontSize: 11, color: WF_MID, margin: "-12px 0 18px", fontStyle: "italic" }}>
+            + {assignedPatients.length - 5} more patients
+          </div>
+        )}
+        <div style={{ display: "flex", flexDirection: "column", gap: 8, alignItems: "stretch" }}>
+          <Btn
+            primary
+            onClick={() => {
+              setWarn(false);
+              setConfirm(true);
+            }}
+          >
+            Deactivate anyway →
+          </Btn>
+          <Btn
+            onClick={() => {
+              setWarn(false);
+              navigate({
+                to: "/admin/patients",
+                search: { state: "default", banner: "", assignedTo: id },
+              });
+            }}
+          >
+            Reassign patients first
+          </Btn>
+          <div style={{ textAlign: "center", marginTop: 4 }}>
+            <button
+              onClick={() => setWarn(false)}
+              style={{ background: "none", border: "none", cursor: "pointer", color: WF_DARK, fontSize: 12, textDecoration: "underline", fontFamily: "inherit" }}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </Modal>
 
       <Modal open={confirm} title={`Deactivate ${base.name}?`} onClose={() => setConfirm(false)}>
         <p style={{ fontSize: 13, color: WF_DARK, margin: "0 0 20px", lineHeight: 1.5 }}>
@@ -150,12 +200,13 @@ function EditClinician() {
           <Btn onClick={() => setConfirm(false)}>Cancel</Btn>
           <Btn
             primary
-            onClick={() =>
+            onClick={() => {
+              deactivateClinician(base.name);
               navigate({
                 to: "/admin/clinicians",
                 search: { state: "default", sso, banner: `${base.name} has been deactivated.` },
-              })
-            }
+              });
+            }}
           >
             Yes, deactivate
           </Btn>

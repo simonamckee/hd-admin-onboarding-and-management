@@ -1,15 +1,26 @@
-import { createFileRoute, Link, useSearch } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-router";
 import { useMemo, useState, useRef, useEffect } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
 import { Btn, Input, Select, Pill, TextLink } from "@/components/patient-ui";
 import { WF_DARK, WF_MID } from "@/components/wireframe";
+import { CLINICIAN_TO_PATIENT_IDS } from "@/lib/clinician-assignments";
 
 type StateMode = "default" | "empty" | "noresults" | "loading";
+
+const CLINICIAN_NAMES: Record<string, string> = {
+  "sarah-chen": "Dr. Sarah Chen",
+  "james-okafor": "Dr. James Okafor",
+  "priya-mehta": "Nurse Priya Mehta",
+  "lisa-bouchard": "Dr. Lisa Bouchard",
+  "tom-park": "Dietician Tom Park",
+  "kevin-marsh": "Dr. Kevin Marsh",
+};
 
 export const Route = createFileRoute("/admin/patients/")({
   validateSearch: (s: Record<string, unknown>) => ({
     state: (s.state as StateMode) || "default",
     banner: (s.banner as string) || "",
+    assignedTo: (s.assignedTo as string) || "",
   }),
   component: PatientList,
 });
@@ -175,21 +186,29 @@ function AddPatientSplitButton() {
 }
 
 function PatientList() {
-  const { state, banner } = useSearch({ from: "/admin/patients/" });
+  const { state, banner, assignedTo } = useSearch({ from: "/admin/patients/" });
+  const navigate = useNavigate();
   const [q, setQ] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [bannerOpen, setBannerOpen] = useState(true);
+
+  const assignedClinicianName = assignedTo ? CLINICIAN_NAMES[assignedTo] : "";
+  const assignedIds = assignedTo ? CLINICIAN_TO_PATIENT_IDS[assignedTo] || [] : null;
 
   const visible: Patient[] = useMemo(() => {
     if (state === "empty") return [];
     if (state === "noresults") return [];
     let rows = PATIENTS;
+    if (assignedIds) rows = rows.filter((p) => assignedIds.includes(p.id));
     if (statusFilter !== "All") rows = rows.filter((p) => p.status === statusFilter);
     if (q.trim()) rows = rows.filter((p) =>
       p.name.toLowerCase().includes(q.toLowerCase()) || p.last4.includes(q),
     );
     return rows;
-  }, [q, statusFilter, state]);
+  }, [q, statusFilter, state, assignedIds]);
+
+  const clearAssignedFilter = () =>
+    navigate({ to: "/admin/patients", search: { state: "default", banner: "", assignedTo: "" } });
 
   return (
     <AdminShell heading="">
@@ -200,6 +219,33 @@ function PatientList() {
         </h1>
         <AddPatientSplitButton />
       </div>
+
+      {/* Assigned-to filter chip */}
+      {assignedClinicianName && (
+        <div style={{ display: "flex", alignItems: "center", gap: 10, margin: "16px 0 0" }}>
+          <span
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              border: `1px solid ${WF_DARK}`,
+              padding: "6px 10px",
+              fontSize: 12,
+              color: WF_DARK,
+              background: "#F5F5F5",
+            }}
+          >
+            Showing patients assigned to {assignedClinicianName}
+            <button
+              onClick={clearAssignedFilter}
+              aria-label="Clear filter"
+              style={{ background: "none", border: "none", cursor: "pointer", color: WF_DARK, fontSize: 14, lineHeight: 1, padding: 0 }}
+            >
+              ×
+            </button>
+          </span>
+        </div>
+      )}
 
       {/* Success banner */}
       {banner && bannerOpen && (
@@ -330,7 +376,7 @@ function PatientList() {
             <Link
               key={s}
               to="/admin/patients"
-              search={{ state: s, banner: "" }}
+              search={{ state: s, banner: "", assignedTo: "" }}
               style={{
                 fontSize: 11,
                 color: state === s ? WF_DARK : WF_MID,

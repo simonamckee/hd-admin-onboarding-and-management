@@ -7,6 +7,7 @@ import {
   formatPHN, phnDigits, isValidPHN,
   PHN_LABEL, PHN_HELPER, PHN_LENGTH_ERROR,
 } from "@/lib/phn";
+import { filterActiveClinicians } from "@/lib/clinician-assignments";
 
 export const Route = createFileRoute("/admin/patients/$id")({ component: PatientDetail });
 
@@ -22,7 +23,7 @@ const MOCK: Record<string, {
   "emma-tremblay": {
     name: "Emma Tremblay", first: "Emma", last: "Tremblay", dob: "2012-06-14", gender: "Female",
     diagnosis: "2024-09-01", health: "9999000001", email: "emma.t@example.com", phone: "+1 604 555 0182",
-    status: "Active", lastLogin: "2 days ago", clinicians: ["Dr. Sarah Chen"],
+    status: "Active", lastLogin: "2 days ago", clinicians: ["Dr. James Okafor"],
     inviteDate: "", activeSince: "Jan 16, 2026",
     supporters: [{ name: "Marie Tremblay", relationship: "Parent", status: "Active" }],
   },
@@ -39,7 +40,7 @@ const MOCK: Record<string, {
   "lucas-okonkwo": {
     name: "Lucas Okonkwo", first: "Lucas", last: "Okonkwo", dob: "2013-08-04", gender: "Male",
     diagnosis: "2024-11-12", health: "9999000002", email: "lucas.o@example.com", phone: "",
-    status: "Active", lastLogin: "1 week ago", clinicians: ["Dr. Sarah Chen"],
+    status: "Active", lastLogin: "1 week ago", clinicians: ["Dr. Sarah Chen", "Dr. James Okafor"],
     inviteDate: "", activeSince: "Feb 5, 2026",
     supporters: [],
   },
@@ -70,7 +71,7 @@ function PatientDetail() {
   const [health, setHealth] = useState(base.health);
   const [email, setEmail] = useState(base.email);
   const [phone, setPhone] = useState(base.phone);
-  const [clinicians, setClinicians] = useState(base.clinicians);
+  const [clinicians, setClinicians] = useState(filterActiveClinicians(base.clinicians));
   const [healthErr, setHealthErr] = useState<string | null>(null);
 
   const [confirm1, setConfirm1] = useState(false);
@@ -88,14 +89,14 @@ function PatientDetail() {
   const handleRemove = () => {
     navigate({
       to: "/admin/patients",
-      search: { state: "default", banner: `${base.name} has been removed. Their profile will be permanently deleted on ${deleteDate}.` },
+      search: { state: "default", banner: `${base.name} has been removed. Their profile will be permanently deleted on ${deleteDate}.`, assignedTo: "" },
     });
   };
 
   return (
     <AdminShell heading="">
       <div style={{ maxWidth: 800 }}>
-        <Link to="/admin/patients" search={{ state: "default", banner: "" }} style={{ fontSize: 12, color: WF_MID, textDecoration: "none" }}>
+        <Link to="/admin/patients" search={{ state: "default", banner: "", assignedTo: "" }} style={{ fontSize: 12, color: WF_MID, textDecoration: "none" }}>
           ← Patient management
         </Link>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", margin: "12px 0 24px" }}>
@@ -151,12 +152,16 @@ function PatientDetail() {
           <div style={{ marginTop: 16 }}>
             <Field label="Assigned clinician(s)" helper="Up to 4. All changes are audit-logged.">
               <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 8 }}>
-                {clinicians.map((c) => (
-                  <span key={c} style={{ display: "inline-flex", alignItems: "center", gap: 6, border: `1px solid ${WF_DARK}`, padding: "4px 10px", fontSize: 12 }}>
-                    {c}
-                    <button onClick={() => toggleClin(c)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13 }}>×</button>
-                  </span>
-                ))}
+                {clinicians.length === 0 ? (
+                  <span style={{ fontSize: 12, color: WF_MID, fontStyle: "italic" }}>Unassigned</span>
+                ) : (
+                  clinicians.map((c) => (
+                    <span key={c} style={{ display: "inline-flex", alignItems: "center", gap: 6, border: `1px solid ${WF_DARK}`, padding: "4px 10px", fontSize: 12 }}>
+                      {c}
+                      <button onClick={() => toggleClin(c)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13 }}>×</button>
+                    </span>
+                  ))
+                )}
               </div>
               <Select value="" onChange={(e) => e.target.value && toggleClin(e.target.value)} disabled={clinicians.length >= 4}>
                 <option value="">Add clinician...</option>
