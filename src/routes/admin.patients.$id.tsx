@@ -39,7 +39,7 @@ const MOCK: Record<string, {
   "lucas-okonkwo": {
     name: "Lucas Okonkwo", first: "Lucas", last: "Okonkwo", dob: "2013-08-04", gender: "Male",
     diagnosis: "2024-11-12", health: "9999000002", email: "lucas.o@example.com", phone: "",
-    status: "Active", lastLogin: "1 week ago", clinicians: ["Dr. Sarah Chen"],
+    status: "Active", lastLogin: "1 week ago", clinicians: ["Dr. Sarah Chen", "Dr. James Okafor"],
     inviteDate: "", activeSince: "Feb 5, 2026",
     supporters: [],
   },
