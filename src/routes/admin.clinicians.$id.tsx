@@ -144,6 +144,53 @@ function EditClinician() {
         )}
       </div>
 
+      <Modal open={warn} title={`${base.name} is assigned to ${assignedPatients.length} patient${assignedPatients.length === 1 ? "" : "s"}`} onClose={() => setWarn(false)}>
+        <p style={{ fontSize: 13, color: WF_DARK, margin: "0 0 14px", lineHeight: 1.5 }}>
+          These patients will need to be reassigned to another clinician. You can reassign
+          them now or proceed with the deactivation.
+        </p>
+        <ul style={{ margin: "0 0 18px 18px", padding: 0, fontSize: 12, color: WF_DARK, lineHeight: 1.5 }}>
+          {assignedPatients.slice(0, 5).map((n) => (
+            <li key={n}>{n}</li>
+          ))}
+        </ul>
+        {assignedPatients.length > 5 && (
+          <div style={{ fontSize: 11, color: WF_MID, margin: "-12px 0 18px", fontStyle: "italic" }}>
+            + {assignedPatients.length - 5} more patients
+          </div>
+        )}
+        <div style={{ display: "flex", flexDirection: "column", gap: 8, alignItems: "stretch" }}>
+          <Btn
+            primary
+            onClick={() => {
+              setWarn(false);
+              setConfirm(true);
+            }}
+          >
+            Deactivate anyway →
+          </Btn>
+          <Btn
+            onClick={() => {
+              setWarn(false);
+              navigate({
+                to: "/admin/patients",
+                search: { state: "default", banner: "", assignedTo: id },
+              });
+            }}
+          >
+            Reassign patients first
+          </Btn>
+          <div style={{ textAlign: "center", marginTop: 4 }}>
+            <button
+              onClick={() => setWarn(false)}
+              style={{ background: "none", border: "none", cursor: "pointer", color: WF_DARK, fontSize: 12, textDecoration: "underline", fontFamily: "inherit" }}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </Modal>
+
       <Modal open={confirm} title={`Deactivate ${base.name}?`} onClose={() => setConfirm(false)}>
         <p style={{ fontSize: 13, color: WF_DARK, margin: "0 0 20px", lineHeight: 1.5 }}>
           They will immediately lose access to Haibu and any active sessions will end.
@@ -153,12 +200,13 @@ function EditClinician() {
           <Btn onClick={() => setConfirm(false)}>Cancel</Btn>
           <Btn
             primary
-            onClick={() =>
+            onClick={() => {
+              deactivateClinician(base.name);
               navigate({
                 to: "/admin/clinicians",
                 search: { state: "default", sso, banner: `${base.name} has been deactivated.` },
-              })
-            }
+              });
+            }}
           >
             Yes, deactivate
           </Btn>
