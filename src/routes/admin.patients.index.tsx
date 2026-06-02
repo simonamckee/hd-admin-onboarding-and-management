@@ -1,15 +1,26 @@
-import { createFileRoute, Link, useSearch } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-router";
 import { useMemo, useState, useRef, useEffect } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
 import { Btn, Input, Select, Pill, TextLink } from "@/components/patient-ui";
 import { WF_DARK, WF_MID } from "@/components/wireframe";
+import { CLINICIAN_TO_PATIENT_IDS } from "@/lib/clinician-assignments";
 
 type StateMode = "default" | "empty" | "noresults" | "loading";
+
+const CLINICIAN_NAMES: Record<string, string> = {
+  "sarah-chen": "Dr. Sarah Chen",
+  "james-okafor": "Dr. James Okafor",
+  "priya-mehta": "Nurse Priya Mehta",
+  "lisa-bouchard": "Dr. Lisa Bouchard",
+  "tom-park": "Dietician Tom Park",
+  "kevin-marsh": "Dr. Kevin Marsh",
+};
 
 export const Route = createFileRoute("/admin/patients/")({
   validateSearch: (s: Record<string, unknown>) => ({
     state: (s.state as StateMode) || "default",
     banner: (s.banner as string) || "",
+    assignedTo: (s.assignedTo as string) || "",
   }),
   component: PatientList,
 });
