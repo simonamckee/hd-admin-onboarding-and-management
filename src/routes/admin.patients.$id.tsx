@@ -152,12 +152,16 @@ function PatientDetail() {
           <div style={{ marginTop: 16 }}>
             <Field label="Assigned clinician(s)" helper="Up to 4. All changes are audit-logged.">
               <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 8 }}>
-                {clinicians.map((c) => (
-                  <span key={c} style={{ display: "inline-flex", alignItems: "center", gap: 6, border: `1px solid ${WF_DARK}`, padding: "4px 10px", fontSize: 12 }}>
-                    {c}
-                    <button onClick={() => toggleClin(c)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13 }}>×</button>
-                  </span>
-                ))}
+                {clinicians.length === 0 ? (
+                  <span style={{ fontSize: 12, color: WF_MID, fontStyle: "italic" }}>Unassigned</span>
+                ) : (
+                  clinicians.map((c) => (
+                    <span key={c} style={{ display: "inline-flex", alignItems: "center", gap: 6, border: `1px solid ${WF_DARK}`, padding: "4px 10px", fontSize: 12 }}>
+                      {c}
+                      <button onClick={() => toggleClin(c)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13 }}>×</button>
+                    </span>
+                  ))
+                )}
               </div>
               <Select value="" onChange={(e) => e.target.value && toggleClin(e.target.value)} disabled={clinicians.length >= 4}>
                 <option value="">Add clinician...</option>
