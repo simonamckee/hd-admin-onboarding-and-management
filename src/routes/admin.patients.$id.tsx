@@ -89,7 +89,7 @@ function PatientDetail() {
   const handleRemove = () => {
     navigate({
       to: "/admin/patients",
-      search: { state: "default", banner: `${base.name} has been removed. Their profile will be permanently deleted on ${deleteDate}.` },
+      search: { state: "default", banner: `${base.name} has been removed. Their profile will be permanently deleted on ${deleteDate}.`, assignedTo: "" },
     });
   };
 

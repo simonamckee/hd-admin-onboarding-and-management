@@ -439,7 +439,7 @@ function DoneState() {
           onClick={() =>
             navigate({
               to: "/admin/patients",
-              search: { state: "default", banner: "4 patients uploaded. 3 invitations sent." },
+              search: { state: "default", banner: "4 patients uploaded. 3 invitations sent.", assignedTo: "" },
             })
           }
         >
