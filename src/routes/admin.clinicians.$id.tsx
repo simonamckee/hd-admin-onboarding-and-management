@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
 import { Btn, Card, Field, Input, Select, Pill, Modal, TextLink, DangerDivider } from "@/components/patient-ui";
 import { WF_DARK, WF_MID } from "@/components/wireframe";
+import { ASSIGNED_PATIENTS, deactivateClinician } from "@/lib/clinician-assignments";
 
 export const Route = createFileRoute("/admin/clinicians/$id")({
   validateSearch: (s: Record<string, unknown>) => ({ sso: (s.sso as "on" | "off") || "off" }),
