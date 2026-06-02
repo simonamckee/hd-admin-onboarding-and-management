@@ -71,7 +71,7 @@ function PatientDetail() {
   const [health, setHealth] = useState(base.health);
   const [email, setEmail] = useState(base.email);
   const [phone, setPhone] = useState(base.phone);
-  const [clinicians, setClinicians] = useState(base.clinicians);
+  const [clinicians, setClinicians] = useState(filterActiveClinicians(base.clinicians));
   const [healthErr, setHealthErr] = useState<string | null>(null);
 
   const [confirm1, setConfirm1] = useState(false);
