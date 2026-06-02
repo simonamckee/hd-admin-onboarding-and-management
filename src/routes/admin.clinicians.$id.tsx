@@ -138,7 +138,7 @@ function EditClinician() {
                 in your identity provider. Haibu will reflect the change automatically.
               </div>
             ) : (
-              <Btn onClick={() => setConfirm(true)}>Deactivate clinician</Btn>
+              <Btn onClick={() => (assignedPatients.length > 0 ? setWarn(true) : setConfirm(true))}>Deactivate clinician</Btn>
             )}
           </>
         )}
