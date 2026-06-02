@@ -7,6 +7,7 @@ import {
   formatPHN, phnDigits, isValidPHN,
   PHN_LABEL, PHN_HELPER, PHN_LENGTH_ERROR,
 } from "@/lib/phn";
+import { filterActiveClinicians } from "@/lib/clinician-assignments";
 
 export const Route = createFileRoute("/admin/patients/$id")({ component: PatientDetail });
 
