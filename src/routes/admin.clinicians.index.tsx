@@ -156,10 +156,13 @@ function AddClinicianSplitButton() {
 
 function ClinicianList() {
   const { state, sso, banner } = useSearch({ from: "/admin/clinicians/" });
+  const navigate = useNavigate();
   const [q, setQ] = useState("");
   const [roleFilter, setRoleFilter] = useState("All");
   const [statusFilter, setStatusFilter] = useState("All");
   const [bannerOpen, setBannerOpen] = useState(true);
+  const [warnId, setWarnId] = useState<string | null>(null);
+  const [confirmId, setConfirmId] = useState<string | null>(null);
   const ssoOn = sso === "on";
 
   const visible: Clinician[] = useMemo(() => {
