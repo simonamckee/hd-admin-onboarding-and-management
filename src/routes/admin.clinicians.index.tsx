@@ -271,7 +271,19 @@ function ClinicianList() {
                       <span style={{ display: "inline-flex", gap: 12 }}>
                         <Link to="/admin/clinicians/$id" params={{ id: c.id }} search={{ sso }} style={{ fontSize: 13, color: WF_DARK, textDecoration: "underline" }}>Edit</Link>
                         {!ssoOn && (
-                          <Link to="/admin/clinicians" search={{ state: "default", sso: "off", banner: `${c.name} has been deactivated.` }} style={{ fontSize: 13, color: WF_DARK, textDecoration: "underline" }}>Deactivate</Link>
+                          <button
+                            onClick={() => {
+                              const assigned = ASSIGNED_PATIENTS[c.id] || [];
+                              if (assigned.length > 0) {
+                                setWarnId(c.id);
+                              } else {
+                                setConfirmId(c.id);
+                              }
+                            }}
+                            style={{ fontSize: 13, color: WF_DARK, textDecoration: "underline", background: "none", border: "none", cursor: "pointer", padding: 0, fontFamily: "inherit" }}
+                          >
+                            Deactivate
+                          </button>
                         )}
                       </span>
                     )}
