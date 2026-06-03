@@ -294,7 +294,48 @@ function PatientDetail() {
         {/* Danger zone */}
         <DangerDivider />
         <Btn onClick={() => setConfirm1(true)}>Remove patient</Btn>
+        {dirty && <div style={{ height: 80 }} />}
       </div>
+
+      {dirty && (
+        <div
+          style={{
+            position: "fixed",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            background: "#fff",
+            borderTop: `1px solid ${WF_MID}`,
+            padding: "14px 32px",
+            zIndex: 20,
+          }}
+        >
+          {saveError && (
+            <div style={{ fontSize: 12, color: WF_DARK, marginBottom: 8 }}>
+              Could not save. Please try again.
+            </div>
+          )}
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div style={{ fontSize: 12, color: WF_MID }}>You have unsaved changes.</div>
+            <div style={{ display: "flex", gap: 8 }}>
+              <Btn onClick={discard}>Discard changes</Btn>
+              <Btn primary onClick={save}>Save changes</Btn>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <Modal open={blocker.status === "blocked"} title="You have unsaved changes" onClose={() => blocker.reset?.()}>
+        <p style={{ fontSize: 13, color: WF_DARK, margin: "0 0 20px", lineHeight: 1.5 }}>
+          Navigating away will discard any changes you have made to this patient&apos;s profile.
+        </p>
+        <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 12 }}>
+          <TextLink onClick={() => blocker.reset?.()}>Keep editing</TextLink>
+          <Btn onClick={() => { discard(); blocker.proceed?.(); }}>Discard and leave</Btn>
+          <Btn primary onClick={() => { save(); blocker.proceed?.(); }}>Save and leave</Btn>
+        </div>
+      </Modal>
+
 
       <Modal open={confirm1} title={`Remove ${base.name}?`} onClose={() => setConfirm1(false)}>
         <p style={{ fontSize: 13, color: WF_DARK, margin: "0 0 20px", lineHeight: 1.5 }}>
