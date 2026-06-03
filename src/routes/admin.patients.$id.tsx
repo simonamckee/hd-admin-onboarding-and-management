@@ -66,17 +66,67 @@ function PatientDetail() {
   const navigate = useNavigate();
   const base = MOCK[id] || FALLBACK;
 
-  const [first, setFirst] = useState(base.first);
-  const [last, setLast] = useState(base.last);
-  const [health, setHealth] = useState(base.health);
-  const [email, setEmail] = useState(base.email);
-  const [phone, setPhone] = useState(base.phone);
-  const [clinicians, setClinicians] = useState(filterActiveClinicians(base.clinicians));
+  const [saved, setSaved] = useState({
+    first: base.first,
+    last: base.last,
+    health: base.health,
+    email: base.email,
+    phone: base.phone,
+    clinicians: filterActiveClinicians(base.clinicians),
+  });
+  const [first, setFirst] = useState(saved.first);
+  const [last, setLast] = useState(saved.last);
+  const [health, setHealth] = useState(saved.health);
+  const [email, setEmail] = useState(saved.email);
+  const [phone, setPhone] = useState(saved.phone);
+  const [clinicians, setClinicians] = useState(saved.clinicians);
   const [healthErr, setHealthErr] = useState<string | null>(null);
+  const [savedBanner, setSavedBanner] = useState(false);
+  const [saveError, setSaveError] = useState(false);
+
+  const dirty =
+    first !== saved.first ||
+    last !== saved.last ||
+    health !== saved.health ||
+    email !== saved.email ||
+    phone !== saved.phone ||
+    clinicians.length !== saved.clinicians.length ||
+    clinicians.some((c, i) => c !== saved.clinicians[i]);
+
+  const discard = () => {
+    setFirst(saved.first);
+    setLast(saved.last);
+    setHealth(saved.health);
+    setEmail(saved.email);
+    setPhone(saved.phone);
+    setClinicians(saved.clinicians);
+    setHealthErr(null);
+    setSaveError(false);
+  };
+
+  const save = () => {
+    // Simulated save — always succeeds in prototype
+    setSaved({ first, last, health, email, phone, clinicians });
+    setSaveError(false);
+    setSavedBanner(true);
+  };
+
+  useEffect(() => {
+    if (!savedBanner) return;
+    const t = setTimeout(() => setSavedBanner(false), 4000);
+    return () => clearTimeout(t);
+  }, [savedBanner]);
+
+  const blocker = useBlocker({
+    shouldBlockFn: () => dirty,
+    withResolver: true,
+    enableBeforeUnload: () => dirty,
+  });
 
   const [confirm1, setConfirm1] = useState(false);
   const [confirm2, setConfirm2] = useState(false);
   const [removeText, setRemoveText] = useState("");
+
 
   const toggleClin = (c: string) => {
     if (clinicians.includes(c)) setClinicians(clinicians.filter((x) => x !== c));
