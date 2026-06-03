@@ -1,5 +1,5 @@
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { createFileRoute, useNavigate, Link, useBlocker } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
 import { Btn, Card, Field, Input, Select, Pill, Modal, TextLink, DangerDivider } from "@/components/patient-ui";
 import { WF_DARK, WF_MID } from "@/components/wireframe";
@@ -66,17 +66,67 @@ function PatientDetail() {
   const navigate = useNavigate();
   const base = MOCK[id] || FALLBACK;
 
-  const [first, setFirst] = useState(base.first);
-  const [last, setLast] = useState(base.last);
-  const [health, setHealth] = useState(base.health);
-  const [email, setEmail] = useState(base.email);
-  const [phone, setPhone] = useState(base.phone);
-  const [clinicians, setClinicians] = useState(filterActiveClinicians(base.clinicians));
+  const [saved, setSaved] = useState({
+    first: base.first,
+    last: base.last,
+    health: base.health,
+    email: base.email,
+    phone: base.phone,
+    clinicians: filterActiveClinicians(base.clinicians),
+  });
+  const [first, setFirst] = useState(saved.first);
+  const [last, setLast] = useState(saved.last);
+  const [health, setHealth] = useState(saved.health);
+  const [email, setEmail] = useState(saved.email);
+  const [phone, setPhone] = useState(saved.phone);
+  const [clinicians, setClinicians] = useState(saved.clinicians);
   const [healthErr, setHealthErr] = useState<string | null>(null);
+  const [savedBanner, setSavedBanner] = useState(false);
+  const [saveError, setSaveError] = useState(false);
+
+  const dirty =
+    first !== saved.first ||
+    last !== saved.last ||
+    health !== saved.health ||
+    email !== saved.email ||
+    phone !== saved.phone ||
+    clinicians.length !== saved.clinicians.length ||
+    clinicians.some((c, i) => c !== saved.clinicians[i]);
+
+  const discard = () => {
+    setFirst(saved.first);
+    setLast(saved.last);
+    setHealth(saved.health);
+    setEmail(saved.email);
+    setPhone(saved.phone);
+    setClinicians(saved.clinicians);
+    setHealthErr(null);
+    setSaveError(false);
+  };
+
+  const save = () => {
+    // Simulated save — always succeeds in prototype
+    setSaved({ first, last, health, email, phone, clinicians });
+    setSaveError(false);
+    setSavedBanner(true);
+  };
+
+  useEffect(() => {
+    if (!savedBanner) return;
+    const t = setTimeout(() => setSavedBanner(false), 4000);
+    return () => clearTimeout(t);
+  }, [savedBanner]);
+
+  const blocker = useBlocker({
+    shouldBlockFn: () => dirty,
+    withResolver: true,
+    enableBeforeUnload: () => dirty,
+  });
 
   const [confirm1, setConfirm1] = useState(false);
   const [confirm2, setConfirm2] = useState(false);
   const [removeText, setRemoveText] = useState("");
+
 
   const toggleClin = (c: string) => {
     if (clinicians.includes(c)) setClinicians(clinicians.filter((x) => x !== c));
@@ -103,6 +153,14 @@ function PatientDetail() {
           <h1 style={{ fontSize: 22, fontWeight: 500, margin: 0 }}>{base.name}</h1>
           {statusPill(base.status)}
         </div>
+
+        {savedBanner && (
+          <div style={{ border: `1px solid ${WF_DARK}`, background: "#F5F5F5", padding: "10px 14px", fontSize: 13, color: WF_DARK, marginBottom: 16, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <span>Patient profile updated.</span>
+            <button onClick={() => setSavedBanner(false)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 14, color: WF_MID }}>×</button>
+          </div>
+        )}
+
 
         {/* Section 1 */}
         <Card style={{ marginBottom: 16 }}>
@@ -236,7 +294,48 @@ function PatientDetail() {
         {/* Danger zone */}
         <DangerDivider />
         <Btn onClick={() => setConfirm1(true)}>Remove patient</Btn>
+        {dirty && <div style={{ height: 80 }} />}
       </div>
+
+      {dirty && (
+        <div
+          style={{
+            position: "fixed",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            background: "#fff",
+            borderTop: `1px solid ${WF_MID}`,
+            padding: "14px 32px",
+            zIndex: 20,
+          }}
+        >
+          {saveError && (
+            <div style={{ fontSize: 12, color: WF_DARK, marginBottom: 8 }}>
+              Could not save. Please try again.
+            </div>
+          )}
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div style={{ fontSize: 12, color: WF_MID }}>You have unsaved changes.</div>
+            <div style={{ display: "flex", gap: 8 }}>
+              <Btn onClick={discard}>Discard changes</Btn>
+              <Btn primary onClick={save}>Save changes</Btn>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <Modal open={blocker.status === "blocked"} title="You have unsaved changes" onClose={() => blocker.reset?.()}>
+        <p style={{ fontSize: 13, color: WF_DARK, margin: "0 0 20px", lineHeight: 1.5 }}>
+          Navigating away will discard any changes you have made to this patient&apos;s profile.
+        </p>
+        <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 12 }}>
+          <TextLink onClick={() => blocker.reset?.()}>Keep editing</TextLink>
+          <Btn onClick={() => { discard(); blocker.proceed?.(); }}>Discard and leave</Btn>
+          <Btn primary onClick={() => { save(); blocker.proceed?.(); }}>Save and leave</Btn>
+        </div>
+      </Modal>
+
 
       <Modal open={confirm1} title={`Remove ${base.name}?`} onClose={() => setConfirm1(false)}>
         <p style={{ fontSize: 13, color: WF_DARK, margin: "0 0 20px", lineHeight: 1.5 }}>
