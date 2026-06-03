@@ -154,6 +154,14 @@ function PatientDetail() {
           {statusPill(base.status)}
         </div>
 
+        {savedBanner && (
+          <div style={{ border: `1px solid ${WF_DARK}`, background: "#F5F5F5", padding: "10px 14px", fontSize: 13, color: WF_DARK, marginBottom: 16, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <span>Patient profile updated.</span>
+            <button onClick={() => setSavedBanner(false)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 14, color: WF_MID }}>×</button>
+          </div>
+        )}
+
+
         {/* Section 1 */}
         <Card style={{ marginBottom: 16 }}>
           <SectionTitle>Personal information</SectionTitle>
