@@ -1,8 +1,9 @@
-import { createFileRoute, Link, useSearch } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
-import { Btn, Input, Select, Pill, TextLink } from "@/components/patient-ui";
+import { Btn, Input, Select, Pill, TextLink, Modal } from "@/components/patient-ui";
 import { WF_DARK, WF_MID } from "@/components/wireframe";
+import { ASSIGNED_PATIENTS, deactivateClinician } from "@/lib/clinician-assignments";
 
 type StateMode = "default" | "empty" | "noresults" | "loading";
 type SsoMode = "off" | "on";
