@@ -295,6 +295,95 @@ function ClinicianList() {
         </div>
       )}
 
+      {/* Warning modal */}
+      <Modal
+        open={!!warnId}
+        title={warnId ? `${CLINICIANS.find((c) => c.id === warnId)?.name} is assigned to ${(ASSIGNED_PATIENTS[warnId] || []).length} patient${(ASSIGNED_PATIENTS[warnId] || []).length === 1 ? "" : "s"}` : ""}
+        onClose={() => setWarnId(null)}
+      >
+        {warnId && (
+          <>
+            <p style={{ fontSize: 13, color: WF_DARK, margin: "0 0 14px", lineHeight: 1.5 }}>
+              These patients will need to be reassigned to another clinician. You can reassign
+              them now or proceed with the deactivation.
+            </p>
+            <ul style={{ margin: "0 0 18px 18px", padding: 0, fontSize: 12, color: WF_DARK, lineHeight: 1.5 }}>
+              {(ASSIGNED_PATIENTS[warnId] || []).slice(0, 5).map((n) => (
+                <li key={n}>{n}</li>
+              ))}
+            </ul>
+            {(ASSIGNED_PATIENTS[warnId] || []).length > 5 && (
+              <div style={{ fontSize: 11, color: WF_MID, margin: "-12px 0 18px", fontStyle: "italic" }}>
+                + {(ASSIGNED_PATIENTS[warnId] || []).length - 5} more patients
+              </div>
+            )}
+            <div style={{ display: "flex", flexDirection: "column", gap: 8, alignItems: "stretch" }}>
+              <Btn
+                primary
+                onClick={() => {
+                  setConfirmId(warnId);
+                  setWarnId(null);
+                }}
+              >
+                Deactivate anyway →
+              </Btn>
+              <Btn
+                onClick={() => {
+                  setWarnId(null);
+                  navigate({
+                    to: "/admin/patients",
+                    search: { state: "default", banner: "", assignedTo: warnId },
+                  });
+                }}
+              >
+                Reassign patients first
+              </Btn>
+              <div style={{ textAlign: "center", marginTop: 4 }}>
+                <button
+                  onClick={() => setWarnId(null)}
+                  style={{ background: "none", border: "none", cursor: "pointer", color: WF_DARK, fontSize: 12, textDecoration: "underline", fontFamily: "inherit" }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </>
+        )}
+      </Modal>
+
+      {/* Confirmation modal */}
+      <Modal
+        open={!!confirmId}
+        title={confirmId ? `Deactivate ${CLINICIANS.find((c) => c.id === confirmId)?.name}?` : ""}
+        onClose={() => setConfirmId(null)}
+      >
+        {confirmId && (
+          <>
+            <p style={{ fontSize: 13, color: WF_DARK, margin: "0 0 20px", lineHeight: 1.5 }}>
+              They will immediately lose access to Haibu and any active sessions will end.
+              Their patient assignments will be preserved.
+            </p>
+            <div style={{ display: "flex", justifyContent: "flex-end", gap: 8 }}>
+              <Btn onClick={() => setConfirmId(null)}>Cancel</Btn>
+              <Btn
+                primary
+                onClick={() => {
+                  const name = CLINICIANS.find((c) => c.id === confirmId)?.name || "";
+                  deactivateClinician(name);
+                  setConfirmId(null);
+                  navigate({
+                    to: "/admin/clinicians",
+                    search: { state: "default", sso, banner: `${name} has been deactivated.` },
+                  });
+                }}
+              >
+                Yes, deactivate
+              </Btn>
+            </div>
+          </>
+        )}
+      </Modal>
+
       {/* Prototype state toggles */}
       <div style={{ marginTop: 24, padding: 12, border: `1px dashed ${WF_MID}`, fontSize: 11, color: WF_MID, fontStyle: "italic" }}>
         <div style={{ marginBottom: 6 }}>[ Prototype: switch list state ]</div>
