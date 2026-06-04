@@ -1,8 +1,11 @@
 import { Link } from "@tanstack/react-router";
 import type { ReactNode, CSSProperties } from "react";
-import { WF_DARK, WF_MID } from "./wireframe";
+import {
+  WF_DARK, WF_MID, WF_BG, TEAL, BORDER, SURFACE, HOVER, TINT,
+  SUCCESS_TEXT, SUCCESS_BG, WARN_TEXT, WARN_BG, ERROR_TEXT, ERROR_BG,
+} from "./wireframe";
 
-// ---------- Shared patient-section UI primitives (greyscale) ----------
+// ---------- Shared patient-section UI primitives ----------
 
 export function Btn({
   children,
@@ -23,21 +26,51 @@ export function Btn({
   small?: boolean;
   danger?: boolean;
 }) {
-  const style: CSSProperties = {
+  const base: CSSProperties = {
     display: "inline-block",
     padding: small ? "6px 12px" : "10px 18px",
     fontSize: small ? 12 : 13,
-    border: `1px solid ${disabled ? WF_MID : WF_DARK}`,
-    background: primary && !disabled ? WF_DARK : "#fff",
-    color: primary && !disabled ? "#fff" : disabled ? WF_MID : WF_DARK,
+    fontWeight: 500,
+    borderRadius: 8,
     cursor: disabled ? "not-allowed" : "pointer",
     textDecoration: "none",
     fontFamily: "inherit",
     boxSizing: "border-box",
     width: full ? "100%" : "auto",
     textAlign: "center",
-    borderWidth: danger ? 1 : 1,
   };
+
+  let style: CSSProperties;
+  if (disabled) {
+    style = {
+      ...base,
+      background: BORDER,
+      color: "#fff",
+      border: `1.5px solid ${BORDER}`,
+      opacity: 0.6,
+    };
+  } else if (danger) {
+    style = {
+      ...base,
+      background: "transparent",
+      color: ERROR_TEXT,
+      border: `1.5px solid ${ERROR_TEXT}`,
+    };
+  } else if (primary) {
+    style = {
+      ...base,
+      background: TEAL,
+      color: "#fff",
+      border: `1.5px solid ${TEAL}`,
+    };
+  } else {
+    style = {
+      ...base,
+      background: "transparent",
+      color: TEAL,
+      border: `1.5px solid ${TEAL}`,
+    };
+  }
   if (disabled) return <button style={style} disabled>{children}</button>;
   if (to) return <Link to={to} style={style}>{children}</Link>;
   return <button style={style} onClick={onClick}>{children}</button>;
@@ -46,8 +79,9 @@ export function Btn({
 export function TextLink({ children, onClick, to }: { children: ReactNode; onClick?: () => void; to?: string }) {
   const style: CSSProperties = {
     fontSize: 13,
-    color: WF_DARK,
-    textDecoration: "underline",
+    color: TEAL,
+    fontWeight: 500,
+    textDecoration: "none",
     cursor: "pointer",
     background: "none",
     border: "none",
@@ -73,16 +107,16 @@ export function Field({
 }) {
   return (
     <div style={{ marginBottom: 18 }}>
-      <div style={{ fontSize: 12, color: WF_DARK, marginBottom: 4 }}>
+      <div style={{ fontSize: 12, color: WF_DARK, marginBottom: 4, fontWeight: 500 }}>
         {label}
-        {required && <span style={{ color: WF_DARK }}> *</span>}
+        {required && <span style={{ color: ERROR_TEXT }}> *</span>}
       </div>
       {children}
       {helper && !error && (
         <div style={{ fontSize: 11, color: WF_MID, marginTop: 4 }}>{helper}</div>
       )}
       {error && (
-        <div style={{ fontSize: 11, color: WF_DARK, marginTop: 4, fontWeight: 500 }}>
+        <div style={{ fontSize: 11, color: ERROR_TEXT, marginTop: 4, fontWeight: 500 }}>
           {error}
         </div>
       )}
@@ -93,8 +127,9 @@ export function Field({
 const inputBase: CSSProperties = {
   width: "100%",
   padding: "8px 12px",
-  border: `1px solid ${WF_MID}`,
-  background: "#fff",
+  border: `1.5px solid ${BORDER}`,
+  borderRadius: 8,
+  background: SURFACE,
   fontSize: 13,
   color: WF_DARK,
   fontFamily: "inherit",
@@ -107,9 +142,11 @@ export function Input(props: React.InputHTMLAttributes<HTMLInputElement> & { err
   return (
     <input
       {...rest}
+      className={`hb-input${errored ? " hb-input--error" : ""}`}
       style={{
         ...inputBase,
-        border: `${errored ? 2 : 1}px solid ${errored ? WF_DARK : WF_MID}`,
+        border: errored ? `1.5px solid ${ERROR_TEXT}` : `1.5px solid ${BORDER}`,
+        background: errored ? ERROR_BG : SURFACE,
         ...style,
       }}
     />
@@ -117,23 +154,37 @@ export function Input(props: React.InputHTMLAttributes<HTMLInputElement> & { err
 }
 
 export function Select(props: React.SelectHTMLAttributes<HTMLSelectElement>) {
-  return <select {...props} style={{ ...inputBase, ...(props.style || {}) }} />;
+  return <select {...props} className="hb-input" style={{ ...inputBase, ...(props.style || {}) }} />;
 }
 
-export function Pill({ label, weight }: { label: string; weight: "dark" | "mid" | "light" }) {
-  const styles: Record<string, CSSProperties> = {
-    dark: { background: WF_DARK, color: "#fff", border: `1px solid ${WF_DARK}` },
-    mid: { background: "#E0E0E0", color: WF_DARK, border: `1px solid ${WF_MID}` },
-    light: { background: "#fff", color: WF_DARK, border: `1px solid ${WF_MID}` },
-  };
+type PillWeight = "dark" | "mid" | "light";
+
+export function Pill({ label, weight }: { label: string; weight: PillWeight }) {
+  // Map by label first for semantic accuracy; fall back to weight.
+  const l = label.toLowerCase();
+  let bg: string;
+  let fg: string;
+  if (l === "active") { bg = SUCCESS_BG; fg = SUCCESS_TEXT; }
+  else if (l === "invited" || l === "pending") { bg = WARN_BG; fg = WARN_TEXT; }
+  else if (l === "expired") { bg = ERROR_BG; fg = ERROR_TEXT; }
+  else if (l === "archived") { bg = WF_BG; fg = BORDER; }
+  else if (l === "not yet invited") { bg = WF_BG; fg = WF_MID; }
+  else {
+    // Fallback to weight
+    if (weight === "dark") { bg = SUCCESS_BG; fg = SUCCESS_TEXT; }
+    else if (weight === "mid") { bg = WARN_BG; fg = WARN_TEXT; }
+    else { bg = WF_BG; fg = WF_MID; }
+  }
   return (
     <span
       style={{
         display: "inline-block",
-        padding: "2px 10px",
-        borderRadius: 999,
+        padding: "4px 10px",
+        borderRadius: 8,
         fontSize: 11,
-        ...styles[weight],
+        fontWeight: 500,
+        background: bg,
+        color: fg,
       }}
     >
       {label}
@@ -145,10 +196,11 @@ export function Card({ children, style }: { children: ReactNode; style?: CSSProp
   return (
     <div
       style={{
-        background: "#fff",
-        border: `1px solid ${WF_MID}`,
+        background: SURFACE,
+        border: `1px solid ${BORDER}66`,
         borderRadius: 8,
         padding: 20,
+        boxShadow: "0 1px 3px rgba(0,0,0,0.06)",
         ...style,
       }}
     >
@@ -164,18 +216,20 @@ export function Banner({
   weight: "dark" | "mid" | "light";
   children: ReactNode;
 }) {
-  const border = weight === "dark" ? 2 : weight === "mid" ? 1 : 1;
-  const opacity = weight === "light" ? 0.6 : 1;
+  let bg: string; let fg: string;
+  if (weight === "mid") { bg = WARN_BG; fg = WARN_TEXT; }
+  else if (weight === "light") { bg = HOVER; fg = TEAL; }
+  else { bg = TINT; fg = TEAL; }
   return (
     <div
       style={{
-        border: `${border}px ${weight === "light" ? "dashed" : "solid"} ${WF_DARK}`,
-        background: "#fff",
+        border: `1px solid ${fg}4D`,
+        borderRadius: 8,
+        background: bg,
         padding: "12px 16px",
         fontSize: 13,
-        color: WF_DARK,
+        color: fg,
         marginBottom: 20,
-        opacity,
       }}
     >
       {children}
@@ -187,11 +241,12 @@ export function Callout({ children }: { children: ReactNode }) {
   return (
     <div
       style={{
-        border: `1px solid ${WF_MID}`,
-        background: "#F5F5F5",
+        border: `1px solid ${TEAL}4D`,
+        borderRadius: 8,
+        background: TINT,
         padding: "10px 14px",
         fontSize: 12,
-        color: WF_DARK,
+        color: TEAL,
         lineHeight: 1.5,
         marginBottom: 20,
       }}
@@ -213,6 +268,7 @@ export function StepIndicator({
         const n = i + 1;
         const done = n < step;
         const active = n === step;
+        const filled = active || done;
         return (
           <div key={label} style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -221,10 +277,10 @@ export function StepIndicator({
                   width: 22,
                   height: 22,
                   borderRadius: "50%",
-                  border: `1px solid ${active || done ? WF_DARK : WF_MID}`,
-                  background: active ? WF_DARK : "#fff",
-                  color: active ? "#fff" : done ? WF_DARK : WF_MID,
+                  background: filled ? TEAL : BORDER,
+                  color: "#fff",
                   fontSize: 11,
+                  fontWeight: 500,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -232,12 +288,12 @@ export function StepIndicator({
               >
                 {done ? "✓" : n}
               </div>
-              <span style={{ fontSize: 12, color: active || done ? WF_DARK : WF_MID }}>
+              <span style={{ fontSize: 12, color: filled ? WF_DARK : WF_MID, fontWeight: filled ? 500 : 400 }}>
                 {label}
               </span>
             </div>
             {n < 4 && (
-              <div style={{ width: 24, height: 1, background: WF_MID }} />
+              <div style={{ width: 24, height: 1, background: BORDER }} />
             )}
           </div>
         );
@@ -249,7 +305,7 @@ export function StepIndicator({
 export function DangerDivider() {
   return (
     <div style={{ marginTop: 48 }}>
-      <div style={{ borderTop: `1px solid ${WF_MID}`, paddingTop: 16 }}>
+      <div style={{ borderTop: `1px solid ${BORDER}`, paddingTop: 16 }}>
         <div style={{ fontSize: 11, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 12 }}>
           Danger zone
         </div>
@@ -275,7 +331,7 @@ export function Modal({
       style={{
         position: "fixed",
         inset: 0,
-        background: "rgba(0,0,0,0.4)",
+        background: "rgba(26,26,26,0.45)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -287,8 +343,10 @@ export function Modal({
       <div
         onClick={(e) => e.stopPropagation()}
         style={{
-          background: "#fff",
-          border: `1px solid ${WF_DARK}`,
+          background: SURFACE,
+          border: `1px solid ${BORDER}66`,
+          borderRadius: 8,
+          boxShadow: "0 10px 30px rgba(0,0,0,0.15)",
           padding: 24,
           maxWidth: 440,
           width: "100%",
