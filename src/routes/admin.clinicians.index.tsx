@@ -65,7 +65,7 @@ function AddClinicianSplitButton() {
     height: baseHeight,
     fontSize: 13,
     fontFamily: "inherit",
-    border: `1px solid ${WF_DARK}`,
+    border: `1px solid ${TEAL}`,
     background: TEAL,
     color: "#fff",
     cursor: "pointer",
