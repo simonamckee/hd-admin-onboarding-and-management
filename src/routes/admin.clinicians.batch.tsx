@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-r
 import { useRef, useState } from "react";
 import { AdminShell } from "@/components/admin-shell";
 import { Btn, TextLink, Callout } from "@/components/patient-ui";
-import { WF_DARK, WF_MID } from "@/components/wireframe";
+import { WF_DARK, WF_MID, TEAL } from "@/components/wireframe";
 
 type Stage = "upload" | "review" | "done";
 
@@ -268,7 +268,7 @@ function ReviewState() {
                   bottom: "100%",
                   right: 0,
                   marginBottom: 8,
-                  background: WF_DARK,
+                  background: TEAL,
                   color: "#fff",
                   fontSize: 11,
                   padding: "6px 10px",

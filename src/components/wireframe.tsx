@@ -1,23 +1,44 @@
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 
-export const WF_BG = "#F5F5F5";
-export const WF_LIGHT = "#F5F5F5";
-export const WF_MID = "#9E9E9E";
-export const WF_DARK = "#333333";
+// ============= Haibu Diabetes design tokens =============
+export const WF_BG = "#F4F6ED";        // Page background (warm off-white)
+export const WF_LIGHT = "#F4F6ED";     // Disabled / readonly surfaces
+export const WF_MID = "#737373";       // Secondary text / captions
+export const WF_DARK = "#1A1A1A";      // Primary text
+
+export const TEAL = "#12575C";         // Primary brand
+export const TEAL_DARK = "#0D4449";    // Primary hover
+export const SEAFOAM = "#78C8AB";      // Secondary accent
+export const TINT = "#B7E3F2";         // Selected states / info banners
+export const HOVER = "#D7EEFA";        // Hover fill
+export const BORDER = "#B4B4B4";       // Default border / dividers / disabled
+export const SURFACE = "#FFFFFF";      // Card / modal / input surface
+
+// Semantic
+export const SUCCESS_TEXT = "#1A7F5A";
+export const SUCCESS_BG = "#E8F7F1";
+export const WARN_TEXT = "#B45309";
+export const WARN_BG = "#FEF3E2";
+export const ERROR_TEXT = "#C0392B";
+export const ERROR_BG = "#FDEDEC";
+
+const FONT_STACK = '"Urbanist", system-ui, -apple-system, Segoe UI, sans-serif';
 
 export function TopBar() {
   return (
     <div
       style={{
-        background: WF_DARK,
-        color: "#fff",
+        background: SURFACE,
+        color: WF_DARK,
         padding: "12px 20px",
         fontSize: 14,
-        fontFamily: "Inter, system-ui, sans-serif",
+        fontWeight: 600,
+        fontFamily: FONT_STACK,
+        borderBottom: `1px solid ${BORDER}66`,
       }}
     >
-      Haibu Diabetes
+      <span style={{ color: TEAL }}>Haibu Diabetes</span>
     </div>
   );
 }
@@ -28,7 +49,7 @@ export function Page({ children, noCard = false }: { children: ReactNode; noCard
       style={{
         minHeight: "100vh",
         background: WF_BG,
-        fontFamily: "Inter, system-ui, sans-serif",
+        fontFamily: FONT_STACK,
         color: WF_DARK,
       }}
     >
@@ -41,8 +62,10 @@ export function Page({ children, noCard = false }: { children: ReactNode; noCard
             style={{
               width: "100%",
               maxWidth: 440,
-              background: "#fff",
-              border: `1px solid ${WF_MID}`,
+              background: SURFACE,
+              border: `1px solid ${BORDER}66`,
+              borderRadius: 8,
+              boxShadow: "0 1px 3px rgba(0,0,0,0.06)",
               padding: 28,
               boxSizing: "border-box",
             }}
@@ -64,8 +87,8 @@ export function StepBar({ states }: { states: Array<"done" | "active" | "inactiv
           style={{
             width: 24,
             height: 4,
-            background: s === "inactive" ? WF_LIGHT : WF_DARK,
-            border: s === "inactive" ? `1px solid ${WF_MID}` : "none",
+            borderRadius: 2,
+            background: s === "inactive" ? BORDER : TEAL,
           }}
         />
       ))}
@@ -75,7 +98,7 @@ export function StepBar({ states }: { states: Array<"done" | "active" | "inactiv
 
 export function H({ children, size = 22 }: { children: ReactNode; size?: number }) {
   return (
-    <h1 style={{ fontSize: size, color: WF_DARK, margin: "0 0 12px 0", fontWeight: 600 }}>
+    <h1 style={{ fontSize: size, color: TEAL, margin: "0 0 12px 0", fontWeight: 700 }}>
       {children}
     </h1>
   );
@@ -109,15 +132,18 @@ export function PrimaryButton({
     width: "100%",
     padding: "12px 16px",
     fontSize: 14,
+    fontWeight: 500,
     textAlign: "center",
-    border: `1px solid ${disabled ? WF_MID : WF_DARK}`,
-    background: disabled ? "transparent" : WF_DARK,
-    color: disabled ? WF_MID : "#fff",
+    border: "none",
+    borderRadius: 8,
+    background: disabled ? BORDER : TEAL,
+    color: "#fff",
     cursor: disabled ? "not-allowed" : "pointer",
     textDecoration: "none",
     boxSizing: "border-box",
     fontFamily: "inherit",
     marginTop: 8,
+    opacity: disabled ? 0.6 : 1,
   };
   if (disabled) return <button style={style} disabled>{children}</button>;
   if (href) return <a href={href} style={style}>{children}</a>;
@@ -139,10 +165,12 @@ export function SecondaryButton({
     width: "100%",
     padding: "12px 16px",
     fontSize: 14,
+    fontWeight: 500,
     textAlign: "center",
-    border: `1px solid ${WF_MID}`,
-    background: "#fff",
-    color: WF_DARK,
+    border: `1.5px solid ${TEAL}`,
+    borderRadius: 8,
+    background: "transparent",
+    color: TEAL,
     cursor: "pointer",
     textDecoration: "none",
     boxSizing: "border-box",
@@ -157,13 +185,14 @@ export function ReadOnlyField({ label, value }: { label: string; value: string }
   return (
     <div style={{ marginBottom: 14 }}>
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
-        <span style={{ fontSize: 12, color: WF_DARK }}>{label}</span>
+        <span style={{ fontSize: 12, color: WF_DARK, fontWeight: 500 }}>{label}</span>
         <span style={{ fontSize: 11, color: WF_MID }}>read-only</span>
       </div>
       <div
         style={{
           padding: "10px 12px",
-          border: `1px solid ${WF_MID}`,
+          border: `1.5px solid ${BORDER}`,
+          borderRadius: 8,
           background: WF_LIGHT,
           fontSize: 14,
           color: WF_DARK,
@@ -176,7 +205,7 @@ export function ReadOnlyField({ label, value }: { label: string; value: string }
 }
 
 export function Divider() {
-  return <div style={{ height: 1, background: WF_MID, opacity: 0.4, margin: "20px 0" }} />;
+  return <div style={{ height: 1, background: BORDER, opacity: 0.4, margin: "20px 0" }} />;
 }
 
 export function TestingLink({ to, children }: { to: string; children: ReactNode }) {
@@ -199,7 +228,7 @@ export function TestingLink({ to, children }: { to: string; children: ReactNode 
 
 export function FieldLabel({ children }: { children: ReactNode }) {
   return (
-    <div style={{ fontSize: 12, color: WF_DARK, marginBottom: 4 }}>{children}</div>
+    <div style={{ fontSize: 12, color: WF_DARK, marginBottom: 4, fontWeight: 500 }}>{children}</div>
   );
 }
 
@@ -221,14 +250,15 @@ export function TextInput({
       style={{
         display: "flex",
         alignItems: "center",
-        border: `1px solid ${active ? WF_DARK : WF_MID}`,
+        border: active ? `2px solid ${TEAL}` : `1.5px solid ${BORDER}`,
+        borderRadius: 8,
         padding: "10px 12px",
-        background: "#fff",
+        background: SURFACE,
         marginBottom: 14,
         fontFamily: mono ? "ui-monospace, monospace" : "inherit",
       }}
     >
-      <span style={{ flex: 1, fontSize: 14, color: value ? WF_DARK : WF_MID }}>
+      <span style={{ flex: 1, fontSize: 14, color: value ? WF_DARK : BORDER }}>
         {value || placeholder}
       </span>
       {rightIcon}
@@ -247,8 +277,8 @@ export function EyeIcon() {
 
 export function CheckCircle({ filled }: { filled?: boolean }) {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={filled ? WF_DARK : WF_MID} strokeWidth="1.5">
-      <circle cx="12" cy="12" r="10" fill={filled ? WF_DARK : "none"} stroke={filled ? WF_DARK : WF_MID} />
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={filled ? TEAL : BORDER} strokeWidth="1.5">
+      <circle cx="12" cy="12" r="10" fill={filled ? TEAL : "none"} stroke={filled ? TEAL : BORDER} />
       {filled && <path d="M8 12l3 3 5-6" stroke="#fff" />}
     </svg>
   );
@@ -256,7 +286,7 @@ export function CheckCircle({ filled }: { filled?: boolean }) {
 
 export function CopyIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={WF_DARK} strokeWidth="1.5">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={TEAL} strokeWidth="1.5">
       <rect x="9" y="9" width="13" height="13" />
       <path d="M5 15V5a2 2 0 0 1 2-2h10" />
     </svg>

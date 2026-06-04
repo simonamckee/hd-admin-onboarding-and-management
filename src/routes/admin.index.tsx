@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
-import { WF_DARK, WF_MID } from "@/components/wireframe";
+import { WF_DARK, WF_MID, TEAL } from "@/components/wireframe";
 
 export const Route = createFileRoute("/admin/")({ component: ClinicInformation });
 
@@ -63,7 +63,7 @@ function StatusChip({ text }: { text: string }) {
           width: 8,
           height: 8,
           borderRadius: "50%",
-          background: WF_DARK,
+          background: TEAL,
           display: "inline-block",
         }}
       />

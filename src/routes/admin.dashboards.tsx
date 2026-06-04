@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
-import { WF_BG, WF_DARK, WF_MID } from "@/components/wireframe";
+import { WF_BG, WF_DARK, WF_MID, TEAL } from "@/components/wireframe";
 
 export const Route = createFileRoute("/admin/dashboards")({ component: DashboardTemplates });
 
@@ -966,7 +966,7 @@ function PatientPreview({ modules }: { modules: Module[] }) {
             width: 48,
             height: 48,
             borderRadius: "50%",
-            background: WF_DARK,
+            background: TEAL,
             color: "#fff",
             border: "none",
             fontSize: 20,
@@ -1076,9 +1076,9 @@ function SaveFooter({ tab }: { tab: Tab }) {
         <button
           onClick={onSave}
           style={{
-            background: WF_DARK,
+            background: TEAL,
             color: "#fff",
-            border: `1px solid ${WF_DARK}`,
+            border: `1px solid ${TEAL}`,
             padding: "8px 16px",
             fontSize: 13,
             cursor: "pointer",

@@ -1,6 +1,6 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import type { ReactNode } from "react";
-import { WF_BG, WF_DARK, WF_MID } from "./wireframe";
+import { WF_BG, WF_DARK, WF_MID, TEAL, BORDER, SURFACE } from "./wireframe";
 
 const NAV: Array<{ label: string; to: string }> = [
   { label: "Clinic information", to: "/admin" },
@@ -15,7 +15,7 @@ const NAV: Array<{ label: string; to: string }> = [
 
 function BellIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.5">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={WF_DARK} strokeWidth="1.5">
       <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
       <path d="M10 21a2 2 0 0 0 4 0" />
     </svg>
@@ -26,19 +26,20 @@ export function AdminShell({ heading, children }: { heading: string; children: R
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   return (
-    <div style={{ minHeight: "100vh", background: WF_BG, fontFamily: "Inter, system-ui, sans-serif", color: WF_DARK }}>
+    <div style={{ minHeight: "100vh", background: WF_BG, color: WF_DARK }}>
       {/* Top bar */}
       <div
         style={{
-          background: WF_DARK,
-          color: "#fff",
+          background: SURFACE,
+          color: WF_DARK,
           padding: "10px 20px",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
+          borderBottom: `1px solid ${BORDER}4D`,
         }}
       >
-        <span style={{ fontSize: 14 }}>Haibu Diabetes</span>
+        <span style={{ fontSize: 14, fontWeight: 600, color: TEAL }}>Haibu Diabetes</span>
         <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
           <BellIcon />
           <div
@@ -46,17 +47,18 @@ export function AdminShell({ heading, children }: { heading: string; children: R
               width: 28,
               height: 28,
               borderRadius: "50%",
-              border: "1px solid #fff",
+              background: TEAL,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               fontSize: 11,
+              fontWeight: 600,
               color: "#fff",
             }}
           >
             SR
           </div>
-          <span style={{ fontSize: 12, color: "#fff" }}>Admin</span>
+          <span style={{ fontSize: 12, color: WF_DARK, fontWeight: 500 }}>Admin</span>
         </div>
       </div>
 
@@ -65,8 +67,7 @@ export function AdminShell({ heading, children }: { heading: string; children: R
         <aside
           style={{
             width: 220,
-            background: "#fff",
-            borderRight: `0.5px solid ${WF_MID}`,
+            background: TEAL,
             display: "flex",
             flexDirection: "column",
           }}
@@ -76,9 +77,10 @@ export function AdminShell({ heading, children }: { heading: string; children: R
               padding: 16,
               marginBottom: 20,
               fontSize: 11,
-              color: WF_MID,
+              color: "rgba(255,255,255,0.7)",
               textTransform: "uppercase",
               letterSpacing: 0.5,
+              fontWeight: 600,
             }}
           >
             Admin section
@@ -96,10 +98,11 @@ export function AdminShell({ heading, children }: { heading: string; children: R
                     lineHeight: "40px",
                     padding: "0 16px",
                     fontSize: 13,
-                    color: WF_DARK,
+                    fontWeight: 500,
+                    color: active ? "#fff" : "rgba(255,255,255,0.7)",
                     textDecoration: "none",
-                    background: active ? "#F5F5F5" : "transparent",
-                    borderLeft: active ? `2px solid ${WF_DARK}` : "2px solid transparent",
+                    background: active ? "rgba(255,255,255,0.12)" : "transparent",
+                    borderLeft: active ? "3px solid #fff" : "3px solid transparent",
                     boxSizing: "border-box",
                   }}
                 >
@@ -108,10 +111,16 @@ export function AdminShell({ heading, children }: { heading: string; children: R
               );
             })}
           </nav>
-          <div style={{ borderTop: `0.5px solid ${WF_MID}`, padding: 16 }}>
+          <div style={{ borderTop: "1px solid rgba(255,255,255,0.15)", padding: 16 }}>
+            <div style={{ fontSize: 12, color: "rgba(255,255,255,0.7)", marginBottom: 4 }}>
+              Sarah Reid
+            </div>
+            <div style={{ fontSize: 11, color: "rgba(255,255,255,0.5)", marginBottom: 12 }}>
+              Clinic Admin
+            </div>
             <Link
               to="/complete"
-              style={{ fontSize: 13, color: WF_MID, textDecoration: "none" }}
+              style={{ fontSize: 12, color: "rgba(255,255,255,0.7)", textDecoration: "none" }}
             >
               ← Back to clinic
             </Link>
@@ -120,7 +129,7 @@ export function AdminShell({ heading, children }: { heading: string; children: R
 
         {/* Main */}
         <main style={{ flex: 1, padding: 32, background: WF_BG }}>
-          <h1 style={{ fontSize: 20, fontWeight: 500, color: WF_DARK, margin: "0 0 24px 0" }}>
+          <h1 style={{ fontSize: 22, fontWeight: 700, color: TEAL, margin: "0 0 24px 0" }}>
             {heading}
           </h1>
           {children}

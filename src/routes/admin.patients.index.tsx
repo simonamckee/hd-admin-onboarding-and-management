@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-r
 import { useMemo, useState, useRef, useEffect } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
 import { Btn, Input, Select, Pill, TextLink } from "@/components/patient-ui";
-import { WF_DARK, WF_MID } from "@/components/wireframe";
+import { WF_DARK, WF_MID, TEAL } from "@/components/wireframe";
 import { CLINICIAN_TO_PATIENT_IDS } from "@/lib/clinician-assignments";
 
 type StateMode = "default" | "empty" | "noresults" | "loading";
@@ -91,8 +91,8 @@ function AddPatientSplitButton() {
     height: baseHeight,
     fontSize: 13,
     fontFamily: "inherit",
-    border: `1px solid ${WF_DARK}`,
-    background: WF_DARK,
+    border: `1px solid ${TEAL}`,
+    background: TEAL,
     color: "#fff",
     cursor: "pointer",
     textDecoration: "none",

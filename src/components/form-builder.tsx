@@ -2,7 +2,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
 import { Btn, Input, TextLink, Pill, Modal } from "@/components/patient-ui";
-import { WF_DARK, WF_MID } from "@/components/wireframe";
+import { WF_DARK, WF_MID, TEAL } from "@/components/wireframe";
 
 export type QType = "Yes / No" | "Free text" | "Number / Rating" | "Multiple choice" | "Date";
 
@@ -311,7 +311,7 @@ export function FormBuilder({ mode, existing }: { mode: "new" | "edit"; existing
 
         {/* Undo toast */}
         {deleted && (
-          <div style={{ position: "fixed", left: "50%", bottom: 80, transform: "translateX(-50%)", background: WF_DARK, color: "#fff", padding: "10px 16px", fontSize: 13, display: "flex", alignItems: "center", gap: 16, zIndex: 30 }}>
+          <div style={{ position: "fixed", left: "50%", bottom: 80, transform: "translateX(-50%)", background: TEAL, color: "#fff", padding: "10px 16px", fontSize: 13, display: "flex", alignItems: "center", gap: 16, zIndex: 30 }}>
             <span>Question deleted</span>
             <button
               onClick={undoDelete}

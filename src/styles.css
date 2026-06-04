@@ -137,8 +137,22 @@
     border-color: var(--color-border);
   }
 
-  body {
-    background-color: var(--color-background);
-    color: var(--color-foreground);
+  html, body {
+    font-family: "Urbanist", system-ui, -apple-system, "Segoe UI", sans-serif;
+    background-color: #F4F6ED;
+    color: #1A1A1A;
   }
 }
+
+/* Haibu Diabetes — focus + hover states for inline-styled inputs */
+.hb-input:focus {
+  border: 2px solid #12575C !important;
+  outline: none;
+}
+.hb-input::placeholder {
+  color: #B4B4B4;
+}
+.hb-input--error:focus {
+  border: 2px solid #C0392B !important;
+}
+
