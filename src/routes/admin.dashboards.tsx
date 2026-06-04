@@ -1078,7 +1078,7 @@ function SaveFooter({ tab }: { tab: Tab }) {
           style={{
             background: TEAL,
             color: "#fff",
-            border: `1px solid ${WF_DARK}`,
+            border: `1px solid ${TEAL}`,
             padding: "8px 16px",
             fontSize: 13,
             cursor: "pointer",
