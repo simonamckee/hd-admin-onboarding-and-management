@@ -92,7 +92,7 @@ function AddPatientSplitButton() {
     fontSize: 13,
     fontFamily: "inherit",
     border: `1px solid ${WF_DARK}`,
-    background: WF_DARK,
+    background: TEAL,
     color: "#fff",
     cursor: "pointer",
     textDecoration: "none",

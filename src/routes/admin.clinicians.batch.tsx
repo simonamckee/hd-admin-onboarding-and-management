@@ -268,7 +268,7 @@ function ReviewState() {
                   bottom: "100%",
                   right: 0,
                   marginBottom: 8,
-                  background: WF_DARK,
+                  background: TEAL,
                   color: "#fff",
                   fontSize: 11,
                   padding: "6px 10px",

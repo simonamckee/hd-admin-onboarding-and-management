@@ -966,7 +966,7 @@ function PatientPreview({ modules }: { modules: Module[] }) {
             width: 48,
             height: 48,
             borderRadius: "50%",
-            background: WF_DARK,
+            background: TEAL,
             color: "#fff",
             border: "none",
             fontSize: 20,
@@ -1076,7 +1076,7 @@ function SaveFooter({ tab }: { tab: Tab }) {
         <button
           onClick={onSave}
           style={{
-            background: WF_DARK,
+            background: TEAL,
             color: "#fff",
             border: `1px solid ${WF_DARK}`,
             padding: "8px 16px",

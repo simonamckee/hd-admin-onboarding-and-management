@@ -311,7 +311,7 @@ export function FormBuilder({ mode, existing }: { mode: "new" | "edit"; existing
 
         {/* Undo toast */}
         {deleted && (
-          <div style={{ position: "fixed", left: "50%", bottom: 80, transform: "translateX(-50%)", background: WF_DARK, color: "#fff", padding: "10px 16px", fontSize: 13, display: "flex", alignItems: "center", gap: 16, zIndex: 30 }}>
+          <div style={{ position: "fixed", left: "50%", bottom: 80, transform: "translateX(-50%)", background: TEAL, color: "#fff", padding: "10px 16px", fontSize: 13, display: "flex", alignItems: "center", gap: 16, zIndex: 30 }}>
             <span>Question deleted</span>
             <button
               onClick={undoDelete}

@@ -63,7 +63,7 @@ function StatusChip({ text }: { text: string }) {
           width: 8,
           height: 8,
           borderRadius: "50%",
-          background: WF_DARK,
+          background: TEAL,
           display: "inline-block",
         }}
       />
