@@ -17,7 +17,7 @@ export function SaveDraftButton({
       <button
         onClick={onSave}
         style={{
-          fontSize: 13,
+          fontSize: 15,
           color: WF_DARK,
           background: "none",
           border: "none",
@@ -33,7 +33,7 @@ export function SaveDraftButton({
       <span
         aria-live="polite"
         style={{
-          fontSize: 12,
+          fontSize: 14,
           color: WF_MID,
           opacity: flash ? 1 : 0,
           transition: "opacity 300ms ease",
@@ -93,7 +93,7 @@ export function useDraftPersistence<T>(args: {
   const modal =
     blocker.status === "blocked" ? (
       <Modal open title="You have unsaved changes" onClose={() => blocker.reset()}>
-        <p style={{ fontSize: 13, color: WF_DARK, margin: "0 0 20px", lineHeight: 1.5 }}>
+        <p style={{ fontSize: 15, color: WF_DARK, margin: "0 0 20px", lineHeight: 1.5 }}>
           Save a draft before leaving? You can resume this profile later from
           where you left off.
         </p>
@@ -149,7 +149,7 @@ export function ResumeDraftBanner({
         flexWrap: "wrap",
       }}
     >
-      <div style={{ fontSize: 13, color: WF_DARK }}>{message}</div>
+      <div style={{ fontSize: 15, color: WF_DARK }}>{message}</div>
       <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
         <TextLink onClick={onResume}>Resume draft →</TextLink>
         <TextLink onClick={onStartFresh}>Start fresh</TextLink>

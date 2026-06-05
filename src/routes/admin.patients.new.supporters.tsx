@@ -53,13 +53,13 @@ function Step2() {
   return (
     <AdminShell heading="">
       <div style={{ maxWidth: 720 }}>
-        <h1 style={{ fontSize: 22, fontWeight: 500, margin: "0 0 6px" }}>Add supporters</h1>
-        <div style={{ fontSize: 12, color: WF_MID, marginBottom: 24 }}>Step 2 of 4</div>
+        <h1 style={{ fontSize: 24, fontWeight: 500, margin: "0 0 6px" }}>Add supporters</h1>
+        <div style={{ fontSize: 14, color: WF_MID, marginBottom: 24 }}>Step 2 of 4</div>
 
         <StepIndicator step={2} />
 
         {/* Prototype banner state switcher */}
-        <div style={{ marginBottom: 12, fontSize: 11, color: WF_MID, fontStyle: "italic" }}>
+        <div style={{ marginBottom: 12, fontSize: 13, color: WF_MID, fontStyle: "italic" }}>
           [ Prototype: banner state ]{" "}
           {(["required", "advisory", "optional"] as BannerMode[]).map((b, i) => (
             <span key={b}>
@@ -94,7 +94,7 @@ function Step2() {
         {supporters.map((s, i) => (
           <div key={i} style={{ border: `1px solid ${WF_MID}`, background: "#fff", padding: 20, marginBottom: 16, position: "relative" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-              <div style={{ fontSize: 12, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5 }}>
+              <div style={{ fontSize: 14, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5 }}>
                 Supporter {i + 1}
               </div>
               {i > 0 && <TextLink onClick={() => remove(i)}>Remove</TextLink>}
@@ -132,7 +132,7 @@ function Step2() {
         {supporters.length < 6 ? (
           <Btn onClick={add}>+ Add another supporter</Btn>
         ) : (
-          <div style={{ fontSize: 12, color: WF_MID, fontStyle: "italic" }}>
+          <div style={{ fontSize: 14, color: WF_MID, fontStyle: "italic" }}>
             Maximum 6 supporters at profile creation. The patient can add more later from their profile.
           </div>
         )}

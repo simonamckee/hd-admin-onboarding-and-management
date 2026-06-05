@@ -31,15 +31,15 @@ function Step4() {
             width: 64, height: 64, borderRadius: "50%",
             border: `2px solid ${WF_DARK}`, margin: "0 auto 24px",
             display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: 32, color: WF_DARK,
+            fontSize: 34, color: WF_DARK,
           }}
         >
           ✓
         </div>
-        <h1 style={{ fontSize: 22, fontWeight: 500, margin: "0 0 12px", color: WF_DARK }}>
+        <h1 style={{ fontSize: 24, fontWeight: 500, margin: "0 0 12px", color: WF_DARK }}>
           {inviteYes ? "Invitations sent" : "Patient profile saved"}
         </h1>
-        <p style={{ fontSize: 14, color: WF_MID, margin: "0 0 32px", lineHeight: 1.5 }}>
+        <p style={{ fontSize: 16, color: WF_MID, margin: "0 0 32px", lineHeight: 1.5 }}>
           {inviteYes
             ? `Invitations have been sent to ${patientName} and ${supporterCount} supporter(s).`
             : `${patientName}'s profile has been created. They can be invited later.`}

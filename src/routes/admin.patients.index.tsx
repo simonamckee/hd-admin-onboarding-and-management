@@ -60,7 +60,7 @@ function StatusCell({ p }: { p: Patient }) {
     <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "flex-start" }}>
       {statusPill(p.status)}
       {p.bounced && (
-        <span style={{ fontSize: 10, color: WF_DARK, fontWeight: 600, border: `1.5px solid ${WF_DARK}`, padding: "1px 6px", textTransform: "uppercase", letterSpacing: 0.5 }}>
+        <span style={{ fontSize: 12, color: WF_DARK, fontWeight: 600, border: `1.5px solid ${WF_DARK}`, padding: "1px 6px", textTransform: "uppercase", letterSpacing: 0.5 }}>
           Bounced
         </span>
       )}
@@ -89,7 +89,7 @@ function AddPatientSplitButton() {
     alignItems: "center",
     justifyContent: "center",
     height: baseHeight,
-    fontSize: 13,
+    fontSize: 15,
     fontFamily: "inherit",
     border: `1px solid ${TEAL}`,
     background: TEAL,
@@ -150,7 +150,7 @@ function AddPatientSplitButton() {
             style={{
               display: "block",
               padding: "10px 14px",
-              fontSize: 13,
+              fontSize: 15,
               color: WF_DARK,
               textDecoration: "none",
               whiteSpace: "nowrap",
@@ -168,7 +168,7 @@ function AddPatientSplitButton() {
             style={{
               display: "block",
               padding: "10px 14px",
-              fontSize: 13,
+              fontSize: 15,
               color: WF_DARK,
               textDecoration: "none",
               whiteSpace: "nowrap",
@@ -214,7 +214,7 @@ function PatientList() {
     <AdminShell heading="">
       {/* Header row */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8, marginTop: -8 }}>
-        <h1 style={{ fontSize: 20, fontWeight: 500, color: WF_DARK, margin: 0 }}>
+        <h1 style={{ fontSize: 22, fontWeight: 500, color: WF_DARK, margin: 0 }}>
           Patient management
         </h1>
         <AddPatientSplitButton />
@@ -230,7 +230,7 @@ function PatientList() {
               gap: 8,
               border: `1px solid ${WF_DARK}`,
               padding: "6px 10px",
-              fontSize: 12,
+              fontSize: 14,
               color: WF_DARK,
               background: "#F5F5F5",
             }}
@@ -239,7 +239,7 @@ function PatientList() {
             <button
               onClick={clearAssignedFilter}
               aria-label="Clear filter"
-              style={{ background: "none", border: "none", cursor: "pointer", color: WF_DARK, fontSize: 14, lineHeight: 1, padding: 0 }}
+              style={{ background: "none", border: "none", cursor: "pointer", color: WF_DARK, fontSize: 16, lineHeight: 1, padding: 0 }}
             >
               ×
             </button>
@@ -254,7 +254,7 @@ function PatientList() {
             border: `1px solid ${WF_DARK}`,
             background: "#fff",
             padding: "10px 14px",
-            fontSize: 13,
+            fontSize: 15,
             color: WF_DARK,
             margin: "16px 0",
             display: "flex",
@@ -265,7 +265,7 @@ function PatientList() {
           <span>{banner}</span>
           <button
             onClick={() => setBannerOpen(false)}
-            style={{ background: "none", border: "none", cursor: "pointer", color: WF_DARK, fontSize: 16 }}
+            style={{ background: "none", border: "none", cursor: "pointer", color: WF_DARK, fontSize: 18 }}
           >
             ×
           </button>
@@ -279,7 +279,7 @@ function PatientList() {
             border: `2px solid ${WF_DARK}`,
             background: "#fff",
             padding: "12px 16px",
-            fontSize: 13,
+            fontSize: 15,
             color: WF_DARK,
             margin: "16px 0",
             display: "flex",
@@ -293,7 +293,7 @@ function PatientList() {
           </span>
           <button
             onClick={() => setStatusFilter("Expired")}
-            style={{ background: "none", border: "none", cursor: "pointer", color: WF_DARK, fontSize: 13, textDecoration: "underline", fontFamily: "inherit", padding: 0 }}
+            style={{ background: "none", border: "none", cursor: "pointer", color: WF_DARK, fontSize: 15, textDecoration: "underline", fontFamily: "inherit", padding: 0 }}
           >
             Review
           </button>
@@ -316,7 +316,7 @@ function PatientList() {
           <option>Not yet invited</option>
           <option>Expired</option>
         </Select>
-        <div style={{ flex: 1, textAlign: "right", fontSize: 12, color: WF_MID }}>
+        <div style={{ flex: 1, textAlign: "right", fontSize: 14, color: WF_MID }}>
           {state === "empty" ? "0 patients" : `${PATIENTS.length} patients`}
         </div>
       </div>
@@ -330,11 +330,11 @@ function PatientList() {
         <NoResultsState query="Smith" />
       ) : (
         <div style={{ background: "#fff", border: `1px solid ${WF_MID}` }}>
-          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 15 }}>
             <thead>
               <tr style={{ background: "#F5F5F5", borderBottom: `1px solid ${WF_MID}` }}>
                 {["Name", "Health number", "Status", "Date added", "Last login", "Actions"].map((h) => (
-                  <th key={h} style={{ padding: "10px 14px", textAlign: "left", fontSize: 11, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, fontWeight: 500 }}>
+                  <th key={h} style={{ padding: "10px 14px", textAlign: "left", fontSize: 13, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, fontWeight: 500 }}>
                     {h}
                   </th>
                 ))}
@@ -356,7 +356,7 @@ function PatientList() {
                     <Link
                       to="/admin/patients/$id"
                       params={{ id: p.id }}
-                      style={{ fontSize: 13, color: WF_DARK, textDecoration: "underline" }}
+                      style={{ fontSize: 15, color: WF_DARK, textDecoration: "underline" }}
                     >
                       View
                     </Link>
@@ -369,7 +369,7 @@ function PatientList() {
       )}
 
       {/* Prototype state toggles */}
-      <div style={{ marginTop: 24, padding: 12, border: `1px dashed ${WF_MID}`, fontSize: 11, color: WF_MID, fontStyle: "italic" }}>
+      <div style={{ marginTop: 24, padding: 12, border: `1px dashed ${WF_MID}`, fontSize: 13, color: WF_MID, fontStyle: "italic" }}>
         <div style={{ marginBottom: 6 }}>[ Prototype: switch list state ]</div>
         <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
           {(["default", "empty", "noresults", "loading"] as StateMode[]).map((s) => (
@@ -378,7 +378,7 @@ function PatientList() {
               to="/admin/patients"
               search={{ state: s, banner: "", assignedTo: "" }}
               style={{
-                fontSize: 11,
+                fontSize: 13,
                 color: state === s ? WF_DARK : WF_MID,
                 textDecoration: "underline",
                 fontWeight: state === s ? 600 : 400,
@@ -412,11 +412,11 @@ function SkeletonTable() {
 function EmptyState() {
   return (
     <div style={{ background: "#fff", border: `1px solid ${WF_MID}`, padding: 60, textAlign: "center" }}>
-      <div style={{ width: 48, height: 48, border: `1.5px solid ${WF_MID}`, borderRadius: "50%", margin: "0 auto 16px", display: "flex", alignItems: "center", justifyContent: "center", color: WF_MID, fontSize: 22 }}>
+      <div style={{ width: 48, height: 48, border: `1.5px solid ${WF_MID}`, borderRadius: "50%", margin: "0 auto 16px", display: "flex", alignItems: "center", justifyContent: "center", color: WF_MID, fontSize: 24 }}>
         ○
       </div>
-      <div style={{ fontSize: 16, color: WF_DARK, marginBottom: 6 }}>No patients yet</div>
-      <div style={{ fontSize: 13, color: WF_MID, marginBottom: 20 }}>
+      <div style={{ fontSize: 18, color: WF_DARK, marginBottom: 6 }}>No patients yet</div>
+      <div style={{ fontSize: 15, color: WF_MID, marginBottom: 20 }}>
         Add your first patient to get started
       </div>
       <Btn primary to="/admin/patients/new">+ Add new patient</Btn>
@@ -427,7 +427,7 @@ function EmptyState() {
 function NoResultsState({ query }: { query: string }) {
   return (
     <div style={{ background: "#fff", border: `1px solid ${WF_MID}`, padding: 60, textAlign: "center" }}>
-      <div style={{ fontSize: 14, color: WF_DARK, marginBottom: 12 }}>
+      <div style={{ fontSize: 16, color: WF_DARK, marginBottom: 12 }}>
         No patients match &quot;{query}&quot;
       </div>
       <TextLink to="/admin/patients">Clear search</TextLink>

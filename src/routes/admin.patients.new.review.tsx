@@ -10,8 +10,8 @@ export const Route = createFileRoute("/admin/patients/new/review")({ component: 
 
 function RowKV({ k, v }: { k: string; v: React.ReactNode }) {
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "200px 1fr", gap: 16, padding: "10px 0", borderBottom: `0.5px solid ${WF_MID}`, fontSize: 13 }}>
-      <div style={{ color: WF_MID, fontSize: 12, textTransform: "uppercase", letterSpacing: 0.5 }}>{k}</div>
+    <div style={{ display: "grid", gridTemplateColumns: "200px 1fr", gap: 16, padding: "10px 0", borderBottom: `0.5px solid ${WF_MID}`, fontSize: 15 }}>
+      <div style={{ color: WF_MID, fontSize: 14, textTransform: "uppercase", letterSpacing: 0.5 }}>{k}</div>
       <div style={{ color: WF_DARK }}>{v}</div>
     </div>
   );
@@ -31,14 +31,14 @@ function Step3() {
   return (
     <AdminShell heading="">
       <div style={{ maxWidth: 720 }}>
-        <h1 style={{ fontSize: 22, fontWeight: 500, margin: "0 0 6px" }}>Review and send invitations</h1>
-        <div style={{ fontSize: 12, color: WF_MID, marginBottom: 24 }}>Step 3 of 4</div>
+        <h1 style={{ fontSize: 24, fontWeight: 500, margin: "0 0 6px" }}>Review and send invitations</h1>
+        <div style={{ fontSize: 14, color: WF_MID, marginBottom: 24 }}>Step 3 of 4</div>
 
         <StepIndicator step={3} />
 
         <Card style={{ marginBottom: 16 }}>
           <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
-            <div style={{ fontSize: 14, fontWeight: 600, color: WF_DARK }}>Patient information</div>
+            <div style={{ fontSize: 16, fontWeight: 600, color: WF_DARK }}>Patient information</div>
             <TextLink onClick={() => navigate({ to: "/admin/patients/new" })}>Edit</TextLink>
           </div>
           <RowKV k="Full name" v={`${d.firstName || "—"} ${d.lastName || ""}`} />
@@ -58,11 +58,11 @@ function Step3() {
 
         <Card style={{ marginBottom: 24 }}>
           <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
-            <div style={{ fontSize: 14, fontWeight: 600, color: WF_DARK }}>Supporters</div>
+            <div style={{ fontSize: 16, fontWeight: 600, color: WF_DARK }}>Supporters</div>
             <TextLink onClick={() => navigate({ to: "/admin/patients/new/supporters" })}>Edit</TextLink>
           </div>
           {d.supporters.filter((s) => s.firstName).length === 0 ? (
-            <div style={{ fontSize: 13, color: WF_MID, padding: "10px 0" }}>No supporters added.</div>
+            <div style={{ fontSize: 15, color: WF_MID, padding: "10px 0" }}>No supporters added.</div>
           ) : (
             d.supporters.filter((s) => s.firstName).map((s, i) => (
               <RowKV

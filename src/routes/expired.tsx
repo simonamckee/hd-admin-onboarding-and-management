@@ -32,7 +32,7 @@ function Screen1B() {
         </Body>
       </div>
       <PrimaryButton href="mailto:support@haibudiabetes.com">Contact support</PrimaryButton>
-      <div style={{ textAlign: "center", fontSize: 12, color: WF_MID, marginTop: 16 }}>
+      <div style={{ textAlign: "center", fontSize: 14, color: WF_MID, marginTop: 16 }}>
         Email us at <span style={{ color: WF_DARK }}>support@haibudiabetes.com</span> and we'll send a new invitation.
       </div>
       <BackLink to="/" />

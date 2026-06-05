@@ -45,7 +45,7 @@ function DashboardTemplates() {
 
   return (
     <AdminShell heading="">
-      <h1 style={{ fontSize: 22, fontWeight: 500, margin: "0 0 16px", color: WF_DARK }}>
+      <h1 style={{ fontSize: 24, fontWeight: 500, margin: "0 0 16px", color: WF_DARK }}>
         Dashboard templates
       </h1>
 
@@ -60,7 +60,7 @@ function DashboardTemplates() {
                 background: "transparent",
                 border: "none",
                 padding: "10px 16px",
-                fontSize: 14,
+                fontSize: 16,
                 color: active ? WF_DARK : WF_MID,
                 fontWeight: active ? 600 : 400,
                 borderBottom: active ? `2px solid ${WF_DARK}` : "2px solid transparent",
@@ -74,7 +74,7 @@ function DashboardTemplates() {
         })}
       </div>
 
-      <p style={{ fontSize: 13, color: WF_MID, margin: "0 0 24px", lineHeight: 1.5 }}>{helper}</p>
+      <p style={{ fontSize: 15, color: WF_MID, margin: "0 0 24px", lineHeight: 1.5 }}>{helper}</p>
 
       {tab === "clinician" ? <ClinicianBuilder /> : <PatientBuilder />}
 
@@ -258,7 +258,7 @@ function ColumnZone({
     >
       <div
         style={{
-          fontSize: 11,
+          fontSize: 13,
           color: WF_MID,
           textTransform: "uppercase",
           letterSpacing: 0.5,
@@ -339,10 +339,10 @@ function ModuleCard({
         cursor: draggable ? "grab" : "default",
       }}
     >
-      <span style={{ color: WF_MID, cursor: "grab", fontSize: 14, userSelect: "none" }}>⋮⋮</span>
-      <span style={{ flex: 1, fontSize: 14, color: WF_DARK }}>{m.name}</span>
+      <span style={{ color: WF_MID, cursor: "grab", fontSize: 16, userSelect: "none" }}>⋮⋮</span>
+      <span style={{ flex: 1, fontSize: 16, color: WF_DARK }}>{m.name}</span>
       {m.required && (
-        <span style={{ fontSize: 11, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.3 }}>
+        <span style={{ fontSize: 13, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.3 }}>
           Required
         </span>
       )}
@@ -367,7 +367,7 @@ function iconBtnStyle(enabled: boolean): React.CSSProperties {
     border: `1px solid ${enabled ? WF_MID : "#E0E0E0"}`,
     width: 24,
     height: 24,
-    fontSize: 12,
+    fontSize: 14,
     color: enabled ? WF_DARK : "#CCC",
     cursor: enabled ? "pointer" : "not-allowed",
     padding: 0,
@@ -392,7 +392,7 @@ function MessagesInfoRow({ rightText, tooltip }: { rightText: string; tooltip: s
           marginBottom: 16,
         }}
       >
-        <span style={{ fontSize: 14 }}>Messages</span>
+        <span style={{ fontSize: 16 }}>Messages</span>
         <span
           title={tooltip}
           style={{
@@ -403,14 +403,14 @@ function MessagesInfoRow({ rightText, tooltip }: { rightText: string; tooltip: s
             border: `1px solid ${WF_MID}`,
             alignItems: "center",
             justifyContent: "center",
-            fontSize: 10,
+            fontSize: 12,
             cursor: "help",
           }}
         >
           ⓘ
         </span>
         <span style={{ flex: 1 }} />
-        <span style={{ fontSize: 12 }}>{rightText}</span>
+        <span style={{ fontSize: 14 }}>{rightText}</span>
       </div>
     </>
   );
@@ -422,7 +422,7 @@ function RemovedModules({ removed, onAddBack }: { removed: Module[]; onAddBack: 
     <div style={{ marginBottom: 16 }}>
       <div
         style={{
-          fontSize: 11,
+          fontSize: 13,
           color: WF_MID,
           textTransform: "uppercase",
           letterSpacing: 0.5,
@@ -444,14 +444,14 @@ function RemovedModules({ removed, onAddBack }: { removed: Module[]; onAddBack: 
               alignItems: "center",
             }}
           >
-            <span style={{ flex: 1, fontSize: 13 }}>{m.name}</span>
+            <span style={{ flex: 1, fontSize: 15 }}>{m.name}</span>
             <button
               onClick={() => onAddBack(m.id)}
               style={{
                 background: "transparent",
                 border: "none",
                 color: WF_DARK,
-                fontSize: 12,
+                fontSize: 14,
                 textDecoration: "underline",
                 cursor: "pointer",
               }}
@@ -477,14 +477,14 @@ function PreviewToggle({ label, open, onToggle }: { label: string; open: boolean
         marginTop: 16,
       }}
     >
-      <span style={{ fontSize: 13, color: WF_DARK, fontWeight: 500 }}>{label}</span>
+      <span style={{ fontSize: 15, color: WF_DARK, fontWeight: 500 }}>{label}</span>
       <button
         onClick={onToggle}
         style={{
           background: "transparent",
           border: `1px solid ${WF_MID}`,
           padding: "6px 12px",
-          fontSize: 12,
+          fontSize: 14,
           color: WF_DARK,
           cursor: "pointer",
         }}
@@ -505,12 +505,12 @@ function ClinicianPreview({ left, right }: { left: Module[]; right: Module[] }) 
       <div style={{ borderBottom: `1px solid ${WF_MID}`, paddingBottom: 12, marginBottom: 12, display: "flex", alignItems: "center", gap: 12 }}>
         <div style={{ flex: 1 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <span style={{ fontSize: 16, fontWeight: 600, color: WF_DARK }}>Emma Tremblay</span>
-            <span style={{ fontSize: 11, border: `1px solid ${WF_DARK}`, padding: "2px 6px", color: WF_DARK }}>
+            <span style={{ fontSize: 18, fontWeight: 600, color: WF_DARK }}>Emma Tremblay</span>
+            <span style={{ fontSize: 13, border: `1px solid ${WF_DARK}`, padding: "2px 6px", color: WF_DARK }}>
               Active
             </span>
           </div>
-          <div style={{ fontSize: 11, color: WF_MID, marginTop: 4 }}>
+          <div style={{ fontSize: 13, color: WF_MID, marginTop: 4 }}>
             DOB: March 4, 2018 · Diagnosed: June 12, 2020 · Last sync: 2h ago
           </div>
         </div>
@@ -520,7 +520,7 @@ function ClinicianPreview({ left, right }: { left: Module[]; right: Module[] }) 
             border: `1px solid ${WF_DARK}`,
             background: "#fff",
             padding: "6px 12px",
-            fontSize: 12,
+            fontSize: 14,
             color: WF_DARK,
             cursor: "pointer",
             display: "inline-flex",
@@ -572,7 +572,7 @@ function ModuleHeader({ id, compact }: { id: string; compact: boolean }) {
   return (
     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
       <span style={{ fontSize: compact ? 13 : 14, fontWeight: 600, color: WF_DARK }}>{t}</span>
-      {!compact && r && <span style={{ fontSize: 11, color: WF_MID }}>{r}</span>}
+      {!compact && r && <span style={{ fontSize: 13, color: WF_MID }}>{r}</span>}
     </div>
   );
 }
@@ -606,7 +606,7 @@ function BarChartStub({ height = 80 }: { height?: number }) {
 
 function Chip({ children }: { children: React.ReactNode }) {
   return (
-    <span style={{ fontSize: 11, padding: "3px 8px", border: `1px solid ${WF_MID}`, color: WF_DARK }}>
+    <span style={{ fontSize: 13, padding: "3px 8px", border: `1px solid ${WF_MID}`, color: WF_DARK }}>
       {children}
     </span>
   );
@@ -639,7 +639,7 @@ function ModuleBody({ id, compact }: { id: string; compact: boolean }) {
   if (id === "recs") {
     if (compact) {
       return (
-        <div style={{ fontSize: 12, color: WF_DARK }}>
+        <div style={{ fontSize: 14, color: WF_DARK }}>
           <div style={{ marginBottom: 8 }}>Increase evening basal by 1U</div>
           <div style={{ display: "flex", gap: 6 }}>
             <button style={miniBtn(true)}>Accept</button>
@@ -649,7 +649,7 @@ function ModuleBody({ id, compact }: { id: string; compact: boolean }) {
       );
     }
     return (
-      <div style={{ fontSize: 12, color: WF_DARK, display: "flex", flexDirection: "column", gap: 6 }}>
+      <div style={{ fontSize: 14, color: WF_DARK, display: "flex", flexDirection: "column", gap: 6 }}>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <span>Increase evening basal by 1U</span>
           <span style={{ color: WF_MID }}>Accepted</span>
@@ -673,7 +673,7 @@ function ModuleBody({ id, compact }: { id: string; compact: boolean }) {
           { label: "Call family re: school plan", done: false },
         ];
     return (
-      <div style={{ fontSize: 12, display: "flex", flexDirection: "column", gap: 6 }}>
+      <div style={{ fontSize: 14, display: "flex", flexDirection: "column", gap: 6 }}>
         {tasks.map((t, i) => (
           <div key={i} style={{ display: "flex", alignItems: "center", gap: 8 }}>
             <span
@@ -684,7 +684,7 @@ function ModuleBody({ id, compact }: { id: string; compact: boolean }) {
                 display: "inline-flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontSize: 10,
+                fontSize: 12,
               }}
             >
               {t.done ? "✓" : ""}
@@ -700,7 +700,7 @@ function ModuleBody({ id, compact }: { id: string; compact: boolean }) {
   if (id === "resources") {
     if (compact) {
       return (
-        <div style={{ fontSize: 12, display: "flex", justifyContent: "space-between" }}>
+        <div style={{ fontSize: 14, display: "flex", justifyContent: "space-between" }}>
           <span style={{ color: WF_DARK }}>Carb Counting Guide</span>
           <a href="#" style={{ color: WF_DARK, textDecoration: "underline" }}>
             View
@@ -709,7 +709,7 @@ function ModuleBody({ id, compact }: { id: string; compact: boolean }) {
       );
     }
     return (
-      <div style={{ fontSize: 12, display: "flex", flexDirection: "column", gap: 6 }}>
+      <div style={{ fontSize: 14, display: "flex", flexDirection: "column", gap: 6 }}>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <span>Carb Counting Guide</span>
           <span style={{ color: WF_MID }}>Viewed</span>
@@ -726,7 +726,7 @@ function ModuleBody({ id, compact }: { id: string; compact: boolean }) {
 
 function miniBtn(primary: boolean): React.CSSProperties {
   return {
-    fontSize: 11,
+    fontSize: 13,
     padding: "4px 10px",
     border: `1px solid ${WF_DARK}`,
     background: primary ? WF_DARK : "#fff",
@@ -753,10 +753,10 @@ function MessagesPanel({ onClose, mobile = false }: { onClose: () => void; mobil
       }}
     >
       <div style={{ padding: 12, borderBottom: `1px solid ${WF_MID}`, display: "flex", alignItems: "center" }}>
-        <span style={{ flex: 1, fontSize: 13, fontWeight: 600, color: WF_DARK }}>Messages</span>
+        <span style={{ flex: 1, fontSize: 15, fontWeight: 600, color: WF_DARK }}>Messages</span>
         <button
           onClick={onClose}
-          style={{ background: "transparent", border: "none", fontSize: 16, cursor: "pointer", color: WF_DARK }}
+          style={{ background: "transparent", border: "none", fontSize: 18, cursor: "pointer", color: WF_DARK }}
         >
           ×
         </button>
@@ -771,7 +771,7 @@ function MessagesPanel({ onClose, mobile = false }: { onClose: () => void; mobil
           style={{
             border: `1px solid ${WF_MID}`,
             padding: "8px 10px",
-            fontSize: 12,
+            fontSize: 14,
             color: WF_MID,
           }}
         >
@@ -789,7 +789,7 @@ function Bubble({ from, children }: { from: "patient" | "clinician"; children: R
       style={{
         alignSelf: isPatient ? "flex-start" : "flex-end",
         maxWidth: "80%",
-        fontSize: 12,
+        fontSize: 14,
         padding: "6px 10px",
         background: isPatient ? WF_BG : WF_DARK,
         color: isPatient ? WF_DARK : "#fff",
@@ -833,7 +833,7 @@ function PatientBuilder() {
     <>
       <div
         style={{
-          fontSize: 11,
+          fontSize: 13,
           color: WF_MID,
           textTransform: "uppercase",
           letterSpacing: 0.5,
@@ -842,7 +842,7 @@ function PatientBuilder() {
       >
         Module order
       </div>
-      <p style={{ fontSize: 12, color: WF_MID, margin: "0 0 12px" }}>
+      <p style={{ fontSize: 14, color: WF_MID, margin: "0 0 12px" }}>
         Drag to reorder. Required modules cannot be removed. Patients can reorder after their first login —
         this sets their starting view.
       </p>
@@ -883,7 +883,7 @@ function PatientPreview({ modules }: { modules: Module[] }) {
   const [msgOpen, setMsgOpen] = useState(false);
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: "24px 0", marginBottom: 16 }}>
-      <div style={{ fontSize: 11, color: WF_MID, marginBottom: 8, textTransform: "uppercase", letterSpacing: 0.5 }}>
+      <div style={{ fontSize: 13, color: WF_MID, marginBottom: 8, textTransform: "uppercase", letterSpacing: 0.5 }}>
         Mobile preview
       </div>
       <div
@@ -918,7 +918,7 @@ function PatientPreview({ modules }: { modules: Module[] }) {
               display: "inline-flex",
               alignItems: "center",
               justifyContent: "center",
-              fontSize: 12,
+              fontSize: 14,
               fontWeight: 700,
               color: WF_DARK,
             }}
@@ -935,7 +935,7 @@ function PatientPreview({ modules }: { modules: Module[] }) {
               display: "inline-flex",
               alignItems: "center",
               justifyContent: "center",
-              fontSize: 10,
+              fontSize: 12,
               color: WF_MID,
             }}
           >
@@ -945,8 +945,8 @@ function PatientPreview({ modules }: { modules: Module[] }) {
 
         {/* Greeting */}
         <div style={{ padding: "0 4px 12px" }}>
-          <div style={{ fontSize: 18, fontWeight: 700, color: WF_DARK }}>Hello, Emma</div>
-          <div style={{ fontSize: 11, color: WF_MID }}>Wednesday, May 27</div>
+          <div style={{ fontSize: 20, fontWeight: 700, color: WF_DARK }}>Hello, Emma</div>
+          <div style={{ fontSize: 13, color: WF_MID }}>Wednesday, May 27</div>
         </div>
 
         {/* Modules */}
@@ -969,7 +969,7 @@ function PatientPreview({ modules }: { modules: Module[] }) {
             background: TEAL,
             color: "#fff",
             border: "none",
-            fontSize: 20,
+            fontSize: 22,
             cursor: "pointer",
             boxShadow: "0 4px 10px rgba(0,0,0,0.25)",
             zIndex: 4,
@@ -996,10 +996,10 @@ function PatientPreview({ modules }: { modules: Module[] }) {
             }}
           >
             <div style={{ padding: 12, borderBottom: `1px solid ${WF_MID}`, display: "flex", alignItems: "center" }}>
-              <span style={{ flex: 1, fontSize: 13, fontWeight: 600, color: WF_DARK }}>Messages</span>
+              <span style={{ flex: 1, fontSize: 15, fontWeight: 600, color: WF_DARK }}>Messages</span>
               <button
                 onClick={() => setMsgOpen(false)}
-                style={{ background: "transparent", border: "none", fontSize: 16, cursor: "pointer", color: WF_DARK }}
+                style={{ background: "transparent", border: "none", fontSize: 18, cursor: "pointer", color: WF_DARK }}
               >
                 ×
               </button>
@@ -1010,7 +1010,7 @@ function PatientPreview({ modules }: { modules: Module[] }) {
               <Bubble from="clinician">Let's try increasing evening basal by 1U and review in 3 days.</Bubble>
             </div>
             <div style={{ padding: 10, borderTop: `1px solid ${WF_MID}` }}>
-              <div style={{ border: `1px solid ${WF_MID}`, padding: "8px 10px", fontSize: 12, color: WF_MID }}>
+              <div style={{ border: `1px solid ${WF_MID}`, padding: "8px 10px", fontSize: 14, color: WF_MID }}>
                 Type a message…
               </div>
             </div>
@@ -1049,14 +1049,14 @@ function SaveFooter({ tab }: { tab: Tab }) {
           padding: "10px 12px",
           background: WF_BG,
           border: `1px solid ${WF_MID}`,
-          fontSize: 12,
+          fontSize: 14,
           color: WF_DARK,
         }}
       >
         {callout}
       </div>
       {state === "error" && (
-        <div style={{ marginTop: 8, fontSize: 12, color: WF_DARK, fontWeight: 600 }}>
+        <div style={{ marginTop: 8, fontSize: 14, color: WF_DARK, fontWeight: 600 }}>
           Could not save. Please try again.
         </div>
       )}
@@ -1072,7 +1072,7 @@ function SaveFooter({ tab }: { tab: Tab }) {
           alignItems: "center",
         }}
       >
-        <span style={{ flex: 1, fontSize: 12, color: WF_MID }}>Last saved: today at 2:34 PM</span>
+        <span style={{ flex: 1, fontSize: 14, color: WF_MID }}>Last saved: today at 2:34 PM</span>
         <button
           onClick={onSave}
           style={{
@@ -1080,7 +1080,7 @@ function SaveFooter({ tab }: { tab: Tab }) {
             color: "#fff",
             border: `1px solid ${TEAL}`,
             padding: "8px 16px",
-            fontSize: 13,
+            fontSize: 15,
             cursor: "pointer",
             minWidth: 130,
           }}

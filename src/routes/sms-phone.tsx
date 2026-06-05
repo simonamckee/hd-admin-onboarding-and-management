@@ -20,7 +20,7 @@ function Screen5A() {
             justifyContent: "space-between",
             padding: "10px 12px",
             border: `1px solid ${WF_MID}`,
-            fontSize: 14,
+            fontSize: 16,
             color: WF_DARK,
             background: "#fff",
           }}
@@ -35,7 +35,7 @@ function Screen5A() {
             flex: 1,
             padding: "10px 12px",
             border: `1px solid ${WF_DARK}`,
-            fontSize: 14,
+            fontSize: 16,
             color: WF_DARK,
             background: "#fff",
           }}
@@ -43,7 +43,7 @@ function Screen5A() {
           604 555 0123
         </div>
       </div>
-      <div style={{ fontSize: 12, color: WF_MID, marginBottom: 16 }}>
+      <div style={{ fontSize: 14, color: WF_MID, marginBottom: 16 }}>
         Standard messaging rates may apply.{" "}
         <span style={{ textDecoration: "underline", color: WF_DARK }}>View privacy policy</span>
       </div>

@@ -32,7 +32,7 @@ function Screen2() {
               <div key={i} style={{ flex: 1, height: 4, background: WF_DARK }} />
             ))}
           </div>
-          <div style={{ fontSize: 12, color: WF_DARK, marginTop: 4 }}>Strong</div>
+          <div style={{ fontSize: 14, color: WF_DARK, marginTop: 4 }}>Strong</div>
         </div>
       )}
 
@@ -48,7 +48,7 @@ function Screen2() {
         {rules.map((r) => (
           <div key={r} style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
             <CheckCircle filled={filled} />
-            <span style={{ fontSize: 13, color: filled ? WF_DARK : WF_MID }}>{r}</span>
+            <span style={{ fontSize: 15, color: filled ? WF_DARK : WF_MID }}>{r}</span>
           </div>
         ))}
       </div>
@@ -57,7 +57,7 @@ function Screen2() {
         <button
           onClick={() => setFilled((v) => !v)}
           style={{
-            fontSize: 11,
+            fontSize: 13,
             fontStyle: "italic",
             color: WF_MID,
             background: "none",

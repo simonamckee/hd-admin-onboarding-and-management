@@ -32,7 +32,7 @@ export function TopBar() {
         background: SURFACE,
         color: WF_DARK,
         padding: "12px 20px",
-        fontSize: 14,
+        fontSize: 16,
         fontWeight: 600,
         fontFamily: FONT_STACK,
         borderBottom: `1px solid ${BORDER}66`,
@@ -106,7 +106,7 @@ export function H({ children, size = 22 }: { children: ReactNode; size?: number 
 
 export function Body({ children }: { children: ReactNode }) {
   return (
-    <p style={{ fontSize: 14, color: WF_MID, margin: "0 0 20px 0", lineHeight: 1.5 }}>
+    <p style={{ fontSize: 16, color: WF_MID, margin: "0 0 20px 0", lineHeight: 1.5 }}>
       {children}
     </p>
   );
@@ -131,7 +131,7 @@ export function PrimaryButton({
     display: "block",
     width: "100%",
     padding: "12px 16px",
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: 500,
     textAlign: "center",
     border: "none",
@@ -164,7 +164,7 @@ export function SecondaryButton({
     display: "block",
     width: "100%",
     padding: "12px 16px",
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: 500,
     textAlign: "center",
     border: `1.5px solid ${TEAL}`,
@@ -185,8 +185,8 @@ export function ReadOnlyField({ label, value }: { label: string; value: string }
   return (
     <div style={{ marginBottom: 14 }}>
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
-        <span style={{ fontSize: 12, color: WF_DARK, fontWeight: 500 }}>{label}</span>
-        <span style={{ fontSize: 11, color: WF_MID }}>read-only</span>
+        <span style={{ fontSize: 14, color: WF_DARK, fontWeight: 500 }}>{label}</span>
+        <span style={{ fontSize: 13, color: WF_MID }}>read-only</span>
       </div>
       <div
         style={{
@@ -194,7 +194,7 @@ export function ReadOnlyField({ label, value }: { label: string; value: string }
           border: `1.5px solid ${BORDER}`,
           borderRadius: 8,
           background: WF_LIGHT,
-          fontSize: 14,
+          fontSize: 16,
           color: WF_DARK,
         }}
       >
@@ -214,7 +214,7 @@ export function TestingLink({ to, children }: { to: string; children: ReactNode 
       <Link
         to={to}
         style={{
-          fontSize: 12,
+          fontSize: 14,
           fontStyle: "italic",
           color: WF_MID,
           textDecoration: "underline",
@@ -228,7 +228,7 @@ export function TestingLink({ to, children }: { to: string; children: ReactNode 
 
 export function FieldLabel({ children }: { children: ReactNode }) {
   return (
-    <div style={{ fontSize: 12, color: WF_DARK, marginBottom: 4, fontWeight: 500 }}>{children}</div>
+    <div style={{ fontSize: 14, color: WF_DARK, marginBottom: 4, fontWeight: 500 }}>{children}</div>
   );
 }
 
@@ -258,7 +258,7 @@ export function TextInput({
         fontFamily: mono ? "ui-monospace, monospace" : "inherit",
       }}
     >
-      <span style={{ flex: 1, fontSize: 14, color: value ? WF_DARK : BORDER }}>
+      <span style={{ flex: 1, fontSize: 16, color: value ? WF_DARK : BORDER }}>
         {value || placeholder}
       </span>
       {rightIcon}
@@ -299,7 +299,7 @@ export function BackLink({ to }: { to: string }) {
       <Link
         to={to}
         style={{
-          fontSize: 12,
+          fontSize: 14,
           fontStyle: "italic",
           color: WF_MID,
           textDecoration: "underline",
@@ -317,7 +317,7 @@ export function RestartLink() {
       <Link
         to="/"
         style={{
-          fontSize: 12,
+          fontSize: 14,
           fontStyle: "italic",
           color: WF_MID,
           textDecoration: "underline",

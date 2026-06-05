@@ -71,12 +71,12 @@ function EditClinician() {
         <Link
           to="/admin/clinicians"
           search={{ state: "default", sso, banner: "" }}
-          style={{ fontSize: 12, color: WF_MID, textDecoration: "none" }}
+          style={{ fontSize: 14, color: WF_MID, textDecoration: "none" }}
         >
           ← Clinician management
         </Link>
         <div style={{ display: "flex", alignItems: "center", gap: 12, margin: "12px 0 28px" }}>
-          <h1 style={{ fontSize: 22, fontWeight: 500, margin: 0 }}>{base.name}</h1>
+          <h1 style={{ fontSize: 24, fontWeight: 500, margin: 0 }}>{base.name}</h1>
           {statusPill(base.status)}
         </div>
 
@@ -133,7 +133,7 @@ function EditClinician() {
           <>
             <DangerDivider />
             {ssoOn ? (
-              <div style={{ fontSize: 12, color: WF_DARK, lineHeight: 1.5, maxWidth: 560 }}>
+              <div style={{ fontSize: 14, color: WF_DARK, lineHeight: 1.5, maxWidth: 560 }}>
                 To deactivate this clinician, remove them from the relevant security group
                 in your identity provider. Haibu will reflect the change automatically.
               </div>
@@ -145,17 +145,17 @@ function EditClinician() {
       </div>
 
       <Modal open={warn} title={`${base.name} is assigned to ${assignedPatients.length} patient${assignedPatients.length === 1 ? "" : "s"}`} onClose={() => setWarn(false)}>
-        <p style={{ fontSize: 13, color: WF_DARK, margin: "0 0 14px", lineHeight: 1.5 }}>
+        <p style={{ fontSize: 15, color: WF_DARK, margin: "0 0 14px", lineHeight: 1.5 }}>
           These patients will need to be reassigned to another clinician. You can reassign
           them now or proceed with the deactivation.
         </p>
-        <ul style={{ margin: "0 0 18px 18px", padding: 0, fontSize: 12, color: WF_DARK, lineHeight: 1.5 }}>
+        <ul style={{ margin: "0 0 18px 18px", padding: 0, fontSize: 14, color: WF_DARK, lineHeight: 1.5 }}>
           {assignedPatients.slice(0, 5).map((n) => (
             <li key={n}>{n}</li>
           ))}
         </ul>
         {assignedPatients.length > 5 && (
-          <div style={{ fontSize: 11, color: WF_MID, margin: "-12px 0 18px", fontStyle: "italic" }}>
+          <div style={{ fontSize: 13, color: WF_MID, margin: "-12px 0 18px", fontStyle: "italic" }}>
             + {assignedPatients.length - 5} more patients
           </div>
         )}
@@ -183,7 +183,7 @@ function EditClinician() {
           <div style={{ textAlign: "center", marginTop: 4 }}>
             <button
               onClick={() => setWarn(false)}
-              style={{ background: "none", border: "none", cursor: "pointer", color: WF_DARK, fontSize: 12, textDecoration: "underline", fontFamily: "inherit" }}
+              style={{ background: "none", border: "none", cursor: "pointer", color: WF_DARK, fontSize: 14, textDecoration: "underline", fontFamily: "inherit" }}
             >
               Cancel
             </button>
@@ -192,7 +192,7 @@ function EditClinician() {
       </Modal>
 
       <Modal open={confirm} title={`Deactivate ${base.name}?`} onClose={() => setConfirm(false)}>
-        <p style={{ fontSize: 13, color: WF_DARK, margin: "0 0 20px", lineHeight: 1.5 }}>
+        <p style={{ fontSize: 15, color: WF_DARK, margin: "0 0 20px", lineHeight: 1.5 }}>
           They will immediately lose access to Haibu and any active sessions will end.
           Their patient assignments will be preserved.
         </p>
@@ -220,7 +220,7 @@ function EditClinician() {
 
 function SectionLabel({ children }: { children: ReactNode }) {
   return (
-    <div style={{ fontSize: 11, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 10, fontWeight: 500 }}>
+    <div style={{ fontSize: 13, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 10, fontWeight: 500 }}>
       {children}
     </div>
   );
@@ -233,10 +233,10 @@ function Grid({ children }: { children: ReactNode }) {
 function ReadField({ label, value, note }: { label: string; value: string; note?: string }) {
   return (
     <div style={{ marginBottom: 16 }}>
-      <div style={{ fontSize: 12, color: WF_MID, marginBottom: 4 }}>{label}</div>
-      <div style={{ fontSize: 13, color: WF_DARK }}>{value}</div>
+      <div style={{ fontSize: 14, color: WF_MID, marginBottom: 4 }}>{label}</div>
+      <div style={{ fontSize: 15, color: WF_DARK }}>{value}</div>
       {note && (
-        <div style={{ fontSize: 11, color: WF_MID, fontStyle: "italic", marginTop: 4 }}>
+        <div style={{ fontSize: 13, color: WF_MID, fontStyle: "italic", marginTop: 4 }}>
           {note}
         </div>
       )}

@@ -63,7 +63,7 @@ function AddClinicianSplitButton() {
     alignItems: "center",
     justifyContent: "center",
     height: baseHeight,
-    fontSize: 13,
+    fontSize: 15,
     fontFamily: "inherit",
     border: `1px solid ${TEAL}`,
     background: TEAL,
@@ -77,7 +77,7 @@ function AddClinicianSplitButton() {
   const itemStyle: React.CSSProperties = {
     display: "block",
     padding: "10px 14px",
-    fontSize: 13,
+    fontSize: 15,
     color: WF_DARK,
     textDecoration: "none",
     whiteSpace: "nowrap",
@@ -179,14 +179,14 @@ function ClinicianList() {
   return (
     <AdminShell heading="">
       {/* SSO preview toggle */}
-      <div style={{ marginBottom: 16, padding: 10, border: `1px dashed ${WF_MID}`, fontSize: 11, color: WF_MID, fontStyle: "italic", display: "flex", alignItems: "center", gap: 12 }}>
+      <div style={{ marginBottom: 16, padding: 10, border: `1px dashed ${WF_MID}`, fontSize: 13, color: WF_MID, fontStyle: "italic", display: "flex", alignItems: "center", gap: 12 }}>
         <span>[ Preview: SSO active ]</span>
         {(["off", "on"] as SsoMode[]).map((s) => (
           <Link
             key={s}
             to="/admin/clinicians"
             search={{ state: "default", sso: s, banner: "" }}
-            style={{ fontSize: 11, color: sso === s ? WF_DARK : WF_MID, textDecoration: "underline", fontWeight: sso === s ? 600 : 400 }}
+            style={{ fontSize: 13, color: sso === s ? WF_DARK : WF_MID, textDecoration: "underline", fontWeight: sso === s ? 600 : 400 }}
           >
             {s === "off" ? "Non-SSO" : "SSO active"}
           </Link>
@@ -195,7 +195,7 @@ function ClinicianList() {
 
       {/* Header row */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-        <h1 style={{ fontSize: 20, fontWeight: 500, color: WF_DARK, margin: 0 }}>
+        <h1 style={{ fontSize: 22, fontWeight: 500, color: WF_DARK, margin: 0 }}>
           Clinician management
         </h1>
         {!ssoOn && <AddClinicianSplitButton />}
@@ -203,16 +203,16 @@ function ClinicianList() {
 
       {/* SSO info banner */}
       {ssoOn && (
-        <div style={{ border: `1px solid ${WF_MID}`, background: "#F5F5F5", padding: "12px 16px", fontSize: 13, color: WF_DARK, margin: "16px 0", lineHeight: 1.5 }}>
+        <div style={{ border: `1px solid ${WF_MID}`, background: "#F5F5F5", padding: "12px 16px", fontSize: 15, color: WF_DARK, margin: "16px 0", lineHeight: 1.5 }}>
           This clinic uses an identity provider for clinician access. Clinicians are managed via your clinic&apos;s directory — changes made there are reflected in Haibu automatically. To add or remove clinicians, update your identity provider&apos;s security group.
         </div>
       )}
 
       {/* Success banner */}
       {banner && bannerOpen && (
-        <div style={{ border: `1px solid ${WF_DARK}`, background: "#fff", padding: "10px 14px", fontSize: 13, color: WF_DARK, margin: "16px 0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div style={{ border: `1px solid ${WF_DARK}`, background: "#fff", padding: "10px 14px", fontSize: 15, color: WF_DARK, margin: "16px 0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <span>{banner}</span>
-          <button onClick={() => setBannerOpen(false)} style={{ background: "none", border: "none", cursor: "pointer", color: WF_DARK, fontSize: 16 }}>×</button>
+          <button onClick={() => setBannerOpen(false)} style={{ background: "none", border: "none", cursor: "pointer", color: WF_DARK, fontSize: 18 }}>×</button>
         </div>
       )}
 
@@ -232,7 +232,7 @@ function ClinicianList() {
           <option>Pending</option>
           <option>Archived</option>
         </Select>
-        <div style={{ flex: 1, textAlign: "right", fontSize: 12, color: WF_MID }}>
+        <div style={{ flex: 1, textAlign: "right", fontSize: 14, color: WF_MID }}>
           {state === "empty" ? "0 clinicians" : `${CLINICIANS.length} clinicians`}
         </div>
       </div>
@@ -245,11 +245,11 @@ function ClinicianList() {
         <NoResultsState />
       ) : (
         <div style={{ background: "#fff", border: `1px solid ${WF_MID}` }}>
-          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 15 }}>
             <thead>
               <tr style={{ background: "#F5F5F5", borderBottom: `1px solid ${WF_MID}` }}>
                 {["Name", "Title", "Role", "Email", "Status", "Last sign-in", "Actions"].map((h) => (
-                  <th key={h} style={{ padding: "10px 14px", textAlign: "left", fontSize: 11, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, fontWeight: 500 }}>
+                  <th key={h} style={{ padding: "10px 14px", textAlign: "left", fontSize: 13, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, fontWeight: 500 }}>
                     {h}
                   </th>
                 ))}
@@ -266,10 +266,10 @@ function ClinicianList() {
                   <td style={{ padding: "12px 14px", color: c.lastSignIn === "Never" ? WF_MID : WF_DARK }}>{c.lastSignIn}</td>
                   <td style={{ padding: "12px 14px" }}>
                     {c.status === "Archived" ? (
-                      <span style={{ color: WF_MID, fontSize: 12 }}>—</span>
+                      <span style={{ color: WF_MID, fontSize: 14 }}>—</span>
                     ) : (
                       <span style={{ display: "inline-flex", gap: 12 }}>
-                        <Link to="/admin/clinicians/$id" params={{ id: c.id }} search={{ sso }} style={{ fontSize: 13, color: WF_DARK, textDecoration: "underline" }}>Edit</Link>
+                        <Link to="/admin/clinicians/$id" params={{ id: c.id }} search={{ sso }} style={{ fontSize: 15, color: WF_DARK, textDecoration: "underline" }}>Edit</Link>
                         {!ssoOn && (
                           <button
                             onClick={() => {
@@ -280,7 +280,7 @@ function ClinicianList() {
                                 setConfirmId(c.id);
                               }
                             }}
-                            style={{ fontSize: 13, color: WF_DARK, textDecoration: "underline", background: "none", border: "none", cursor: "pointer", padding: 0, fontFamily: "inherit" }}
+                            style={{ fontSize: 15, color: WF_DARK, textDecoration: "underline", background: "none", border: "none", cursor: "pointer", padding: 0, fontFamily: "inherit" }}
                           >
                             Deactivate
                           </button>
@@ -303,17 +303,17 @@ function ClinicianList() {
       >
         {warnId && (
           <>
-            <p style={{ fontSize: 13, color: WF_DARK, margin: "0 0 14px", lineHeight: 1.5 }}>
+            <p style={{ fontSize: 15, color: WF_DARK, margin: "0 0 14px", lineHeight: 1.5 }}>
               These patients will need to be reassigned to another clinician. You can reassign
               them now or proceed with the deactivation.
             </p>
-            <ul style={{ margin: "0 0 18px 18px", padding: 0, fontSize: 12, color: WF_DARK, lineHeight: 1.5 }}>
+            <ul style={{ margin: "0 0 18px 18px", padding: 0, fontSize: 14, color: WF_DARK, lineHeight: 1.5 }}>
               {(ASSIGNED_PATIENTS[warnId] || []).slice(0, 5).map((n) => (
                 <li key={n}>{n}</li>
               ))}
             </ul>
             {(ASSIGNED_PATIENTS[warnId] || []).length > 5 && (
-              <div style={{ fontSize: 11, color: WF_MID, margin: "-12px 0 18px", fontStyle: "italic" }}>
+              <div style={{ fontSize: 13, color: WF_MID, margin: "-12px 0 18px", fontStyle: "italic" }}>
                 + {(ASSIGNED_PATIENTS[warnId] || []).length - 5} more patients
               </div>
             )}
@@ -341,7 +341,7 @@ function ClinicianList() {
               <div style={{ textAlign: "center", marginTop: 4 }}>
                 <button
                   onClick={() => setWarnId(null)}
-                  style={{ background: "none", border: "none", cursor: "pointer", color: WF_DARK, fontSize: 12, textDecoration: "underline", fontFamily: "inherit" }}
+                  style={{ background: "none", border: "none", cursor: "pointer", color: WF_DARK, fontSize: 14, textDecoration: "underline", fontFamily: "inherit" }}
                 >
                   Cancel
                 </button>
@@ -359,7 +359,7 @@ function ClinicianList() {
       >
         {confirmId && (
           <>
-            <p style={{ fontSize: 13, color: WF_DARK, margin: "0 0 20px", lineHeight: 1.5 }}>
+            <p style={{ fontSize: 15, color: WF_DARK, margin: "0 0 20px", lineHeight: 1.5 }}>
               They will immediately lose access to Haibu and any active sessions will end.
               Their patient assignments will be preserved.
             </p>
@@ -385,7 +385,7 @@ function ClinicianList() {
       </Modal>
 
       {/* Prototype state toggles */}
-      <div style={{ marginTop: 24, padding: 12, border: `1px dashed ${WF_MID}`, fontSize: 11, color: WF_MID, fontStyle: "italic" }}>
+      <div style={{ marginTop: 24, padding: 12, border: `1px dashed ${WF_MID}`, fontSize: 13, color: WF_MID, fontStyle: "italic" }}>
         <div style={{ marginBottom: 6 }}>[ Prototype: switch list state ]</div>
         <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
           {(["default", "empty", "noresults", "loading"] as StateMode[]).map((s) => (
@@ -393,7 +393,7 @@ function ClinicianList() {
               key={s}
               to="/admin/clinicians"
               search={{ state: s, sso, banner: "" }}
-              style={{ fontSize: 11, color: state === s ? WF_DARK : WF_MID, textDecoration: "underline", fontWeight: state === s ? 600 : 400 }}
+              style={{ fontSize: 13, color: state === s ? WF_DARK : WF_MID, textDecoration: "underline", fontWeight: state === s ? 600 : 400 }}
             >
               {s}
             </Link>
@@ -423,9 +423,9 @@ function SkeletonTable() {
 function EmptyState({ ssoOn }: { ssoOn: boolean }) {
   return (
     <div style={{ background: "#fff", border: `1px solid ${WF_MID}`, padding: 60, textAlign: "center" }}>
-      <div style={{ width: 48, height: 48, border: `1.5px solid ${WF_MID}`, borderRadius: "50%", margin: "0 auto 16px", display: "flex", alignItems: "center", justifyContent: "center", color: WF_MID, fontSize: 22 }}>○</div>
-      <div style={{ fontSize: 16, color: WF_DARK, marginBottom: 6 }}>No clinicians yet</div>
-      <div style={{ fontSize: 13, color: WF_MID, marginBottom: 20 }}>
+      <div style={{ width: 48, height: 48, border: `1.5px solid ${WF_MID}`, borderRadius: "50%", margin: "0 auto 16px", display: "flex", alignItems: "center", justifyContent: "center", color: WF_MID, fontSize: 24 }}>○</div>
+      <div style={{ fontSize: 18, color: WF_DARK, marginBottom: 6 }}>No clinicians yet</div>
+      <div style={{ fontSize: 15, color: WF_MID, marginBottom: 20 }}>
         {ssoOn ? "Add clinicians via your identity provider." : "Add your first clinician to get started"}
       </div>
       {!ssoOn && <Btn primary to="/admin/clinicians/new">+ Add clinician</Btn>}
@@ -436,7 +436,7 @@ function EmptyState({ ssoOn }: { ssoOn: boolean }) {
 function NoResultsState() {
   return (
     <div style={{ background: "#fff", border: `1px solid ${WF_MID}`, padding: 60, textAlign: "center" }}>
-      <div style={{ fontSize: 14, color: WF_DARK, marginBottom: 12 }}>No clinicians match your search</div>
+      <div style={{ fontSize: 16, color: WF_DARK, marginBottom: 12 }}>No clinicians match your search</div>
       <TextLink to="/admin/clinicians">Clear search</TextLink>
     </div>
   );

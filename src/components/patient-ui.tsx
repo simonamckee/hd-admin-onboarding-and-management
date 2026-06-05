@@ -78,7 +78,7 @@ export function Btn({
 
 export function TextLink({ children, onClick, to }: { children: ReactNode; onClick?: () => void; to?: string }) {
   const style: CSSProperties = {
-    fontSize: 13,
+    fontSize: 15,
     color: TEAL,
     fontWeight: 500,
     textDecoration: "none",
@@ -107,16 +107,16 @@ export function Field({
 }) {
   return (
     <div style={{ marginBottom: 18 }}>
-      <div style={{ fontSize: 12, color: WF_DARK, marginBottom: 4, fontWeight: 500 }}>
+      <div style={{ fontSize: 14, color: WF_DARK, marginBottom: 4, fontWeight: 500 }}>
         {label}
         {required && <span style={{ color: ERROR_TEXT }}> *</span>}
       </div>
       {children}
       {helper && !error && (
-        <div style={{ fontSize: 11, color: WF_MID, marginTop: 4 }}>{helper}</div>
+        <div style={{ fontSize: 13, color: WF_MID, marginTop: 4 }}>{helper}</div>
       )}
       {error && (
-        <div style={{ fontSize: 11, color: ERROR_TEXT, marginTop: 4, fontWeight: 500 }}>
+        <div style={{ fontSize: 13, color: ERROR_TEXT, marginTop: 4, fontWeight: 500 }}>
           {error}
         </div>
       )}
@@ -130,7 +130,7 @@ const inputBase: CSSProperties = {
   border: `1.5px solid ${BORDER}`,
   borderRadius: 8,
   background: SURFACE,
-  fontSize: 13,
+  fontSize: 15,
   color: WF_DARK,
   fontFamily: "inherit",
   outline: "none",
@@ -181,7 +181,7 @@ export function Pill({ label, weight }: { label: string; weight: PillWeight }) {
         display: "inline-block",
         padding: "4px 10px",
         borderRadius: 8,
-        fontSize: 11,
+        fontSize: 13,
         fontWeight: 500,
         background: bg,
         color: fg,
@@ -227,7 +227,7 @@ export function Banner({
         borderRadius: 8,
         background: bg,
         padding: "12px 16px",
-        fontSize: 13,
+        fontSize: 15,
         color: fg,
         marginBottom: 20,
       }}
@@ -245,7 +245,7 @@ export function Callout({ children }: { children: ReactNode }) {
         borderRadius: 8,
         background: TINT,
         padding: "10px 14px",
-        fontSize: 12,
+        fontSize: 14,
         color: TEAL,
         lineHeight: 1.5,
         marginBottom: 20,
@@ -279,7 +279,7 @@ export function StepIndicator({
                   borderRadius: "50%",
                   background: filled ? TEAL : BORDER,
                   color: "#fff",
-                  fontSize: 11,
+                  fontSize: 13,
                   fontWeight: 500,
                   display: "flex",
                   alignItems: "center",
@@ -288,7 +288,7 @@ export function StepIndicator({
               >
                 {done ? "✓" : n}
               </div>
-              <span style={{ fontSize: 12, color: filled ? WF_DARK : WF_MID, fontWeight: filled ? 500 : 400 }}>
+              <span style={{ fontSize: 14, color: filled ? WF_DARK : WF_MID, fontWeight: filled ? 500 : 400 }}>
                 {label}
               </span>
             </div>
@@ -306,7 +306,7 @@ export function DangerDivider() {
   return (
     <div style={{ marginTop: 48 }}>
       <div style={{ borderTop: `1px solid ${BORDER}`, paddingTop: 16 }}>
-        <div style={{ fontSize: 11, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 12 }}>
+        <div style={{ fontSize: 13, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 12 }}>
           Danger zone
         </div>
       </div>
@@ -352,7 +352,7 @@ export function Modal({
           width: "100%",
         }}
       >
-        <div style={{ fontSize: 15, color: WF_DARK, marginBottom: 16, fontWeight: 600 }}>
+        <div style={{ fontSize: 17, color: WF_DARK, marginBottom: 16, fontWeight: 600 }}>
           {title}
         </div>
         {children}

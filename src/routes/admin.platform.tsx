@@ -15,7 +15,7 @@ const DEFAULT_CHAT_MSG =
 function PlatformConfig() {
   return (
     <AdminShell heading="">
-      <h1 style={{ fontSize: 20, fontWeight: 500, color: WF_DARK, margin: "0 0 24px" }}>
+      <h1 style={{ fontSize: 22, fontWeight: 500, color: WF_DARK, margin: "0 0 24px" }}>
         Platform configuration
       </h1>
 
@@ -37,7 +37,7 @@ function Divider() {
 function SectionCard({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div style={{ background: "#fff", border: `1px solid ${WF_MID}`, padding: 24 }}>
-      <h2 style={{ fontSize: 14, fontWeight: 600, color: WF_DARK, margin: "0 0 18px", textTransform: "uppercase", letterSpacing: 0.5 }}>
+      <h2 style={{ fontSize: 16, fontWeight: 600, color: WF_DARK, margin: "0 0 18px", textTransform: "uppercase", letterSpacing: 0.5 }}>
         {title}
       </h2>
       {children}
@@ -56,8 +56,8 @@ function Row({ children }: { children: React.ReactNode }) {
 function LabelBlock({ label, helper }: { label: string; helper?: string }) {
   return (
     <div style={{ flex: 1, minWidth: 0 }}>
-      <div style={{ fontSize: 13, color: WF_DARK, fontWeight: 500 }}>{label}</div>
-      {helper && <div style={{ fontSize: 12, color: WF_MID, marginTop: 4, lineHeight: 1.5 }}>{helper}</div>}
+      <div style={{ fontSize: 15, color: WF_DARK, fontWeight: 500 }}>{label}</div>
+      {helper && <div style={{ fontSize: 14, color: WF_MID, marginTop: 4, lineHeight: 1.5 }}>{helper}</div>}
     </div>
   );
 }
@@ -117,7 +117,7 @@ function SavedFlash({ when }: { when: number }) {
   return (
     <span
       style={{
-        fontSize: 12,
+        fontSize: 14,
         color: WF_DARK,
         fontStyle: "italic",
         opacity: visible ? 1 : 0,
@@ -185,7 +185,7 @@ function ChatSection() {
               padding: "8px 12px",
               border: `1px solid ${WF_MID}`,
               background: "#fff",
-              fontSize: 13,
+              fontSize: 15,
               color: WF_DARK,
               fontFamily: "inherit",
               outline: "none",
@@ -194,7 +194,7 @@ function ChatSection() {
             }}
           />
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 6 }}>
-            <span style={{ fontSize: 11, color: WF_MID }}>{msg.length} / 160</span>
+            <span style={{ fontSize: 13, color: WF_MID }}>{msg.length} / 160</span>
             <div style={{ display: "flex", alignItems: "center" }}>
               <SavedFlash when={savedMsgAt} />
               {dirty && (
@@ -246,8 +246,8 @@ function NotificationsSection() {
       <Row>
         <LabelBlock label="Clinic notification email" />
         <div style={{ textAlign: "right" }}>
-          <div style={{ fontSize: 13, color: WF_DARK }}>notifications@sunriseclinic.ca</div>
-          <div style={{ fontSize: 11, color: WF_MID, marginTop: 4 }}>
+          <div style={{ fontSize: 15, color: WF_DARK }}>notifications@sunriseclinic.ca</div>
+          <div style={{ fontSize: 13, color: WF_MID, marginTop: 4 }}>
             This is set under Clinic information.{" "}
             <Link
               to="/admin"

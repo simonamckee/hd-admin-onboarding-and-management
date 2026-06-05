@@ -16,13 +16,13 @@ function Step({ n, children }: { n: number; children: React.ReactNode }) {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          fontSize: 12,
+          fontSize: 14,
           color: WF_DARK,
         }}
       >
         {n}
       </div>
-      <div style={{ fontSize: 13, color: WF_DARK, lineHeight: 1.5 }}>{children}</div>
+      <div style={{ fontSize: 15, color: WF_DARK, lineHeight: 1.5 }}>{children}</div>
     </div>
   );
 }
@@ -43,7 +43,7 @@ function Screen4A() {
             alignItems: "center",
             justifyContent: "center",
             color: WF_MID,
-            fontSize: 12,
+            fontSize: 14,
             background: WF_LIGHT,
           }}
         >
@@ -62,7 +62,7 @@ function Screen4A() {
           background: WF_LIGHT,
           border: `1px solid ${WF_MID}`,
           fontFamily: "ui-monospace, monospace",
-          fontSize: 13,
+          fontSize: 15,
           color: WF_DARK,
           margin: "14px 0",
         }}

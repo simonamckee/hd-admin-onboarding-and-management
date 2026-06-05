@@ -98,8 +98,8 @@ function Step1() {
   return (
     <AdminShell heading="">
       <div style={{ maxWidth: 720 }}>
-        <h1 style={{ fontSize: 22, fontWeight: 500, margin: "0 0 6px" }}>Add a new patient</h1>
-        <div style={{ fontSize: 12, color: WF_MID, marginBottom: 24 }}>Step 1 of 4 — Patient information</div>
+        <h1 style={{ fontSize: 24, fontWeight: 500, margin: "0 0 6px" }}>Add a new patient</h1>
+        <div style={{ fontSize: 14, color: WF_MID, marginBottom: 24 }}>Step 1 of 4 — Patient information</div>
 
         {showBanner && (
           <ResumeDraftBanner
@@ -122,7 +122,7 @@ function Step1() {
               padding: "12px 14px",
               marginBottom: 20,
               background: "#F5F5F5",
-              fontSize: 12,
+              fontSize: 14,
               color: WF_DARK,
               lineHeight: 1.5,
             }}
@@ -205,7 +205,7 @@ function Step1() {
                     border: `${d.invite === v ? 2 : 1}px solid ${WF_DARK}`,
                     background: d.invite === v ? WF_DARK : "#fff",
                     color: d.invite === v ? "#fff" : WF_DARK,
-                    fontSize: 13,
+                    fontSize: 15,
                     cursor: "pointer",
                     fontFamily: "inherit",
                   }}
@@ -246,11 +246,11 @@ function Step1() {
                   key={c}
                   style={{
                     display: "inline-flex", alignItems: "center", gap: 6,
-                    border: `1px solid ${WF_DARK}`, padding: "4px 10px", fontSize: 12,
+                    border: `1px solid ${WF_DARK}`, padding: "4px 10px", fontSize: 14,
                   }}
                 >
                   {c}
-                  <button onClick={() => toggleClinician(c)} style={{ background: "none", border: "none", cursor: "pointer", color: WF_DARK, fontSize: 13 }}>×</button>
+                  <button onClick={() => toggleClinician(c)} style={{ background: "none", border: "none", cursor: "pointer", color: WF_DARK, fontSize: 15 }}>×</button>
                 </span>
               ))}
             </div>
@@ -285,7 +285,7 @@ function Step1() {
       </div>
 
       <Modal open={cancelOpen} title="Cancel adding patient?" onClose={() => setCancelOpen(false)}>
-        <p style={{ fontSize: 13, color: WF_DARK, margin: "0 0 20px" }}>
+        <p style={{ fontSize: 15, color: WF_DARK, margin: "0 0 20px" }}>
           Are you sure you want to cancel? Your progress will be lost.
         </p>
         <div style={{ display: "flex", justifyContent: "flex-end", gap: 8 }}>

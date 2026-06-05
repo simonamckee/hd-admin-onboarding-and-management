@@ -22,12 +22,12 @@ function BatchUploadPage() {
         <Link
           to="/admin/clinicians"
           search={{ state: "default", sso: "off", banner: "" }}
-          style={{ fontSize: 12, color: WF_DARK, textDecoration: "none" }}
+          style={{ fontSize: 14, color: WF_DARK, textDecoration: "none" }}
         >
           ← Clinician management
         </Link>
       </div>
-      <h1 style={{ fontSize: 22, fontWeight: 500, color: WF_DARK, margin: "0 0 24px" }}>
+      <h1 style={{ fontSize: 24, fontWeight: 500, color: WF_DARK, margin: "0 0 24px" }}>
         Upload clinicians via CSV
       </h1>
 
@@ -52,13 +52,13 @@ function UploadState() {
       <div style={{ display: "grid", gridTemplateColumns: "55fr 45fr", gap: 32, paddingBottom: 80 }}>
         {/* Left column */}
         <div>
-          <div style={{ fontSize: 13, color: WF_DARK, fontWeight: 600, marginBottom: 14 }}>
+          <div style={{ fontSize: 15, color: WF_DARK, fontWeight: 600, marginBottom: 14 }}>
             Before you upload
           </div>
 
           <div style={{ marginBottom: 20 }}>
             <TextLink>Download the CSV template</TextLink>
-            <div style={{ fontSize: 12, color: WF_MID, marginTop: 4, lineHeight: 1.5 }}>
+            <div style={{ fontSize: 14, color: WF_MID, marginTop: 4, lineHeight: 1.5 }}>
               Fill in clinician data and save as a .csv file.
             </div>
           </div>
@@ -99,26 +99,26 @@ function UploadState() {
               <rect x="3" y="3" width="32" height="38" stroke={WF_DARK} strokeWidth="1.2" />
               <path d="M19 28V14M19 14l-6 6M19 14l6 6" stroke={WF_DARK} strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-            <div style={{ fontSize: 14, color: WF_DARK, fontWeight: 500 }}>
+            <div style={{ fontSize: 16, color: WF_DARK, fontWeight: 500 }}>
               Drag and drop your CSV here
             </div>
             <button
               onClick={() => inputRef.current?.click()}
-              style={{ fontSize: 13, color: WF_DARK, textDecoration: "underline", background: "none", border: "none", cursor: "pointer", fontFamily: "inherit", padding: 0 }}
+              style={{ fontSize: 15, color: WF_DARK, textDecoration: "underline", background: "none", border: "none", cursor: "pointer", fontFamily: "inherit", padding: 0 }}
             >
               or browse to upload
             </button>
             <input ref={inputRef} type="file" accept=".csv" hidden onChange={onFile} />
-            <div style={{ fontSize: 11, color: WF_MID, marginTop: 4 }}>
+            <div style={{ fontSize: 13, color: WF_MID, marginTop: 4 }}>
               .csv files only · max 5MB
             </div>
             {fileLoaded && (
-              <div style={{ fontSize: 11, color: WF_DARK, marginTop: 8, fontStyle: "italic" }}>
+              <div style={{ fontSize: 13, color: WF_DARK, marginTop: 8, fontStyle: "italic" }}>
                 clinicians_june2026.csv selected
               </div>
             )}
           </div>
-          <div style={{ marginTop: 12, fontSize: 11, color: WF_MID, fontStyle: "italic", textAlign: "center" }}>
+          <div style={{ marginTop: 12, fontSize: 13, color: WF_MID, fontStyle: "italic", textAlign: "center" }}>
             [ Prototype: click &quot;or browse&quot; to simulate upload ]
           </div>
         </div>
@@ -147,10 +147,10 @@ function UploadState() {
 function ColumnGroup({ label, items }: { label: string; items: string[] }) {
   return (
     <div style={{ marginBottom: 18 }}>
-      <div style={{ fontSize: 11, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 8 }}>
+      <div style={{ fontSize: 13, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 8 }}>
         {label}
       </div>
-      <ul style={{ margin: 0, paddingLeft: 18, fontSize: 12, color: WF_DARK, lineHeight: 1.8 }}>
+      <ul style={{ margin: 0, paddingLeft: 18, fontSize: 14, color: WF_DARK, lineHeight: 1.8 }}>
         {items.map((it) => (
           <li key={it}>{it}</li>
         ))}
@@ -192,14 +192,14 @@ function ReviewState() {
       <div style={{ paddingBottom: 80 }}>
         {/* File summary */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, paddingBottom: 12, borderBottom: `1px solid ${WF_MID}` }}>
-          <div style={{ fontSize: 13, color: WF_DARK }}>
+          <div style={{ fontSize: 15, color: WF_DARK }}>
             <span style={{ fontWeight: 500 }}>clinicians_june2026.csv</span>
             <span style={{ color: WF_MID }}> — 1.1MB · 6 rows detected</span>
           </div>
           <Link
             to="/admin/clinicians/batch"
             search={{ stage: "upload" }}
-            style={{ fontSize: 12, color: WF_DARK, textDecoration: "underline" }}
+            style={{ fontSize: 14, color: WF_DARK, textDecoration: "underline" }}
           >
             Remove file ×
           </Link>
@@ -207,11 +207,11 @@ function ReviewState() {
 
         {/* Table */}
         <div style={{ background: "#fff", border: `1px solid ${WF_MID}` }}>
-          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
+          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 14 }}>
             <thead>
               <tr style={{ background: "#F5F5F5", borderBottom: `1px solid ${WF_MID}` }}>
                 {["Row", "First name", "Last name", "Email", "Title", "Role", "Status"].map((h) => (
-                  <th key={h} style={{ padding: "10px 12px", textAlign: "left", fontSize: 10, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, fontWeight: 500 }}>
+                  <th key={h} style={{ padding: "10px 12px", textAlign: "left", fontSize: 12, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, fontWeight: 500 }}>
                     {h}
                   </th>
                 ))}
@@ -227,10 +227,10 @@ function ReviewState() {
 
         {/* Summary */}
         <div style={{ marginTop: 16 }}>
-          <div style={{ fontSize: 13, color: WF_DARK, fontWeight: 500 }}>
+          <div style={{ fontSize: 15, color: WF_DARK, fontWeight: 500 }}>
             {readyCount} rows ready · {errorCount} errors
           </div>
-          <div style={{ fontSize: 12, color: WF_MID, marginTop: 4, lineHeight: 1.5 }}>
+          <div style={{ fontSize: 14, color: WF_MID, marginTop: 4, lineHeight: 1.5 }}>
             Fix errors in your CSV and re-upload to include those clinicians. You can proceed with the {readyCount} ready rows now.
           </div>
         </div>
@@ -270,7 +270,7 @@ function ReviewState() {
                   marginBottom: 8,
                   background: TEAL,
                   color: "#fff",
-                  fontSize: 11,
+                  fontSize: 13,
                   padding: "6px 10px",
                   whiteSpace: "nowrap",
                   borderRadius: 3,
@@ -305,9 +305,9 @@ function RowGroup({ row }: { row: Row }) {
         <td style={cellStyle}>{row.role}</td>
         <td style={cellStyle}>
           {row.ready ? (
-            <span style={{ fontSize: 11, color: WF_MID }}>Ready</span>
+            <span style={{ fontSize: 13, color: WF_MID }}>Ready</span>
           ) : (
-            <span style={{ fontSize: 11, color: WF_DARK, fontWeight: 600, border: `1.5px solid ${WF_DARK}`, padding: "1px 8px", textTransform: "uppercase", letterSpacing: 0.5 }}>
+            <span style={{ fontSize: 13, color: WF_DARK, fontWeight: 600, border: `1.5px solid ${WF_DARK}`, padding: "1px 8px", textTransform: "uppercase", letterSpacing: 0.5 }}>
               Error
             </span>
           )}
@@ -315,7 +315,7 @@ function RowGroup({ row }: { row: Row }) {
       </tr>
       {row.error && (
         <tr style={{ borderBottom: `0.5px solid ${WF_MID}`, borderLeft: `3px solid ${WF_DARK}`, background: errorRowBg }}>
-          <td colSpan={7} style={{ padding: "0 12px 12px 36px", fontSize: 12, color: WF_DARK, lineHeight: 1.5 }}>
+          <td colSpan={7} style={{ padding: "0 12px 12px 36px", fontSize: 14, color: WF_DARK, lineHeight: 1.5 }}>
             {row.error}
           </td>
         </tr>
@@ -342,19 +342,19 @@ function DoneState() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          fontSize: 28,
+          fontSize: 30,
           color: WF_DARK,
         }}
       >
         ✓
       </div>
-      <h1 style={{ fontSize: 22, fontWeight: 500, color: WF_DARK, margin: "0 0 20px" }}>
+      <h1 style={{ fontSize: 24, fontWeight: 500, color: WF_DARK, margin: "0 0 20px" }}>
         4 invitations sent
       </h1>
-      <div style={{ fontSize: 13, color: WF_MID, lineHeight: 1.7, marginBottom: 28 }}>
+      <div style={{ fontSize: 15, color: WF_MID, lineHeight: 1.7, marginBottom: 28 }}>
         Invitations have been sent to 4 clinicians via email.
       </div>
-      <div style={{ fontSize: 12, color: WF_DARK, marginBottom: 32 }}>
+      <div style={{ fontSize: 14, color: WF_DARK, marginBottom: 32 }}>
         2 rows had errors and were not uploaded.{" "}
         <span style={{ textDecoration: "underline", cursor: "pointer" }}>Download error report →</span>
       </div>
@@ -404,7 +404,7 @@ function StickyFooter({ left, right }: { left: React.ReactNode; right: React.Rea
 }
 
 const footerLinkStyle = {
-  fontSize: 13,
+  fontSize: 15,
   color: WF_DARK,
   textDecoration: "underline",
 } as const;
