@@ -6,7 +6,7 @@ export const Route = createFileRoute("/")({ component: Screen1A });
 function Screen1A() {
   return (
     <Page>
-      <div style={{ fontSize: 12, color: WF_MID, marginBottom: 6 }}>BC CHILDREN'S HOSPITAL</div>
+      <div style={{ fontSize: 14, color: WF_MID, marginBottom: 6 }}>BC CHILDREN'S HOSPITAL</div>
       <H>Welcome, Sarah.</H>
       <Body>
         You've been invited to set up your clinic admin account on Haibu Diabetes. Click below to create your password and get started.
@@ -15,7 +15,7 @@ function Screen1A() {
       <ReadOnlyField label="Your email" value="sarah.roberts@bcchildrens.ca" />
       <PrimaryButton to="/password">Create my account</PrimaryButton>
       <Divider />
-      <div style={{ textAlign: "center", fontSize: 12, color: WF_MID, lineHeight: 1.6 }}>
+      <div style={{ textAlign: "center", fontSize: 14, color: WF_MID, lineHeight: 1.6 }}>
         This invitation expires on July 14, 2026.
         <br />
         Need help?{" "}

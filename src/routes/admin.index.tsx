@@ -27,7 +27,7 @@ function Row({
     >
       <div
         style={{
-          fontSize: 12,
+          fontSize: 14,
           color: WF_MID,
           textTransform: "uppercase",
           letterSpacing: 0.5,
@@ -35,13 +35,13 @@ function Row({
       >
         {label}
       </div>
-      <div style={{ fontSize: 14, color: WF_DARK }}>{children}</div>
+      <div style={{ fontSize: 16, color: WF_DARK }}>{children}</div>
     </div>
   );
 }
 
 function ReadOnlyNote() {
-  return <span style={{ fontSize: 11, color: WF_MID, marginLeft: 8 }}>(read-only)</span>;
+  return <span style={{ fontSize: 13, color: WF_MID, marginLeft: 8 }}>(read-only)</span>;
 }
 
 function StatusChip({ text }: { text: string }) {
@@ -54,7 +54,7 @@ function StatusChip({ text }: { text: string }) {
         border: `1px solid ${WF_MID}`,
         borderRadius: 999,
         padding: "4px 12px",
-        fontSize: 13,
+        fontSize: 15,
         color: WF_DARK,
       }}
     >
@@ -109,7 +109,7 @@ function ClinicInformation() {
                 padding: "8px 12px",
                 border: `1px solid ${WF_MID}`,
                 background: "#fff",
-                fontSize: 14,
+                fontSize: 16,
                 color: WF_DARK,
                 fontFamily: "inherit",
                 outline: "none",
@@ -123,7 +123,7 @@ function ClinicInformation() {
                   border: `1px solid ${WF_DARK}`,
                   background: "#fff",
                   color: WF_DARK,
-                  fontSize: 13,
+                  fontSize: 15,
                   cursor: "pointer",
                   fontFamily: "inherit",
                 }}
@@ -142,13 +142,13 @@ function ClinicInformation() {
         <Row label="Subscription status" last>
           <span style={{ display: "inline-flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
             <StatusChip text="Active" />
-            <span style={{ fontSize: 11, color: WF_MID }}>
+            <span style={{ fontSize: 13, color: WF_MID }}>
               (read-only, managed by Haibu Health)
             </span>
           </span>
         </Row>
       </div>
-      <p style={{ textAlign: "center", fontSize: 12, color: WF_MID, marginTop: 16 }}>
+      <p style={{ textAlign: "center", fontSize: 14, color: WF_MID, marginTop: 16 }}>
         To update read-only fields, contact support@haibudiabetes.com
       </p>
       <PrototypeBack to="/complete" />

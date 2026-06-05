@@ -51,14 +51,14 @@ function FormList() {
   return (
     <AdminShell heading="">
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-        <h1 style={{ fontSize: 20, fontWeight: 500, color: WF_DARK, margin: 0 }}>Form library</h1>
+        <h1 style={{ fontSize: 22, fontWeight: 500, color: WF_DARK, margin: 0 }}>Form library</h1>
         <Btn primary to="/admin/forms/new">+ Add form</Btn>
       </div>
 
       {banner && bannerOpen && (
-        <div style={{ border: `1px solid ${WF_DARK}`, background: "#fff", padding: "10px 14px", fontSize: 13, color: WF_DARK, margin: "16px 0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div style={{ border: `1px solid ${WF_DARK}`, background: "#fff", padding: "10px 14px", fontSize: 15, color: WF_DARK, margin: "16px 0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <span>{banner}</span>
-          <button onClick={() => setBannerOpen(false)} style={{ background: "none", border: "none", cursor: "pointer", color: WF_DARK, fontSize: 16 }}>×</button>
+          <button onClick={() => setBannerOpen(false)} style={{ background: "none", border: "none", cursor: "pointer", color: WF_DARK, fontSize: 18 }}>×</button>
         </div>
       )}
 
@@ -70,7 +70,7 @@ function FormList() {
           <option value="All">All statuses</option>
           <option>Active</option><option>Archived</option>
         </Select>
-        <div style={{ flex: 1, textAlign: "right", fontSize: 12, color: WF_MID, minWidth: 80 }}>
+        <div style={{ flex: 1, textAlign: "right", fontSize: 14, color: WF_MID, minWidth: 80 }}>
           {state === "empty" ? "0 forms" : `${FORMS.length} forms`}
         </div>
       </div>
@@ -83,11 +83,11 @@ function FormList() {
         <NoResultsState />
       ) : (
         <div style={{ background: "#fff", border: `1px solid ${WF_MID}` }}>
-          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 15 }}>
             <thead>
               <tr style={{ background: "#F5F5F5", borderBottom: `1px solid ${WF_MID}` }}>
                 {["Form name", "Date added", "Last used", "Created by", "Status", "Actions"].map((h) => (
-                  <th key={h} style={{ padding: "10px 14px", textAlign: "left", fontSize: 11, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, fontWeight: 500 }}>
+                  <th key={h} style={{ padding: "10px 14px", textAlign: "left", fontSize: 13, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, fontWeight: 500 }}>
                     {h}
                   </th>
                 ))}
@@ -108,16 +108,16 @@ function FormList() {
                       <Link
                         to="/admin/forms"
                         search={{ state: "default", banner: `${r.name} has been restored.` }}
-                        style={{ fontSize: 13, color: WF_DARK, textDecoration: "underline" }}
+                        style={{ fontSize: 15, color: WF_DARK, textDecoration: "underline" }}
                       >
                         Restore
                       </Link>
                     ) : (
                       <span style={{ display: "inline-flex", gap: 12 }}>
-                        <Link to="/admin/forms/$id" params={{ id: r.id }} style={{ fontSize: 13, color: WF_DARK, textDecoration: "underline" }}>Edit</Link>
+                        <Link to="/admin/forms/$id" params={{ id: r.id }} style={{ fontSize: 15, color: WF_DARK, textDecoration: "underline" }}>Edit</Link>
                         <button
                           onClick={() => setConfirm(r)}
-                          style={{ background: "none", border: "none", padding: 0, fontSize: 13, color: WF_DARK, textDecoration: "underline", cursor: "pointer", fontFamily: "inherit" }}
+                          style={{ background: "none", border: "none", padding: 0, fontSize: 15, color: WF_DARK, textDecoration: "underline", cursor: "pointer", fontFamily: "inherit" }}
                         >
                           Archive
                         </button>
@@ -131,7 +131,7 @@ function FormList() {
         </div>
       )}
 
-      <div style={{ marginTop: 24, padding: 12, border: `1px dashed ${WF_MID}`, fontSize: 11, color: WF_MID, fontStyle: "italic" }}>
+      <div style={{ marginTop: 24, padding: 12, border: `1px dashed ${WF_MID}`, fontSize: 13, color: WF_MID, fontStyle: "italic" }}>
         <div style={{ marginBottom: 6 }}>[ Prototype: switch list state ]</div>
         <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
           {(["default", "empty", "noresults", "loading"] as StateMode[]).map((s) => (
@@ -139,7 +139,7 @@ function FormList() {
               key={s}
               to="/admin/forms"
               search={{ state: s, banner: "" }}
-              style={{ fontSize: 11, color: state === s ? WF_DARK : WF_MID, textDecoration: "underline", fontWeight: state === s ? 600 : 400 }}
+              style={{ fontSize: 13, color: state === s ? WF_DARK : WF_MID, textDecoration: "underline", fontWeight: state === s ? 600 : 400 }}
             >
               {s}
             </Link>
@@ -148,7 +148,7 @@ function FormList() {
       </div>
 
       <Modal open={!!confirm} title={`Archive ${confirm?.name}?`} onClose={() => setConfirm(null)}>
-        <p style={{ fontSize: 13, color: WF_DARK, margin: "0 0 20px", lineHeight: 1.5 }}>
+        <p style={{ fontSize: 15, color: WF_DARK, margin: "0 0 20px", lineHeight: 1.5 }}>
           This form will no longer be assignable to new patients. Existing patient assignments retain access.
         </p>
         <div style={{ display: "flex", justifyContent: "flex-end", gap: 8 }}>
@@ -188,9 +188,9 @@ function SkeletonTable() {
 function EmptyState() {
   return (
     <div style={{ background: "#fff", border: `1px solid ${WF_MID}`, padding: 60, textAlign: "center" }}>
-      <div style={{ width: 48, height: 48, border: `1.5px solid ${WF_MID}`, borderRadius: "50%", margin: "0 auto 16px", display: "flex", alignItems: "center", justifyContent: "center", color: WF_MID, fontSize: 22 }}>○</div>
-      <div style={{ fontSize: 16, color: WF_DARK, marginBottom: 6 }}>No forms yet</div>
-      <div style={{ fontSize: 13, color: WF_MID, marginBottom: 20 }}>
+      <div style={{ width: 48, height: 48, border: `1.5px solid ${WF_MID}`, borderRadius: "50%", margin: "0 auto 16px", display: "flex", alignItems: "center", justifyContent: "center", color: WF_MID, fontSize: 24 }}>○</div>
+      <div style={{ fontSize: 18, color: WF_DARK, marginBottom: 6 }}>No forms yet</div>
+      <div style={{ fontSize: 15, color: WF_MID, marginBottom: 20 }}>
         Add your first form to make it available to clinicians.
       </div>
       <Btn primary to="/admin/forms/new">+ Add form</Btn>
@@ -201,7 +201,7 @@ function EmptyState() {
 function NoResultsState() {
   return (
     <div style={{ background: "#fff", border: `1px solid ${WF_MID}`, padding: 60, textAlign: "center" }}>
-      <div style={{ fontSize: 14, color: WF_DARK, marginBottom: 12 }}>No forms match your search</div>
+      <div style={{ fontSize: 16, color: WF_DARK, marginBottom: 12 }}>No forms match your search</div>
       <TextLink to="/admin/forms">Clear search</TextLink>
     </div>
   );

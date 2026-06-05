@@ -163,14 +163,14 @@ export function FormBuilder({ mode, existing }: { mode: "new" | "edit"; existing
                 if (e.key === "Enter") setEditingName(false);
                 if (e.key === "Escape") { setName(initialName); setEditingName(false); }
               }}
-              style={{ fontSize: 22, fontWeight: 500, maxWidth: 420 }}
+              style={{ fontSize: 24, fontWeight: 500, maxWidth: 420 }}
             />
           ) : (
             <h1
               onClick={() => setEditingName(true)}
               title="Click to rename"
               style={{
-                fontSize: 22,
+                fontSize: 24,
                 fontWeight: 500,
                 margin: 0,
                 cursor: "text",
@@ -191,14 +191,14 @@ export function FormBuilder({ mode, existing }: { mode: "new" | "edit"; existing
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1px 360px", gap: 24, marginTop: 24, alignItems: "start" }}>
           {/* Left: question list */}
           <div>
-            <div style={{ fontSize: 11, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 8 }}>
+            <div style={{ fontSize: 13, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 8 }}>
               Questions
             </div>
             {questions.length === 0 ? (
               <div style={{ border: `1px dashed ${WF_MID}`, background: "#fff", padding: "48px 24px", textAlign: "center", marginBottom: 12 }}>
-                <div style={{ width: 44, height: 44, border: `1.5px solid ${WF_MID}`, borderRadius: "50%", margin: "0 auto 14px", display: "flex", alignItems: "center", justifyContent: "center", color: WF_MID, fontSize: 20 }}>?</div>
-                <div style={{ fontSize: 14, color: WF_DARK, marginBottom: 4 }}>No questions yet</div>
-                <div style={{ fontSize: 12, color: WF_MID, marginBottom: 16 }}>Click "+ Add question" to get started.</div>
+                <div style={{ width: 44, height: 44, border: `1.5px solid ${WF_MID}`, borderRadius: "50%", margin: "0 auto 14px", display: "flex", alignItems: "center", justifyContent: "center", color: WF_MID, fontSize: 22 }}>?</div>
+                <div style={{ fontSize: 16, color: WF_DARK, marginBottom: 4 }}>No questions yet</div>
+                <div style={{ fontSize: 14, color: WF_MID, marginBottom: 16 }}>Click "+ Add question" to get started.</div>
               </div>
             ) : (
               <div>
@@ -233,7 +233,7 @@ export function FormBuilder({ mode, existing }: { mode: "new" | "edit"; existing
                   background: "#fff",
                   border: `1px dashed ${WF_DARK}`,
                   padding: "10px 16px",
-                  fontSize: 13,
+                  fontSize: 15,
                   color: WF_DARK,
                   cursor: "pointer",
                   fontFamily: "inherit",
@@ -257,7 +257,7 @@ export function FormBuilder({ mode, existing }: { mode: "new" | "edit"; existing
                         background: "none",
                         border: "none",
                         borderBottom: `0.5px solid ${WF_MID}`,
-                        fontSize: 13,
+                        fontSize: 15,
                         color: WF_DARK,
                         cursor: "pointer",
                         fontFamily: "inherit",
@@ -276,11 +276,11 @@ export function FormBuilder({ mode, existing }: { mode: "new" | "edit"; existing
 
           {/* Right: settings panel */}
           <div style={{ position: "sticky", top: 24 }}>
-            <div style={{ fontSize: 11, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 12 }}>
+            <div style={{ fontSize: 13, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 12 }}>
               Question settings
             </div>
             {!selected ? (
-              <div style={{ background: "#fff", border: `1px dashed ${WF_MID}`, padding: "48px 18px", textAlign: "center", fontSize: 13, color: WF_MID }}>
+              <div style={{ background: "#fff", border: `1px dashed ${WF_MID}`, padding: "48px 18px", textAlign: "center", fontSize: 15, color: WF_MID }}>
                 Select a question to edit its settings
               </div>
             ) : (
@@ -296,7 +296,7 @@ export function FormBuilder({ mode, existing }: { mode: "new" | "edit"; existing
           <TextLink onClick={cancel}>Cancel</TextLink>
           <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
             {savedFlash && (
-              <span style={{ fontSize: 12, color: WF_MID, marginRight: 4 }}>Saved</span>
+              <span style={{ fontSize: 14, color: WF_MID, marginRight: 4 }}>Saved</span>
             )}
             <Btn onClick={saveDraft}>Save as draft</Btn>
             <Btn
@@ -311,11 +311,11 @@ export function FormBuilder({ mode, existing }: { mode: "new" | "edit"; existing
 
         {/* Undo toast */}
         {deleted && (
-          <div style={{ position: "fixed", left: "50%", bottom: 80, transform: "translateX(-50%)", background: TEAL, color: "#fff", padding: "10px 16px", fontSize: 13, display: "flex", alignItems: "center", gap: 16, zIndex: 30 }}>
+          <div style={{ position: "fixed", left: "50%", bottom: 80, transform: "translateX(-50%)", background: TEAL, color: "#fff", padding: "10px 16px", fontSize: 15, display: "flex", alignItems: "center", gap: 16, zIndex: 30 }}>
             <span>Question deleted</span>
             <button
               onClick={undoDelete}
-              style={{ background: "none", border: "none", color: "#fff", textDecoration: "underline", cursor: "pointer", fontFamily: "inherit", fontSize: 13, padding: 0 }}
+              style={{ background: "none", border: "none", color: "#fff", textDecoration: "underline", cursor: "pointer", fontFamily: "inherit", fontSize: 15, padding: 0 }}
             >
               Undo
             </button>
@@ -324,7 +324,7 @@ export function FormBuilder({ mode, existing }: { mode: "new" | "edit"; existing
       </div>
 
       <Modal open={discardOpen} title="Discard changes?" onClose={() => setDiscardOpen(false)}>
-        <p style={{ fontSize: 13, color: WF_DARK, margin: "0 0 20px", lineHeight: 1.5 }}>
+        <p style={{ fontSize: 15, color: WF_DARK, margin: "0 0 20px", lineHeight: 1.5 }}>
           Any unsaved changes will be lost.
         </p>
         <div style={{ display: "flex", justifyContent: "flex-end", gap: 8 }}>
@@ -334,7 +334,7 @@ export function FormBuilder({ mode, existing }: { mode: "new" | "edit"; existing
       </Modal>
 
       <Modal open={publishOpen} title={`Publish ${name || UNTITLED}?`} onClose={() => setPublishOpen(false)}>
-        <p style={{ fontSize: 13, color: WF_DARK, margin: "0 0 20px", lineHeight: 1.5 }}>
+        <p style={{ fontSize: 15, color: WF_DARK, margin: "0 0 20px", lineHeight: 1.5 }}>
           This form will be available for clinicians to assign to patients.
         </p>
         <div style={{ display: "flex", justifyContent: "flex-end", gap: 8 }}>
@@ -405,26 +405,26 @@ function QuestionRow({
         position: "relative",
       }}
     >
-      <span style={{ color: WF_MID, fontSize: 14, cursor: "grab", userSelect: "none", lineHeight: "20px" }}>⠿</span>
+      <span style={{ color: WF_MID, fontSize: 16, cursor: "grab", userSelect: "none", lineHeight: "20px" }}>⠿</span>
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontSize: 13, color: WF_DARK }}>
+        <div style={{ fontSize: 15, color: WF_DARK }}>
           {idx + 1}. {q.text}
           {q.required && <span style={{ color: WF_DARK, marginLeft: 4 }}>*</span>}
         </div>
-        <div style={{ fontSize: 11, color: WF_MID, marginTop: 2 }}>{q.type}</div>
+        <div style={{ fontSize: 13, color: WF_MID, marginTop: 2 }}>{q.type}</div>
       </div>
       <div style={{ display: "flex", gap: 10, opacity: hover || isSelected ? 1 : 0, transition: "opacity 120ms" }}>
         <button
           aria-label="Edit"
           onClick={(e) => { e.stopPropagation(); onSelect(); }}
-          style={{ background: "none", border: "none", color: WF_DARK, fontSize: 13, cursor: "pointer", padding: 2, fontFamily: "inherit" }}
+          style={{ background: "none", border: "none", color: WF_DARK, fontSize: 15, cursor: "pointer", padding: 2, fontFamily: "inherit" }}
         >
           ✎
         </button>
         <button
           aria-label="Delete"
           onClick={(e) => { e.stopPropagation(); onDelete(); }}
-          style={{ background: "none", border: "none", color: WF_DARK, fontSize: 13, cursor: "pointer", padding: 2, fontFamily: "inherit" }}
+          style={{ background: "none", border: "none", color: WF_DARK, fontSize: 15, cursor: "pointer", padding: 2, fontFamily: "inherit" }}
         >
           🗑
         </button>
@@ -437,24 +437,24 @@ function QuestionSettings({ q, onChange }: { q: Question; onChange: (p: Partial<
   return (
     <div>
       <div style={{ marginBottom: 14 }}>
-        <label style={{ display: "block", fontSize: 12, color: WF_DARK, marginBottom: 4 }}>Question text</label>
+        <label style={{ display: "block", fontSize: 14, color: WF_DARK, marginBottom: 4 }}>Question text</label>
         <Input value={q.text} onChange={(e) => onChange({ text: e.target.value })} />
       </div>
 
       <div style={{ marginBottom: 14, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <span style={{ fontSize: 13, color: WF_DARK }}>Required</span>
+        <span style={{ fontSize: 15, color: WF_DARK }}>Required</span>
         <Toggle on={q.required} onClick={() => onChange({ required: !q.required })} />
       </div>
 
       {q.type === "Free text" && (
         <>
           <div style={{ marginBottom: 14, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <span style={{ fontSize: 13, color: WF_DARK }}>Limit response length</span>
+            <span style={{ fontSize: 15, color: WF_DARK }}>Limit response length</span>
             <Toggle on={!!q.limitLength} onClick={() => onChange({ limitLength: !q.limitLength })} />
           </div>
           {q.limitLength && (
             <div style={{ marginBottom: 14 }}>
-              <label style={{ display: "block", fontSize: 12, color: WF_DARK, marginBottom: 4 }}>Max characters</label>
+              <label style={{ display: "block", fontSize: 14, color: WF_DARK, marginBottom: 4 }}>Max characters</label>
               <Input type="number" value={q.maxLength ?? 500} onChange={(e) => onChange({ maxLength: Number(e.target.value) })} />
             </div>
           )}
@@ -464,7 +464,7 @@ function QuestionSettings({ q, onChange }: { q: Question; onChange: (p: Partial<
       {q.type === "Multiple choice" && (
         <>
           <div style={{ marginBottom: 10 }}>
-            <div style={{ fontSize: 12, color: WF_DARK, marginBottom: 6 }}>Answer options</div>
+            <div style={{ fontSize: 14, color: WF_DARK, marginBottom: 6 }}>Answer options</div>
             {(q.options ?? []).map((opt, i) => (
               <div key={i} style={{ display: "flex", gap: 6, marginBottom: 6 }}>
                 <Input
@@ -480,7 +480,7 @@ function QuestionSettings({ q, onChange }: { q: Question; onChange: (p: Partial<
                     const next = (q.options ?? []).filter((_, idx) => idx !== i);
                     onChange({ options: next });
                   }}
-                  style={{ background: "none", border: "none", color: WF_DARK, fontSize: 14, cursor: "pointer", padding: "0 6px" }}
+                  style={{ background: "none", border: "none", color: WF_DARK, fontSize: 16, cursor: "pointer", padding: "0 6px" }}
                 >
                   ×
                 </button>
@@ -489,7 +489,7 @@ function QuestionSettings({ q, onChange }: { q: Question; onChange: (p: Partial<
             <TextLink onClick={() => onChange({ options: [...(q.options ?? []), "New option"] })}>+ Add option</TextLink>
           </div>
           <div style={{ marginBottom: 14, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <span style={{ fontSize: 13, color: WF_DARK }}>Allow multiple selections</span>
+            <span style={{ fontSize: 15, color: WF_DARK }}>Allow multiple selections</span>
             <Toggle on={!!q.multi} onClick={() => onChange({ multi: !q.multi })} />
           </div>
         </>
@@ -499,29 +499,29 @@ function QuestionSettings({ q, onChange }: { q: Question; onChange: (p: Partial<
         <>
           <div style={{ display: "flex", gap: 10, marginBottom: 14 }}>
             <div style={{ flex: 1 }}>
-              <label style={{ display: "block", fontSize: 12, color: WF_DARK, marginBottom: 4 }}>Min value</label>
+              <label style={{ display: "block", fontSize: 14, color: WF_DARK, marginBottom: 4 }}>Min value</label>
               <Input type="number" value={q.min ?? 1} onChange={(e) => onChange({ min: Number(e.target.value) })} />
             </div>
             <div style={{ flex: 1 }}>
-              <label style={{ display: "block", fontSize: 12, color: WF_DARK, marginBottom: 4 }}>Max value</label>
+              <label style={{ display: "block", fontSize: 14, color: WF_DARK, marginBottom: 4 }}>Max value</label>
               <Input type="number" value={q.max ?? 10} onChange={(e) => onChange({ max: Number(e.target.value) })} />
             </div>
           </div>
           <div style={{ marginBottom: 10 }}>
-            <label style={{ display: "block", fontSize: 12, color: WF_DARK, marginBottom: 4 }}>Label for min (optional)</label>
+            <label style={{ display: "block", fontSize: 14, color: WF_DARK, marginBottom: 4 }}>Label for min (optional)</label>
             <Input value={q.minLabel ?? ""} onChange={(e) => onChange({ minLabel: e.target.value })} placeholder="e.g. Very poor" />
           </div>
           <div style={{ marginBottom: 10 }}>
-            <label style={{ display: "block", fontSize: 12, color: WF_DARK, marginBottom: 4 }}>Label for max (optional)</label>
+            <label style={{ display: "block", fontSize: 14, color: WF_DARK, marginBottom: 4 }}>Label for max (optional)</label>
             <Input value={q.maxLabel ?? ""} onChange={(e) => onChange({ maxLabel: e.target.value })} placeholder="e.g. Excellent" />
           </div>
-          <div style={{ fontSize: 11, color: WF_MID, fontStyle: "italic", marginBottom: 8 }}>
+          <div style={{ fontSize: 13, color: WF_MID, fontStyle: "italic", marginBottom: 8 }}>
             Shown as a number input or slider — display decided at build time.
           </div>
         </>
       )}
 
-      <div style={{ marginTop: 8, fontSize: 11, color: WF_MID, fontStyle: "italic" }}>Type: {q.type}</div>
+      <div style={{ marginTop: 8, fontSize: 13, color: WF_MID, fontStyle: "italic" }}>Type: {q.type}</div>
     </div>
   );
 }

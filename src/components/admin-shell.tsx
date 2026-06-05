@@ -39,7 +39,7 @@ export function AdminShell({ heading, children }: { heading: string; children: R
           borderBottom: `1px solid ${BORDER}4D`,
         }}
       >
-        <span style={{ fontSize: 14, fontWeight: 600, color: TEAL }}>Haibu Diabetes</span>
+        <span style={{ fontSize: 16, fontWeight: 600, color: TEAL }}>Haibu Diabetes</span>
         <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
           <BellIcon />
           <div
@@ -51,14 +51,14 @@ export function AdminShell({ heading, children }: { heading: string; children: R
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              fontSize: 11,
+              fontSize: 13,
               fontWeight: 600,
               color: "#fff",
             }}
           >
             SR
           </div>
-          <span style={{ fontSize: 12, color: WF_DARK, fontWeight: 500 }}>Admin</span>
+          <span style={{ fontSize: 14, color: WF_DARK, fontWeight: 500 }}>Admin</span>
         </div>
       </div>
 
@@ -76,7 +76,7 @@ export function AdminShell({ heading, children }: { heading: string; children: R
             style={{
               padding: 16,
               marginBottom: 20,
-              fontSize: 11,
+              fontSize: 13,
               color: "rgba(255,255,255,0.7)",
               textTransform: "uppercase",
               letterSpacing: 0.5,
@@ -97,7 +97,7 @@ export function AdminShell({ heading, children }: { heading: string; children: R
                     height: 40,
                     lineHeight: "40px",
                     padding: "0 16px",
-                    fontSize: 13,
+                    fontSize: 15,
                     fontWeight: 500,
                     color: active ? "#fff" : "rgba(255,255,255,0.7)",
                     textDecoration: "none",
@@ -112,15 +112,15 @@ export function AdminShell({ heading, children }: { heading: string; children: R
             })}
           </nav>
           <div style={{ borderTop: "1px solid rgba(255,255,255,0.15)", padding: 16 }}>
-            <div style={{ fontSize: 12, color: "rgba(255,255,255,0.7)", marginBottom: 4 }}>
+            <div style={{ fontSize: 14, color: "rgba(255,255,255,0.7)", marginBottom: 4 }}>
               Sarah Reid
             </div>
-            <div style={{ fontSize: 11, color: "rgba(255,255,255,0.5)", marginBottom: 12 }}>
+            <div style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", marginBottom: 12 }}>
               Clinic Admin
             </div>
             <Link
               to="/complete"
-              style={{ fontSize: 12, color: "rgba(255,255,255,0.7)", textDecoration: "none" }}
+              style={{ fontSize: 14, color: "rgba(255,255,255,0.7)", textDecoration: "none" }}
             >
               ← Back to clinic
             </Link>
@@ -129,7 +129,7 @@ export function AdminShell({ heading, children }: { heading: string; children: R
 
         {/* Main */}
         <main style={{ flex: 1, padding: 32, background: WF_BG }}>
-          <h1 style={{ fontSize: 22, fontWeight: 700, color: TEAL, margin: "0 0 24px 0" }}>
+          <h1 style={{ fontSize: 24, fontWeight: 700, color: TEAL, margin: "0 0 24px 0" }}>
             {heading}
           </h1>
           {children}
@@ -143,7 +143,7 @@ export function AdminPlaceholder({ heading }: { heading: string }) {
   return (
     <AdminShell heading={heading}>
       <div style={{ textAlign: "center", padding: "80px 16px" }}>
-        <p style={{ fontSize: 14, color: WF_MID, margin: 0 }}>
+        <p style={{ fontSize: 16, color: WF_MID, margin: 0 }}>
           This section is being designed. Coming soon.
         </p>
       </div>
@@ -157,7 +157,7 @@ export function PrototypeBack({ to = "/admin" }: { to?: string }) {
     <div style={{ textAlign: "center", marginTop: 32 }}>
       <Link
         to={to}
-        style={{ fontSize: 12, fontStyle: "italic", color: WF_MID, textDecoration: "underline" }}
+        style={{ fontSize: 14, fontStyle: "italic", color: WF_MID, textDecoration: "underline" }}
       >
         [ ← Back (prototype navigation only) ]
       </Link>

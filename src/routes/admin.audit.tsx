@@ -105,7 +105,7 @@ function AuditLog() {
     padding: "8px 12px",
     border: `1px solid ${WF_MID}`,
     background: "#fff",
-    fontSize: 13,
+    fontSize: 15,
     color: WF_DARK,
     fontFamily: "inherit",
     outline: "none",
@@ -116,15 +116,15 @@ function AuditLog() {
   return (
     <AdminShell heading="">
       {/* Title + subtitle */}
-      <h1 style={{ fontSize: 20, fontWeight: 500, color: WF_DARK, margin: "0 0 6px 0" }}>Audit log</h1>
-      <p style={{ fontSize: 13, color: WF_MID, margin: "0 0 20px 0" }}>
+      <h1 style={{ fontSize: 22, fontWeight: 500, color: WF_DARK, margin: "0 0 6px 0" }}>Audit log</h1>
+      <p style={{ fontSize: 15, color: WF_MID, margin: "0 0 20px 0" }}>
         A read-only record of all admin and clinical actions in this clinic.
       </p>
 
       {/* Filters */}
       <div style={{ display: "flex", gap: 12, alignItems: "flex-end", marginBottom: 16, flexWrap: "wrap" }}>
         <div style={{ minWidth: 180, flex: 1 }}>
-          <div style={{ fontSize: 11, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 4 }}>Date range</div>
+          <div style={{ fontSize: 13, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 4 }}>Date range</div>
           <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
             <input
               type="text"
@@ -132,7 +132,7 @@ function AuditLog() {
               onChange={(e) => setStartDate(e.target.value)}
               style={inputStyle}
             />
-            <span style={{ fontSize: 13, color: WF_MID }}>–</span>
+            <span style={{ fontSize: 15, color: WF_MID }}>–</span>
             <input
               type="text"
               value={endDate}
@@ -142,13 +142,13 @@ function AuditLog() {
           </div>
         </div>
         <div style={{ minWidth: 160, flex: 1 }}>
-          <div style={{ fontSize: 11, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 4 }}>User</div>
+          <div style={{ fontSize: 13, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 4 }}>User</div>
           <Select value={userFilter} onChange={(e) => setUserFilter(e.target.value)} style={{ width: "100%" }}>
             {USERS.map((u) => <option key={u}>{u}</option>)}
           </Select>
         </div>
         <div style={{ minWidth: 200, flex: 2 }}>
-          <div style={{ fontSize: 11, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 4 }}>Action type</div>
+          <div style={{ fontSize: 13, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 4 }}>Action type</div>
           <Select value={actionFilter} onChange={(e) => setActionFilter(e.target.value)} style={{ width: "100%" }}>
             {ACTION_TYPES.map((a) => <option key={a}>{a}</option>)}
           </Select>
@@ -170,7 +170,7 @@ function AuditLog() {
 
       {/* Table */}
       <div style={{ background: "#fff", border: `1px solid ${WF_MID}` }}>
-        <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+        <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 15 }}>
           <thead>
             <tr style={{ background: "#F5F5F5", borderBottom: `1px solid ${WF_MID}` }}>
               {["Timestamp", "User", "Role", "Action", "Affected record"].map((h) => (
@@ -179,7 +179,7 @@ function AuditLog() {
                   style={{
                     padding: "10px 14px",
                     textAlign: "left",
-                    fontSize: 11,
+                    fontSize: 13,
                     color: WF_MID,
                     textTransform: "uppercase",
                     letterSpacing: 0.5,
@@ -202,13 +202,13 @@ function AuditLog() {
                 onMouseEnter={(e) => { (e.currentTarget as HTMLTableRowElement).style.background = "#FAFAFA"; }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLTableRowElement).style.background = "transparent"; }}
               >
-                <td style={{ padding: "12px 14px", color: WF_MID, fontSize: 12, fontWeight: 400, whiteSpace: "nowrap" }}>
+                <td style={{ padding: "12px 14px", color: WF_MID, fontSize: 14, fontWeight: 400, whiteSpace: "nowrap" }}>
                   {row.timestamp}
                 </td>
                 <td style={{ padding: "12px 14px", color: WF_MID, fontWeight: 400 }}>
                   {row.user}
                 </td>
-                <td style={{ padding: "12px 14px", color: WF_MID, fontSize: 12, fontWeight: 400 }}>
+                <td style={{ padding: "12px 14px", color: WF_MID, fontSize: 14, fontWeight: 400 }}>
                   {row.role}
                 </td>
                 <td style={{ padding: "12px 14px", color: WF_DARK, fontWeight: 500 }}>
@@ -225,7 +225,7 @@ function AuditLog() {
 
       {/* Pagination */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 16 }}>
-        <span style={{ fontSize: 12, color: WF_MID }}>
+        <span style={{ fontSize: 14, color: WF_MID }}>
           Showing {visibleRows.length} of {filteredRows.length} entries
         </span>
         {hasMore && (
@@ -235,7 +235,7 @@ function AuditLog() {
 
       {/* Export modal */}
       <Modal open={exportOpen} title="Export audit log?" onClose={() => setExportOpen(false)}>
-        <p style={{ fontSize: 13, color: WF_DARK, margin: "0 0 20px", lineHeight: 1.5 }}>
+        <p style={{ fontSize: 15, color: WF_DARK, margin: "0 0 20px", lineHeight: 1.5 }}>
           This will download all log entries matching your current filters as a CSV file.
         </p>
         <div style={{ display: "flex", justifyContent: "flex-end", gap: 8 }}>

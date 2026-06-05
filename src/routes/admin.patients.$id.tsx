@@ -146,18 +146,18 @@ function PatientDetail() {
   return (
     <AdminShell heading="">
       <div style={{ maxWidth: 800 }}>
-        <Link to="/admin/patients" search={{ state: "default", banner: "", assignedTo: "" }} style={{ fontSize: 12, color: WF_MID, textDecoration: "none" }}>
+        <Link to="/admin/patients" search={{ state: "default", banner: "", assignedTo: "" }} style={{ fontSize: 14, color: WF_MID, textDecoration: "none" }}>
           ← Patient management
         </Link>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", margin: "12px 0 24px" }}>
-          <h1 style={{ fontSize: 22, fontWeight: 500, margin: 0 }}>{base.name}</h1>
+          <h1 style={{ fontSize: 24, fontWeight: 500, margin: 0 }}>{base.name}</h1>
           {statusPill(base.status)}
         </div>
 
         {savedBanner && (
-          <div style={{ border: `1px solid ${WF_DARK}`, background: "#F5F5F5", padding: "10px 14px", fontSize: 13, color: WF_DARK, marginBottom: 16, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div style={{ border: `1px solid ${WF_DARK}`, background: "#F5F5F5", padding: "10px 14px", fontSize: 15, color: WF_DARK, marginBottom: 16, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <span>Patient profile updated.</span>
-            <button onClick={() => setSavedBanner(false)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 14, color: WF_MID }}>×</button>
+            <button onClick={() => setSavedBanner(false)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 16, color: WF_MID }}>×</button>
           </div>
         )}
 
@@ -211,12 +211,12 @@ function PatientDetail() {
             <Field label="Assigned clinician(s)" helper="Up to 4. All changes are audit-logged.">
               <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 8 }}>
                 {clinicians.length === 0 ? (
-                  <span style={{ fontSize: 12, color: WF_MID, fontStyle: "italic" }}>Unassigned</span>
+                  <span style={{ fontSize: 14, color: WF_MID, fontStyle: "italic" }}>Unassigned</span>
                 ) : (
                   clinicians.map((c) => (
-                    <span key={c} style={{ display: "inline-flex", alignItems: "center", gap: 6, border: `1px solid ${WF_DARK}`, padding: "4px 10px", fontSize: 12 }}>
+                    <span key={c} style={{ display: "inline-flex", alignItems: "center", gap: 6, border: `1px solid ${WF_DARK}`, padding: "4px 10px", fontSize: 14 }}>
                       {c}
-                      <button onClick={() => toggleClin(c)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 13 }}>×</button>
+                      <button onClick={() => toggleClin(c)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 15 }}>×</button>
                     </span>
                   ))
                 )}
@@ -241,7 +241,7 @@ function PatientDetail() {
           <div style={{ marginTop: 12, paddingTop: 12, borderTop: `0.5px solid ${WF_MID}` }}>
             {base.status === "Invited" && !base.bounced && (
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <div style={{ fontSize: 13, color: WF_DARK }}>
+                <div style={{ fontSize: 15, color: WF_DARK }}>
                   Invitation sent {base.inviteDate} — pending acceptance
                 </div>
                 <Btn small>Resend invitation</Btn>
@@ -251,10 +251,10 @@ function PatientDetail() {
               <div>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12 }}>
                   <div>
-                    <div style={{ fontSize: 13, color: WF_DARK, fontWeight: 600 }}>
+                    <div style={{ fontSize: 15, color: WF_DARK, fontWeight: 600 }}>
                       Invitation sent {base.inviteDate} — bounced
                     </div>
-                    <div style={{ fontSize: 11, color: WF_MID, marginTop: 4, lineHeight: 1.5 }}>
+                    <div style={{ fontSize: 13, color: WF_MID, marginTop: 4, lineHeight: 1.5 }}>
                       The invitation email could not be delivered. Check the email address above and resend.
                     </div>
                   </div>
@@ -264,12 +264,12 @@ function PatientDetail() {
             )}
             {base.status === "Not yet invited" && (
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <div style={{ fontSize: 13, color: WF_DARK }}>No invitation sent</div>
+                <div style={{ fontSize: 15, color: WF_DARK }}>No invitation sent</div>
                 <Btn small primary>Send invitation</Btn>
               </div>
             )}
             {base.status === "Active" && (
-              <div style={{ fontSize: 13, color: WF_DARK }}>Account active since {base.activeSince}</div>
+              <div style={{ fontSize: 15, color: WF_DARK }}>Account active since {base.activeSince}</div>
             )}
           </div>
         </Card>
@@ -280,8 +280,8 @@ function PatientDetail() {
           {base.supporters.map((s, i) => (
             <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: `0.5px solid ${WF_MID}` }}>
               <div>
-                <div style={{ fontSize: 13, color: WF_DARK }}>{s.name}</div>
-                <div style={{ fontSize: 11, color: WF_MID }}>{s.relationship} · {s.status}</div>
+                <div style={{ fontSize: 15, color: WF_DARK }}>{s.name}</div>
+                <div style={{ fontSize: 13, color: WF_MID }}>{s.relationship} · {s.status}</div>
               </div>
               {s.status === "Invited" && <Btn small>Resend invitation</Btn>}
             </div>
@@ -311,12 +311,12 @@ function PatientDetail() {
           }}
         >
           {saveError && (
-            <div style={{ fontSize: 12, color: WF_DARK, marginBottom: 8 }}>
+            <div style={{ fontSize: 14, color: WF_DARK, marginBottom: 8 }}>
               Could not save. Please try again.
             </div>
           )}
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <div style={{ fontSize: 12, color: WF_MID }}>You have unsaved changes.</div>
+            <div style={{ fontSize: 14, color: WF_MID }}>You have unsaved changes.</div>
             <div style={{ display: "flex", gap: 8 }}>
               <Btn onClick={discard}>Discard changes</Btn>
               <Btn primary onClick={save}>Save changes</Btn>
@@ -326,7 +326,7 @@ function PatientDetail() {
       )}
 
       <Modal open={blocker.status === "blocked"} title="You have unsaved changes" onClose={() => blocker.reset?.()}>
-        <p style={{ fontSize: 13, color: WF_DARK, margin: "0 0 20px", lineHeight: 1.5 }}>
+        <p style={{ fontSize: 15, color: WF_DARK, margin: "0 0 20px", lineHeight: 1.5 }}>
           Navigating away will discard any changes you have made to this patient&apos;s profile.
         </p>
         <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 12 }}>
@@ -338,7 +338,7 @@ function PatientDetail() {
 
 
       <Modal open={confirm1} title={`Remove ${base.name}?`} onClose={() => setConfirm1(false)}>
-        <p style={{ fontSize: 13, color: WF_DARK, margin: "0 0 20px", lineHeight: 1.5 }}>
+        <p style={{ fontSize: 15, color: WF_DARK, margin: "0 0 20px", lineHeight: 1.5 }}>
           Are you sure you want to remove {base.name}? This cannot be undone immediately. Their profile will be retained for 30 days before permanent deletion.
         </p>
         <div style={{ display: "flex", justifyContent: "flex-end", gap: 8 }}>
@@ -348,10 +348,10 @@ function PatientDetail() {
       </Modal>
 
       <Modal open={confirm2} title="Confirm removal" onClose={() => setConfirm2(false)}>
-        <p style={{ fontSize: 13, color: WF_DARK, margin: "0 0 12px" }}>
+        <p style={{ fontSize: 15, color: WF_DARK, margin: "0 0 12px" }}>
           Type the patient&apos;s full name to confirm.
         </p>
-        <div style={{ fontSize: 11, color: WF_MID, marginBottom: 8, fontFamily: "ui-monospace, monospace" }}>
+        <div style={{ fontSize: 13, color: WF_MID, marginBottom: 8, fontFamily: "ui-monospace, monospace" }}>
           {base.name}
         </div>
         <Input value={removeText} onChange={(e) => setRemoveText(e.target.value)} />
@@ -367,18 +367,18 @@ function PatientDetail() {
 }
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
-  return <div style={{ fontSize: 14, fontWeight: 600, color: WF_DARK, marginBottom: 16 }}>{children}</div>;
+  return <div style={{ fontSize: 16, fontWeight: 600, color: WF_DARK, marginBottom: 16 }}>{children}</div>;
 }
 function Grid({ children }: { children: React.ReactNode }) {
   return <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>{children}</div>;
 }
 function ReadOnly({ children }: { children: React.ReactNode }) {
   return (
-    <div style={{ padding: "8px 12px", border: `1px solid ${WF_MID}`, background: "#F5F5F5", fontSize: 13, color: WF_DARK }}>
+    <div style={{ padding: "8px 12px", border: `1px solid ${WF_MID}`, background: "#F5F5F5", fontSize: 15, color: WF_DARK }}>
       {children}
     </div>
   );
 }
 function Note({ children }: { children: React.ReactNode }) {
-  return <div style={{ fontSize: 11, color: WF_MID, fontStyle: "italic", marginTop: 6 }}>{children}</div>;
+  return <div style={{ fontSize: 13, color: WF_MID, fontStyle: "italic", marginTop: 6 }}>{children}</div>;
 }

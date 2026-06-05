@@ -19,7 +19,7 @@ export function OtpBoxes({ digits, activeIndex, length = 6 }: { digits: string; 
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              fontSize: 18,
+              fontSize: 20,
               color: WF_DARK,
               background: "#fff",
             }}
@@ -42,7 +42,7 @@ function Screen4B() {
       <PrimaryButton disabled>Verify and finish</PrimaryButton>
       <SecondaryButton to="/authenticator-qr">Go back</SecondaryButton>
       <Divider />
-      <div style={{ textAlign: "center", fontSize: 12, color: WF_MID }}>
+      <div style={{ textAlign: "center", fontSize: 14, color: WF_MID }}>
         Having trouble?{" "}
         <Link to="/verify-method" style={{ color: WF_DARK, textDecoration: "underline" }}>
           Use a different method

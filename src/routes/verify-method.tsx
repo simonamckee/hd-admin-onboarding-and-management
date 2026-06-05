@@ -57,8 +57,8 @@ function Screen3() {
           >
             <Radio selected={selected} />
             <div>
-              <div style={{ fontSize: 13, fontWeight: 700, color: WF_DARK }}>{title}</div>
-              <div style={{ fontSize: 12, color: WF_MID, marginTop: 2 }}>{desc}</div>
+              <div style={{ fontSize: 15, fontWeight: 700, color: WF_DARK }}>{title}</div>
+              <div style={{ fontSize: 14, color: WF_MID, marginTop: 2 }}>{desc}</div>
             </div>
           </div>
         );
@@ -68,7 +68,7 @@ function Screen3() {
         Set up 2-step verification
       </PrimaryButton>
       <SecondaryButton to="/complete-skipped">Skip for now</SecondaryButton>
-      <div style={{ fontSize: 12, color: WF_MID, marginTop: 14, textAlign: "center" }}>
+      <div style={{ fontSize: 14, color: WF_MID, marginTop: 14, textAlign: "center" }}>
         You can enable 2-step verification later in My Profile → Security.
       </div>
       <TestingLink to="/sms-phone">test SMS flow →</TestingLink>

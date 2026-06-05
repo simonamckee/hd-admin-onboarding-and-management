@@ -52,7 +52,7 @@ export function ResourceForm({ mode, existing }: { mode: "new" | "edit"; existin
   return (
     <AdminShell heading="">
       <div style={{ maxWidth: 640 }}>
-        <h1 style={{ fontSize: 22, fontWeight: 500, margin: "0 0 24px" }}>
+        <h1 style={{ fontSize: 24, fontWeight: 500, margin: "0 0 24px" }}>
           {mode === "new" ? "Add a resource" : "Edit resource"}
         </h1>
 
@@ -79,11 +79,11 @@ export function ResourceForm({ mode, existing }: { mode: "new" | "edit"; existin
         {type === "Document" && (
           <Field label="File" required helper="PDF, DOCX, or XLSX. Max 20MB.">
             {file ? (
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", border: `1px solid ${WF_MID}`, padding: "10px 14px", background: "#F5F5F5", fontSize: 13, color: WF_DARK }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", border: `1px solid ${WF_MID}`, padding: "10px 14px", background: "#F5F5F5", fontSize: 15, color: WF_DARK }}>
                 <span>{file}</span>
                 <button
                   onClick={() => setFile(null)}
-                  style={{ background: "none", border: "none", color: WF_DARK, fontSize: 12, textDecoration: "underline", cursor: "pointer", fontFamily: "inherit" }}
+                  style={{ background: "none", border: "none", color: WF_DARK, fontSize: 14, textDecoration: "underline", cursor: "pointer", fontFamily: "inherit" }}
                 >
                   Remove
                 </button>
@@ -97,8 +97,8 @@ export function ResourceForm({ mode, existing }: { mode: "new" | "edit"; existin
                   textAlign: "center",
                 }}
               >
-                <div style={{ fontSize: 13, color: WF_DARK, marginBottom: 6 }}>Drag and drop your file here</div>
-                <div style={{ fontSize: 12, color: WF_MID }}>
+                <div style={{ fontSize: 15, color: WF_DARK, marginBottom: 6 }}>Drag and drop your file here</div>
+                <div style={{ fontSize: 14, color: WF_MID }}>
                   or <TextLink onClick={() => setFile("Living_Well_T1D.pdf — 1.4MB")}>browse to upload</TextLink>
                 </div>
               </div>
@@ -142,7 +142,7 @@ export function ResourceForm({ mode, existing }: { mode: "new" | "edit"; existin
               padding: "8px 12px",
               border: `1px solid ${WF_MID}`,
               background: "#fff",
-              fontSize: 13,
+              fontSize: 15,
               color: WF_DARK,
               fontFamily: "inherit",
               outline: "none",

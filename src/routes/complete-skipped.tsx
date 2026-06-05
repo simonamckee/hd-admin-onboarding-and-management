@@ -6,7 +6,7 @@ export const Route = createFileRoute("/complete-skipped")({ component: Screen6B 
 
 function SummaryRow({ icon, children }: { icon: ReactNode; children: ReactNode }) {
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 0", fontSize: 13, color: WF_DARK }}>
+    <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 0", fontSize: 15, color: WF_DARK }}>
       {icon}
       <span>{children}</span>
     </div>

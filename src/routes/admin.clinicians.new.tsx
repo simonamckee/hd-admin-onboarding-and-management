@@ -22,7 +22,7 @@ function AddClinician() {
   return (
     <AdminShell heading="">
       <div style={{ maxWidth: 720 }}>
-        <h1 style={{ fontSize: 22, fontWeight: 500, margin: "0 0 20px" }}>
+        <h1 style={{ fontSize: 24, fontWeight: 500, margin: "0 0 20px" }}>
           {tab === "individual" ? "Add a clinician" : "Upload clinicians via CSV"}
         </h1>
 
@@ -34,7 +34,7 @@ function AddClinician() {
               onClick={() => setTab(t)}
               style={{
                 padding: "8px 18px",
-                fontSize: 13,
+                fontSize: 15,
                 background: tab === t ? WF_DARK : "#fff",
                 color: tab === t ? "#fff" : WF_DARK,
                 border: "none",
@@ -176,7 +176,7 @@ function CsvForm({ navigate }: { navigate: ReturnType<typeof useNavigate> }) {
         <div style={{ marginBottom: 6 }}>
           <TextLink onClick={() => {}}>Download the CSV template</TextLink>
         </div>
-        <div style={{ fontSize: 12, color: WF_DARK }}>
+        <div style={{ fontSize: 14, color: WF_DARK }}>
           Columns required: First name, Last name, Email, Title, Role.<br />
           Supported role values: &quot;Clinician&quot; or &quot;Admin&quot;.
         </div>
@@ -192,25 +192,25 @@ function CsvForm({ navigate }: { navigate: ReturnType<typeof useNavigate> }) {
             marginBottom: 20,
           }}
         >
-          <div style={{ fontSize: 14, color: WF_DARK, marginBottom: 8 }}>
+          <div style={{ fontSize: 16, color: WF_DARK, marginBottom: 8 }}>
             Drag and drop your CSV here
           </div>
-          <div style={{ fontSize: 12, color: WF_MID, marginBottom: 16 }}>
+          <div style={{ fontSize: 14, color: WF_MID, marginBottom: 16 }}>
             or <TextLink onClick={() => setUploaded(true)}>browse to upload</TextLink>
           </div>
-          <div style={{ fontSize: 11, color: WF_MID }}>.csv only · Max 5MB</div>
+          <div style={{ fontSize: 13, color: WF_MID }}>.csv only · Max 5MB</div>
         </div>
       ) : (
         <>
-          <div style={{ fontSize: 13, color: WF_DARK, marginBottom: 12 }}>
+          <div style={{ fontSize: 15, color: WF_DARK, marginBottom: 12 }}>
             Validation preview — {validCount} valid, {MOCK_ROWS.length - validCount} error
           </div>
           <div style={{ background: "#fff", border: `1px solid ${WF_MID}`, marginBottom: 20, overflowX: "auto" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
+            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 14 }}>
               <thead>
                 <tr style={{ background: "#F5F5F5", borderBottom: `1px solid ${WF_MID}` }}>
                   {["Row", "First name", "Last name", "Email", "Title", "Role", "Status"].map((h) => (
-                    <th key={h} style={{ padding: "8px 10px", textAlign: "left", fontSize: 11, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, fontWeight: 500 }}>
+                    <th key={h} style={{ padding: "8px 10px", textAlign: "left", fontSize: 13, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, fontWeight: 500 }}>
                       {h}
                     </th>
                   ))}
@@ -227,9 +227,9 @@ function CsvForm({ navigate }: { navigate: ReturnType<typeof useNavigate> }) {
                     <td style={{ padding: "8px 10px", color: r.role ? WF_DARK : WF_MID }}>{r.role || "—"}</td>
                     <td style={{ padding: "8px 10px" }}>
                       {r.status.ok ? (
-                        <span style={{ fontSize: 12, color: WF_DARK }}>Ready</span>
+                        <span style={{ fontSize: 14, color: WF_DARK }}>Ready</span>
                       ) : (
-                        <span style={{ fontSize: 12, color: WF_DARK, fontWeight: 600 }}>
+                        <span style={{ fontSize: 14, color: WF_DARK, fontWeight: 600 }}>
                           Error — {r.status.msg}
                         </span>
                       )}
@@ -261,7 +261,7 @@ function CsvForm({ navigate }: { navigate: ReturnType<typeof useNavigate> }) {
             Send {validCount} invitations
           </Btn>
           {uploaded && hasErrors && (
-            <div style={{ fontSize: 11, color: WF_MID, fontStyle: "italic" }}>
+            <div style={{ fontSize: 13, color: WF_MID, fontStyle: "italic" }}>
               Fix errors before sending
             </div>
           )}
