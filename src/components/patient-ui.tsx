@@ -29,7 +29,7 @@ export function Btn({
   const base: CSSProperties = {
     display: "inline-block",
     padding: small ? "6px 12px" : "10px 18px",
-    fontSize: small ? 12 : 13,
+    fontSize: small ? 14 : 15,
     fontWeight: 500,
     borderRadius: 8,
     cursor: disabled ? "not-allowed" : "pointer",
