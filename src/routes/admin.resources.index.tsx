@@ -45,17 +45,8 @@ const RESOURCES: Resource[] = [
   { id: "old-nutrition", name: "Old Nutrition Guide", type: "Document", category: "Nutrition", added: "Aug 14, 2025", lastUsed: "5 months ago", by: "Admin", status: "Archived" },
 ];
 
-function typePill(t: ResType) {
-  const styles: Record<ResType, React.CSSProperties> = {
-    Document: { background: "#E8F7F1", color: "#1A7F5A" },
-    Link: { background: "#FEF3E2", color: "#B45309" },
-    Video: { background: "#B7E3F2", color: "#0D4449" },
-  };
-  return (
-    <span style={{ display: "inline-block", padding: "4px 10px", borderRadius: 8, fontSize: 13, fontWeight: 500, ...styles[t] }}>
-      {t}
-    </span>
-  );
+function typeText(t: ResType) {
+  return <span style={{ fontSize: 15, color: WF_DARK }}>{t}</span>;
 }
 
 function ResourceList() {
