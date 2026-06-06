@@ -77,6 +77,9 @@ export function Page({ children, noCard = false }: { children: ReactNode; noCard
               boxSizing: "border-box",
             }}
           >
+            <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 16 }}>
+              <img src={HAIBU_LOGO_URL} alt="Haibu Diabetes" style={{ height: 28, display: "block" }} />
+            </div>
             {children}
           </div>
         </div>
