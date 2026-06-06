@@ -49,7 +49,7 @@ function DashboardTemplates() {
         Dashboard templates
       </h1>
 
-      <div style={{ display: "inline-flex", gap: 4, marginBottom: 16 }}>
+      <div style={{ display: "inline-flex", gap: 24, marginBottom: 16, borderBottom: `1px solid ${WF_MID}` }}>
         {(["clinician", "patient"] as Tab[]).map((t) => {
           const active = tab === t;
           return (
@@ -57,13 +57,13 @@ function DashboardTemplates() {
               key={t}
               onClick={() => setTab(t)}
               style={{
-                background: active ? TEAL : "transparent",
-                border: `1px solid ${active ? TEAL : WF_MID}`,
-                padding: "8px 16px",
-                fontSize: 18,
-                color: active ? "#fff" : WF_DARK,
-                fontWeight: 600,
-                borderRadius: 4,
+                background: "transparent",
+                border: "none",
+                borderBottom: active ? `2px solid ${TEAL}` : "2px solid transparent",
+                padding: "8px 2px",
+                fontSize: 16,
+                color: active ? TEAL : WF_MID,
+                fontWeight: active ? 600 : 500,
                 cursor: "pointer",
                 fontFamily: "inherit",
               }}
@@ -74,7 +74,7 @@ function DashboardTemplates() {
         })}
       </div>
 
-      <p style={{ fontSize: 15, color: WF_MID, margin: "0 0 24px", lineHeight: 1.5 }}>{helper}</p>
+      <p style={{ fontSize: 16, color: WF_MID, margin: "0 0 24px", lineHeight: 1.5 }}>{helper}</p>
 
       {tab === "clinician" ? <ClinicianBuilder /> : <PatientBuilder />}
 
