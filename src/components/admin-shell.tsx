@@ -1,6 +1,6 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import type { ReactNode } from "react";
-import { WF_BG, WF_DARK, WF_MID, TEAL, BORDER, SURFACE } from "./wireframe";
+import { WF_BG, WF_DARK, WF_MID, TEAL, BORDER, SURFACE, HAIBU_LOGO_URL } from "./wireframe";
 
 const NAV: Array<{ label: string; to: string }> = [
   { label: "Clinic information", to: "/admin" },
@@ -22,112 +22,114 @@ function BellIcon() {
   );
 }
 
+const TOPBAR_H = 56;
+
 export function AdminShell({ heading, children }: { heading: string; children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   return (
-    <div style={{ minHeight: "100vh", background: WF_BG, color: WF_DARK }}>
-      {/* Top bar */}
-      <div
+    <div style={{ minHeight: "100vh", background: WF_BG, color: WF_DARK, display: "flex" }}>
+      {/* Sidebar (full viewport height) */}
+      <aside
         style={{
-          background: SURFACE,
-          color: WF_DARK,
-          padding: "10px 20px",
+          width: 220,
+          background: TEAL,
           display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          borderBottom: `1px solid ${BORDER}4D`,
+          flexDirection: "column",
+          alignSelf: "stretch",
         }}
       >
-        <span style={{ fontSize: 16, fontWeight: 600, color: TEAL }}>Haibu Diabetes</span>
-        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-          <BellIcon />
-          <div
-            style={{
-              width: 28,
-              height: 28,
-              borderRadius: "50%",
-              background: TEAL,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: 13,
-              fontWeight: 600,
-              color: "#fff",
-            }}
-          >
-            SR
-          </div>
-          <span style={{ fontSize: 14, color: WF_DARK, fontWeight: 500 }}>Admin</span>
-        </div>
-      </div>
-
-      <div style={{ display: "flex", minHeight: "calc(100vh - 42px)" }}>
-        {/* Sidebar */}
-        <aside
+        <div
           style={{
-            width: 220,
-            background: TEAL,
+            height: TOPBAR_H,
             display: "flex",
-            flexDirection: "column",
+            alignItems: "center",
+            padding: "0 16px",
+            borderBottom: "1px solid rgba(255,255,255,0.15)",
+            boxSizing: "border-box",
           }}
         >
-          <div
-            style={{
-              padding: 16,
-              marginBottom: 20,
-              fontSize: 13,
-              color: "rgba(255,255,255,0.7)",
-              textTransform: "uppercase",
-              letterSpacing: 0.5,
-              fontWeight: 600,
-            }}
+          <img src={HAIBU_LOGO_URL} alt="Haibu Diabetes" style={{ height: 30, filter: "brightness(0) invert(1)" }} />
+        </div>
+        <nav style={{ flex: 1, paddingTop: 12 }}>
+          {NAV.map((item) => {
+            const active = pathname === item.to;
+            return (
+              <Link
+                key={item.to}
+                to={item.to}
+                style={{
+                  display: "block",
+                  height: 40,
+                  lineHeight: "40px",
+                  padding: "0 16px",
+                  fontSize: 15,
+                  fontWeight: 500,
+                  color: active ? "#fff" : "rgba(255,255,255,0.7)",
+                  textDecoration: "none",
+                  background: active ? "rgba(255,255,255,0.12)" : "transparent",
+                  borderLeft: active ? "3px solid #fff" : "3px solid transparent",
+                  boxSizing: "border-box",
+                }}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
+        </nav>
+        <div style={{ borderTop: "1px solid rgba(255,255,255,0.15)", padding: 16 }}>
+          <div style={{ fontSize: 14, color: "rgba(255,255,255,0.7)", marginBottom: 4 }}>
+            Sarah Reid
+          </div>
+          <div style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", marginBottom: 12 }}>
+            Clinic Admin
+          </div>
+          <Link
+            to="/complete"
+            style={{ fontSize: 14, color: "rgba(255,255,255,0.7)", textDecoration: "none" }}
           >
-            Admin section
-          </div>
-          <nav style={{ flex: 1 }}>
-            {NAV.map((item) => {
-              const active = pathname === item.to;
-              return (
-                <Link
-                  key={item.to}
-                  to={item.to}
-                  style={{
-                    display: "block",
-                    height: 40,
-                    lineHeight: "40px",
-                    padding: "0 16px",
-                    fontSize: 15,
-                    fontWeight: 500,
-                    color: active ? "#fff" : "rgba(255,255,255,0.7)",
-                    textDecoration: "none",
-                    background: active ? "rgba(255,255,255,0.12)" : "transparent",
-                    borderLeft: active ? "3px solid #fff" : "3px solid transparent",
-                    boxSizing: "border-box",
-                  }}
-                >
-                  {item.label}
-                </Link>
-              );
-            })}
-          </nav>
-          <div style={{ borderTop: "1px solid rgba(255,255,255,0.15)", padding: 16 }}>
-            <div style={{ fontSize: 14, color: "rgba(255,255,255,0.7)", marginBottom: 4 }}>
-              Sarah Reid
-            </div>
-            <div style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", marginBottom: 12 }}>
-              Clinic Admin
-            </div>
-            <Link
-              to="/complete"
-              style={{ fontSize: 14, color: "rgba(255,255,255,0.7)", textDecoration: "none" }}
-            >
-              ← Back to clinic
-            </Link>
-          </div>
-        </aside>
+            ← Back to clinic
+          </Link>
+        </div>
+      </aside>
 
-        {/* Main */}
+      {/* Right column: top bar + main */}
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0 }}>
+        <div
+          style={{
+            background: SURFACE,
+            color: WF_DARK,
+            height: TOPBAR_H,
+            padding: "0 20px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-end",
+            borderBottom: `1px solid ${BORDER}4D`,
+            boxSizing: "border-box",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+            <BellIcon />
+            <div
+              style={{
+                width: 28,
+                height: 28,
+                borderRadius: "50%",
+                background: TEAL,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: 13,
+                fontWeight: 600,
+                color: "#fff",
+              }}
+            >
+              SR
+            </div>
+            <span style={{ fontSize: 14, color: WF_DARK, fontWeight: 500 }}>Admin</span>
+          </div>
+        </div>
+
         <main style={{ flex: 1, padding: 32, background: WF_BG }}>
           <h1 style={{ fontSize: 24, fontWeight: 700, color: TEAL, margin: "0 0 24px 0" }}>
             {heading}
