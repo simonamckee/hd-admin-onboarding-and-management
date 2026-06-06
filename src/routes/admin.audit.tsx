@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { AdminShell } from "@/components/admin-shell";
 import { Btn, Input, Select, TextLink, Modal } from "@/components/patient-ui";
-import { WF_DARK, WF_MID } from "@/components/wireframe";
+import { WF_DARK, WF_MID, TEAL } from "@/components/wireframe";
 
 export const Route = createFileRoute("/admin/audit")({
   component: AuditLog,
@@ -116,7 +116,7 @@ function AuditLog() {
   return (
     <AdminShell heading="">
       {/* Title + subtitle */}
-      <h1 style={{ fontSize: 22, fontWeight: 500, color: WF_DARK, margin: "0 0 6px 0" }}>Audit log</h1>
+      <h1 style={{ fontSize: 24, fontWeight: 700, color: TEAL, margin: "0 0 6px 0" }}>Audit log</h1>
       <p style={{ fontSize: 15, color: WF_MID, margin: "0 0 20px 0" }}>
         A read-only record of all admin and clinical actions in this clinic.
       </p>

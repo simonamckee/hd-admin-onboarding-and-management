@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
 import { Btn, Field, Input, Select, TextLink, Callout } from "@/components/patient-ui";
-import { WF_DARK, WF_MID } from "@/components/wireframe";
+import { WF_DARK, WF_MID, TEAL } from "@/components/wireframe";
 import {
   blankClinicianDraft, type ClinicianDraft,
   loadPersistedClinicianDraft, savePersistedClinicianDraft, clearPersistedClinicianDraft,
@@ -22,7 +22,7 @@ function AddClinician() {
   return (
     <AdminShell heading="">
       <div style={{ maxWidth: 720 }}>
-        <h1 style={{ fontSize: 24, fontWeight: 500, margin: "0 0 20px" }}>
+        <h1 style={{ fontSize: 24, fontWeight: 700, color: TEAL, margin: "0 0 20px" }}>
           {tab === "individual" ? "Add a clinician" : "Upload clinicians via CSV"}
         </h1>
 
@@ -139,7 +139,7 @@ function IndividualForm({ navigate }: { navigate: ReturnType<typeof useNavigate>
             });
           }}
         >
-          Send invitation
+          <span style={{ fontSize: 15 }}>Send invitation</span>
         </Btn>
       </div>
       {modal}
