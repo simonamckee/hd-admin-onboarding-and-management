@@ -1077,13 +1077,14 @@ function SaveFooter({ tab }: { tab: Tab }) {
           alignItems: "center",
         }}
       >
-        <span style={{ flex: 1, fontSize: 14, color: WF_MID }}>Last saved: today at 2:34 PM</span>
+        <span style={{ flex: 1, fontSize: 16, color: WF_MID }}>Last saved: today at 2:34 PM</span>
         <button
           onClick={onSave}
           style={{
             background: TEAL,
             color: "#fff",
             border: `1px solid ${TEAL}`,
+            borderRadius: 8,
             padding: "8px 16px",
             fontSize: 15,
             cursor: "pointer",
