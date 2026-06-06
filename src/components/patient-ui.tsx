@@ -107,7 +107,7 @@ export function Field({
 }) {
   return (
     <div style={{ marginBottom: 18 }}>
-      <div style={{ fontSize: 14, color: WF_DARK, marginBottom: 4, fontWeight: 500 }}>
+      <div style={{ fontSize: 16, color: WF_DARK, marginBottom: 4, fontWeight: 500 }}>
         {label}
         {required && <span style={{ color: ERROR_TEXT }}> *</span>}
       </div>

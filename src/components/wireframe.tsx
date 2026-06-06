@@ -1,5 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
+import haibuLogo from "@/assets/haibu-logo.svg.asset.json";
+
+export const HAIBU_LOGO_URL = haibuLogo.url;
 
 // ============= Haibu Diabetes design tokens =============
 export const WF_BG = "#F4F6ED";        // Page background (warm off-white)
@@ -31,14 +34,18 @@ export function TopBar() {
       style={{
         background: SURFACE,
         color: WF_DARK,
-        padding: "12px 20px",
+        padding: "10px 20px",
         fontSize: 16,
         fontWeight: 600,
         fontFamily: FONT_STACK,
         borderBottom: `1px solid ${BORDER}66`,
+        display: "flex",
+        justifyContent: "flex-end",
+        alignItems: "center",
+        minHeight: 44,
       }}
     >
-      <span style={{ color: TEAL }}>Haibu Diabetes</span>
+      <img src={HAIBU_LOGO_URL} alt="Haibu Diabetes" style={{ height: 28, display: "block" }} />
     </div>
   );
 }
@@ -96,7 +103,7 @@ export function StepBar({ states }: { states: Array<"done" | "active" | "inactiv
   );
 }
 
-export function H({ children, size = 22 }: { children: ReactNode; size?: number }) {
+export function H({ children, size = 24 }: { children: ReactNode; size?: number }) {
   return (
     <h1 style={{ fontSize: size, color: TEAL, margin: "0 0 12px 0", fontWeight: 700 }}>
       {children}

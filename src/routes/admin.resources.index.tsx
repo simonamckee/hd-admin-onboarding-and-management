@@ -2,7 +2,7 @@ import { createFileRoute, Link, useSearch } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
 import { Btn, Input, Select, TextLink, Modal } from "@/components/patient-ui";
-import { WF_DARK, WF_MID } from "@/components/wireframe";
+import { WF_DARK, WF_MID, TEAL } from "@/components/wireframe";
 
 type StateMode = "default" | "empty" | "noresults" | "loading";
 type ResType = "Document" | "Link" | "Video";
@@ -47,12 +47,12 @@ const RESOURCES: Resource[] = [
 
 function typePill(t: ResType) {
   const styles: Record<ResType, React.CSSProperties> = {
-    Document: { border: `1px solid ${WF_DARK}`, background: "#fff", color: WF_DARK },
-    Link: { border: `1px dashed ${WF_DARK}`, background: "#fff", color: WF_DARK },
-    Video: { border: `2px solid ${WF_DARK}`, background: "#fff", color: WF_DARK, fontWeight: 600 },
+    Document: { background: "#E8F7F1", color: "#1A7F5A" },
+    Link: { background: "#FEF3E2", color: "#B45309" },
+    Video: { background: "#B7E3F2", color: "#0D4449" },
   };
   return (
-    <span style={{ display: "inline-block", padding: "2px 10px", fontSize: 13, ...styles[t] }}>
+    <span style={{ display: "inline-block", padding: "4px 10px", borderRadius: 8, fontSize: 13, fontWeight: 500, ...styles[t] }}>
       {t}
     </span>
   );
@@ -80,7 +80,7 @@ function ResourceList() {
   return (
     <AdminShell heading="">
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-        <h1 style={{ fontSize: 22, fontWeight: 500, color: WF_DARK, margin: 0 }}>Resource library</h1>
+        <h1 style={{ fontSize: 24, fontWeight: 700, color: TEAL, margin: 0 }}>Resource library</h1>
         <Btn primary to="/admin/resources/new">+ Add resource</Btn>
       </div>
 

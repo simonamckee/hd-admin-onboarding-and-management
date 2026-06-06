@@ -45,11 +45,11 @@ function DashboardTemplates() {
 
   return (
     <AdminShell heading="">
-      <h1 style={{ fontSize: 24, fontWeight: 500, margin: "0 0 16px", color: WF_DARK }}>
+      <h1 style={{ fontSize: 24, fontWeight: 700, margin: "0 0 16px", color: TEAL }}>
         Dashboard templates
       </h1>
 
-      <div style={{ display: "flex", borderBottom: `1px solid ${WF_MID}`, marginBottom: 16 }}>
+      <div style={{ display: "inline-flex", gap: 4, marginBottom: 16 }}>
         {(["clinician", "patient"] as Tab[]).map((t) => {
           const active = tab === t;
           return (
@@ -57,15 +57,15 @@ function DashboardTemplates() {
               key={t}
               onClick={() => setTab(t)}
               style={{
-                background: "transparent",
-                border: "none",
-                padding: "10px 16px",
-                fontSize: 16,
-                color: active ? WF_DARK : WF_MID,
-                fontWeight: active ? 600 : 400,
-                borderBottom: active ? `2px solid ${WF_DARK}` : "2px solid transparent",
-                marginBottom: -1,
+                background: active ? TEAL : "transparent",
+                border: `1px solid ${active ? TEAL : WF_MID}`,
+                padding: "8px 16px",
+                fontSize: 18,
+                color: active ? "#fff" : WF_DARK,
+                fontWeight: 600,
+                borderRadius: 4,
                 cursor: "pointer",
+                fontFamily: "inherit",
               }}
             >
               {t === "clinician" ? "Clinician view" : "Patient view"}
@@ -263,6 +263,7 @@ function ColumnZone({
           textTransform: "uppercase",
           letterSpacing: 0.5,
           marginBottom: 10,
+          fontWeight: 600,
         }}
       >
         {label}
@@ -392,7 +393,7 @@ function MessagesInfoRow({ rightText, tooltip }: { rightText: string; tooltip: s
           marginBottom: 16,
         }}
       >
-        <span style={{ fontSize: 16 }}>Messages</span>
+        <span style={{ fontSize: 13, fontWeight: 600, textTransform: "uppercase", letterSpacing: 0.5, color: WF_MID }}>MESSAGES</span>
         <span
           title={tooltip}
           style={{
@@ -482,11 +483,14 @@ function PreviewToggle({ label, open, onToggle }: { label: string; open: boolean
         onClick={onToggle}
         style={{
           background: "transparent",
-          border: `1px solid ${WF_MID}`,
-          padding: "6px 12px",
+          border: `1.5px solid ${TEAL}`,
+          padding: "8px 16px",
           fontSize: 14,
-          color: WF_DARK,
+          color: TEAL,
+          fontWeight: 500,
+          borderRadius: 8,
           cursor: "pointer",
+          fontFamily: "inherit",
         }}
       >
         {open ? "Hide preview" : "Show preview"}
@@ -838,9 +842,10 @@ function PatientBuilder() {
           textTransform: "uppercase",
           letterSpacing: 0.5,
           marginBottom: 6,
+          fontWeight: 600,
         }}
       >
-        Module order
+        MODULE ORDER
       </div>
       <p style={{ fontSize: 14, color: WF_MID, margin: "0 0 12px" }}>
         Drag to reorder. Required modules cannot be removed. Patients can reorder after their first login —
