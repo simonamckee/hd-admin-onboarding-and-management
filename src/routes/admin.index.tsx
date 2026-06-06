@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
-import { WF_DARK, WF_MID, TEAL } from "@/components/wireframe";
+import { WF_DARK, WF_MID, WF_BG, SUCCESS_BG, SUCCESS_TEXT } from "@/components/wireframe";
 
 export const Route = createFileRoute("/admin/")({ component: ClinicInformation });
 
@@ -51,11 +51,12 @@ function StatusChip({ text }: { text: string }) {
         display: "inline-flex",
         alignItems: "center",
         gap: 8,
-        border: `1px solid ${WF_MID}`,
+        background: SUCCESS_BG,
+        color: SUCCESS_TEXT,
         borderRadius: 999,
         padding: "4px 12px",
         fontSize: 15,
-        color: WF_DARK,
+        fontWeight: 500,
       }}
     >
       <span
@@ -63,7 +64,7 @@ function StatusChip({ text }: { text: string }) {
           width: 8,
           height: 8,
           borderRadius: "50%",
-          background: TEAL,
+          background: SUCCESS_TEXT,
           display: "inline-block",
         }}
       />
@@ -108,11 +109,12 @@ function ClinicInformation() {
                 flex: 1,
                 padding: "8px 12px",
                 border: `1px solid ${WF_MID}`,
-                background: "#fff",
+                background: WF_BG,
                 fontSize: 16,
                 color: WF_DARK,
                 fontFamily: "inherit",
                 outline: "none",
+                borderRadius: 8,
               }}
             />
             {changed && (
