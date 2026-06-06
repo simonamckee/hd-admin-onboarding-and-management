@@ -214,7 +214,7 @@ function PatientList() {
     <AdminShell heading="">
       {/* Header row */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8, marginTop: -8 }}>
-        <h1 style={{ fontSize: 22, fontWeight: 500, color: WF_DARK, margin: 0 }}>
+        <h1 style={{ fontSize: 24, fontWeight: 700, color: "rgb(18, 87, 92)", margin: 0 }}>
           Patient management
         </h1>
         <AddPatientSplitButton />
