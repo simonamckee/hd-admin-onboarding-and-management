@@ -1,13 +1,18 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Page, H, Body, ReadOnlyField, PrimaryButton, Divider, TestingLink, WF_MID, WF_DARK } from "@/components/wireframe";
+import { Page, H, Body, ReadOnlyField, PrimaryButton, Divider, TestingLink, WF_MID, WF_DARK, HAIBU_LOGO_URL } from "@/components/wireframe";
 
 export const Route = createFileRoute("/")({ component: Screen1A });
 
 function Screen1A() {
   return (
     <Page>
-      <div style={{ fontSize: 14, color: WF_MID, marginBottom: 6 }}>BC CHILDREN'S HOSPITAL</div>
-      <H>Welcome, Sarah.</H>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, marginBottom: 12 }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ fontSize: 14, color: WF_MID, marginBottom: 6 }}>BC CHILDREN'S HOSPITAL</div>
+          <H>Welcome, Sarah.</H>
+        </div>
+        <img src={HAIBU_LOGO_URL} alt="Haibu Diabetes" style={{ height: 34, display: "block", flexShrink: 0 }} />
+      </div>
       <Body>
         You've been invited to set up your clinic admin account on Haibu Diabetes. Click below to create your password and get started.
       </Body>
