@@ -248,8 +248,8 @@ function NotificationsSection() {
       <Row>
         <LabelBlock label="Clinic notification email" />
         <div style={{ textAlign: "right" }}>
-          <div style={{ fontSize: 15, color: WF_DARK }}>notifications@sunriseclinic.ca</div>
-          <div style={{ fontSize: 13, color: WF_MID, marginTop: 4 }}>
+          <div style={{ fontSize: 16, color: WF_DARK }}>notifications@sunriseclinic.ca</div>
+          <div style={{ fontSize: 16, color: WF_MID, marginTop: 4 }}>
             This is set under Clinic information.{" "}
             <Link
               to="/admin"
