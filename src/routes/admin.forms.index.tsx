@@ -51,7 +51,7 @@ function FormList() {
   return (
     <AdminShell heading="">
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-        <h1 style={{ fontSize: 22, fontWeight: 500, color: WF_DARK, margin: 0 }}>Form library</h1>
+        <h1 style={{ fontSize: 24, fontWeight: 700, color: TEAL, margin: 0 }}>Form library</h1>
         <Btn primary to="/admin/forms/new">+ Add form</Btn>
       </div>
 
