@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
 import { Btn, Select } from "@/components/patient-ui";
-import { WF_DARK, WF_MID } from "@/components/wireframe";
+import { WF_DARK, WF_MID, WF_BG, BORDER, SUCCESS_TEXT, TEAL } from "@/components/wireframe";
 
 export const Route = createFileRoute("/admin/platform")({
   component: PlatformConfig,
@@ -15,7 +15,7 @@ const DEFAULT_CHAT_MSG =
 function PlatformConfig() {
   return (
     <AdminShell heading="">
-      <h1 style={{ fontSize: 22, fontWeight: 500, color: WF_DARK, margin: "0 0 24px" }}>
+      <h1 style={{ fontSize: 24, fontWeight: 700, color: TEAL, margin: "0 0 24px" }}>
         Platform configuration
       </h1>
 
@@ -36,8 +36,8 @@ function Divider() {
 
 function SectionCard({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div style={{ background: "#fff", border: `1px solid ${WF_MID}`, padding: 24 }}>
-      <h2 style={{ fontSize: 16, fontWeight: 600, color: WF_DARK, margin: "0 0 18px", textTransform: "uppercase", letterSpacing: 0.5 }}>
+    <div style={{ background: "#fff", border: `1px solid ${BORDER}66`, padding: 24, borderRadius: 8 }}>
+      <h2 style={{ fontSize: 18, fontWeight: 600, color: WF_DARK, margin: "0 0 18px" }}>
         {title}
       </h2>
       {children}
@@ -81,8 +81,8 @@ function Toggle({ on, onClick }: { on: boolean; onClick: () => void }) {
       style={{
         width: 40,
         height: 22,
-        border: `1px solid ${WF_DARK}`,
-        background: on ? WF_DARK : "#fff",
+        border: "none",
+        background: on ? SUCCESS_TEXT : BORDER,
         position: "relative",
         cursor: "pointer",
         padding: 0,
@@ -93,13 +93,14 @@ function Toggle({ on, onClick }: { on: boolean; onClick: () => void }) {
       <span
         style={{
           position: "absolute",
-          top: 1,
-          left: on ? 19 : 1,
+          top: 2,
+          left: on ? 20 : 2,
           width: 18,
           height: 18,
-          background: on ? "#fff" : WF_DARK,
+          background: "#fff",
           borderRadius: "50%",
           transition: "left 120ms",
+          boxShadow: "0 1px 2px rgba(0,0,0,0.2)",
         }}
       />
     </button>
@@ -183,9 +184,10 @@ function ChatSection() {
               width: "100%",
               marginTop: 10,
               padding: "8px 12px",
-              border: `1px solid ${WF_MID}`,
-              background: "#fff",
-              fontSize: 15,
+              border: `1px solid ${BORDER}`,
+              borderRadius: 8,
+              background: WF_BG,
+              fontSize: 16,
               color: WF_DARK,
               fontFamily: "inherit",
               outline: "none",
