@@ -45,7 +45,7 @@ export function TopBar() {
         minHeight: 44,
       }}
     >
-      <img src={HAIBU_LOGO_URL} alt="Haibu Diabetes" style={{ height: 28, display: "block" }} />
+      <img src={HAIBU_LOGO_URL} alt="Haibu Diabetes" style={{ height: 34, display: "block" }} />
     </div>
   );
 }
