@@ -82,7 +82,7 @@ function Toggle({ on, onClick }: { on: boolean; onClick: () => void }) {
         width: 40,
         height: 22,
         border: "none",
-        background: on ? SUCCESS_TEXT : BORDER,
+        background: on ? TEAL : BORDER,
         position: "relative",
         cursor: "pointer",
         padding: 0,
