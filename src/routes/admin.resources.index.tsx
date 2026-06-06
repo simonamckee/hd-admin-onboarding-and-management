@@ -125,7 +125,7 @@ function ResourceList() {
               {visible.map((r) => (
                 <tr key={r.id} style={{ borderBottom: `0.5px solid ${WF_MID}`, opacity: r.status === "Archived" ? 0.6 : 1 }}>
                   <td style={{ padding: "12px 14px", color: WF_DARK }}>{r.name}</td>
-                  <td style={{ padding: "12px 14px" }}>{typePill(r.type)}</td>
+                  <td style={{ padding: "12px 14px" }}>{typeText(r.type)}</td>
                   <td style={{ padding: "12px 14px", color: WF_DARK }}>{r.category}</td>
                   <td style={{ padding: "12px 14px", color: WF_DARK }}>{r.added}</td>
                   <td style={{ padding: "12px 14px", color: r.lastUsed === "Never" ? WF_MID : WF_DARK }}>{r.lastUsed}</td>
