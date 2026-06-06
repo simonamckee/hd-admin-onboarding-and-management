@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-r
 import { useMemo, useState } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
 import { Btn, Input, Select, TextLink, Modal, Pill } from "@/components/patient-ui";
-import { WF_DARK, WF_MID } from "@/components/wireframe";
+import { WF_DARK, WF_MID, TEAL } from "@/components/wireframe";
 
 type StateMode = "default" | "empty" | "noresults" | "loading";
 type Status = "Active" | "Archived";
@@ -51,7 +51,7 @@ function FormList() {
   return (
     <AdminShell heading="">
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-        <h1 style={{ fontSize: 22, fontWeight: 500, color: WF_DARK, margin: 0 }}>Form library</h1>
+        <h1 style={{ fontSize: 24, fontWeight: 700, color: TEAL, margin: 0 }}>Form library</h1>
         <Btn primary to="/admin/forms/new">+ Add form</Btn>
       </div>
 

@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
 import { Btn, Select } from "@/components/patient-ui";
-import { WF_DARK, WF_MID, WF_BG, BORDER, SUCCESS_TEXT, TEAL } from "@/components/wireframe";
+import { WF_DARK, WF_MID, WF_BG, BORDER, TEAL } from "@/components/wireframe";
 
 export const Route = createFileRoute("/admin/platform")({
   component: PlatformConfig,
@@ -56,8 +56,8 @@ function Row({ children }: { children: React.ReactNode }) {
 function LabelBlock({ label, helper }: { label: string; helper?: string }) {
   return (
     <div style={{ flex: 1, minWidth: 0 }}>
-      <div style={{ fontSize: 15, color: WF_DARK, fontWeight: 500 }}>{label}</div>
-      {helper && <div style={{ fontSize: 14, color: WF_MID, marginTop: 4, lineHeight: 1.5 }}>{helper}</div>}
+      <div style={{ fontSize: 16, color: WF_DARK, fontWeight: 500 }}>{label}</div>
+      {helper && <div style={{ fontSize: 16, color: WF_MID, marginTop: 4, lineHeight: 1.5 }}>{helper}</div>}
     </div>
   );
 }
@@ -82,7 +82,7 @@ function Toggle({ on, onClick }: { on: boolean; onClick: () => void }) {
         width: 40,
         height: 22,
         border: "none",
-        background: on ? SUCCESS_TEXT : BORDER,
+        background: on ? TEAL : BORDER,
         position: "relative",
         cursor: "pointer",
         padding: 0,
@@ -248,8 +248,8 @@ function NotificationsSection() {
       <Row>
         <LabelBlock label="Clinic notification email" />
         <div style={{ textAlign: "right" }}>
-          <div style={{ fontSize: 15, color: WF_DARK }}>notifications@sunriseclinic.ca</div>
-          <div style={{ fontSize: 13, color: WF_MID, marginTop: 4 }}>
+          <div style={{ fontSize: 16, color: WF_DARK }}>notifications@sunriseclinic.ca</div>
+          <div style={{ fontSize: 16, color: WF_MID, marginTop: 4 }}>
             This is set under Clinic information.{" "}
             <Link
               to="/admin"
