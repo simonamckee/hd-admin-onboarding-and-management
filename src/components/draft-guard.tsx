@@ -18,14 +18,14 @@ export function SaveDraftButton({
         onClick={onSave}
         style={{
           fontSize: 15,
-          color: WF_DARK,
-          background: "none",
-          border: "none",
-          padding: "6px 10px",
+          color: "#12575C",
+          background: "transparent",
+          border: "1.5px solid #12575C",
+          borderRadius: 8,
+          padding: "10px 18px",
           cursor: "pointer",
           fontFamily: "inherit",
           fontWeight: 500,
-          textDecoration: "underline",
         }}
       >
         Save draft
@@ -34,7 +34,7 @@ export function SaveDraftButton({
         aria-live="polite"
         style={{
           fontSize: 14,
-          color: WF_MID,
+          color: "#737373",
           opacity: flash ? 1 : 0,
           transition: "opacity 300ms ease",
           pointerEvents: "none",
