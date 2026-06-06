@@ -56,8 +56,8 @@ function Row({ children }: { children: React.ReactNode }) {
 function LabelBlock({ label, helper }: { label: string; helper?: string }) {
   return (
     <div style={{ flex: 1, minWidth: 0 }}>
-      <div style={{ fontSize: 15, color: WF_DARK, fontWeight: 500 }}>{label}</div>
-      {helper && <div style={{ fontSize: 14, color: WF_MID, marginTop: 4, lineHeight: 1.5 }}>{helper}</div>}
+      <div style={{ fontSize: 16, color: WF_DARK, fontWeight: 500 }}>{label}</div>
+      {helper && <div style={{ fontSize: 16, color: WF_MID, marginTop: 4, lineHeight: 1.5 }}>{helper}</div>}
     </div>
   );
 }
