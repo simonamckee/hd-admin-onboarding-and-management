@@ -259,14 +259,12 @@ function PatientRow({
   return (
     <>
       <div
-        onClick={onToggle}
         style={{
           display: "grid",
           gridTemplateColumns: GRID,
           alignItems: "center",
           padding: "8px 10px",
           borderBottom: `0.5px solid ${ROW_BORDER}`,
-          cursor: "pointer",
           background: open ? "#f4fbfa" : "#fff",
           gap: 8,
           fontFamily: "inherit",
