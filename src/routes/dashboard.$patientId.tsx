@@ -967,7 +967,7 @@ function CompletedTasksModule() {
 function DashboardPage() {
   return (
     <AdminShell heading="">
-      <div style={{ margin: "-24px", background: WF_BG, minHeight: "100vh" }}>
+      <div style={{ margin: "-32px", background: WF_BG, minHeight: "100vh" }}>
         <PatientHeader />
         <div style={{ padding: 24, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
           <div>
