@@ -226,6 +226,7 @@ function PatientRow({
   open: boolean;
   onToggle: () => void;
 }) {
+  const navigate = useNavigate();
   const tirRed = p.tir < 70;
   const lastVisitRed = (p.lastVisitDaysAgo ?? 0) > 90;
   return (
