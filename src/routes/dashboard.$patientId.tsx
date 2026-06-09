@@ -295,7 +295,7 @@ function StatsTab() {
           })()}
         </svg>
         <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", fontSize: 11, color: WF_MID }}>
-          {segs.map((s, i) => (
+          {segs.map((s) => (
             <div key={s.label} style={{ height: s.h, display: "flex", alignItems: "center" }}>
               {s.label} {s.pct}% ({s.time})
             </div>
