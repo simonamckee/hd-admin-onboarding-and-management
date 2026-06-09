@@ -737,6 +737,24 @@ function ModuleBody({ id, compact }: { id: string; compact: boolean }) {
       </div>
     );
   }
+  if (id === "labs") {
+    return <div style={{ fontSize: 13, color: WF_MID }}>Lipid panel, Renal function, Thyroid panel, Retinopathy, Neuropathy</div>;
+  }
+  if (id === "completed-forms" || id === "completed-forms-right") {
+    return <div style={{ fontSize: 13, color: WF_MID }}>Pre-appointment questionnaire · 28 Apr 2026</div>;
+  }
+  if (id === "appointments") {
+    return <div style={{ fontSize: 13, color: WF_MID }}>Next: 12 May 2026 · 10:30 AM</div>;
+  }
+  if (id === "assigned-forms") {
+    return <div style={{ fontSize: 13, color: WF_MID }}>Daily symptom log — Pending</div>;
+  }
+  if (id === "assigned-tasks") {
+    return <div style={{ fontSize: 13, color: WF_MID }}>Log meals for 3 days — Due 15 May</div>;
+  }
+  if (id === "tasks") {
+    return <div style={{ fontSize: 13, color: WF_MID }}>Upload CGM data — Completed 28 Apr</div>;
+  }
   return null;
 }
 
