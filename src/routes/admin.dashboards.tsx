@@ -738,7 +738,7 @@ function ModuleBody({ id, compact }: { id: string; compact: boolean }) {
   if (id === "labs") {
     return <div style={{ fontSize: 13, color: WF_MID }}>Lipid panel, Renal function, Thyroid panel, Retinopathy, Neuropathy</div>;
   }
-  if (id === "completed-forms" || id === "completed-forms-right") {
+  if (id === "completed-forms") {
     return <div style={{ fontSize: 13, color: WF_MID }}>Pre-appointment questionnaire · 28 Apr 2026</div>;
   }
   if (id === "appointments") {
