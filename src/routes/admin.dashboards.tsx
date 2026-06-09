@@ -738,22 +738,65 @@ function ModuleBody({ id, compact }: { id: string; compact: boolean }) {
     );
   }
   if (id === "labs") {
-    return <div style={{ fontSize: 13, color: WF_MID }}>Lipid panel, Renal function, Thyroid panel, Retinopathy, Neuropathy</div>;
+    return (
+      <div style={{ fontSize: 13, color: WF_MID, display: "flex", flexDirection: "column", gap: 4 }}>
+        <div>Lipid panel · Last: 14 Jan 2025 · Next: 14 Jul 2025</div>
+        <div>Renal function · Last: 14 Jan 2025 · Next: 14 Jul 2025</div>
+        <div>Thyroid panel · Last: 3 Mar 2024 · Next: 3 Mar 2025</div>
+        <div>Retinopathy · Last: 22 Nov 2023 · Next: 22 Nov 2024</div>
+        <div>Neuropathy · Last: 22 Nov 2023 · Next: 22 Nov 2024</div>
+      </div>
+    );
   }
   if (id === "completed-forms") {
-    return <div style={{ fontSize: 13, color: WF_MID }}>Pre-appointment questionnaire · 28 Apr 2026</div>;
+    return (
+      <div style={{ fontSize: 13, color: WF_MID, display: "flex", flexDirection: "column", gap: 4 }}>
+        <div>Pre-appointment questionnaire · 28 Apr 2026</div>
+        <div>Hypoglycaemia awareness · 12 Mar 2026</div>
+        <div>Quality of life (PedsQL) · 1 Feb 2026</div>
+      </div>
+    );
   }
   if (id === "appointments") {
-    return <div style={{ fontSize: 13, color: WF_MID }}>Next: 12 May 2026 · 10:30 AM</div>;
+    return (
+      <div style={{ fontSize: 13, color: WF_MID, display: "flex", flexDirection: "column", gap: 4 }}>
+        <div style={{ color: WF_DARK, fontWeight: 600 }}>Next: 12 May 2026 · 10:30 AM</div>
+        <div>Last: 12 Mar 2026 — Annual review</div>
+        <div>4 Dec 2025 — Insulin adjustment</div>
+      </div>
+    );
+  }
+  if (id === "recommendations") {
+    return (
+      <div style={{ fontSize: 13, color: WF_MID, display: "flex", flexDirection: "column", gap: 4 }}>
+        <div style={{ color: WF_DARK }}>Reviewed basal rate — reduce overnight dose by 10%.</div>
+        <div>Dr. Reyes · 28 Apr 2026</div>
+      </div>
+    );
   }
   if (id === "assigned-forms") {
-    return <div style={{ fontSize: 13, color: WF_MID }}>Daily symptom log — Pending</div>;
+    return (
+      <div style={{ fontSize: 13, color: WF_MID, display: "flex", flexDirection: "column", gap: 4 }}>
+        <div>Daily symptom log — Pending</div>
+        <div>Hypoglycaemia awareness — Pending</div>
+      </div>
+    );
   }
   if (id === "assigned-tasks") {
-    return <div style={{ fontSize: 13, color: WF_MID }}>Log meals for 3 days — Due 15 May</div>;
+    return (
+      <div style={{ fontSize: 13, color: WF_MID, display: "flex", flexDirection: "column", gap: 4 }}>
+        <div>Log meals for 3 days — Due 15 May</div>
+        <div>Check pump site daily — Ongoing</div>
+      </div>
+    );
   }
   if (id === "tasks") {
-    return <div style={{ fontSize: 13, color: WF_MID }}>Upload CGM data — Completed 28 Apr</div>;
+    return (
+      <div style={{ fontSize: 13, color: WF_MID, display: "flex", flexDirection: "column", gap: 4 }}>
+        <div style={{ textDecoration: "line-through" }}>Upload CGM data — Completed 28 Apr</div>
+        <div style={{ textDecoration: "line-through" }}>Book next appointment — Completed 20 Apr</div>
+      </div>
+    );
   }
   return null;
 }
