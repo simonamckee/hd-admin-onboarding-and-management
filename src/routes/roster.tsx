@@ -325,18 +325,31 @@ function PatientRow({
           >
             Dashboard
           </button>
-          <ChevronDown
-            size={14}
-            color={TEAL}
+          <button
+            type="button"
+            aria-label={open ? "Collapse patient row" : "Expand patient row"}
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggle();
+            }}
             style={{
-              transform: open ? "rotate(180deg)" : "none",
-              transition: "transform 0.15s",
-              cursor: "pointer",
+              border: "none",
+              background: "transparent",
               padding: 2,
+              margin: 0,
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
               flexShrink: 0,
             }}
-            onClick={(e) => { e.stopPropagation(); onToggle(); }}
-          />
+          >
+            <ChevronDown
+              size={14}
+              color={TEAL}
+              style={{ transform: open ? "rotate(180deg)" : "none", transition: "transform 0.15s" }}
+            />
+          </button>
         </div>
       </div>
       {open && <AccordionRow data={p.accordion} />}
