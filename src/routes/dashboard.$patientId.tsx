@@ -1,10 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { AdminShell } from "@/components/admin-shell";
-import { MessageBubble } from "@/components/message-bubble";
 import {
   TEAL,
-  TEAL_DARK,
   SURFACE,
   WF_BG,
   WF_DARK,
@@ -15,7 +13,6 @@ import {
   WARN_TEXT,
   WARN_BG,
   ERROR_TEXT,
-  ERROR_BG,
 } from "@/components/wireframe";
 
 export const Route = createFileRoute("/dashboard/$patientId")({
