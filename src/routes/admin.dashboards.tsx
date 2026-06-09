@@ -12,20 +12,26 @@ type Module = { id: string; name: string; required?: boolean };
 const CLIN_LEFT_DEFAULT: Module[] = [
   { id: "glucose", name: "Glucose", required: true },
   { id: "insulin", name: "Insulin", required: true },
+  { id: "labs", name: "Labs & tests" },
+  { id: "completed-forms", name: "Completed forms" },
+  { id: "appointments", name: "Appointments" },
 ];
 const CLIN_RIGHT_DEFAULT: Module[] = [
-  { id: "recs", name: "Recommendations", required: true },
-  { id: "todo", name: "Things to do", required: true },
+  { id: "recommendations", name: "Recommendations", required: true },
   { id: "resources", name: "Resources", required: true },
+  { id: "assigned-forms", name: "Assigned forms" },
+  { id: "assigned-tasks", name: "Assigned tasks" },
+  { id: "completed-forms-right", name: "Completed forms" },
+  { id: "tasks", name: "Tasks" },
 ];
 const CLIN_ALL = [...CLIN_LEFT_DEFAULT, ...CLIN_RIGHT_DEFAULT];
 
 const PATIENT_DEFAULT: Module[] = [
   { id: "glucose", name: "Glucose", required: true },
   { id: "insulin", name: "Insulin", required: true },
-  { id: "todo", name: "Things to do", required: true },
-  { id: "recs", name: "Recommendations", required: true },
-  { id: "resources", name: "Resources", required: true },
+  { id: "labs", name: "Labs & tests" },
+  { id: "completed-forms", name: "Completed forms" },
+  { id: "appointments", name: "Appointments" },
 ];
 
 const CARD: React.CSSProperties = {
