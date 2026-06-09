@@ -1,8 +1,9 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
+import { Settings, Users, ChevronDown, ChevronRight } from "lucide-react";
 import { WF_BG, WF_DARK, WF_MID, TEAL, BORDER, SURFACE, HAIBU_LOGO_URL } from "./wireframe";
 
-const NAV: Array<{ label: string; to: string }> = [
+const ADMIN_NAV: Array<{ label: string; to: string }> = [
   { label: "Clinic information", to: "/admin" },
   { label: "Platform configuration", to: "/admin/platform" },
   { label: "Dashboard templates", to: "/admin/dashboards" },
@@ -12,6 +13,8 @@ const NAV: Array<{ label: string; to: string }> = [
   { label: "Resource library", to: "/admin/resources" },
   { label: "Audit log", to: "/admin/audit" },
 ];
+
+const PATIENT_ROSTER_TO = "/admin/patients";
 
 function BellIcon() {
   return (
