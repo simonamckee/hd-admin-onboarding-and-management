@@ -283,7 +283,10 @@ function PatientRow({
         </div>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 6 }}>
           <button
-            onClick={(e) => e.stopPropagation()}
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate({ to: '/dashboard/$patientId', params: { patientId: p.id } });
+            }}
             style={{
               padding: "4px 10px",
               background: TEAL,
