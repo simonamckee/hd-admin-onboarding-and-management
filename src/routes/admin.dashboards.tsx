@@ -12,20 +12,26 @@ type Module = { id: string; name: string; required?: boolean };
 const CLIN_LEFT_DEFAULT: Module[] = [
   { id: "glucose", name: "Glucose", required: true },
   { id: "insulin", name: "Insulin", required: true },
+  { id: "labs", name: "Labs & tests" },
+  { id: "completed-forms", name: "Completed forms" },
+  { id: "appointments", name: "Appointments" },
 ];
 const CLIN_RIGHT_DEFAULT: Module[] = [
-  { id: "recs", name: "Recommendations", required: true },
-  { id: "todo", name: "Things to do", required: true },
+  { id: "recommendations", name: "Recommendations", required: true },
   { id: "resources", name: "Resources", required: true },
+  { id: "assigned-forms", name: "Assigned forms" },
+  { id: "assigned-tasks", name: "Assigned tasks" },
+  { id: "completed-forms-right", name: "Completed forms" },
+  { id: "tasks", name: "Tasks" },
 ];
 const CLIN_ALL = [...CLIN_LEFT_DEFAULT, ...CLIN_RIGHT_DEFAULT];
 
 const PATIENT_DEFAULT: Module[] = [
   { id: "glucose", name: "Glucose", required: true },
   { id: "insulin", name: "Insulin", required: true },
-  { id: "todo", name: "Things to do", required: true },
-  { id: "recs", name: "Recommendations", required: true },
-  { id: "resources", name: "Resources", required: true },
+  { id: "labs", name: "Labs & tests" },
+  { id: "completed-forms", name: "Completed forms" },
+  { id: "appointments", name: "Appointments" },
 ];
 
 const CARD: React.CSSProperties = {
@@ -568,9 +574,15 @@ function ModuleHeader({ id, compact }: { id: string; compact: boolean }) {
   const titles: Record<string, [string, string]> = {
     glucose: ["Glucose", "Last 7 days"],
     insulin: ["Insulin", "Last 7 days"],
-    recs: ["Recommendations", "+ Add"],
-    todo: ["Things to do", "+ Add task"],
+    labs: ["Labs & tests", ""],
+    "completed-forms": ["Completed forms", "View all"],
+    appointments: ["Appointments", ""],
+    recommendations: ["Recommendations", "+ Add"],
     resources: ["Resources", "+ Share resource"],
+    "assigned-forms": ["Assigned forms", "+ Assign"],
+    "assigned-tasks": ["Assigned tasks", "+ Add task"],
+    "completed-forms-right": ["Completed forms", "View all"],
+    tasks: ["Tasks", ""],
   };
   const [t, r] = titles[id] ?? [id, ""];
   return (
@@ -724,6 +736,24 @@ function ModuleBody({ id, compact }: { id: string; compact: boolean }) {
         </div>
       </div>
     );
+  }
+  if (id === "labs") {
+    return <div style={{ fontSize: 13, color: WF_MID }}>Lipid panel, Renal function, Thyroid panel, Retinopathy, Neuropathy</div>;
+  }
+  if (id === "completed-forms" || id === "completed-forms-right") {
+    return <div style={{ fontSize: 13, color: WF_MID }}>Pre-appointment questionnaire · 28 Apr 2026</div>;
+  }
+  if (id === "appointments") {
+    return <div style={{ fontSize: 13, color: WF_MID }}>Next: 12 May 2026 · 10:30 AM</div>;
+  }
+  if (id === "assigned-forms") {
+    return <div style={{ fontSize: 13, color: WF_MID }}>Daily symptom log — Pending</div>;
+  }
+  if (id === "assigned-tasks") {
+    return <div style={{ fontSize: 13, color: WF_MID }}>Log meals for 3 days — Due 15 May</div>;
+  }
+  if (id === "tasks") {
+    return <div style={{ fontSize: 13, color: WF_MID }}>Upload CGM data — Completed 28 Apr</div>;
   }
   return null;
 }
