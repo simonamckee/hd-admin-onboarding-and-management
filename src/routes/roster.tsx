@@ -216,7 +216,7 @@ function DevicePill({ label, on }: { label: string; on: boolean }) {
   );
 }
 
-const GRID = "34px minmax(0,130px) minmax(0,110px) minmax(0,72px) minmax(0,54px) minmax(0,90px) minmax(0,72px) minmax(0,90px) 80px";
+const GRID = "34px repeat(7, 1fr) 80px";
 
 function GroupHeader({ label, icon, bg, color }: { label: string; icon: ReactNode; bg: string; color: string }) {
   return (
@@ -428,7 +428,7 @@ function RosterPage() {
     background: `transparent url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' stroke='%2300565B' stroke-width='1.5' fill='none'/></svg>") no-repeat right center`,
     border: "none",
     color: TEAL,
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: 600,
     fontFamily: "Urbanist, system-ui, sans-serif",
     cursor: "pointer",
