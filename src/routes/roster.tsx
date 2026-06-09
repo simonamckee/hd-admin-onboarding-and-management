@@ -287,7 +287,7 @@ function PatientRow({
           <div style={{ fontSize: 12, color: MUTED }}>{tirRed ? "Low" : "In range"}</div>
         </div>
         <div style={{ fontSize: 14, fontWeight: 600, color: DARK }}>{p.gmi}%</div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 3, alignItems: "flex-start" }}>
           <DevicePill label="CGM" on={p.cgm} />
           <DevicePill label="Pump" on={p.pump} />
         </div>
