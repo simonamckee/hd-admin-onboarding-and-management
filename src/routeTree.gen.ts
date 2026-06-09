@@ -22,6 +22,7 @@ import { Route as AuthenticatorQrRouteImport } from './routes/authenticator-qr'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as DashboardPatientIdRouteImport } from './routes/dashboard.$patientId'
 import { Route as AdminResourcesRouteImport } from './routes/admin.resources'
 import { Route as AdminPlatformRouteImport } from './routes/admin.platform'
 import { Route as AdminPatientsRouteImport } from './routes/admin.patients'
@@ -112,6 +113,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AdminRoute,
+} as any)
+const DashboardPatientIdRoute = DashboardPatientIdRouteImport.update({
+  id: '/dashboard/$patientId',
+  path: '/dashboard/$patientId',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AdminResourcesRoute = AdminResourcesRouteImport.update({
   id: '/resources',
@@ -260,6 +266,7 @@ export interface FileRoutesByFullPath {
   '/admin/patients': typeof AdminPatientsRouteWithChildren
   '/admin/platform': typeof AdminPlatformRoute
   '/admin/resources': typeof AdminResourcesRouteWithChildren
+  '/dashboard/$patientId': typeof DashboardPatientIdRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/clinicians/$id': typeof AdminCliniciansIdRoute
   '/admin/clinicians/batch': typeof AdminCliniciansBatchRoute
@@ -295,6 +302,7 @@ export interface FileRoutesByTo {
   '/admin/audit': typeof AdminAuditRoute
   '/admin/dashboards': typeof AdminDashboardsRoute
   '/admin/platform': typeof AdminPlatformRoute
+  '/dashboard/$patientId': typeof DashboardPatientIdRoute
   '/admin': typeof AdminIndexRoute
   '/admin/clinicians/$id': typeof AdminCliniciansIdRoute
   '/admin/clinicians/batch': typeof AdminCliniciansBatchRoute
@@ -335,6 +343,7 @@ export interface FileRoutesById {
   '/admin/patients': typeof AdminPatientsRouteWithChildren
   '/admin/platform': typeof AdminPlatformRoute
   '/admin/resources': typeof AdminResourcesRouteWithChildren
+  '/dashboard/$patientId': typeof DashboardPatientIdRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/clinicians/$id': typeof AdminCliniciansIdRoute
   '/admin/clinicians/batch': typeof AdminCliniciansBatchRoute
@@ -377,6 +386,7 @@ export interface FileRouteTypes {
     | '/admin/patients'
     | '/admin/platform'
     | '/admin/resources'
+    | '/dashboard/$patientId'
     | '/admin/'
     | '/admin/clinicians/$id'
     | '/admin/clinicians/batch'
@@ -412,6 +422,7 @@ export interface FileRouteTypes {
     | '/admin/audit'
     | '/admin/dashboards'
     | '/admin/platform'
+    | '/dashboard/$patientId'
     | '/admin'
     | '/admin/clinicians/$id'
     | '/admin/clinicians/batch'
@@ -451,6 +462,7 @@ export interface FileRouteTypes {
     | '/admin/patients'
     | '/admin/platform'
     | '/admin/resources'
+    | '/dashboard/$patientId'
     | '/admin/'
     | '/admin/clinicians/$id'
     | '/admin/clinicians/batch'
@@ -485,6 +497,7 @@ export interface RootRouteChildren {
   SmsPhoneRoute: typeof SmsPhoneRoute
   SmsVerifyRoute: typeof SmsVerifyRoute
   VerifyMethodRoute: typeof VerifyMethodRoute
+  DashboardPatientIdRoute: typeof DashboardPatientIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -579,6 +592,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
+    }
+    '/dashboard/$patientId': {
+      id: '/dashboard/$patientId'
+      path: '/dashboard/$patientId'
+      fullPath: '/dashboard/$patientId'
+      preLoaderRoute: typeof DashboardPatientIdRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/admin/resources': {
       id: '/admin/resources'
@@ -880,17 +900,8 @@ const rootRouteChildren: RootRouteChildren = {
   SmsPhoneRoute: SmsPhoneRoute,
   SmsVerifyRoute: SmsVerifyRoute,
   VerifyMethodRoute: VerifyMethodRoute,
+  DashboardPatientIdRoute: DashboardPatientIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
