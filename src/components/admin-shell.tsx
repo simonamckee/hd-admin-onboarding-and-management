@@ -29,6 +29,9 @@ const TOPBAR_H = 56;
 
 export function AdminShell({ heading, children }: { heading: string; children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const adminActive = ADMIN_NAV.some((i) => i.to === pathname);
+  const [adminOpen, setAdminOpen] = useState(true);
+  const rosterActive = pathname === PATIENT_ROSTER_TO;
 
   return (
     <div style={{ minHeight: "100vh", background: WF_BG, color: WF_DARK, display: "flex" }}>
