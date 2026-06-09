@@ -183,9 +183,9 @@ function RiskPills({ risks }: { risks: Risk[] }) {
         <span
           key={r}
           style={{
-            fontSize: 10,
+            fontSize: 14,
             fontWeight: 600,
-            padding: "2px 6px",
+            padding: "3px 8px",
             borderRadius: 4,
             background: styles[r].bg,
             color: styles[r].color,
@@ -202,9 +202,9 @@ function DevicePill({ label, on }: { label: string; on: boolean }) {
   return (
     <span
       style={{
-        fontSize: 10,
+        fontSize: 14,
         fontWeight: 600,
-        padding: "2px 6px",
+        padding: "3px 8px",
         borderRadius: 4,
         background: on ? "#e1f5ee" : "#f1efe8",
         color: on ? "#085041" : "#888780",
@@ -216,7 +216,7 @@ function DevicePill({ label, on }: { label: string; on: boolean }) {
   );
 }
 
-const GRID = "34px repeat(7, 1fr) 80px";
+const GRID = "34px minmax(200px, 1.5fr) repeat(6, 1fr) 80px";
 
 function GroupHeader({ label, icon, bg, color }: { label: string; icon: ReactNode; bg: string; color: string }) {
   return (
@@ -271,7 +271,7 @@ function PatientRow({
       >
         <MessageBubble hasMessages={p.messages} />
         <div>
-          <div style={{ fontSize: 14, fontWeight: 600 }}>{p.name}</div>
+          <div style={{ fontSize: 16, fontWeight: 600 }}>{p.name}</div>
           <div style={{ fontSize: 12, color: MUTED }}>{p.dob}</div>
           <div style={{ fontSize: 12, color: MUTED }}>Age {p.age}</div>
         </div>
@@ -547,9 +547,9 @@ function RosterPage() {
                   fontSize: 15,
                   fontFamily: "inherit",
                   cursor: "pointer",
-                  background: active ? TEAL : "#fff",
+                  background: active ? TEAL : "#f4f6f7",
                   color: active ? "#fff" : DARK,
-                  border: `0.5px solid ${active ? TEAL : "#c8d2d4"}`,
+                  border: "none",
                   fontWeight: active ? 600 : 500,
                 }}
               >
