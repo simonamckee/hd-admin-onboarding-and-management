@@ -215,7 +215,7 @@ function DevicePill({ label, on }: { label: string; on: boolean }) {
       }}
     >
       {label}
-      {on ? <Check size={10} style={{ marginLeft: 4 }} /> : <X size={10} style={{ marginLeft: 4 }} />}
+      {on ? <CircleCheck size={10} style={{ marginLeft: 4 }} /> : <Circle size={10} style={{ marginLeft: 4 }} />}
     </span>
   );
 }
