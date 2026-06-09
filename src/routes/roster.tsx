@@ -259,14 +259,12 @@ function PatientRow({
   return (
     <>
       <div
-        onClick={onToggle}
         style={{
           display: "grid",
           gridTemplateColumns: GRID,
           alignItems: "center",
           padding: "8px 10px",
           borderBottom: `0.5px solid ${ROW_BORDER}`,
-          cursor: "pointer",
           background: open ? "#f4fbfa" : "#fff",
           gap: 8,
           fontFamily: "inherit",
@@ -330,7 +328,8 @@ function PatientRow({
           <ChevronDown
             size={11}
             color="#aab5b7"
-            style={{ transform: open ? "rotate(180deg)" : "none", transition: "transform 0.15s" }}
+            style={{ transform: open ? "rotate(180deg)" : "none", transition: "transform 0.15s", cursor: "pointer" }}
+            onClick={(e) => { e.stopPropagation(); onToggle(); }}
           />
         </div>
       </div>
