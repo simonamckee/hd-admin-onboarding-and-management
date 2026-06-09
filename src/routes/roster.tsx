@@ -225,7 +225,7 @@ function GroupHeader({ label, icon, bg, color }: { label: string; icon: ReactNod
         background: bg,
         color,
         padding: "5px 12px",
-        fontSize: 10,
+        fontSize: 12,
         fontWeight: 700,
         textTransform: "uppercase",
         letterSpacing: 0.5,
@@ -271,25 +271,25 @@ function PatientRow({
       >
         <MessageBubble hasMessages={p.messages} />
         <div>
-          <div style={{ fontSize: 12, fontWeight: 600 }}>{p.name}</div>
-          <div style={{ fontSize: 10, color: MUTED }}>{p.dob}</div>
-          <div style={{ fontSize: 10, color: MUTED }}>Age {p.age}</div>
+          <div style={{ fontSize: 14, fontWeight: 600 }}>{p.name}</div>
+          <div style={{ fontSize: 12, color: MUTED }}>{p.dob}</div>
+          <div style={{ fontSize: 12, color: MUTED }}>Age {p.age}</div>
         </div>
         <RiskPills risks={p.risks} />
         <div>
-          <div style={{ fontSize: 12, fontWeight: 600, color: tirRed ? DANGER : SUCCESS }}>
+          <div style={{ fontSize: 14, fontWeight: 600, color: tirRed ? DANGER : SUCCESS }}>
             {p.tir}%
           </div>
-          <div style={{ fontSize: 10, color: MUTED }}>{tirRed ? "Low" : "In range"}</div>
+          <div style={{ fontSize: 12, color: MUTED }}>{tirRed ? "Low" : "In range"}</div>
         </div>
-        <div style={{ fontSize: 12, fontWeight: 600, color: DARK }}>{p.gmi}%</div>
+        <div style={{ fontSize: 14, fontWeight: 600, color: DARK }}>{p.gmi}%</div>
         <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
           <DevicePill label="CGM" on={p.cgm} />
           <DevicePill label="Pump" on={p.pump} />
         </div>
         <div
           style={{
-            fontSize: 11,
+            fontSize: 14,
             color: lastVisitRed ? DANGER : DARK,
             fontWeight: lastVisitRed ? 700 : 400,
           }}
@@ -299,11 +299,11 @@ function PatientRow({
         <div>
           {p.nextAppt ? (
             <>
-              <div style={{ fontSize: 11, color: TEAL, fontWeight: 600 }}>{p.nextAppt}</div>
-              {p.nextApptSub && <div style={{ fontSize: 10, color: MUTED }}>{p.nextApptSub}</div>}
+              <div style={{ fontSize: 14, color: TEAL, fontWeight: 600 }}>{p.nextAppt}</div>
+              {p.nextApptSub && <div style={{ fontSize: 12, color: MUTED }}>{p.nextApptSub}</div>}
             </>
           ) : (
-            <span style={{ fontSize: 11, color: MUTED }}>No appt</span>
+            <span style={{ fontSize: 14, color: MUTED }}>No appt</span>
           )}
         </div>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 6 }}>
@@ -315,7 +315,7 @@ function PatientRow({
               color: "#fff",
               border: "none",
               borderRadius: 5,
-              fontSize: 10,
+              fontSize: 15,
               fontFamily: "inherit",
               cursor: "pointer",
               fontWeight: 600,
@@ -370,7 +370,7 @@ function AccordionRow({ data }: { data: AccordionData }) {
                 alignItems: "center",
                 gap: 5,
                 color: MUTED,
-                fontSize: 10,
+                fontSize: 12,
                 fontWeight: 600,
                 textTransform: "uppercase",
                 letterSpacing: 0.4,
@@ -380,7 +380,7 @@ function AccordionRow({ data }: { data: AccordionData }) {
               {s.icon}
               {s.label}
             </div>
-            <div style={{ fontSize: 13, fontWeight: 600, color }}>{s.value}</div>
+            <div style={{ fontSize: 14, fontWeight: 600, color }}>{s.value}</div>
           </div>
         );
       })}
@@ -428,7 +428,7 @@ function RosterPage() {
     background: `transparent url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' stroke='%2300565B' stroke-width='1.5' fill='none'/></svg>") no-repeat right center`,
     border: "none",
     color: TEAL,
-    fontSize: 13,
+    fontSize: 14,
     fontWeight: 600,
     fontFamily: "Urbanist, system-ui, sans-serif",
     cursor: "pointer",
@@ -458,7 +458,7 @@ function RosterPage() {
               <option>Dr. Kapoor</option>
               <option>All patients</option>
             </select>
-            <span style={{ fontSize: 10, color: MUTED }}>{orgLine}</span>
+            <span style={{ fontSize: 12, color: MUTED }}>{orgLine}</span>
           </div>
 
           <div style={{ flex: 1, display: "flex", justifyContent: "center" }}>
@@ -483,7 +483,7 @@ function RosterPage() {
                   flex: 1,
                   border: "none",
                   outline: "none",
-                  fontSize: 12,
+                  fontSize: 14,
                   fontFamily: "inherit",
                   background: "transparent",
                 }}
@@ -533,7 +533,7 @@ function RosterPage() {
             borderBottom: `0.5px solid ${BORDER}`,
           }}
         >
-          <span style={{ fontSize: 11, color: MUTED }}>Sort:</span>
+          <span style={{ fontSize: 14, color: MUTED }}>Sort:</span>
           {SORT_OPTIONS.map((opt) => {
             const active = sort === opt;
             return (
@@ -544,7 +544,7 @@ function RosterPage() {
                   height: 24,
                   padding: "0 12px",
                   borderRadius: 12,
-                  fontSize: 11,
+                  fontSize: 15,
                   fontFamily: "inherit",
                   cursor: "pointer",
                   background: active ? TEAL : "#fff",
@@ -564,7 +564,7 @@ function RosterPage() {
               height: 24,
               padding: "0 12px",
               borderRadius: 12,
-              fontSize: 11,
+              fontSize: 15,
               fontFamily: "inherit",
               cursor: "pointer",
               background: "#fff",
@@ -594,7 +594,7 @@ function RosterPage() {
               borderBottom: `0.5px solid ${BORDER}`,
             }}
           >
-            <span style={{ fontSize: 11, color: MUTED }}>Filter by:</span>
+            <span style={{ fontSize: 14, color: MUTED }}>Filter by:</span>
             {FILTERS.map((f) => {
               const on = activeFilters.has(f.key);
               return (
@@ -605,7 +605,7 @@ function RosterPage() {
                     height: 22,
                     padding: "0 10px",
                     borderRadius: 11,
-                    fontSize: 11,
+                    fontSize: 15,
                     fontFamily: "inherit",
                     cursor: "pointer",
                     background: on ? "#e1f5ee" : "#f9fafb",
@@ -642,7 +642,7 @@ function RosterPage() {
               gap: 8,
               padding: "7px 10px",
               background: "#f4f6f7",
-              fontSize: 10,
+              fontSize: 12,
               fontWeight: 600,
               color: MUTED,
               textTransform: "uppercase",
@@ -685,7 +685,7 @@ function RosterPage() {
             borderTop: `0.5px solid ${BORDER}`,
             display: "flex",
             justifyContent: "space-between",
-            fontSize: 10,
+            fontSize: 14,
             color: MUTED,
           }}
         >
