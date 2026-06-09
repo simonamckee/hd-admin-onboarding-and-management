@@ -580,7 +580,6 @@ function ModuleHeader({ id, compact }: { id: string; compact: boolean }) {
     resources: ["Resources", "+ Share resource"],
     "assigned-forms": ["Assigned forms", "+ Assign"],
     "assigned-tasks": ["Assigned tasks", "+ Add task"],
-    "completed-forms-right": ["Completed forms", "View all"],
     tasks: ["Tasks", ""],
   };
   const [t, r] = titles[id] ?? [id, ""];
