@@ -225,7 +225,7 @@ function GroupHeader({ label, icon, bg, color }: { label: string; icon: ReactNod
         background: bg,
         color,
         padding: "5px 12px",
-        fontSize: 10,
+        fontSize: 12,
         fontWeight: 700,
         textTransform: "uppercase",
         letterSpacing: 0.5,
@@ -370,7 +370,7 @@ function AccordionRow({ data }: { data: AccordionData }) {
                 alignItems: "center",
                 gap: 5,
                 color: MUTED,
-                fontSize: 10,
+                fontSize: 12,
                 fontWeight: 600,
                 textTransform: "uppercase",
                 letterSpacing: 0.4,
@@ -380,7 +380,7 @@ function AccordionRow({ data }: { data: AccordionData }) {
               {s.icon}
               {s.label}
             </div>
-            <div style={{ fontSize: 13, fontWeight: 600, color }}>{s.value}</div>
+            <div style={{ fontSize: 14, fontWeight: 600, color }}>{s.value}</div>
           </div>
         );
       })}
@@ -533,7 +533,7 @@ function RosterPage() {
             borderBottom: `0.5px solid ${BORDER}`,
           }}
         >
-          <span style={{ fontSize: 11, color: MUTED }}>Sort:</span>
+          <span style={{ fontSize: 14, color: MUTED }}>Sort:</span>
           {SORT_OPTIONS.map((opt) => {
             const active = sort === opt;
             return (
@@ -544,7 +544,7 @@ function RosterPage() {
                   height: 24,
                   padding: "0 12px",
                   borderRadius: 12,
-                  fontSize: 11,
+                  fontSize: 15,
                   fontFamily: "inherit",
                   cursor: "pointer",
                   background: active ? TEAL : "#fff",
@@ -564,7 +564,7 @@ function RosterPage() {
               height: 24,
               padding: "0 12px",
               borderRadius: 12,
-              fontSize: 11,
+              fontSize: 15,
               fontFamily: "inherit",
               cursor: "pointer",
               background: "#fff",
@@ -594,7 +594,7 @@ function RosterPage() {
               borderBottom: `0.5px solid ${BORDER}`,
             }}
           >
-            <span style={{ fontSize: 11, color: MUTED }}>Filter by:</span>
+            <span style={{ fontSize: 14, color: MUTED }}>Filter by:</span>
             {FILTERS.map((f) => {
               const on = activeFilters.has(f.key);
               return (
@@ -605,7 +605,7 @@ function RosterPage() {
                     height: 22,
                     padding: "0 10px",
                     borderRadius: 11,
-                    fontSize: 11,
+                    fontSize: 15,
                     fontFamily: "inherit",
                     cursor: "pointer",
                     background: on ? "#e1f5ee" : "#f9fafb",
@@ -642,7 +642,7 @@ function RosterPage() {
               gap: 8,
               padding: "7px 10px",
               background: "#f4f6f7",
-              fontSize: 10,
+              fontSize: 12,
               fontWeight: 600,
               color: MUTED,
               textTransform: "uppercase",
@@ -685,7 +685,7 @@ function RosterPage() {
             borderTop: `0.5px solid ${BORDER}`,
             display: "flex",
             justifyContent: "space-between",
-            fontSize: 10,
+            fontSize: 14,
             color: MUTED,
           }}
         >
