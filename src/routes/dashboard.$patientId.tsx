@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { ChevronDown, ChevronLeft } from "lucide-react";
+import { ChevronDown as _CD, ChevronLeft as _CL } from "lucide-react";
+void _CD; void _CL;
 import { AdminShell } from "@/components/admin-shell";
 import { MessageBubble } from "@/components/message-bubble";
 import {
