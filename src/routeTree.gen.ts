@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as VerifyMethodRouteImport } from './routes/verify-method'
 import { Route as SmsVerifyRouteImport } from './routes/sms-verify'
 import { Route as SmsPhoneRouteImport } from './routes/sms-phone'
+import { Route as RosterRouteImport } from './routes/roster'
 import { Route as PasswordRouteImport } from './routes/password'
 import { Route as ExpiredRouteImport } from './routes/expired'
 import { Route as CompleteSkippedRouteImport } from './routes/complete-skipped'
@@ -60,6 +61,11 @@ const SmsVerifyRoute = SmsVerifyRouteImport.update({
 const SmsPhoneRoute = SmsPhoneRouteImport.update({
   id: '/sms-phone',
   path: '/sms-phone',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RosterRoute = RosterRouteImport.update({
+  id: '/roster',
+  path: '/roster',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PasswordRoute = PasswordRouteImport.update({
@@ -243,6 +249,7 @@ export interface FileRoutesByFullPath {
   '/complete-skipped': typeof CompleteSkippedRoute
   '/expired': typeof ExpiredRoute
   '/password': typeof PasswordRoute
+  '/roster': typeof RosterRoute
   '/sms-phone': typeof SmsPhoneRoute
   '/sms-verify': typeof SmsVerifyRoute
   '/verify-method': typeof VerifyMethodRoute
@@ -281,6 +288,7 @@ export interface FileRoutesByTo {
   '/complete-skipped': typeof CompleteSkippedRoute
   '/expired': typeof ExpiredRoute
   '/password': typeof PasswordRoute
+  '/roster': typeof RosterRoute
   '/sms-phone': typeof SmsPhoneRoute
   '/sms-verify': typeof SmsVerifyRoute
   '/verify-method': typeof VerifyMethodRoute
@@ -316,6 +324,7 @@ export interface FileRoutesById {
   '/complete-skipped': typeof CompleteSkippedRoute
   '/expired': typeof ExpiredRoute
   '/password': typeof PasswordRoute
+  '/roster': typeof RosterRoute
   '/sms-phone': typeof SmsPhoneRoute
   '/sms-verify': typeof SmsVerifyRoute
   '/verify-method': typeof VerifyMethodRoute
@@ -357,6 +366,7 @@ export interface FileRouteTypes {
     | '/complete-skipped'
     | '/expired'
     | '/password'
+    | '/roster'
     | '/sms-phone'
     | '/sms-verify'
     | '/verify-method'
@@ -395,6 +405,7 @@ export interface FileRouteTypes {
     | '/complete-skipped'
     | '/expired'
     | '/password'
+    | '/roster'
     | '/sms-phone'
     | '/sms-verify'
     | '/verify-method'
@@ -429,6 +440,7 @@ export interface FileRouteTypes {
     | '/complete-skipped'
     | '/expired'
     | '/password'
+    | '/roster'
     | '/sms-phone'
     | '/sms-verify'
     | '/verify-method'
@@ -469,6 +481,7 @@ export interface RootRouteChildren {
   CompleteSkippedRoute: typeof CompleteSkippedRoute
   ExpiredRoute: typeof ExpiredRoute
   PasswordRoute: typeof PasswordRoute
+  RosterRoute: typeof RosterRoute
   SmsPhoneRoute: typeof SmsPhoneRoute
   SmsVerifyRoute: typeof SmsVerifyRoute
   VerifyMethodRoute: typeof VerifyMethodRoute
@@ -495,6 +508,13 @@ declare module '@tanstack/react-router' {
       path: '/sms-phone'
       fullPath: '/sms-phone'
       preLoaderRoute: typeof SmsPhoneRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/roster': {
+      id: '/roster'
+      path: '/roster'
+      fullPath: '/roster'
+      preLoaderRoute: typeof RosterRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/password': {
@@ -856,6 +876,7 @@ const rootRouteChildren: RootRouteChildren = {
   CompleteSkippedRoute: CompleteSkippedRoute,
   ExpiredRoute: ExpiredRoute,
   PasswordRoute: PasswordRoute,
+  RosterRoute: RosterRoute,
   SmsPhoneRoute: SmsPhoneRoute,
   SmsVerifyRoute: SmsVerifyRoute,
   VerifyMethodRoute: VerifyMethodRoute,

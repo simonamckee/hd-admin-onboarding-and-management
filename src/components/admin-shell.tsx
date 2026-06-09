@@ -14,7 +14,7 @@ const ADMIN_NAV: Array<{ label: string; to: string }> = [
   { label: "Audit log", to: "/admin/audit" },
 ];
 
-const PATIENT_ROSTER_TO = "/admin/patients";
+const PATIENT_ROSTER_TO = "/roster";
 
 function BellIcon() {
   return (
