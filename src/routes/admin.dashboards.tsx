@@ -574,9 +574,15 @@ function ModuleHeader({ id, compact }: { id: string; compact: boolean }) {
   const titles: Record<string, [string, string]> = {
     glucose: ["Glucose", "Last 7 days"],
     insulin: ["Insulin", "Last 7 days"],
-    recs: ["Recommendations", "+ Add"],
-    todo: ["Things to do", "+ Add task"],
+    labs: ["Labs & tests", ""],
+    "completed-forms": ["Completed forms", "View all"],
+    appointments: ["Appointments", ""],
+    recommendations: ["Recommendations", "+ Add"],
     resources: ["Resources", "+ Share resource"],
+    "assigned-forms": ["Assigned forms", "+ Assign"],
+    "assigned-tasks": ["Assigned tasks", "+ Add task"],
+    "completed-forms-right": ["Completed forms", "View all"],
+    tasks: ["Tasks", ""],
   };
   const [t, r] = titles[id] ?? [id, ""];
   return (
