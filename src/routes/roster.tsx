@@ -271,25 +271,25 @@ function PatientRow({
       >
         <MessageBubble hasMessages={p.messages} />
         <div>
-          <div style={{ fontSize: 12, fontWeight: 600 }}>{p.name}</div>
-          <div style={{ fontSize: 10, color: MUTED }}>{p.dob}</div>
-          <div style={{ fontSize: 10, color: MUTED }}>Age {p.age}</div>
+          <div style={{ fontSize: 14, fontWeight: 600 }}>{p.name}</div>
+          <div style={{ fontSize: 12, color: MUTED }}>{p.dob}</div>
+          <div style={{ fontSize: 12, color: MUTED }}>Age {p.age}</div>
         </div>
         <RiskPills risks={p.risks} />
         <div>
-          <div style={{ fontSize: 12, fontWeight: 600, color: tirRed ? DANGER : SUCCESS }}>
+          <div style={{ fontSize: 14, fontWeight: 600, color: tirRed ? DANGER : SUCCESS }}>
             {p.tir}%
           </div>
-          <div style={{ fontSize: 10, color: MUTED }}>{tirRed ? "Low" : "In range"}</div>
+          <div style={{ fontSize: 12, color: MUTED }}>{tirRed ? "Low" : "In range"}</div>
         </div>
-        <div style={{ fontSize: 12, fontWeight: 600, color: DARK }}>{p.gmi}%</div>
+        <div style={{ fontSize: 14, fontWeight: 600, color: DARK }}>{p.gmi}%</div>
         <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
           <DevicePill label="CGM" on={p.cgm} />
           <DevicePill label="Pump" on={p.pump} />
         </div>
         <div
           style={{
-            fontSize: 11,
+            fontSize: 14,
             color: lastVisitRed ? DANGER : DARK,
             fontWeight: lastVisitRed ? 700 : 400,
           }}
@@ -299,11 +299,11 @@ function PatientRow({
         <div>
           {p.nextAppt ? (
             <>
-              <div style={{ fontSize: 11, color: TEAL, fontWeight: 600 }}>{p.nextAppt}</div>
-              {p.nextApptSub && <div style={{ fontSize: 10, color: MUTED }}>{p.nextApptSub}</div>}
+              <div style={{ fontSize: 14, color: TEAL, fontWeight: 600 }}>{p.nextAppt}</div>
+              {p.nextApptSub && <div style={{ fontSize: 12, color: MUTED }}>{p.nextApptSub}</div>}
             </>
           ) : (
-            <span style={{ fontSize: 11, color: MUTED }}>No appt</span>
+            <span style={{ fontSize: 14, color: MUTED }}>No appt</span>
           )}
         </div>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 6 }}>
@@ -315,7 +315,7 @@ function PatientRow({
               color: "#fff",
               border: "none",
               borderRadius: 5,
-              fontSize: 10,
+              fontSize: 15,
               fontFamily: "inherit",
               cursor: "pointer",
               fontWeight: 600,
@@ -428,7 +428,7 @@ function RosterPage() {
     background: `transparent url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' stroke='%2300565B' stroke-width='1.5' fill='none'/></svg>") no-repeat right center`,
     border: "none",
     color: TEAL,
-    fontSize: 13,
+    fontSize: 14,
     fontWeight: 600,
     fontFamily: "Urbanist, system-ui, sans-serif",
     cursor: "pointer",
@@ -458,7 +458,7 @@ function RosterPage() {
               <option>Dr. Kapoor</option>
               <option>All patients</option>
             </select>
-            <span style={{ fontSize: 10, color: MUTED }}>{orgLine}</span>
+            <span style={{ fontSize: 12, color: MUTED }}>{orgLine}</span>
           </div>
 
           <div style={{ flex: 1, display: "flex", justifyContent: "center" }}>
@@ -483,7 +483,7 @@ function RosterPage() {
                   flex: 1,
                   border: "none",
                   outline: "none",
-                  fontSize: 12,
+                  fontSize: 14,
                   fontFamily: "inherit",
                   background: "transparent",
                 }}
