@@ -328,7 +328,8 @@ function PatientRow({
           <ChevronDown
             size={11}
             color="#aab5b7"
-            style={{ transform: open ? "rotate(180deg)" : "none", transition: "transform 0.15s" }}
+            style={{ transform: open ? "rotate(180deg)" : "none", transition: "transform 0.15s", cursor: "pointer" }}
+            onClick={(e) => { e.stopPropagation(); onToggle(); }}
           />
         </div>
       </div>
