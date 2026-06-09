@@ -21,7 +21,6 @@ const CLIN_RIGHT_DEFAULT: Module[] = [
   { id: "resources", name: "Resources", required: true },
   { id: "assigned-forms", name: "Assigned forms" },
   { id: "assigned-tasks", name: "Assigned tasks" },
-  { id: "completed-forms-right", name: "Completed forms" },
   { id: "tasks", name: "Tasks" },
 ];
 const CLIN_ALL = [...CLIN_LEFT_DEFAULT, ...CLIN_RIGHT_DEFAULT];
@@ -581,7 +580,6 @@ function ModuleHeader({ id, compact }: { id: string; compact: boolean }) {
     resources: ["Resources", "+ Share resource"],
     "assigned-forms": ["Assigned forms", "+ Assign"],
     "assigned-tasks": ["Assigned tasks", "+ Add task"],
-    "completed-forms-right": ["Completed forms", "View all"],
     tasks: ["Tasks", ""],
   };
   const [t, r] = titles[id] ?? [id, ""];
@@ -740,7 +738,7 @@ function ModuleBody({ id, compact }: { id: string; compact: boolean }) {
   if (id === "labs") {
     return <div style={{ fontSize: 13, color: WF_MID }}>Lipid panel, Renal function, Thyroid panel, Retinopathy, Neuropathy</div>;
   }
-  if (id === "completed-forms" || id === "completed-forms-right") {
+  if (id === "completed-forms") {
     return <div style={{ fontSize: 13, color: WF_MID }}>Pre-appointment questionnaire · 28 Apr 2026</div>;
   }
   if (id === "appointments") {
