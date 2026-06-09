@@ -210,10 +210,12 @@ function DevicePill({ label, on }: { label: string; on: boolean }) {
         borderRadius: 4,
         background: on ? "#e1f5ee" : "#f1efe8",
         color: on ? "#085041" : "#888780",
-        display: "inline-block",
+        display: "inline-flex",
+        alignItems: "center",
       }}
     >
-      {label} {on ? "✓" : "–"}
+      {label}
+      {on ? <Check size={10} style={{ marginLeft: 4 }} /> : <X size={10} style={{ marginLeft: 4 }} />}
     </span>
   );
 }
