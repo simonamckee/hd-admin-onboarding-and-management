@@ -326,9 +326,15 @@ function PatientRow({
             Dashboard
           </button>
           <ChevronDown
-            size={11}
-            color="#aab5b7"
-            style={{ transform: open ? "rotate(180deg)" : "none", transition: "transform 0.15s", cursor: "pointer" }}
+            size={14}
+            color={TEAL}
+            style={{
+              transform: open ? "rotate(180deg)" : "none",
+              transition: "transform 0.15s",
+              cursor: "pointer",
+              padding: 2,
+              flexShrink: 0,
+            }}
             onClick={(e) => { e.stopPropagation(); onToggle(); }}
           />
         </div>
