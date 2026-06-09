@@ -220,7 +220,7 @@ function DevicePill({ label, on }: { label: string; on: boolean }) {
   );
 }
 
-const GRID = "34px minmax(200px, 1.5fr) repeat(6, 1fr) 80px";
+const GRID = "34px minmax(200px, 1.5fr) repeat(6, 1fr) 112px";
 
 function GroupHeader({ label, icon, bg, color }: { label: string; icon: ReactNode; bg: string; color: string }) {
   return (
@@ -325,12 +325,31 @@ function PatientRow({
           >
             Dashboard
           </button>
-          <ChevronDown
-            size={11}
-            color="#aab5b7"
-            style={{ transform: open ? "rotate(180deg)" : "none", transition: "transform 0.15s", cursor: "pointer" }}
-            onClick={(e) => { e.stopPropagation(); onToggle(); }}
-          />
+          <button
+            type="button"
+            aria-label={open ? "Collapse patient row" : "Expand patient row"}
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggle();
+            }}
+            style={{
+              border: "none",
+              background: "transparent",
+              padding: 2,
+              margin: 0,
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              flexShrink: 0,
+            }}
+          >
+            <ChevronDown
+              size={14}
+              color={TEAL}
+              style={{ transform: open ? "rotate(180deg)" : "none", transition: "transform 0.15s" }}
+            />
+          </button>
         </div>
       </div>
       {open && <AccordionRow data={p.accordion} />}
