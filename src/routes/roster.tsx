@@ -18,6 +18,7 @@ import {
   CircleCheck,
 } from "lucide-react";
 import { AdminShell } from "@/components/admin-shell";
+import { MessageBubble } from "@/components/message-bubble";
 
 export const Route = createFileRoute("/roster")({
   component: RosterPage,
@@ -142,35 +143,6 @@ const FILTERS: { key: FilterKey; label: string; icon: ReactNode }[] = [
   { key: "pump", label: "Using pump", icon: <Droplet size={10} /> },
 ];
 
-function MessageBubble({ hasMessages }: { hasMessages: boolean }) {
-  return (
-    <div
-      style={{
-        width: 22,
-        height: 22,
-        borderRadius: "50%",
-        background: hasMessages ? "#e24b4a" : "#fff",
-        border: hasMessages ? "none" : "0.5px solid #c8d2d4",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: 2.5,
-      }}
-    >
-      {[0, 1, 2].map((i) => (
-        <span
-          key={i}
-          style={{
-            width: 3,
-            height: 3,
-            borderRadius: "50%",
-            background: hasMessages ? "#fff" : "#c8d2d4",
-          }}
-        />
-      ))}
-    </div>
-  );
-}
 
 function RiskPills({ risks }: { risks: Risk[] }) {
   if (risks.length === 0) return <span style={{ color: MUTED }}>—</span>;
@@ -526,22 +498,7 @@ function RosterPage() {
             </div>
           </div>
 
-          <div
-            style={{
-              width: 28,
-              height: 28,
-              borderRadius: "50%",
-              background: "#e24b4a",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 2.5,
-            }}
-          >
-            {[0, 1, 2].map((i) => (
-              <span key={i} style={{ width: 4, height: 4, borderRadius: "50%", background: "#fff" }} />
-            ))}
-          </div>
+          <MessageBubble hasMessages={true} size={22} />
         </div>
 
         {/* Toolbar */}

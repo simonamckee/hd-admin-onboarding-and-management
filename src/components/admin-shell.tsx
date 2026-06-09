@@ -2,6 +2,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { useState, type ReactNode } from "react";
 import { Settings, Users, ChevronDown, ChevronRight } from "lucide-react";
 import { WF_BG, WF_DARK, WF_MID, TEAL, BORDER, SURFACE, HAIBU_LOGO_URL } from "./wireframe";
+import { MessageBubble } from "@/components/message-bubble";
 
 const ADMIN_NAV: Array<{ label: string; to: string }> = [
   { label: "Clinic information", to: "/admin" },
@@ -16,14 +17,6 @@ const ADMIN_NAV: Array<{ label: string; to: string }> = [
 
 const PATIENT_ROSTER_TO = "/roster";
 
-function BellIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={WF_DARK} strokeWidth="1.5">
-      <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
-      <path d="M10 21a2 2 0 0 0 4 0" />
-    </svg>
-  );
-}
 
 const TOPBAR_H = 56;
 
@@ -162,7 +155,7 @@ export function AdminShell({ heading, children }: { heading: string; children: R
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-            <BellIcon />
+            <MessageBubble hasMessages={false} size={22} />
             <div
               style={{
                 width: 28,
