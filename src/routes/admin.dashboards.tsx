@@ -21,7 +21,6 @@ const CLIN_RIGHT_DEFAULT: Module[] = [
   { id: "resources", name: "Resources", required: true },
   { id: "assigned-forms", name: "Assigned forms" },
   { id: "assigned-tasks", name: "Assigned tasks" },
-  { id: "completed-forms-right", name: "Completed forms" },
   { id: "tasks", name: "Tasks" },
 ];
 const CLIN_ALL = [...CLIN_LEFT_DEFAULT, ...CLIN_RIGHT_DEFAULT];
