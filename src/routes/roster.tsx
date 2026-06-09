@@ -14,6 +14,8 @@ import {
   ClipboardList,
   CheckSquare,
   Activity,
+  Circle,
+  CircleCheck,
 } from "lucide-react";
 import { AdminShell } from "@/components/admin-shell";
 
@@ -208,10 +210,12 @@ function DevicePill({ label, on }: { label: string; on: boolean }) {
         borderRadius: 4,
         background: on ? "#e1f5ee" : "#f1efe8",
         color: on ? "#085041" : "#888780",
-        display: "inline-block",
+        display: "inline-flex",
+        alignItems: "center",
       }}
     >
-      {label} {on ? "✓" : "–"}
+      {label}
+      {on ? <CircleCheck size={10} style={{ marginLeft: 4 }} /> : <Circle size={10} style={{ marginLeft: 4 }} />}
     </span>
   );
 }
@@ -283,7 +287,7 @@ function PatientRow({
           <div style={{ fontSize: 12, color: MUTED }}>{tirRed ? "Low" : "In range"}</div>
         </div>
         <div style={{ fontSize: 14, fontWeight: 600, color: DARK }}>{p.gmi}%</div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 3, alignItems: "flex-start" }}>
           <DevicePill label="CGM" on={p.cgm} />
           <DevicePill label="Pump" on={p.pump} />
         </div>
