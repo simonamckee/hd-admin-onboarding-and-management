@@ -551,7 +551,7 @@ function LabsModule() {
 
   return (
     <div style={CARD}>
-      <div style={CARD_HEADER}>Labs & tests</div>
+      <div style={CARD_HEADER}>Labs & test results</div>
       <div style={{ padding: 16 }}>
         {labs.map((l) => (
           <div key={l.id}>
