@@ -157,14 +157,14 @@ export function AdminShell({ heading, children }: { heading: string; children: R
           <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
             <MessageBubble hasMessages={false} size={22} />
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <div style={{
-                width: 30, height: 30, borderRadius: "50%", overflow: "hidden",
-                border: `1.5px solid ${TEAL}`, flexShrink: 0,
-                background: "#c8e6f0", display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: 11, fontWeight: 600, color: TEAL,
-              }}>
-                DR
-              </div>
+              <img
+                src="https://randomuser.me/api/portraits/men/32.jpg"
+                alt="Dr. Reyes"
+                style={{
+                  width: 30, height: 30, borderRadius: "50%", border: `1.5px solid ${TEAL}`,
+                  objectFit: "cover", flexShrink: 0,
+                }}
+              />
               <span style={{ fontSize: 14, color: WF_DARK, fontWeight: 500 }}>Dr. Reyes</span>
             </div>
           </div>
