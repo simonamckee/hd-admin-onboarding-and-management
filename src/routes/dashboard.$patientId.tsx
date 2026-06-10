@@ -32,7 +32,7 @@ const CARD_HEADER: React.CSSProperties = {
   justifyContent: "space-between",
   padding: "12px 16px",
   borderBottom: `0.5px solid ${BORDER}`,
-  fontSize: 16,
+  fontSize: 20,
   fontWeight: 600,
   color: WF_DARK,
 };
