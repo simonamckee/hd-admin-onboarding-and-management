@@ -993,7 +993,7 @@ function CompletedTasksModule() {
               width: 14, height: 14, background: TEAL, color: "#fff",
               display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 10,
             }}>✓</span>
-            <span style={{ fontSize: 15, color: WF_MID, textDecoration: "line-through", flex: 1 }}>{t}</span>
+            <span style={{ fontSize: 15, color: WF_MID, flex: 1 }}>{t}</span>
             <span style={{ fontSize: 11, color: WF_MID }}>{d}</span>
           </div>
         ))}
