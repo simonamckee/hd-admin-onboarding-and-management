@@ -65,14 +65,14 @@ function PatientHeader() {
       }}
     >
       <div style={{ display: "flex", gap: 14, alignItems: "center", flexWrap: "wrap" }}>
-        <div style={{
-          width: 44, height: 44, borderRadius: "50%", flexShrink: 0,
-          background: "#e1f5ee", border: "2px solid #c8e8df",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          fontSize: 14, fontWeight: 700, color: "#085041",
-        }}>
-          SC
-        </div>
+        <img
+          src="https://randomuser.me/api/portraits/women/44.jpg"
+          alt="Sarah Chen"
+          style={{
+            width: 44, height: 44, borderRadius: "50%", flexShrink: 0,
+            border: "2px solid #c8e8df", objectFit: "cover",
+          }}
+        />
         <div style={{ fontSize: 22, fontWeight: 700, color: WF_DARK }}>Sarah Chen</div>
         <span style={{ color: "#aac4cc", fontSize: 18, fontWeight: 300 }}>|</span>
         <div style={{ fontSize: 15, color: WF_MID }}>15 Jun 1978 · Age 47</div>
