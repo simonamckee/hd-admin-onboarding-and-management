@@ -798,6 +798,38 @@ function ModuleBody({ id, compact }: { id: string; compact: boolean }) {
       </div>
     );
   }
+  if (id === "completed-tasks") {
+    return (
+      <div style={{ fontSize: 13, color: WF_MID, display: "flex", flexDirection: "column", gap: 4 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+          <span style={{ color: TEAL, fontSize: 11 }}>✓</span>
+          <span>Upload CGM data — Completed 28 Apr</span>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+          <span style={{ color: TEAL, fontSize: 11 }}>✓</span>
+          <span>Book next appointment — Completed 20 Apr</span>
+        </div>
+      </div>
+    );
+  }
+  if (id === "labs") {
+    return <div style={{ fontSize: 13, color: WF_MID }}>Lipid panel · A1c · Renal function · Thyroid panel</div>;
+  }
+  if (id === "completed-forms") {
+    return <div style={{ fontSize: 13, color: WF_MID }}>Pre-appointment questionnaire · 28 Apr 2026</div>;
+  }
+  if (id === "appointments") {
+    return <div style={{ fontSize: 13, color: WF_MID }}>Next: 12 May 2026 · 10:30 AM</div>;
+  }
+  if (id === "assigned-forms") {
+    return <div style={{ fontSize: 13, color: WF_MID }}>Daily symptom log — Pending</div>;
+  }
+  if (id === "assigned-tasks") {
+    return <div style={{ fontSize: 13, color: WF_MID }}>Log meals for 3 days — Due 15 May</div>;
+  }
+  if (id === "recommendations") {
+    return <div style={{ fontSize: 13, color: WF_MID }}>Reviewed basal rate — reduce overnight dose by 10%.</div>;
+  }
   return null;
 }
 
