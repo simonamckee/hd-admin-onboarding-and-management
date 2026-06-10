@@ -132,7 +132,7 @@ const PATIENTS: Patient[] = [
   },
 ];
 
-const SORT_OPTIONS = ["At risk first", "TIR ↓", "GMI ↓", "Longest unseen", "A – Z"];
+const SORT_OPTIONS = ["At risk first", "Longest unseen", "A – Z"];
 
 type FilterKey = "risk" | "tir" | "gmi" | "cgm" | "pump";
 const FILTERS: { key: FilterKey; label: string; icon: ReactNode }[] = [
