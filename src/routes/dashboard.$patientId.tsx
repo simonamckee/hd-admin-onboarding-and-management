@@ -843,7 +843,7 @@ function AssignedFormsModule() {
         <table style={{ width: "100%", fontSize: 15, borderCollapse: "collapse" }}>
           <thead>
             <tr>
-              {["Form name", "Assigned", "Status"].map((h) => (
+              {["Form name", "Assigned", "Status", "Action"].map((h) => (
                 <th key={h} style={{ textAlign: "left", fontSize: 11, textTransform: "uppercase", color: WF_MID, fontWeight: 500, padding: "4px 0" }}>{h}</th>
               ))}
             </tr>
@@ -860,6 +860,14 @@ function AssignedFormsModule() {
                   >
                     {r.status}
                   </Badge>
+                </td>
+                <td style={{ padding: "6px 0" }}>
+                  <span
+                    onClick={() => setList((cur) => cur.filter((_, j) => j !== i))}
+                    style={{ fontSize: 12, color: WF_MID, cursor: "pointer", textDecoration: "underline" }}
+                  >
+                    Remove
+                  </span>
                 </td>
               </tr>
             ))}
