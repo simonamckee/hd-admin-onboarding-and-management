@@ -12,7 +12,7 @@ type Module = { id: string; name: string; required?: boolean };
 const CLIN_LEFT_DEFAULT: Module[] = [
   { id: "glucose", name: "Glucose", required: true },
   { id: "insulin", name: "Insulin", required: true },
-  { id: "labs", name: "Labs & tests" },
+  { id: "labs", name: "Labs & test results" },
   { id: "completed-forms", name: "Completed forms" },
   { id: "appointments", name: "Appointments" },
 ];
@@ -28,7 +28,7 @@ const CLIN_ALL = [...CLIN_LEFT_DEFAULT, ...CLIN_RIGHT_DEFAULT];
 const PATIENT_DEFAULT: Module[] = [
   { id: "glucose", name: "Glucose", required: true },
   { id: "insulin", name: "Insulin", required: true },
-  { id: "labs", name: "Labs & tests" },
+  { id: "labs", name: "Labs & test results" },
   { id: "completed-forms", name: "Completed forms" },
   { id: "appointments", name: "Appointments" },
 ];
@@ -577,7 +577,7 @@ function ModuleHeader({ id, compact }: { id: string; compact: boolean }) {
     recommendations: ["Recommendations", "+ Add"],
     todo: ["Things to do", "+ Add task"],
     resources: ["Resources", "+ Share resource"],
-    labs: ["Labs & tests", ""],
+    labs: ["Labs & test results", ""],
     "completed-forms": ["Completed forms", "View all"],
     appointments: ["Appointments", ""],
     "assigned-forms": ["Assigned forms", "+ Assign"],
