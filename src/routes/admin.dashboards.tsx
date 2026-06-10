@@ -12,16 +12,16 @@ type Module = { id: string; name: string; required?: boolean };
 const CLIN_LEFT_DEFAULT: Module[] = [
   { id: "glucose", name: "Glucose", required: true },
   { id: "insulin", name: "Insulin", required: true },
-  { id: "labs", name: "Labs & test results" },
+  { id: "labs", name: "Labs & tests" },
   { id: "completed-forms", name: "Completed forms" },
   { id: "appointments", name: "Appointments" },
+  { id: "completed-tasks", name: "Completed tasks" },
 ];
 const CLIN_RIGHT_DEFAULT: Module[] = [
   { id: "recommendations", name: "Recommendations", required: true },
   { id: "resources", name: "Resources", required: true },
   { id: "assigned-forms", name: "Assigned forms" },
   { id: "assigned-tasks", name: "Assigned tasks" },
-  { id: "tasks", name: "Tasks" },
 ];
 const CLIN_ALL = [...CLIN_LEFT_DEFAULT, ...CLIN_RIGHT_DEFAULT];
 
