@@ -577,12 +577,12 @@ function ModuleHeader({ id, compact }: { id: string; compact: boolean }) {
     recommendations: ["Recommendations", "+ Add"],
     todo: ["Things to do", "+ Add task"],
     resources: ["Resources", "+ Share resource"],
-    labs: ["Labs & test results", ""],
+    labs: ["Labs & tests", ""],
     "completed-forms": ["Completed forms", "View all"],
     appointments: ["Appointments", ""],
+    "completed-tasks": ["Completed tasks", ""],
     "assigned-forms": ["Assigned forms", "+ Assign"],
     "assigned-tasks": ["Assigned tasks", "+ Add task"],
-    tasks: ["Tasks", ""],
   };
   const [t, r] = titles[id] ?? [id, ""];
   return (
