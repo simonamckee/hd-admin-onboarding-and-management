@@ -63,9 +63,19 @@ function PatientHeader() {
         padding: "14px 24px",
       }}
     >
-      <div style={{ display: "flex", gap: 28, alignItems: "center", flexWrap: "wrap" }}>
+      <div style={{ display: "flex", gap: 14, alignItems: "center", flexWrap: "wrap" }}>
+        <div style={{
+          width: 44, height: 44, borderRadius: "50%", flexShrink: 0,
+          background: "#e1f5ee", border: "2px solid #c8e8df",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          fontSize: 14, fontWeight: 700, color: "#085041",
+        }}>
+          SC
+        </div>
         <div style={{ fontSize: 22, fontWeight: 700, color: WF_DARK }}>Sarah Chen</div>
+        <span style={{ color: "#aac4cc", fontSize: 18, fontWeight: 300 }}>|</span>
         <div style={{ fontSize: 15, color: WF_MID }}>15 Jun 1978 · Age 47</div>
+        <span style={{ color: "#aac4cc", fontSize: 18, fontWeight: 300 }}>|</span>
         <span
           title="Type 1 Diabetes, diagnosed 12 years ago"
           style={{
@@ -77,8 +87,11 @@ function PatientHeader() {
         >
           T1D · 12 years
         </span>
+        <span style={{ color: "#aac4cc", fontSize: 18, fontWeight: 300 }}>|</span>
         <div style={{ fontSize: 15, color: WF_DARK }}>👤 Margaret Chen — Mother</div>
+        <span style={{ color: "#aac4cc", fontSize: 18, fontWeight: 300 }}>|</span>
         <div style={{ fontSize: 15, color: WF_DARK }}>⚕ Dr. Reyes</div>
+        <span style={{ color: "#aac4cc", fontSize: 18, fontWeight: 300 }}>|</span>
         <div style={{ fontSize: 15, color: WF_MID }}>Last seen: 2 days ago</div>
       </div>
       <div style={{ display: "flex", gap: 6, marginTop: 10 }}>
@@ -411,6 +424,18 @@ function PumpTab() {
           </div>
         </div>
         <div>
+          <div style={{ marginBottom: 10 }}>
+            <div style={{ fontSize: 12, color: WF_MID, marginBottom: 4 }}>Pump type</div>
+            <select defaultValue="Medtronic" style={{
+              border: `0.5px solid ${BORDER}`, borderRadius: 4, padding: "4px 8px",
+              fontSize: 13, width: "100%", fontFamily: "inherit",
+            }}>
+              <option>Medtronic</option>
+              <option>Tandem</option>
+              <option>Omnipod</option>
+              <option>Ypsomed</option>
+            </select>
+          </div>
           <div style={{ background: "#f4fbfa", padding: 8, borderRadius: 6, marginBottom: 10 }}>
             <div style={{ fontSize: 15, color: WF_MID }}>Active insulin time</div>
             <div style={{ fontSize: 15, fontWeight: 600, color: WF_DARK }}>1.5 hrs</div>
@@ -532,15 +557,16 @@ function MDITab() {
   );
 }
 
-type LabRow = { id: string; name: string; last: string; next: string; overdue: boolean };
+type LabRow = { id: string; name: string; last: string; next: string; overdue: boolean; recommended: string };
 
 function LabsModule() {
   const [labs, setLabs] = useState<LabRow[]>([
-    { id: "lipid", name: "Lipid panel", last: "2025-01-14", next: "2025-07-14", overdue: false },
-    { id: "renal", name: "Renal function", last: "2025-01-14", next: "2025-07-14", overdue: false },
-    { id: "thyroid", name: "Thyroid panel", last: "2024-03-03", next: "2025-03-03", overdue: true },
-    { id: "retino", name: "Retinopathy", last: "2023-11-22", next: "2024-11-22", overdue: true },
-    { id: "neuro", name: "Neuropathy", last: "2023-11-22", next: "2024-11-22", overdue: true },
+    { id: "a1c", name: "A1c", last: "2026-01-01", next: "2026-04-01", overdue: false, recommended: "Every 3 months" },
+    { id: "lipid", name: "Lipid panel", last: "2025-01-14", next: "2025-07-14", overdue: false, recommended: "Every 3 years" },
+    { id: "renal", name: "Renal function", last: "2025-01-14", next: "2025-07-14", overdue: false, recommended: "Yearly" },
+    { id: "thyroid", name: "Thyroid panel", last: "2024-03-03", next: "2025-03-03", overdue: true, recommended: "Every 2 years" },
+    { id: "retino", name: "Retinopathy", last: "2023-11-22", next: "2024-11-22", overdue: true, recommended: "Yearly" },
+    { id: "neuro", name: "Neuropathy", last: "2023-11-22", next: "2024-11-22", overdue: true, recommended: "Yearly" },
   ]);
   const [editId, setEditId] = useState<string | null>(null);
   const [editLast, setEditLast] = useState("");
@@ -568,6 +594,10 @@ function LabsModule() {
                   color: l.overdue ? ERROR_TEXT : WF_DARK,
                   fontWeight: l.overdue ? 600 : 400,
                 }}>{fmt(l.next)}</div>
+              </div>
+              <div style={{ marginRight: 16 }}>
+                <div style={{ fontSize: 10, color: WF_MID }}>Recommended</div>
+                <div style={{ fontSize: 13, color: WF_DARK }}>{l.recommended}</div>
               </div>
               <span
                 onClick={() => {
@@ -813,7 +843,7 @@ function AssignedFormsModule() {
         <table style={{ width: "100%", fontSize: 15, borderCollapse: "collapse" }}>
           <thead>
             <tr>
-              {["Form name", "Assigned", "Status"].map((h) => (
+              {["Form name", "Assigned", "Status", "Action"].map((h) => (
                 <th key={h} style={{ textAlign: "left", fontSize: 11, textTransform: "uppercase", color: WF_MID, fontWeight: 500, padding: "4px 0" }}>{h}</th>
               ))}
             </tr>
@@ -830,6 +860,14 @@ function AssignedFormsModule() {
                   >
                     {r.status}
                   </Badge>
+                </td>
+                <td style={{ padding: "6px 0" }}>
+                  <span
+                    onClick={() => setList((cur) => cur.filter((_, j) => j !== i))}
+                    style={{ fontSize: 12, color: WF_MID, cursor: "pointer", textDecoration: "underline" }}
+                  >
+                    Remove
+                  </span>
                 </td>
               </tr>
             ))}
@@ -886,7 +924,7 @@ function AssignedTasksModule() {
       <div style={{ padding: 16 }}>
         {list.map((t, i) => (
           <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, paddingBottom: 8, borderBottom: "0.5px solid #f0f2f3", marginBottom: 8 }}>
-            <span style={{ width: 14, height: 14, border: `1px solid ${BORDER}`, display: "inline-flex" }} />
+            
             <span style={{ fontSize: 15, color: WF_DARK, flex: 1 }}>{t.text}</span>
             <span style={{ fontSize: 11, color: WF_MID }}>Due: {t.due}</span>
             <span
@@ -955,7 +993,7 @@ function CompletedTasksModule() {
               width: 14, height: 14, background: TEAL, color: "#fff",
               display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 10,
             }}>✓</span>
-            <span style={{ fontSize: 15, color: WF_MID, textDecoration: "line-through", flex: 1 }}>{t}</span>
+            <span style={{ fontSize: 15, color: WF_MID, flex: 1 }}>{t}</span>
             <span style={{ fontSize: 11, color: WF_MID }}>{d}</span>
           </div>
         ))}

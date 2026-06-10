@@ -125,10 +125,10 @@ export function AdminShell({ heading, children }: { heading: string; children: R
         </nav>
         <div style={{ borderTop: "1px solid rgba(255,255,255,0.15)", padding: 16 }}>
           <div style={{ fontSize: 14, color: "rgba(255,255,255,0.7)", marginBottom: 4 }}>
-            Sarah Reid
+            Dr. Reyes
           </div>
           <div style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", marginBottom: 12 }}>
-            Clinic Admin
+            Clinician
           </div>
           <Link
             to="/complete"
@@ -156,23 +156,17 @@ export function AdminShell({ heading, children }: { heading: string; children: R
         >
           <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
             <MessageBubble hasMessages={false} size={22} />
-            <div
-              style={{
-                width: 28,
-                height: 28,
-                borderRadius: "50%",
-                background: TEAL,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: 13,
-                fontWeight: 600,
-                color: "#fff",
-              }}
-            >
-              SR
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <div style={{
+                width: 30, height: 30, borderRadius: "50%", overflow: "hidden",
+                border: `1.5px solid ${TEAL}`, flexShrink: 0,
+                background: "#c8e6f0", display: "flex", alignItems: "center", justifyContent: "center",
+                fontSize: 11, fontWeight: 600, color: TEAL,
+              }}>
+                DR
+              </div>
+              <span style={{ fontSize: 14, color: WF_DARK, fontWeight: 500 }}>Dr. Reyes</span>
             </div>
-            <span style={{ fontSize: 14, color: WF_DARK, fontWeight: 500 }}>Admin</span>
           </div>
         </div>
 
