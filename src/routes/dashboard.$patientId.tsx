@@ -924,7 +924,7 @@ function AssignedTasksModule() {
       <div style={{ padding: 16 }}>
         {list.map((t, i) => (
           <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, paddingBottom: 8, borderBottom: "0.5px solid #f0f2f3", marginBottom: 8 }}>
-            <span style={{ width: 14, height: 14, border: `1px solid ${BORDER}`, display: "inline-flex" }} />
+            
             <span style={{ fontSize: 15, color: WF_DARK, flex: 1 }}>{t.text}</span>
             <span style={{ fontSize: 11, color: WF_MID }}>Due: {t.due}</span>
             <span
