@@ -1028,7 +1028,7 @@ function DashboardPage() {
     <AdminShell heading="">
       <div style={{ margin: "-32px", background: WF_BG, minHeight: "100vh" }}>
         <PatientHeader />
-        <div style={{ padding: 24, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
+        <div style={{ padding: 24, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, alignItems: "start" }}>
           <div>
             <GlucoseModule />
             <InsulinModule />
@@ -1036,7 +1036,7 @@ function DashboardPage() {
             <CompletedFormsModule />
             <AppointmentsModule />
           </div>
-          <div>
+          <div style={{ position: "sticky", top: 20 }}>
             <RecommendationsModule />
             <ResourcesModule />
             <AssignedFormsModule />
