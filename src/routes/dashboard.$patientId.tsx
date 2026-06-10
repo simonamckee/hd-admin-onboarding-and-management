@@ -580,33 +580,46 @@ function LabsModule() {
     <div style={CARD}>
       <div style={CARD_HEADER}>Labs & test results</div>
       <div style={{ padding: 16 }}>
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 120px 120px 120px 60px",
+          gap: 8,
+          padding: "0 0 6px 0",
+          borderBottom: `0.5px solid ${BORDER}`,
+          marginBottom: 4,
+        }}>
+          {["Test", "Recommended", "Last completed", "Next due", ""].map((h) => (
+            <div key={h} style={{ fontSize: 10, fontWeight: 600, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.3 }}>{h}</div>
+          ))}
+        </div>
         {labs.map((l) => (
           <div key={l.id}>
-            <div style={{ display: "flex", alignItems: "center", padding: "8px 0", borderBottom: `0.5px solid #f0f2f3` }}>
-              <div style={{ fontSize: 15, fontWeight: 600, color: WF_DARK, flex: 1 }}>{l.name}</div>
-              <div style={{ marginRight: 16 }}>
-                <div style={{ fontSize: 10, color: WF_MID }}>Last completed</div>
-                <div style={{ fontSize: 15, color: WF_DARK }}>{fmt(l.last)}</div>
-              </div>
-              <div style={{ marginRight: 16 }}>
-                <div style={{ fontSize: 10, color: WF_MID }}>Next due</div>
-                <div style={{
-                  fontSize: 15,
-                  color: l.overdue ? ERROR_TEXT : WF_DARK,
-                  fontWeight: l.overdue ? 600 : 400,
-                }}>{fmt(l.next)}</div>
-              </div>
-              <div style={{ marginRight: 16 }}>
+            <div style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 120px 120px 120px 60px",
+              alignItems: "center",
+              padding: "8px 0",
+              borderBottom: "0.5px solid #f0f2f3",
+              gap: 8,
+            }}>
+              <div style={{ fontSize: 15, fontWeight: 600, color: WF_DARK }}>{l.name}</div>
+              <div>
                 <div style={{ fontSize: 10, color: WF_MID }}>Recommended</div>
                 <div style={{ fontSize: 13, color: WF_DARK }}>{l.recommended}</div>
               </div>
+              <div>
+                <div style={{ fontSize: 10, color: WF_MID }}>Last completed</div>
+                <div style={{ fontSize: 13, color: WF_DARK }}>{fmt(l.last)}</div>
+              </div>
+              <div>
+                <div style={{ fontSize: 10, color: WF_MID }}>Next due</div>
+                <div style={{ fontSize: 13, color: l.overdue ? ERROR_TEXT : WF_DARK, fontWeight: l.overdue ? 600 : 400 }}>
+                  {fmt(l.next)}
+                </div>
+              </div>
               <span
-                onClick={() => {
-                  setEditId(l.id);
-                  setEditLast(l.last);
-                  setEditNext(l.next);
-                }}
-                style={{ fontSize: 15, color: TEAL, textDecoration: "underline", cursor: "pointer", marginLeft: 12 }}
+                onClick={() => { setEditId(l.id); setEditLast(l.last); setEditNext(l.next); }}
+                style={{ fontSize: 13, color: TEAL, textDecoration: "underline", cursor: "pointer" }}
               >
                 Update
               </span>
