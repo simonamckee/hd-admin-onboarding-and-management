@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { Trash2 } from "lucide-react";
 import { AdminShell } from "@/components/admin-shell";
 import {
   TEAL,
@@ -64,14 +65,14 @@ function PatientHeader() {
       }}
     >
       <div style={{ display: "flex", gap: 14, alignItems: "center", flexWrap: "wrap" }}>
-        <div style={{
-          width: 44, height: 44, borderRadius: "50%", flexShrink: 0,
-          background: "#e1f5ee", border: "2px solid #c8e8df",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          fontSize: 14, fontWeight: 700, color: "#085041",
-        }}>
-          SC
-        </div>
+        <img
+          src="https://randomuser.me/api/portraits/women/44.jpg"
+          alt="Sarah Chen"
+          style={{
+            width: 44, height: 44, borderRadius: "50%", flexShrink: 0,
+            border: "2px solid #c8e8df", objectFit: "cover",
+          }}
+        />
         <div style={{ fontSize: 22, fontWeight: 700, color: WF_DARK }}>Sarah Chen</div>
         <span style={{ color: "#aac4cc", fontSize: 18, fontWeight: 300 }}>|</span>
         <div style={{ fontSize: 15, color: WF_MID }}>15 Jun 1978 · Age 47</div>
@@ -579,33 +580,46 @@ function LabsModule() {
     <div style={CARD}>
       <div style={CARD_HEADER}>Labs & test results</div>
       <div style={{ padding: 16 }}>
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 120px 120px 120px 60px",
+          gap: 8,
+          padding: "0 0 6px 0",
+          borderBottom: `0.5px solid ${BORDER}`,
+          marginBottom: 4,
+        }}>
+          {["Test", "Recommended", "Last completed", "Next due", ""].map((h) => (
+            <div key={h} style={{ fontSize: 10, fontWeight: 600, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.3 }}>{h}</div>
+          ))}
+        </div>
         {labs.map((l) => (
           <div key={l.id}>
-            <div style={{ display: "flex", alignItems: "center", padding: "8px 0", borderBottom: `0.5px solid #f0f2f3` }}>
-              <div style={{ fontSize: 15, fontWeight: 600, color: WF_DARK, flex: 1 }}>{l.name}</div>
-              <div style={{ marginRight: 16 }}>
-                <div style={{ fontSize: 10, color: WF_MID }}>Last completed</div>
-                <div style={{ fontSize: 15, color: WF_DARK }}>{fmt(l.last)}</div>
-              </div>
-              <div style={{ marginRight: 16 }}>
-                <div style={{ fontSize: 10, color: WF_MID }}>Next due</div>
-                <div style={{
-                  fontSize: 15,
-                  color: l.overdue ? ERROR_TEXT : WF_DARK,
-                  fontWeight: l.overdue ? 600 : 400,
-                }}>{fmt(l.next)}</div>
-              </div>
-              <div style={{ marginRight: 16 }}>
+            <div style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 120px 120px 120px 60px",
+              alignItems: "center",
+              padding: "8px 0",
+              borderBottom: "0.5px solid #f0f2f3",
+              gap: 8,
+            }}>
+              <div style={{ fontSize: 15, fontWeight: 600, color: WF_DARK }}>{l.name}</div>
+              <div>
                 <div style={{ fontSize: 10, color: WF_MID }}>Recommended</div>
                 <div style={{ fontSize: 13, color: WF_DARK }}>{l.recommended}</div>
               </div>
+              <div>
+                <div style={{ fontSize: 10, color: WF_MID }}>Last completed</div>
+                <div style={{ fontSize: 13, color: WF_DARK }}>{fmt(l.last)}</div>
+              </div>
+              <div>
+                <div style={{ fontSize: 10, color: WF_MID }}>Next due</div>
+                <div style={{ fontSize: 13, color: l.overdue ? ERROR_TEXT : WF_DARK, fontWeight: l.overdue ? 600 : 400 }}>
+                  {fmt(l.next)}
+                </div>
+              </div>
               <span
-                onClick={() => {
-                  setEditId(l.id);
-                  setEditLast(l.last);
-                  setEditNext(l.next);
-                }}
-                style={{ fontSize: 15, color: TEAL, textDecoration: "underline", cursor: "pointer", marginLeft: 12 }}
+                onClick={() => { setEditId(l.id); setEditLast(l.last); setEditNext(l.next); }}
+                style={{ fontSize: 13, color: TEAL, textDecoration: "underline", cursor: "pointer" }}
               >
                 Update
               </span>
@@ -799,23 +813,28 @@ function RecommendationsModule() {
 }
 
 function ResourcesModule() {
-  const items = [
+  const [items, setItems] = useState([
     ["CGM User Guide — Dexcom G7", "PDF"],
     ["Carb counting basics", "Video"],
     ["Sick day management plan", "Link"],
-  ];
+  ]);
   return (
     <div style={CARD}>
       <div style={CARD_HEADER}>Resources</div>
       <div style={{ padding: 16 }}>
-        {items.map(([n, t]) => (
+        {items.map(([n, t], idx) => (
           <div key={n} style={{ display: "flex", alignItems: "center", paddingBottom: 8, borderBottom: "0.5px solid #f0f2f3", marginBottom: 8 }}>
             <span style={{ fontSize: 15, color: TEAL, flex: 1, textDecoration: "underline", cursor: "pointer" }}>{n}</span>
             <span style={{
               fontSize: 10, padding: "2px 6px", borderRadius: 8,
               background: "#f4f6f7", color: WF_MID, marginRight: 8,
             }}>{t}</span>
-            <span style={{ fontSize: 11, color: WF_MID, cursor: "pointer" }}>Remove</span>
+            <Trash2
+              size={14}
+              color={WF_MID}
+              style={{ cursor: "pointer", flexShrink: 0 }}
+              onClick={() => setItems((cur) => cur.filter((_, j) => j !== idx))}
+            />
           </div>
         ))}
         <button style={{
@@ -862,12 +881,12 @@ function AssignedFormsModule() {
                   </Badge>
                 </td>
                 <td style={{ padding: "6px 0" }}>
-                  <span
+                  <Trash2
+                    size={14}
+                    color={WF_MID}
+                    style={{ cursor: "pointer" }}
                     onClick={() => setList((cur) => cur.filter((_, j) => j !== i))}
-                    style={{ fontSize: 12, color: WF_MID, cursor: "pointer", textDecoration: "underline" }}
-                  >
-                    Remove
-                  </span>
+                  />
                 </td>
               </tr>
             ))}
@@ -927,10 +946,12 @@ function AssignedTasksModule() {
             
             <span style={{ fontSize: 15, color: WF_DARK, flex: 1 }}>{t.text}</span>
             <span style={{ fontSize: 11, color: WF_MID }}>Due: {t.due}</span>
-            <span
+            <Trash2
+              size={14}
+              color={WF_MID}
+              style={{ cursor: "pointer", flexShrink: 0 }}
               onClick={() => setList((cur) => cur.filter((_, j) => j !== i))}
-              style={{ fontSize: 15, color: WF_MID, cursor: "pointer" }}
-            >×</span>
+            />
           </div>
         ))}
         <button
@@ -1007,7 +1028,7 @@ function DashboardPage() {
     <AdminShell heading="">
       <div style={{ margin: "-32px", background: WF_BG, minHeight: "100vh" }}>
         <PatientHeader />
-        <div style={{ padding: 24, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
+        <div style={{ padding: 24, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, alignItems: "start" }}>
           <div>
             <GlucoseModule />
             <InsulinModule />
@@ -1015,7 +1036,7 @@ function DashboardPage() {
             <CompletedFormsModule />
             <AppointmentsModule />
           </div>
-          <div>
+          <div style={{ position: "sticky", top: 20 }}>
             <RecommendationsModule />
             <ResourcesModule />
             <AssignedFormsModule />
