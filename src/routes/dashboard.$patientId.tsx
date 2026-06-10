@@ -598,7 +598,7 @@ function LabsModule() {
                     setLabs((cur) => cur.map((x) => x.id === l.id ? { ...x, last: editLast, next: editNext, overdue: editNext < today } : x));
                     setEditId(null);
                   }}
-                  style={{ background: TEAL, color: "#fff", border: "none", borderRadius: 4, fontSize: 15, padding: "5px 10px", cursor: "pointer" }}
+                  style={{ background: TEAL, color: "#fff", border: "none", borderRadius: 4, fontSize: 16, padding: "5px 10px", cursor: "pointer" }}
                 >
                   Save
                 </button>
@@ -723,7 +723,7 @@ function RecommendationsModule() {
             onClick={() => setShowPop((v) => !v)}
             style={{
               border: `0.5px solid ${TEAL}`, background: SURFACE, color: TEAL,
-              borderRadius: 5, fontSize: 15, padding: "4px 10px", cursor: "pointer", fontFamily: "inherit",
+              borderRadius: 5, fontSize: 16, padding: "4px 10px", cursor: "pointer", fontFamily: "inherit",
             }}
           >
             Add resource
@@ -751,7 +751,7 @@ function RecommendationsModule() {
             }}
             style={{
               background: TEAL, color: "#fff", border: "none", borderRadius: 5,
-              fontSize: 15, padding: "4px 10px", cursor: "pointer", fontFamily: "inherit",
+              fontSize: 16, padding: "4px 10px", cursor: "pointer", fontFamily: "inherit",
             }}
           >
             Save
@@ -790,7 +790,7 @@ function ResourcesModule() {
         ))}
         <button style={{
           width: "100%", border: `0.5px solid ${TEAL}`, background: SURFACE, color: TEAL,
-          borderRadius: 6, fontSize: 15, padding: "6px 0", cursor: "pointer", fontFamily: "inherit",
+          borderRadius: 6, fontSize: 16, padding: "6px 0", cursor: "pointer", fontFamily: "inherit",
         }}>
           + Add resource
         </button>
@@ -839,7 +839,7 @@ function AssignedFormsModule() {
           onClick={() => setShowSel((v) => !v)}
           style={{
             width: "100%", border: `0.5px solid ${TEAL}`, background: SURFACE, color: TEAL,
-            borderRadius: 6, fontSize: 15, padding: "6px 0", cursor: "pointer", marginTop: 10, fontFamily: "inherit",
+            borderRadius: 6, fontSize: 16, padding: "6px 0", cursor: "pointer", marginTop: 10, fontFamily: "inherit",
           }}
         >
           + Assign form
@@ -899,7 +899,7 @@ function AssignedTasksModule() {
           onClick={() => setShowAdd((v) => !v)}
           style={{
             width: "100%", border: `0.5px solid ${TEAL}`, background: SURFACE, color: TEAL,
-            borderRadius: 6, fontSize: 15, padding: "6px 0", cursor: "pointer", marginTop: 8, fontFamily: "inherit",
+            borderRadius: 6, fontSize: 16, padding: "6px 0", cursor: "pointer", marginTop: 8, fontFamily: "inherit",
           }}
         >
           + Add task
@@ -928,7 +928,7 @@ function AssignedTasksModule() {
                   setShowAdd(false);
                 }
               }}
-              style={{ background: TEAL, color: "#fff", border: "none", borderRadius: 4, fontSize: 15, padding: "4px 10px", cursor: "pointer" }}
+              style={{ background: TEAL, color: "#fff", border: "none", borderRadius: 4, fontSize: 16, padding: "4px 10px", cursor: "pointer" }}
             >
               Add
             </button>
