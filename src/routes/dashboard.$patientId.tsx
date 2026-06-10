@@ -458,7 +458,7 @@ function PumpTab() {
             <option>basal 2</option>
             <option>basal 3 (active)</option>
           </select>
-          <table style={{ width: "100%", fontSize: 11, borderCollapse: "collapse" }}>
+          <table style={{ width: "100%", fontSize: 15, borderCollapse: "collapse" }}>
             <thead>
               <tr>
                 <th style={{ textAlign: "left", color: WF_MID, fontWeight: 500, padding: "2px 0" }}>Start</th>
