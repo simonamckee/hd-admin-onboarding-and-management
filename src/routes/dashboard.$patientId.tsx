@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
+import { Trash2 } from "lucide-react";
 import { AdminShell } from "@/components/admin-shell";
 import {
   TEAL,
