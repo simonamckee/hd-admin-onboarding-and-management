@@ -557,15 +557,16 @@ function MDITab() {
   );
 }
 
-type LabRow = { id: string; name: string; last: string; next: string; overdue: boolean };
+type LabRow = { id: string; name: string; last: string; next: string; overdue: boolean; recommended: string };
 
 function LabsModule() {
   const [labs, setLabs] = useState<LabRow[]>([
-    { id: "lipid", name: "Lipid panel", last: "2025-01-14", next: "2025-07-14", overdue: false },
-    { id: "renal", name: "Renal function", last: "2025-01-14", next: "2025-07-14", overdue: false },
-    { id: "thyroid", name: "Thyroid panel", last: "2024-03-03", next: "2025-03-03", overdue: true },
-    { id: "retino", name: "Retinopathy", last: "2023-11-22", next: "2024-11-22", overdue: true },
-    { id: "neuro", name: "Neuropathy", last: "2023-11-22", next: "2024-11-22", overdue: true },
+    { id: "a1c", name: "A1c", last: "2026-01-01", next: "2026-04-01", overdue: false, recommended: "Every 3 months" },
+    { id: "lipid", name: "Lipid panel", last: "2025-01-14", next: "2025-07-14", overdue: false, recommended: "Every 3 years" },
+    { id: "renal", name: "Renal function", last: "2025-01-14", next: "2025-07-14", overdue: false, recommended: "Yearly" },
+    { id: "thyroid", name: "Thyroid panel", last: "2024-03-03", next: "2025-03-03", overdue: true, recommended: "Every 2 years" },
+    { id: "retino", name: "Retinopathy", last: "2023-11-22", next: "2024-11-22", overdue: true, recommended: "Yearly" },
+    { id: "neuro", name: "Neuropathy", last: "2023-11-22", next: "2024-11-22", overdue: true, recommended: "Yearly" },
   ]);
   const [editId, setEditId] = useState<string | null>(null);
   const [editLast, setEditLast] = useState("");
