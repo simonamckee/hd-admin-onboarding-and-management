@@ -595,6 +595,10 @@ function LabsModule() {
                   fontWeight: l.overdue ? 600 : 400,
                 }}>{fmt(l.next)}</div>
               </div>
+              <div style={{ marginRight: 16 }}>
+                <div style={{ fontSize: 10, color: WF_MID }}>Recommended</div>
+                <div style={{ fontSize: 13, color: WF_DARK }}>{l.recommended}</div>
+              </div>
               <span
                 onClick={() => {
                   setEditId(l.id);
