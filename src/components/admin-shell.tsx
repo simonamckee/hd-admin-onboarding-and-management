@@ -125,10 +125,10 @@ export function AdminShell({ heading, children }: { heading: string; children: R
         </nav>
         <div style={{ borderTop: "1px solid rgba(255,255,255,0.15)", padding: 16 }}>
           <div style={{ fontSize: 14, color: "rgba(255,255,255,0.7)", marginBottom: 4 }}>
-            Sarah Reid
+            Dr. Reyes
           </div>
           <div style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", marginBottom: 12 }}>
-            Clinic Admin
+            Clinician
           </div>
           <Link
             to="/complete"
