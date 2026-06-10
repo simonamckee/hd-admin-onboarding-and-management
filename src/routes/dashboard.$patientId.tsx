@@ -484,7 +484,7 @@ function PumpTab() {
         ].map((box) => (
           <div key={box.title} style={{ flex: 1, border: `0.5px solid ${BORDER}`, borderRadius: 6, padding: 10 }}>
             <div style={{ fontSize: 15, fontWeight: 600, color: WF_DARK, marginBottom: 6 }}>{box.title}</div>
-            <table style={{ width: "100%", fontSize: 11, borderCollapse: "collapse" }}>
+            <table style={{ width: "100%", fontSize: 15, borderCollapse: "collapse" }}>
               <thead>
                 <tr>
                   <th style={{ textAlign: "left", color: WF_MID, fontWeight: 500 }}>{box.h1}</th>
