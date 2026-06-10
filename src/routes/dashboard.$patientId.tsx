@@ -813,23 +813,28 @@ function RecommendationsModule() {
 }
 
 function ResourcesModule() {
-  const items = [
+  const [items, setItems] = useState([
     ["CGM User Guide — Dexcom G7", "PDF"],
     ["Carb counting basics", "Video"],
     ["Sick day management plan", "Link"],
-  ];
+  ]);
   return (
     <div style={CARD}>
       <div style={CARD_HEADER}>Resources</div>
       <div style={{ padding: 16 }}>
-        {items.map(([n, t]) => (
+        {items.map(([n, t], idx) => (
           <div key={n} style={{ display: "flex", alignItems: "center", paddingBottom: 8, borderBottom: "0.5px solid #f0f2f3", marginBottom: 8 }}>
             <span style={{ fontSize: 15, color: TEAL, flex: 1, textDecoration: "underline", cursor: "pointer" }}>{n}</span>
             <span style={{
               fontSize: 10, padding: "2px 6px", borderRadius: 8,
               background: "#f4f6f7", color: WF_MID, marginRight: 8,
             }}>{t}</span>
-            <span style={{ fontSize: 11, color: WF_MID, cursor: "pointer" }}>Remove</span>
+            <Trash2
+              size={14}
+              color={WF_MID}
+              style={{ cursor: "pointer", flexShrink: 0 }}
+              onClick={() => setItems((cur) => cur.filter((_, j) => j !== idx))}
+            />
           </div>
         ))}
         <button style={{
