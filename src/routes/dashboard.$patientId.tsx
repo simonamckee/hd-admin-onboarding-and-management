@@ -32,7 +32,7 @@ const CARD_HEADER: React.CSSProperties = {
   justifyContent: "space-between",
   padding: "12px 16px",
   borderBottom: `0.5px solid ${BORDER}`,
-  fontSize: 14,
+  fontSize: 15,
   fontWeight: 600,
   color: WF_DARK,
 };
@@ -65,11 +65,11 @@ function PatientHeader() {
     >
       <div style={{ display: "flex", gap: 28, alignItems: "center", flexWrap: "wrap" }}>
         <div style={{ fontSize: 18, fontWeight: 700, color: WF_DARK }}>Sarah Chen</div>
-        <div style={{ fontSize: 13, color: WF_MID }}>15 Jun 1978 · Age 47</div>
+        <div style={{ fontSize: 15, color: WF_MID }}>15 Jun 1978 · Age 47</div>
         <span
           title="Type 1 Diabetes, diagnosed 12 years ago"
           style={{
-            fontSize: 13,
+            fontSize: 15,
             color: WF_DARK,
             cursor: "help",
             borderBottom: `1px dotted ${WF_MID}`,
@@ -77,9 +77,9 @@ function PatientHeader() {
         >
           T1D · 12 years
         </span>
-        <div style={{ fontSize: 13, color: WF_DARK }}>👤 Margaret Chen — Mother</div>
-        <div style={{ fontSize: 13, color: WF_DARK }}>⚕ Dr. Reyes</div>
-        <div style={{ fontSize: 13, color: WF_MID }}>Last seen: 2 days ago</div>
+        <div style={{ fontSize: 15, color: WF_DARK }}>👤 Margaret Chen — Mother</div>
+        <div style={{ fontSize: 15, color: WF_DARK }}>⚕ Dr. Reyes</div>
+        <div style={{ fontSize: 15, color: WF_MID }}>Last seen: 2 days ago</div>
       </div>
       <div style={{ display: "flex", gap: 6, marginTop: 10 }}>
         <Badge bg={SUCCESS_BG} color={SUCCESS_TEXT}>Active</Badge>
@@ -138,7 +138,7 @@ function TabButton({
         border: "none",
         borderBottom: active ? `2px solid ${TEAL}` : "2px solid transparent",
         padding: "8px 12px",
-        fontSize: 13,
+        fontSize: 15,
         cursor: "pointer",
         color: active ? WF_DARK : WF_MID,
         fontFamily: "inherit",
@@ -256,7 +256,7 @@ function StatsTab() {
   ];
   return (
     <div style={{ padding: 16, display: "grid", gridTemplateColumns: "1fr 220px", gap: 24 }}>
-      <div style={{ fontSize: 13, color: WF_DARK }}>
+      <div style={{ fontSize: 15, color: WF_DARK }}>
         <div style={{ color: WF_MID }}>21 Jul 2025 – 3 Aug 2025 (14 days)</div>
         <div style={{ marginTop: 4 }}>% CGM Active: 99.3%</div>
         <div style={{ borderTop: `0.5px solid ${BORDER}`, margin: "10px 0" }} />
@@ -388,7 +388,7 @@ function PumpTab() {
     <>
       <div style={{ padding: 16, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
         <div>
-          <div style={{ fontSize: 13, fontWeight: 600, color: WF_DARK, marginBottom: 6 }}>Historical trend</div>
+          <div style={{ fontSize: 15, fontWeight: 600, color: WF_DARK, marginBottom: 6 }}>Historical trend</div>
           <div style={{ display: "flex", gap: 4, marginBottom: 10 }}>
             {["7d", "14d", "30d", "90d"].map((r) => (
               <Pill key={r} active={range === r} onClick={() => setRange(r)}>{r}</Pill>
@@ -400,29 +400,29 @@ function PumpTab() {
             <circle cx="65" cy="65" r="50" fill="none" stroke={TEAL} strokeWidth="22"
               strokeDasharray={`${bolusLen} ${C}`} strokeDashoffset={-basalLen} transform="rotate(-90 65 65)" />
           </svg>
-          <div style={{ fontSize: 12, color: WF_DARK, marginTop: 6 }}>
+          <div style={{ fontSize: 15, color: WF_DARK, marginTop: 6 }}>
             <span style={{ color: "#95d7e5" }}>●</span> Basal/day — 59% · 12.6 units
           </div>
-          <div style={{ fontSize: 12, color: WF_DARK }}>
+          <div style={{ fontSize: 15, color: WF_DARK }}>
             <span style={{ color: TEAL }}>●</span> Bolus/day — 41% · 9.6 units
           </div>
-          <div style={{ borderTop: `0.5px solid ${BORDER}`, marginTop: 8, paddingTop: 8, fontSize: 13, fontWeight: 600, color: WF_DARK }}>
+          <div style={{ borderTop: `0.5px solid ${BORDER}`, marginTop: 8, paddingTop: 8, fontSize: 15, fontWeight: 600, color: WF_DARK }}>
             Average total daily dose: 22.2 units
           </div>
         </div>
         <div>
           <div style={{ background: "#f4fbfa", padding: 8, borderRadius: 6, marginBottom: 10 }}>
-            <div style={{ fontSize: 12, color: WF_MID }}>Active insulin time</div>
-            <div style={{ fontSize: 14, fontWeight: 600, color: WF_DARK }}>1.5 hrs</div>
+            <div style={{ fontSize: 15, color: WF_MID }}>Active insulin time</div>
+            <div style={{ fontSize: 15, fontWeight: 600, color: WF_DARK }}>1.5 hrs</div>
           </div>
-          <div style={{ fontSize: 12, fontWeight: 600, color: WF_DARK, marginBottom: 6 }}>Basal rates</div>
+          <div style={{ fontSize: 15, fontWeight: 600, color: WF_DARK, marginBottom: 6 }}>Basal rates</div>
           <select
             defaultValue="basal 3 (active)"
             style={{
               border: `0.5px solid ${BORDER}`,
               borderRadius: 4,
               padding: "4px 8px",
-              fontSize: 12,
+              fontSize: 15,
               width: "100%",
               marginBottom: 8,
               fontFamily: "inherit",
@@ -457,7 +457,7 @@ function PumpTab() {
           { title: "Target blood glucose", h1: "Start", h2: "Target (mmol/L/U)", rows: target },
         ].map((box) => (
           <div key={box.title} style={{ flex: 1, border: `0.5px solid ${BORDER}`, borderRadius: 6, padding: 10 }}>
-            <div style={{ fontSize: 12, fontWeight: 600, color: WF_DARK, marginBottom: 6 }}>{box.title}</div>
+            <div style={{ fontSize: 15, fontWeight: 600, color: WF_DARK, marginBottom: 6 }}>{box.title}</div>
             <table style={{ width: "100%", fontSize: 11, borderCollapse: "collapse" }}>
               <thead>
                 <tr>
@@ -490,14 +490,14 @@ function MDITab() {
     <>
       <div style={{ padding: 16, display: "grid", gridTemplateColumns: "1fr 2fr", gap: 16 }}>
         <div>
-          <div style={{ fontSize: 12, fontWeight: 600, color: WF_MID, textTransform: "uppercase", marginBottom: 8 }}>
+          <div style={{ fontSize: 15, fontWeight: 600, color: WF_MID, textTransform: "uppercase", marginBottom: 8 }}>
             Insulin
           </div>
-          <div style={{ fontSize: 13, color: WF_DARK }}>Long — Basaglar</div>
-          <div style={{ fontSize: 13, color: WF_DARK }}>Rapid — (none)</div>
+          <div style={{ fontSize: 15, color: WF_DARK }}>Long — Basaglar</div>
+          <div style={{ fontSize: 15, color: WF_DARK }}>Rapid — (none)</div>
         </div>
         <div>
-          <table style={{ width: "100%", fontSize: 12, borderCollapse: "collapse" }}>
+          <table style={{ width: "100%", fontSize: 15, borderCollapse: "collapse" }}>
             <thead>
               <tr>
                 {["Dose", "Long", "ICR", "ISF", "BG target"].map((h) => (
@@ -556,15 +556,15 @@ function LabsModule() {
         {labs.map((l) => (
           <div key={l.id}>
             <div style={{ display: "flex", alignItems: "center", padding: "8px 0", borderBottom: `0.5px solid #f0f2f3` }}>
-              <div style={{ fontSize: 13, fontWeight: 600, color: WF_DARK, flex: 1 }}>{l.name}</div>
+              <div style={{ fontSize: 15, fontWeight: 600, color: WF_DARK, flex: 1 }}>{l.name}</div>
               <div style={{ marginRight: 16 }}>
                 <div style={{ fontSize: 10, color: WF_MID }}>Last completed</div>
-                <div style={{ fontSize: 12, color: WF_DARK }}>{fmt(l.last)}</div>
+                <div style={{ fontSize: 15, color: WF_DARK }}>{fmt(l.last)}</div>
               </div>
               <div style={{ marginRight: 16 }}>
                 <div style={{ fontSize: 10, color: WF_MID }}>Next due</div>
                 <div style={{
-                  fontSize: 12,
+                  fontSize: 15,
                   color: l.overdue ? ERROR_TEXT : WF_DARK,
                   fontWeight: l.overdue ? 600 : 400,
                 }}>{fmt(l.next)}</div>
@@ -575,7 +575,7 @@ function LabsModule() {
                   setEditLast(l.last);
                   setEditNext(l.next);
                 }}
-                style={{ fontSize: 12, color: TEAL, textDecoration: "underline", cursor: "pointer", marginLeft: 12 }}
+                style={{ fontSize: 15, color: TEAL, textDecoration: "underline", cursor: "pointer", marginLeft: 12 }}
               >
                 Update
               </span>
@@ -598,11 +598,11 @@ function LabsModule() {
                     setLabs((cur) => cur.map((x) => x.id === l.id ? { ...x, last: editLast, next: editNext, overdue: editNext < today } : x));
                     setEditId(null);
                   }}
-                  style={{ background: TEAL, color: "#fff", border: "none", borderRadius: 4, fontSize: 12, padding: "5px 10px", cursor: "pointer" }}
+                  style={{ background: TEAL, color: "#fff", border: "none", borderRadius: 4, fontSize: 16, padding: "5px 10px", cursor: "pointer" }}
                 >
                   Save
                 </button>
-                <span onClick={() => setEditId(null)} style={{ fontSize: 12, color: WF_MID, cursor: "pointer" }}>Cancel</span>
+                <span onClick={() => setEditId(null)} style={{ fontSize: 15, color: WF_MID, cursor: "pointer" }}>Cancel</span>
               </div>
             )}
           </div>
@@ -622,10 +622,10 @@ function CompletedFormsModule() {
     <div style={CARD}>
       <div style={CARD_HEADER}>
         <span>Completed forms</span>
-        <span style={{ fontSize: 12, color: TEAL, textDecoration: "underline", cursor: "pointer" }}>View all</span>
+        <span style={{ fontSize: 15, color: TEAL, textDecoration: "underline", cursor: "pointer" }}>View all</span>
       </div>
       <div style={{ padding: 16 }}>
-        <table style={{ width: "100%", fontSize: 12, borderCollapse: "collapse" }}>
+        <table style={{ width: "100%", fontSize: 15, borderCollapse: "collapse" }}>
           <thead>
             <tr>
               {["Form name", "Submitted", "Score/result", "Action"].map((h) => (
@@ -669,13 +669,13 @@ function AppointmentsModule() {
           <div style={{ fontSize: 10, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 4 }}>
             Next appointment
           </div>
-          <div style={{ fontSize: 14, fontWeight: 600, color: TEAL }}>12 May 2026 · 10:30 AM</div>
-          <div style={{ fontSize: 12, color: WF_MID }}>In-person — BC Children's Hospital</div>
+          <div style={{ fontSize: 15, fontWeight: 600, color: TEAL }}>12 May 2026 · 10:30 AM</div>
+          <div style={{ fontSize: 15, color: WF_MID }}>In-person — BC Children's Hospital</div>
         </div>
         <div style={{ fontSize: 10, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 6 }}>
           Past appointments
         </div>
-        <table style={{ width: "100%", fontSize: 12, borderCollapse: "collapse" }}>
+        <table style={{ width: "100%", fontSize: 15, borderCollapse: "collapse" }}>
           <thead>
             <tr>
               {["Date", "Type", "Clinician", "Notes"].map((h) => (
@@ -715,7 +715,7 @@ function RecommendationsModule() {
           placeholder="Add a recommendation…"
           style={{
             width: "100%", height: 72, border: `0.5px solid ${BORDER}`, borderRadius: 6,
-            fontSize: 13, padding: 8, fontFamily: "inherit", resize: "none", boxSizing: "border-box",
+            fontSize: 15, padding: 8, fontFamily: "inherit", resize: "none", boxSizing: "border-box",
           }}
         />
         <div style={{ display: "flex", gap: 8, marginTop: 8, position: "relative" }}>
@@ -723,7 +723,7 @@ function RecommendationsModule() {
             onClick={() => setShowPop((v) => !v)}
             style={{
               border: `0.5px solid ${TEAL}`, background: SURFACE, color: TEAL,
-              borderRadius: 5, fontSize: 12, padding: "4px 10px", cursor: "pointer", fontFamily: "inherit",
+              borderRadius: 5, fontSize: 16, padding: "4px 10px", cursor: "pointer", fontFamily: "inherit",
             }}
           >
             Add resource
@@ -734,7 +734,7 @@ function RecommendationsModule() {
               border: `0.5px solid ${BORDER}`, borderRadius: 6, padding: 6, zIndex: 10, minWidth: 140,
             }}>
               {["From library", "New resource"].map((o) => (
-                <div key={o} style={{ padding: "6px 10px", fontSize: 12, cursor: "pointer" }}
+                <div key={o} style={{ padding: "6px 10px", fontSize: 15, cursor: "pointer" }}
                   onMouseEnter={(e) => (e.currentTarget.style.background = "#f4fbfa")}
                   onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}>
                   {o}
@@ -751,7 +751,7 @@ function RecommendationsModule() {
             }}
             style={{
               background: TEAL, color: "#fff", border: "none", borderRadius: 5,
-              fontSize: 12, padding: "4px 10px", cursor: "pointer", fontFamily: "inherit",
+              fontSize: 16, padding: "4px 10px", cursor: "pointer", fontFamily: "inherit",
             }}
           >
             Save
@@ -759,7 +759,7 @@ function RecommendationsModule() {
         </div>
         {list.map((r, i) => (
           <div key={i} style={{ border: "0.5px solid #e8ecee", borderRadius: 6, padding: 10, marginTop: 8 }}>
-            <div style={{ fontSize: 12, color: WF_DARK }}>{r.text}</div>
+            <div style={{ fontSize: 15, color: WF_DARK }}>{r.text}</div>
             <div style={{ fontSize: 11, color: WF_MID, marginTop: 4 }}>{r.meta}</div>
           </div>
         ))}
@@ -780,7 +780,7 @@ function ResourcesModule() {
       <div style={{ padding: 16 }}>
         {items.map(([n, t]) => (
           <div key={n} style={{ display: "flex", alignItems: "center", paddingBottom: 8, borderBottom: "0.5px solid #f0f2f3", marginBottom: 8 }}>
-            <span style={{ fontSize: 13, color: TEAL, flex: 1, textDecoration: "underline", cursor: "pointer" }}>{n}</span>
+            <span style={{ fontSize: 15, color: TEAL, flex: 1, textDecoration: "underline", cursor: "pointer" }}>{n}</span>
             <span style={{
               fontSize: 10, padding: "2px 6px", borderRadius: 8,
               background: "#f4f6f7", color: WF_MID, marginRight: 8,
@@ -790,7 +790,7 @@ function ResourcesModule() {
         ))}
         <button style={{
           width: "100%", border: `0.5px solid ${TEAL}`, background: SURFACE, color: TEAL,
-          borderRadius: 6, fontSize: 12, padding: "6px 0", cursor: "pointer", fontFamily: "inherit",
+          borderRadius: 6, fontSize: 16, padding: "6px 0", cursor: "pointer", fontFamily: "inherit",
         }}>
           + Add resource
         </button>
@@ -810,7 +810,7 @@ function AssignedFormsModule() {
     <div style={CARD}>
       <div style={CARD_HEADER}>Assigned forms</div>
       <div style={{ padding: 16 }}>
-        <table style={{ width: "100%", fontSize: 12, borderCollapse: "collapse" }}>
+        <table style={{ width: "100%", fontSize: 15, borderCollapse: "collapse" }}>
           <thead>
             <tr>
               {["Form name", "Assigned", "Status"].map((h) => (
@@ -839,7 +839,7 @@ function AssignedFormsModule() {
           onClick={() => setShowSel((v) => !v)}
           style={{
             width: "100%", border: `0.5px solid ${TEAL}`, background: SURFACE, color: TEAL,
-            borderRadius: 6, fontSize: 12, padding: "6px 0", cursor: "pointer", marginTop: 10, fontFamily: "inherit",
+            borderRadius: 6, fontSize: 16, padding: "6px 0", cursor: "pointer", marginTop: 10, fontFamily: "inherit",
           }}
         >
           + Assign form
@@ -857,7 +857,7 @@ function AssignedFormsModule() {
             defaultValue=""
             style={{
               width: "100%", marginTop: 8, border: `0.5px solid ${BORDER}`,
-              borderRadius: 4, padding: "4px 8px", fontSize: 12, fontFamily: "inherit",
+              borderRadius: 4, padding: "4px 8px", fontSize: 15, fontFamily: "inherit",
             }}
           >
             <option value="" disabled>Select a form…</option>
@@ -887,11 +887,11 @@ function AssignedTasksModule() {
         {list.map((t, i) => (
           <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, paddingBottom: 8, borderBottom: "0.5px solid #f0f2f3", marginBottom: 8 }}>
             <span style={{ width: 14, height: 14, border: `1px solid ${BORDER}`, display: "inline-flex" }} />
-            <span style={{ fontSize: 13, color: WF_DARK, flex: 1 }}>{t.text}</span>
+            <span style={{ fontSize: 15, color: WF_DARK, flex: 1 }}>{t.text}</span>
             <span style={{ fontSize: 11, color: WF_MID }}>Due: {t.due}</span>
             <span
               onClick={() => setList((cur) => cur.filter((_, j) => j !== i))}
-              style={{ fontSize: 14, color: WF_MID, cursor: "pointer" }}
+              style={{ fontSize: 15, color: WF_MID, cursor: "pointer" }}
             >×</span>
           </div>
         ))}
@@ -899,7 +899,7 @@ function AssignedTasksModule() {
           onClick={() => setShowAdd((v) => !v)}
           style={{
             width: "100%", border: `0.5px solid ${TEAL}`, background: SURFACE, color: TEAL,
-            borderRadius: 6, fontSize: 12, padding: "6px 0", cursor: "pointer", marginTop: 8, fontFamily: "inherit",
+            borderRadius: 6, fontSize: 16, padding: "6px 0", cursor: "pointer", marginTop: 8, fontFamily: "inherit",
           }}
         >
           + Add task
@@ -928,7 +928,7 @@ function AssignedTasksModule() {
                   setShowAdd(false);
                 }
               }}
-              style={{ background: TEAL, color: "#fff", border: "none", borderRadius: 4, fontSize: 12, padding: "4px 10px", cursor: "pointer" }}
+              style={{ background: TEAL, color: "#fff", border: "none", borderRadius: 4, fontSize: 16, padding: "4px 10px", cursor: "pointer" }}
             >
               Add
             </button>
@@ -955,7 +955,7 @@ function CompletedTasksModule() {
               width: 14, height: 14, background: TEAL, color: "#fff",
               display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 10,
             }}>✓</span>
-            <span style={{ fontSize: 13, color: WF_MID, textDecoration: "line-through", flex: 1 }}>{t}</span>
+            <span style={{ fontSize: 15, color: WF_MID, textDecoration: "line-through", flex: 1 }}>{t}</span>
             <span style={{ fontSize: 11, color: WF_MID }}>{d}</span>
           </div>
         ))}
