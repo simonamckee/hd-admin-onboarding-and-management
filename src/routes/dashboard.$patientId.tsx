@@ -424,6 +424,18 @@ function PumpTab() {
           </div>
         </div>
         <div>
+          <div style={{ marginBottom: 10 }}>
+            <div style={{ fontSize: 12, color: WF_MID, marginBottom: 4 }}>Pump type</div>
+            <select defaultValue="Medtronic" style={{
+              border: `0.5px solid ${BORDER}`, borderRadius: 4, padding: "4px 8px",
+              fontSize: 13, width: "100%", fontFamily: "inherit",
+            }}>
+              <option>Medtronic</option>
+              <option>Tandem</option>
+              <option>Omnipod</option>
+              <option>Ypsomed</option>
+            </select>
+          </div>
           <div style={{ background: "#f4fbfa", padding: 8, borderRadius: 6, marginBottom: 10 }}>
             <div style={{ fontSize: 15, color: WF_MID }}>Active insulin time</div>
             <div style={{ fontSize: 15, fontWeight: 600, color: WF_DARK }}>1.5 hrs</div>
