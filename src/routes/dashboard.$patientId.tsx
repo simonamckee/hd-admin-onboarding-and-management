@@ -946,10 +946,12 @@ function AssignedTasksModule() {
             
             <span style={{ fontSize: 15, color: WF_DARK, flex: 1 }}>{t.text}</span>
             <span style={{ fontSize: 11, color: WF_MID }}>Due: {t.due}</span>
-            <span
+            <Trash2
+              size={14}
+              color={WF_MID}
+              style={{ cursor: "pointer", flexShrink: 0 }}
               onClick={() => setList((cur) => cur.filter((_, j) => j !== i))}
-              style={{ fontSize: 15, color: WF_MID, cursor: "pointer" }}
-            >×</span>
+            />
           </div>
         ))}
         <button
