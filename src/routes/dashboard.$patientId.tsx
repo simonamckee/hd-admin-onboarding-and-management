@@ -64,7 +64,7 @@ function PatientHeader() {
       }}
     >
       <div style={{ display: "flex", gap: 28, alignItems: "center", flexWrap: "wrap" }}>
-        <div style={{ fontSize: 18, fontWeight: 700, color: WF_DARK }}>Sarah Chen</div>
+        <div style={{ fontSize: 22, fontWeight: 700, color: WF_DARK }}>Sarah Chen</div>
         <div style={{ fontSize: 15, color: WF_MID }}>15 Jun 1978 · Age 47</div>
         <span
           title="Type 1 Diabetes, diagnosed 12 years ago"
