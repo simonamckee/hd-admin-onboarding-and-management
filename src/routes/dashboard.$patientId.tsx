@@ -426,10 +426,10 @@ function PumpTab() {
         </div>
         <div>
           <div style={{ marginBottom: 10 }}>
-            <div style={{ fontSize: 12, color: WF_MID, marginBottom: 4 }}>Pump type</div>
+            <div style={{ fontSize: 15, fontWeight: 600, color: WF_DARK, marginBottom: 6 }}>Pump type</div>
             <select defaultValue="Medtronic" style={{
               border: `0.5px solid ${BORDER}`, borderRadius: 4, padding: "4px 8px",
-              fontSize: 13, width: "100%", fontFamily: "inherit",
+              fontSize: 15, width: "100%", fontFamily: "inherit", marginBottom: 8,
             }}>
               <option>Medtronic</option>
               <option>Tandem</option>
@@ -589,7 +589,7 @@ function LabsModule() {
           marginBottom: 4,
         }}>
           {["Test", "Recommended", "Last completed", "Next due", ""].map((h) => (
-            <div key={h} style={{ fontSize: 10, fontWeight: 600, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.3 }}>{h}</div>
+            <div key={h} style={{ fontSize: 11, fontWeight: 600, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.3 }}>{h}</div>
           ))}
         </div>
         {labs.map((l) => (
@@ -604,16 +604,16 @@ function LabsModule() {
             }}>
               <div style={{ fontSize: 15, fontWeight: 600, color: WF_DARK }}>{l.name}</div>
               <div>
-                <div style={{ fontSize: 10, color: WF_MID }}>Recommended</div>
-                <div style={{ fontSize: 13, color: WF_DARK }}>{l.recommended}</div>
+                <div style={{ fontSize: 11, color: WF_MID }}>Recommended</div>
+                <div style={{ fontSize: 15, color: WF_DARK }}>{l.recommended}</div>
               </div>
               <div>
-                <div style={{ fontSize: 10, color: WF_MID }}>Last completed</div>
-                <div style={{ fontSize: 13, color: WF_DARK }}>{fmt(l.last)}</div>
+                <div style={{ fontSize: 11, color: WF_MID }}>Last completed</div>
+                <div style={{ fontSize: 15, color: WF_DARK }}>{fmt(l.last)}</div>
               </div>
               <div>
-                <div style={{ fontSize: 10, color: WF_MID }}>Next due</div>
-                <div style={{ fontSize: 13, color: l.overdue ? ERROR_TEXT : WF_DARK, fontWeight: l.overdue ? 600 : 400 }}>
+                <div style={{ fontSize: 11, color: WF_MID }}>Next due</div>
+                <div style={{ fontSize: 15, color: l.overdue ? ERROR_TEXT : WF_DARK, fontWeight: l.overdue ? 600 : 400 }}>
                   {fmt(l.next)}
                 </div>
               </div>
@@ -859,39 +859,50 @@ function AssignedFormsModule() {
     <div style={CARD}>
       <div style={CARD_HEADER}>Assigned forms</div>
       <div style={{ padding: 16 }}>
-        <table style={{ width: "100%", fontSize: 15, borderCollapse: "collapse" }}>
-          <thead>
-            <tr>
-              {["Form name", "Assigned", "Status", "Action"].map((h) => (
-                <th key={h} style={{ textAlign: "left", fontSize: 11, textTransform: "uppercase", color: WF_MID, fontWeight: 500, padding: "4px 0" }}>{h}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {list.map((r, i) => (
-              <tr key={i}>
-                <td style={{ padding: "6px 0", color: WF_DARK }}>{r.name}</td>
-                <td style={{ padding: "6px 0", color: WF_DARK }}>{r.assigned}</td>
-                <td style={{ padding: "6px 0" }}>
-                  <Badge
-                    bg={r.status === "Pending" ? WARN_BG : SUCCESS_BG}
-                    color={r.status === "Pending" ? WARN_TEXT : SUCCESS_TEXT}
-                  >
-                    {r.status}
-                  </Badge>
-                </td>
-                <td style={{ padding: "6px 0" }}>
-                  <Trash2
-                    size={14}
-                    color={WF_MID}
-                    style={{ cursor: "pointer" }}
-                    onClick={() => setList((cur) => cur.filter((_, j) => j !== i))}
-                  />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        {/* Header row */}
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 100px 90px 32px",
+          gap: 8,
+          padding: "0 0 6px 0",
+          borderBottom: `0.5px solid ${BORDER}`,
+          marginBottom: 4,
+        }}>
+          {["Form name", "Assigned", "Status", ""].map((h) => (
+            <div key={h} style={{ fontSize: 11, fontWeight: 600, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.3 }}>{h}</div>
+          ))}
+        </div>
+
+        {/* Data rows */}
+        {list.map((r, i) => (
+          <div key={i} style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 100px 90px 32px",
+            gap: 8,
+            alignItems: "center",
+            padding: "8px 0",
+            borderBottom: "0.5px solid #f0f2f3",
+          }}>
+            <div style={{ fontSize: 15, color: WF_DARK }}>{r.name}</div>
+            <div style={{ fontSize: 15, color: WF_DARK }}>{r.assigned}</div>
+            <div>
+              <Badge
+                bg={r.status === "Pending" ? WARN_BG : SUCCESS_BG}
+                color={r.status === "Pending" ? WARN_TEXT : SUCCESS_TEXT}
+              >
+                {r.status}
+              </Badge>
+            </div>
+            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+              <Trash2
+                size={14}
+                color={WF_MID}
+                style={{ cursor: "pointer" }}
+                onClick={() => setList((cur) => cur.filter((_, j) => j !== i))}
+              />
+            </div>
+          </div>
+        ))}
         <button
           onClick={() => setShowSel((v) => !v)}
           style={{
