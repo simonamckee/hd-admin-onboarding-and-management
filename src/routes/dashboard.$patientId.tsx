@@ -881,12 +881,12 @@ function AssignedFormsModule() {
                   </Badge>
                 </td>
                 <td style={{ padding: "6px 0" }}>
-                  <span
+                  <Trash2
+                    size={14}
+                    color={WF_MID}
+                    style={{ cursor: "pointer" }}
                     onClick={() => setList((cur) => cur.filter((_, j) => j !== i))}
-                    style={{ fontSize: 12, color: WF_MID, cursor: "pointer", textDecoration: "underline" }}
-                  >
-                    Remove
-                  </span>
+                  />
                 </td>
               </tr>
             ))}
