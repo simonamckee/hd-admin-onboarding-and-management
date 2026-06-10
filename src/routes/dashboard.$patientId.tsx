@@ -1046,13 +1046,13 @@ function DashboardPage() {
             <LabsModule />
             <CompletedFormsModule />
             <AppointmentsModule />
+            <CompletedTasksModule />
           </div>
           <div style={{ position: "sticky", top: 20 }}>
             <RecommendationsModule />
             <ResourcesModule />
             <AssignedFormsModule />
             <AssignedTasksModule />
-            <CompletedTasksModule />
           </div>
         </div>
         <div style={{

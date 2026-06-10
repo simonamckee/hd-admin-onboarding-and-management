@@ -12,16 +12,16 @@ type Module = { id: string; name: string; required?: boolean };
 const CLIN_LEFT_DEFAULT: Module[] = [
   { id: "glucose", name: "Glucose", required: true },
   { id: "insulin", name: "Insulin", required: true },
-  { id: "labs", name: "Labs & test results" },
+  { id: "labs", name: "Labs & tests" },
   { id: "completed-forms", name: "Completed forms" },
   { id: "appointments", name: "Appointments" },
+  { id: "completed-tasks", name: "Completed tasks" },
 ];
 const CLIN_RIGHT_DEFAULT: Module[] = [
   { id: "recommendations", name: "Recommendations", required: true },
   { id: "resources", name: "Resources", required: true },
   { id: "assigned-forms", name: "Assigned forms" },
   { id: "assigned-tasks", name: "Assigned tasks" },
-  { id: "tasks", name: "Tasks" },
 ];
 const CLIN_ALL = [...CLIN_LEFT_DEFAULT, ...CLIN_RIGHT_DEFAULT];
 
@@ -577,12 +577,12 @@ function ModuleHeader({ id, compact }: { id: string; compact: boolean }) {
     recommendations: ["Recommendations", "+ Add"],
     todo: ["Things to do", "+ Add task"],
     resources: ["Resources", "+ Share resource"],
-    labs: ["Labs & test results", ""],
+    labs: ["Labs & tests", ""],
     "completed-forms": ["Completed forms", "View all"],
     appointments: ["Appointments", ""],
+    "completed-tasks": ["Completed tasks", ""],
     "assigned-forms": ["Assigned forms", "+ Assign"],
     "assigned-tasks": ["Assigned tasks", "+ Add task"],
-    tasks: ["Tasks", ""],
   };
   const [t, r] = titles[id] ?? [id, ""];
   return (
@@ -797,6 +797,38 @@ function ModuleBody({ id, compact }: { id: string; compact: boolean }) {
         <div style={{ textDecoration: "line-through" }}>Book next appointment — Completed 20 Apr</div>
       </div>
     );
+  }
+  if (id === "completed-tasks") {
+    return (
+      <div style={{ fontSize: 13, color: WF_MID, display: "flex", flexDirection: "column", gap: 4 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+          <span style={{ color: TEAL, fontSize: 11 }}>✓</span>
+          <span>Upload CGM data — Completed 28 Apr</span>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+          <span style={{ color: TEAL, fontSize: 11 }}>✓</span>
+          <span>Book next appointment — Completed 20 Apr</span>
+        </div>
+      </div>
+    );
+  }
+  if (id === "labs") {
+    return <div style={{ fontSize: 13, color: WF_MID }}>Lipid panel · A1c · Renal function · Thyroid panel</div>;
+  }
+  if (id === "completed-forms") {
+    return <div style={{ fontSize: 13, color: WF_MID }}>Pre-appointment questionnaire · 28 Apr 2026</div>;
+  }
+  if (id === "appointments") {
+    return <div style={{ fontSize: 13, color: WF_MID }}>Next: 12 May 2026 · 10:30 AM</div>;
+  }
+  if (id === "assigned-forms") {
+    return <div style={{ fontSize: 13, color: WF_MID }}>Daily symptom log — Pending</div>;
+  }
+  if (id === "assigned-tasks") {
+    return <div style={{ fontSize: 13, color: WF_MID }}>Log meals for 3 days — Due 15 May</div>;
+  }
+  if (id === "recommendations") {
+    return <div style={{ fontSize: 13, color: WF_MID }}>Reviewed basal rate — reduce overnight dose by 10%.</div>;
   }
   return null;
 }
