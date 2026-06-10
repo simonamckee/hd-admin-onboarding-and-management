@@ -58,7 +58,7 @@ function PatientHeader() {
   return (
     <div
       style={{
-        background: "#fff",
+        background: "#B7E3F2",
         borderBottom: `0.5px solid ${BORDER}`,
         padding: "14px 24px",
       }}
