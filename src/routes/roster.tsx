@@ -229,6 +229,13 @@ function PatientRow({
   const navigate = useNavigate();
   const tirRed = p.tir < 70;
   const lastVisitRed = (p.lastVisitDaysAgo ?? 0) > 90;
+  const avatarColors: Record<string, { bg: string; color: string }> = {
+    "sarah-chen":     { bg: "#e1f5ee", color: "#085041" },
+    "marcus-thompson":{ bg: "#e6f1fb", color: "#0c447c" },
+    "lily-park":      { bg: "#faeeda", color: "#633806" },
+    "james-wilson":   { bg: "#f1efe8", color: "#444441" },
+  };
+  const av = avatarColors[p.id] ?? { bg: "#e8ecee", color: "#445558" };
   return (
     <>
       <div
@@ -245,10 +252,23 @@ function PatientRow({
         }}
       >
         <MessageBubble hasMessages={p.messages} />
-        <div>
-          <div style={{ fontSize: 16, fontWeight: 600 }}>{p.name}</div>
-          <div style={{ fontSize: 12, color: MUTED }}>{p.dob}</div>
-          <div style={{ fontSize: 12, color: MUTED }}>Age {p.age}</div>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <div style={{
+            width: 34, height: 34, borderRadius: "50%", flexShrink: 0,
+            background: av.bg, border: `1.5px solid #c8e8df`,
+            display: "flex", alignItems: "center", justifyContent: "center",
+            fontSize: 11, fontWeight: 600, color: av.color, overflow: "hidden",
+          }}>
+            {p.name.split(" ").map((n: string) => n[0]).join("").slice(0, 2)}
+          </div>
+          <div>
+            <div style={{ fontSize: 16, fontWeight: 600 }}>{p.name}</div>
+            <div style={{ fontSize: 12, color: MUTED, display: "flex", alignItems: "center", gap: 4 }}>
+              <span>{p.dob}</span>
+              <span style={{ color: MUTED, opacity: 0.4 }}>|</span>
+              <span>Age {p.age}</span>
+            </div>
+          </div>
         </div>
         <RiskPills risks={p.risks} />
         <div>
