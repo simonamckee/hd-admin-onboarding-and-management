@@ -1156,7 +1156,7 @@ function PatientPreview({ modules }: { modules: Module[] }) {
 
 /* ============================== SAVE FOOTER ============================== */
 
-function SaveFooter({ tab }: { tab: Tab }) {
+function SaveFooter({ tab, disabled }: { tab: Tab; disabled?: boolean }) {
   const [state, setState] = useState<"idle" | "saved" | "error">("idle");
 
   const onSave = () => {
