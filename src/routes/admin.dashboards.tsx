@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
 import { WF_BG, WF_DARK, WF_MID, TEAL } from "@/components/wireframe";
+import { useDashboardTemplate, type ClinicianModules } from "@/lib/dashboard-template";
 
 export const Route = createFileRoute("/admin/dashboards")({ component: DashboardTemplates });
 
@@ -12,18 +13,20 @@ type Module = { id: string; name: string; required?: boolean };
 const CLIN_LEFT_DEFAULT: Module[] = [
   { id: "glucose", name: "Glucose" },
   { id: "insulin", name: "Insulin" },
-  { id: "labs", name: "Labs & tests" },
-  { id: "completed-forms", name: "Completed forms" },
+  { id: "labs", name: "Labs & test results" },
+  { id: "completedForms", name: "Completed forms" },
   { id: "appointments", name: "Appointments" },
-  { id: "completed-tasks", name: "Completed tasks" },
+  { id: "completedTasks", name: "Completed tasks" },
 ];
 const CLIN_RIGHT_DEFAULT: Module[] = [
   { id: "recommendations", name: "Recommendations" },
   { id: "resources", name: "Resources" },
-  { id: "assigned-forms", name: "Assigned forms" },
-  { id: "assigned-tasks", name: "Assigned tasks" },
+  { id: "assignedForms", name: "Assigned forms" },
+  { id: "assignedTasks", name: "Assigned tasks" },
 ];
 const CLIN_ALL = [...CLIN_LEFT_DEFAULT, ...CLIN_RIGHT_DEFAULT];
+const CLIN_BY_ID: Record<string, Module> = Object.fromEntries(CLIN_ALL.map((m) => [m.id, m]));
+
 
 const PATIENT_DEFAULT: Module[] = [
   { id: "glucose", name: "Glucose" },
