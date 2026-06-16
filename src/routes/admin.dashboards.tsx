@@ -10,24 +10,24 @@ type Col = "left" | "right";
 type Module = { id: string; name: string; required?: boolean };
 
 const CLIN_LEFT_DEFAULT: Module[] = [
-  { id: "glucose", name: "Glucose", required: true },
-  { id: "insulin", name: "Insulin", required: true },
+  { id: "glucose", name: "Glucose" },
+  { id: "insulin", name: "Insulin" },
   { id: "labs", name: "Labs & tests" },
   { id: "completed-forms", name: "Completed forms" },
   { id: "appointments", name: "Appointments" },
   { id: "completed-tasks", name: "Completed tasks" },
 ];
 const CLIN_RIGHT_DEFAULT: Module[] = [
-  { id: "recommendations", name: "Recommendations", required: true },
-  { id: "resources", name: "Resources", required: true },
+  { id: "recommendations", name: "Recommendations" },
+  { id: "resources", name: "Resources" },
   { id: "assigned-forms", name: "Assigned forms" },
   { id: "assigned-tasks", name: "Assigned tasks" },
 ];
 const CLIN_ALL = [...CLIN_LEFT_DEFAULT, ...CLIN_RIGHT_DEFAULT];
 
 const PATIENT_DEFAULT: Module[] = [
-  { id: "glucose", name: "Glucose", required: true },
-  { id: "insulin", name: "Insulin", required: true },
+  { id: "glucose", name: "Glucose" },
+  { id: "insulin", name: "Insulin" },
   { id: "labs", name: "Labs & test results" },
   { id: "completed-forms", name: "Completed forms" },
   { id: "appointments", name: "Appointments" },
