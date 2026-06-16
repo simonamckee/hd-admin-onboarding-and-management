@@ -1208,15 +1208,17 @@ function SaveFooter({ tab, disabled }: { tab: Tab; disabled?: boolean }) {
         <span style={{ flex: 1, fontSize: 16, color: WF_MID }}>Last saved: today at 2:34 PM</span>
         <button
           onClick={onSave}
+          disabled={disabled}
           style={{
-            background: TEAL,
+            background: disabled ? WF_MID : TEAL,
             color: "#fff",
-            border: `1px solid ${TEAL}`,
+            border: `1px solid ${disabled ? WF_MID : TEAL}`,
             borderRadius: 8,
             padding: "8px 16px",
             fontSize: 15,
-            cursor: "pointer",
+            cursor: disabled ? "not-allowed" : "pointer",
             minWidth: 130,
+            opacity: disabled ? 0.6 : 1,
           }}
         >
           {state === "saved" ? "Saved ✓" : "Save template"}
