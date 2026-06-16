@@ -347,22 +347,15 @@ function ModuleCard({
     >
       <span style={{ color: WF_MID, cursor: "grab", fontSize: 16, userSelect: "none" }}>⋮⋮</span>
       <span style={{ flex: 1, fontSize: 16, color: WF_DARK }}>{m.name}</span>
-      {m.required && (
-        <span style={{ fontSize: 13, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.3 }}>
-          Required
-        </span>
-      )}
       <button onClick={onUp} disabled={!canMoveUp} style={iconBtnStyle(canMoveUp)} title="Move up">
         ↑
       </button>
       <button onClick={onDown} disabled={!canMoveDown} style={iconBtnStyle(canMoveDown)} title="Move down">
         ↓
       </button>
-      {!m.required && (
-        <button onClick={onRemove} style={{ ...iconBtnStyle(true), color: WF_DARK }} title="Remove">
-          ×
-        </button>
-      )}
+      <button onClick={onRemove} style={{ ...iconBtnStyle(true), color: WF_DARK }} title="Remove">
+        ×
+      </button>
     </div>
   );
 }
