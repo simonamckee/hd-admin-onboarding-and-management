@@ -32,7 +32,7 @@ const PATIENT_DEFAULT: Module[] = [
   { id: "glucose", name: "Glucose" },
   { id: "insulin", name: "Insulin" },
   { id: "labs", name: "Labs & test results" },
-  { id: "completed-forms", name: "Completed forms" },
+  { id: "completedForms", name: "Completed forms" },
   { id: "appointments", name: "Appointments" },
 ];
 
@@ -774,7 +774,7 @@ function ModuleBody({ id, compact }: { id: string; compact: boolean }) {
       </div>
     );
   }
-  if (id === "completed-forms") {
+  if (id === "completedForms") {
     return (
       <div style={{ fontSize: 13, color: WF_MID, display: "flex", flexDirection: "column", gap: 4 }}>
         <div>Pre-appointment questionnaire · 28 Apr 2026</div>
@@ -800,7 +800,7 @@ function ModuleBody({ id, compact }: { id: string; compact: boolean }) {
       </div>
     );
   }
-  if (id === "assigned-forms") {
+  if (id === "assignedForms") {
     return (
       <div style={{ fontSize: 13, color: WF_MID, display: "flex", flexDirection: "column", gap: 4 }}>
         <div>Daily symptom log — Pending</div>
@@ -808,7 +808,7 @@ function ModuleBody({ id, compact }: { id: string; compact: boolean }) {
       </div>
     );
   }
-  if (id === "assigned-tasks") {
+  if (id === "assignedTasks") {
     return (
       <div style={{ fontSize: 13, color: WF_MID, display: "flex", flexDirection: "column", gap: 4 }}>
         <div>Log meals for 3 days — Due 15 May</div>
@@ -824,7 +824,7 @@ function ModuleBody({ id, compact }: { id: string; compact: boolean }) {
       </div>
     );
   }
-  if (id === "completed-tasks") {
+  if (id === "completedTasks") {
     return (
       <div style={{ fontSize: 13, color: WF_MID, display: "flex", flexDirection: "column", gap: 4 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
@@ -841,16 +841,16 @@ function ModuleBody({ id, compact }: { id: string; compact: boolean }) {
   if (id === "labs") {
     return <div style={{ fontSize: 13, color: WF_MID }}>Lipid panel · A1c · Renal function · Thyroid panel</div>;
   }
-  if (id === "completed-forms") {
+  if (id === "completedForms") {
     return <div style={{ fontSize: 13, color: WF_MID }}>Pre-appointment questionnaire · 28 Apr 2026</div>;
   }
   if (id === "appointments") {
     return <div style={{ fontSize: 13, color: WF_MID }}>Next: 12 May 2026 · 10:30 AM</div>;
   }
-  if (id === "assigned-forms") {
+  if (id === "assignedForms") {
     return <div style={{ fontSize: 13, color: WF_MID }}>Daily symptom log — Pending</div>;
   }
-  if (id === "assigned-tasks") {
+  if (id === "assignedTasks") {
     return <div style={{ fontSize: 13, color: WF_MID }}>Log meals for 3 days — Due 15 May</div>;
   }
   if (id === "recommendations") {
