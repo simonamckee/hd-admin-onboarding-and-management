@@ -96,9 +96,11 @@ function ClinicianBuilder() {
   const [showPreview, setShowPreview] = useState(false);
   const [drag, setDrag] = useState<{ id: string; col: Col } | null>(null);
   const [dropIdx, setDropIdx] = useState<{ col: Col; index: number } | null>(null);
+  const [minError, setMinError] = useState(false);
 
   const present = new Set([...left, ...right].map((m) => m.id));
-  const removed = CLIN_ALL.filter((m) => !present.has(m.id) && !m.required);
+  const removed = CLIN_ALL.filter((m) => !present.has(m.id));
+  const totalActive = left.length + right.length;
 
   const move = (id: string, dir: "up" | "down") => {
     const inLeft = left.find((m) => m.id === id);
@@ -117,12 +119,18 @@ function ClinicianBuilder() {
   };
 
   const remove = (id: string) => {
+    if (totalActive <= 1) {
+      setMinError(true);
+      return;
+    }
+    setMinError(false);
     setLeft(left.filter((m) => m.id !== id));
     setRight(right.filter((m) => m.id !== id));
   };
   const addBack = (id: string) => {
     const orig = CLIN_ALL.find((m) => m.id === id);
     if (!orig) return;
+    setMinError(false);
     const wasLeft = CLIN_LEFT_DEFAULT.some((m) => m.id === id);
     if (wasLeft) setLeft([...left, orig]);
     else setRight([...right, orig]);
