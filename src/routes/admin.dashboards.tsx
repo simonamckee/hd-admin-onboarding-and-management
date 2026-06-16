@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
 import { WF_BG, WF_DARK, WF_MID, TEAL } from "@/components/wireframe";
+import { useDashboardTemplate, type ClinicianModules } from "@/lib/dashboard-template";
 
 export const Route = createFileRoute("/admin/dashboards")({ component: DashboardTemplates });
 
@@ -12,24 +13,26 @@ type Module = { id: string; name: string; required?: boolean };
 const CLIN_LEFT_DEFAULT: Module[] = [
   { id: "glucose", name: "Glucose" },
   { id: "insulin", name: "Insulin" },
-  { id: "labs", name: "Labs & tests" },
-  { id: "completed-forms", name: "Completed forms" },
+  { id: "labs", name: "Labs & test results" },
+  { id: "completedForms", name: "Completed forms" },
   { id: "appointments", name: "Appointments" },
-  { id: "completed-tasks", name: "Completed tasks" },
+  { id: "completedTasks", name: "Completed tasks" },
 ];
 const CLIN_RIGHT_DEFAULT: Module[] = [
   { id: "recommendations", name: "Recommendations" },
   { id: "resources", name: "Resources" },
-  { id: "assigned-forms", name: "Assigned forms" },
-  { id: "assigned-tasks", name: "Assigned tasks" },
+  { id: "assignedForms", name: "Assigned forms" },
+  { id: "assignedTasks", name: "Assigned tasks" },
 ];
 const CLIN_ALL = [...CLIN_LEFT_DEFAULT, ...CLIN_RIGHT_DEFAULT];
+const CLIN_BY_ID: Record<string, Module> = Object.fromEntries(CLIN_ALL.map((m) => [m.id, m]));
+
 
 const PATIENT_DEFAULT: Module[] = [
   { id: "glucose", name: "Glucose" },
   { id: "insulin", name: "Insulin" },
   { id: "labs", name: "Labs & test results" },
-  { id: "completed-forms", name: "Completed forms" },
+  { id: "completedForms", name: "Completed forms" },
   { id: "appointments", name: "Appointments" },
 ];
 
@@ -91,8 +94,13 @@ function DashboardTemplates() {
 /* ============================== CLINICIAN ============================== */
 
 function ClinicianBuilder() {
-  const [left, setLeft] = useState<Module[]>(CLIN_LEFT_DEFAULT);
-  const [right, setRight] = useState<Module[]>(CLIN_RIGHT_DEFAULT);
+  const { clinicianModules, setClinicianModules } = useDashboardTemplate();
+  const [left, setLeft] = useState<Module[]>(() =>
+    clinicianModules.patientData.map((id) => CLIN_BY_ID[id]).filter(Boolean),
+  );
+  const [right, setRight] = useState<Module[]>(() =>
+    clinicianModules.clinicalActions.map((id) => CLIN_BY_ID[id]).filter(Boolean),
+  );
   const [showPreview, setShowPreview] = useState(false);
   const [drag, setDrag] = useState<{ id: string; col: Col } | null>(null);
   const [dropIdx, setDropIdx] = useState<{ col: Col; index: number } | null>(null);
@@ -217,7 +225,17 @@ function ClinicianBuilder() {
       />
       {showPreview && <ClinicianPreview left={left} right={right} />}
 
-      <SaveFooter tab="clinician" disabled={totalActive === 0} />
+      <SaveFooter
+        tab="clinician"
+        disabled={totalActive === 0}
+        onCommit={() => {
+          const next: ClinicianModules = {
+            patientData: left.map((m) => m.id),
+            clinicalActions: right.map((m) => m.id),
+          };
+          setClinicianModules(next);
+        }}
+      />
     </>
   );
 }
@@ -585,12 +603,12 @@ function ModuleHeader({ id, compact }: { id: string; compact: boolean }) {
     recommendations: ["Recommendations", "+ Add"],
     todo: ["Things to do", "+ Add task"],
     resources: ["Resources", "+ Share resource"],
-    labs: ["Labs & tests", ""],
-    "completed-forms": ["Completed forms", "View all"],
+    labs: ["Labs & test results", ""],
+    completedForms: ["Completed forms", "View all"],
     appointments: ["Appointments", ""],
-    "completed-tasks": ["Completed tasks", ""],
-    "assigned-forms": ["Assigned forms", "+ Assign"],
-    "assigned-tasks": ["Assigned tasks", "+ Add task"],
+    completedTasks: ["Completed tasks", ""],
+    assignedForms: ["Assigned forms", "+ Assign"],
+    assignedTasks: ["Assigned tasks", "+ Add task"],
   };
   const [t, r] = titles[id] ?? [id, ""];
   return (
@@ -756,7 +774,7 @@ function ModuleBody({ id, compact }: { id: string; compact: boolean }) {
       </div>
     );
   }
-  if (id === "completed-forms") {
+  if (id === "completedForms") {
     return (
       <div style={{ fontSize: 13, color: WF_MID, display: "flex", flexDirection: "column", gap: 4 }}>
         <div>Pre-appointment questionnaire · 28 Apr 2026</div>
@@ -782,7 +800,7 @@ function ModuleBody({ id, compact }: { id: string; compact: boolean }) {
       </div>
     );
   }
-  if (id === "assigned-forms") {
+  if (id === "assignedForms") {
     return (
       <div style={{ fontSize: 13, color: WF_MID, display: "flex", flexDirection: "column", gap: 4 }}>
         <div>Daily symptom log — Pending</div>
@@ -790,7 +808,7 @@ function ModuleBody({ id, compact }: { id: string; compact: boolean }) {
       </div>
     );
   }
-  if (id === "assigned-tasks") {
+  if (id === "assignedTasks") {
     return (
       <div style={{ fontSize: 13, color: WF_MID, display: "flex", flexDirection: "column", gap: 4 }}>
         <div>Log meals for 3 days — Due 15 May</div>
@@ -806,7 +824,7 @@ function ModuleBody({ id, compact }: { id: string; compact: boolean }) {
       </div>
     );
   }
-  if (id === "completed-tasks") {
+  if (id === "completedTasks") {
     return (
       <div style={{ fontSize: 13, color: WF_MID, display: "flex", flexDirection: "column", gap: 4 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
@@ -823,16 +841,16 @@ function ModuleBody({ id, compact }: { id: string; compact: boolean }) {
   if (id === "labs") {
     return <div style={{ fontSize: 13, color: WF_MID }}>Lipid panel · A1c · Renal function · Thyroid panel</div>;
   }
-  if (id === "completed-forms") {
+  if (id === "completedForms") {
     return <div style={{ fontSize: 13, color: WF_MID }}>Pre-appointment questionnaire · 28 Apr 2026</div>;
   }
   if (id === "appointments") {
     return <div style={{ fontSize: 13, color: WF_MID }}>Next: 12 May 2026 · 10:30 AM</div>;
   }
-  if (id === "assigned-forms") {
+  if (id === "assignedForms") {
     return <div style={{ fontSize: 13, color: WF_MID }}>Daily symptom log — Pending</div>;
   }
-  if (id === "assigned-tasks") {
+  if (id === "assignedTasks") {
     return <div style={{ fontSize: 13, color: WF_MID }}>Log meals for 3 days — Due 15 May</div>;
   }
   if (id === "recommendations") {
@@ -1156,7 +1174,7 @@ function PatientPreview({ modules }: { modules: Module[] }) {
 
 /* ============================== SAVE FOOTER ============================== */
 
-function SaveFooter({ tab, disabled }: { tab: Tab; disabled?: boolean }) {
+function SaveFooter({ tab, disabled, onCommit }: { tab: Tab; disabled?: boolean; onCommit?: () => void }) {
   const [state, setState] = useState<"idle" | "saved" | "error">("idle");
 
   const onSave = () => {
@@ -1165,6 +1183,7 @@ function SaveFooter({ tab, disabled }: { tab: Tab; disabled?: boolean }) {
       setState("error");
       return;
     }
+    onCommit?.();
     setState("saved");
     setTimeout(() => setState("idle"), 1500);
   };

@@ -15,6 +15,7 @@ import {
   WARN_BG,
   ERROR_TEXT,
 } from "@/components/wireframe";
+import { useDashboardTemplate } from "@/lib/dashboard-template";
 
 export const Route = createFileRoute("/dashboard/$patientId")({
   component: DashboardPage,
@@ -1034,26 +1035,33 @@ function CompletedTasksModule() {
   );
 }
 
+const MODULE_COMPONENTS: Record<string, React.ComponentType> = {
+  glucose: GlucoseModule,
+  insulin: InsulinModule,
+  labs: LabsModule,
+  completedForms: CompletedFormsModule,
+  appointments: AppointmentsModule,
+  completedTasks: CompletedTasksModule,
+  recommendations: RecommendationsModule,
+  resources: ResourcesModule,
+  assignedForms: AssignedFormsModule,
+  assignedTasks: AssignedTasksModule,
+};
+
 function DashboardPage() {
+  const { clinicianModules } = useDashboardTemplate();
+  const renderColumn = (ids: string[]) =>
+    ids.map((id) => {
+      const C = MODULE_COMPONENTS[id];
+      return C ? <C key={id} /> : null;
+    });
   return (
     <AdminShell heading="">
       <div style={{ margin: "-32px", background: WF_BG, minHeight: "100vh" }}>
         <PatientHeader />
         <div style={{ padding: 24, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, alignItems: "start" }}>
-          <div>
-            <GlucoseModule />
-            <InsulinModule />
-            <LabsModule />
-            <CompletedFormsModule />
-            <AppointmentsModule />
-            <CompletedTasksModule />
-          </div>
-          <div style={{ position: "sticky", top: 20 }}>
-            <RecommendationsModule />
-            <ResourcesModule />
-            <AssignedFormsModule />
-            <AssignedTasksModule />
-          </div>
+          <div>{renderColumn(clinicianModules.patientData)}</div>
+          <div style={{ position: "sticky", top: 20 }}>{renderColumn(clinicianModules.clinicalActions)}</div>
         </div>
         <div style={{
           background: SURFACE, padding: "10px 24px", borderTop: `0.5px solid ${BORDER}`,
