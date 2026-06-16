@@ -1174,7 +1174,7 @@ function PatientPreview({ modules }: { modules: Module[] }) {
 
 /* ============================== SAVE FOOTER ============================== */
 
-function SaveFooter({ tab, disabled }: { tab: Tab; disabled?: boolean }) {
+function SaveFooter({ tab, disabled, onCommit }: { tab: Tab; disabled?: boolean; onCommit?: () => void }) {
   const [state, setState] = useState<"idle" | "saved" | "error">("idle");
 
   const onSave = () => {
@@ -1183,6 +1183,7 @@ function SaveFooter({ tab, disabled }: { tab: Tab; disabled?: boolean }) {
       setState("error");
       return;
     }
+    onCommit?.();
     setState("saved");
     setTimeout(() => setState("idle"), 1500);
   };
