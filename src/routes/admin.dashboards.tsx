@@ -924,9 +924,10 @@ function Bubble({ from, children }: { from: "patient" | "clinician"; children: R
 function PatientBuilder() {
   const [modules, setModules] = useState<Module[]>(PATIENT_DEFAULT);
   const [showPreview, setShowPreview] = useState(false);
+  const [minError, setMinError] = useState(false);
 
   const present = new Set(modules.map((m) => m.id));
-  const removed = PATIENT_DEFAULT.filter((m) => !present.has(m.id) && !m.required);
+  const removed = PATIENT_DEFAULT.filter((m) => !present.has(m.id));
 
   const onMove = (id: string, dir: "up" | "down") => {
     const idx = modules.findIndex((m) => m.id === id);
@@ -940,10 +941,20 @@ function PatientBuilder() {
       setModules(a);
     }
   };
-  const remove = (id: string) => setModules(modules.filter((m) => m.id !== id));
+  const remove = (id: string) => {
+    if (modules.length <= 1) {
+      setMinError(true);
+      return;
+    }
+    setMinError(false);
+    setModules(modules.filter((m) => m.id !== id));
+  };
   const addBack = (id: string) => {
     const orig = PATIENT_DEFAULT.find((m) => m.id === id);
-    if (orig) setModules([...modules, orig]);
+    if (orig) {
+      setMinError(false);
+      setModules([...modules, orig]);
+    }
   };
 
   return (
@@ -961,10 +972,9 @@ function PatientBuilder() {
         MODULE ORDER
       </div>
       <p style={{ fontSize: 14, color: WF_MID, margin: "0 0 12px" }}>
-        Drag to reorder. Required modules cannot be removed. Patients can reorder after their first login —
-        this sets their starting view.
+        Drag to reorder. Patients can reorder after their first login — this sets their starting view.
       </p>
-      <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 4 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 12 }}>
         {modules.map((m, i) => (
           <ModuleCard
             key={m.id}
@@ -978,12 +988,17 @@ function PatientBuilder() {
         ))}
       </div>
 
+      <RemovedModules removed={removed} onAddBack={addBack} />
+      {minError && (
+        <div style={{ marginBottom: 12, fontSize: 14, color: WF_DARK, fontWeight: 600 }}>
+          At least one module must remain on the dashboard.
+        </div>
+      )}
+
       <MessagesInfoRow
         rightText="Always accessible as a floating button"
         tooltip="On mobile, Messages appears as a floating chat button fixed to the bottom of the screen. It is always accessible and does not need to be placed in the layout."
       />
-
-      
 
       <PreviewToggle
         label="Preview — patient view on mobile"
@@ -992,7 +1007,7 @@ function PatientBuilder() {
       />
       {showPreview && <PatientPreview modules={modules} />}
 
-      <SaveFooter tab="patient" />
+      <SaveFooter tab="patient" disabled={modules.length === 0} />
     </>
   );
 }
