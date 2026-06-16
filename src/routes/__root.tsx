@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
+import { DashboardTemplateProvider } from "@/lib/dashboard-template";
 
 function NotFoundComponent() {
   return (
