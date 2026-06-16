@@ -225,7 +225,17 @@ function ClinicianBuilder() {
       />
       {showPreview && <ClinicianPreview left={left} right={right} />}
 
-      <SaveFooter tab="clinician" disabled={totalActive === 0} />
+      <SaveFooter
+        tab="clinician"
+        disabled={totalActive === 0}
+        onCommit={() => {
+          const next: ClinicianModules = {
+            patientData: left.map((m) => m.id),
+            clinicalActions: right.map((m) => m.id),
+          };
+          setClinicianModules(next);
+        }}
+      />
     </>
   );
 }
