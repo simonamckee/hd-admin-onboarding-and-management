@@ -603,12 +603,12 @@ function ModuleHeader({ id, compact }: { id: string; compact: boolean }) {
     recommendations: ["Recommendations", "+ Add"],
     todo: ["Things to do", "+ Add task"],
     resources: ["Resources", "+ Share resource"],
-    labs: ["Labs & tests", ""],
-    "completed-forms": ["Completed forms", "View all"],
+    labs: ["Labs & test results", ""],
+    completedForms: ["Completed forms", "View all"],
     appointments: ["Appointments", ""],
-    "completed-tasks": ["Completed tasks", ""],
-    "assigned-forms": ["Assigned forms", "+ Assign"],
-    "assigned-tasks": ["Assigned tasks", "+ Add task"],
+    completedTasks: ["Completed tasks", ""],
+    assignedForms: ["Assigned forms", "+ Assign"],
+    assignedTasks: ["Assigned tasks", "+ Add task"],
   };
   const [t, r] = titles[id] ?? [id, ""];
   return (
