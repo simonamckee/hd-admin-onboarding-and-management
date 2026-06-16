@@ -15,6 +15,7 @@ import {
   WARN_BG,
   ERROR_TEXT,
 } from "@/components/wireframe";
+import { useDashboardTemplate } from "@/lib/dashboard-template";
 
 export const Route = createFileRoute("/dashboard/$patientId")({
   component: DashboardPage,
