@@ -94,8 +94,13 @@ function DashboardTemplates() {
 /* ============================== CLINICIAN ============================== */
 
 function ClinicianBuilder() {
-  const [left, setLeft] = useState<Module[]>(CLIN_LEFT_DEFAULT);
-  const [right, setRight] = useState<Module[]>(CLIN_RIGHT_DEFAULT);
+  const { clinicianModules, setClinicianModules } = useDashboardTemplate();
+  const [left, setLeft] = useState<Module[]>(() =>
+    clinicianModules.patientData.map((id) => CLIN_BY_ID[id]).filter(Boolean),
+  );
+  const [right, setRight] = useState<Module[]>(() =>
+    clinicianModules.clinicalActions.map((id) => CLIN_BY_ID[id]).filter(Boolean),
+  );
   const [showPreview, setShowPreview] = useState(false);
   const [drag, setDrag] = useState<{ id: string; col: Col } | null>(null);
   const [dropIdx, setDropIdx] = useState<{ col: Col; index: number } | null>(null);
