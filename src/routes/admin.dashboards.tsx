@@ -197,6 +197,13 @@ function ClinicianBuilder() {
         />
       </div>
 
+      <RemovedModules removed={removed} onAddBack={addBack} />
+      {minError && (
+        <div style={{ marginBottom: 12, fontSize: 14, color: WF_DARK, fontWeight: 600 }}>
+          At least one module must remain on the dashboard.
+        </div>
+      )}
+
       <MessagesInfoRow
         rightText="Always accessible from the patient header"
         tooltip="Messages opens as a panel from the patient header bar. It is always available to clinicians and does not need to be placed in the layout."
@@ -210,7 +217,7 @@ function ClinicianBuilder() {
       />
       {showPreview && <ClinicianPreview left={left} right={right} />}
 
-      <SaveFooter tab="clinician" />
+      <SaveFooter tab="clinician" disabled={totalActive === 0} />
     </>
   );
 }
