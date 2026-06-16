@@ -10,24 +10,24 @@ type Col = "left" | "right";
 type Module = { id: string; name: string; required?: boolean };
 
 const CLIN_LEFT_DEFAULT: Module[] = [
-  { id: "glucose", name: "Glucose", required: true },
-  { id: "insulin", name: "Insulin", required: true },
+  { id: "glucose", name: "Glucose" },
+  { id: "insulin", name: "Insulin" },
   { id: "labs", name: "Labs & tests" },
   { id: "completed-forms", name: "Completed forms" },
   { id: "appointments", name: "Appointments" },
   { id: "completed-tasks", name: "Completed tasks" },
 ];
 const CLIN_RIGHT_DEFAULT: Module[] = [
-  { id: "recommendations", name: "Recommendations", required: true },
-  { id: "resources", name: "Resources", required: true },
+  { id: "recommendations", name: "Recommendations" },
+  { id: "resources", name: "Resources" },
   { id: "assigned-forms", name: "Assigned forms" },
   { id: "assigned-tasks", name: "Assigned tasks" },
 ];
 const CLIN_ALL = [...CLIN_LEFT_DEFAULT, ...CLIN_RIGHT_DEFAULT];
 
 const PATIENT_DEFAULT: Module[] = [
-  { id: "glucose", name: "Glucose", required: true },
-  { id: "insulin", name: "Insulin", required: true },
+  { id: "glucose", name: "Glucose" },
+  { id: "insulin", name: "Insulin" },
   { id: "labs", name: "Labs & test results" },
   { id: "completed-forms", name: "Completed forms" },
   { id: "appointments", name: "Appointments" },
@@ -96,9 +96,11 @@ function ClinicianBuilder() {
   const [showPreview, setShowPreview] = useState(false);
   const [drag, setDrag] = useState<{ id: string; col: Col } | null>(null);
   const [dropIdx, setDropIdx] = useState<{ col: Col; index: number } | null>(null);
+  const [minError, setMinError] = useState(false);
 
   const present = new Set([...left, ...right].map((m) => m.id));
-  const removed = CLIN_ALL.filter((m) => !present.has(m.id) && !m.required);
+  const removed = CLIN_ALL.filter((m) => !present.has(m.id));
+  const totalActive = left.length + right.length;
 
   const move = (id: string, dir: "up" | "down") => {
     const inLeft = left.find((m) => m.id === id);
@@ -117,12 +119,18 @@ function ClinicianBuilder() {
   };
 
   const remove = (id: string) => {
+    if (totalActive <= 1) {
+      setMinError(true);
+      return;
+    }
+    setMinError(false);
     setLeft(left.filter((m) => m.id !== id));
     setRight(right.filter((m) => m.id !== id));
   };
   const addBack = (id: string) => {
     const orig = CLIN_ALL.find((m) => m.id === id);
     if (!orig) return;
+    setMinError(false);
     const wasLeft = CLIN_LEFT_DEFAULT.some((m) => m.id === id);
     if (wasLeft) setLeft([...left, orig]);
     else setRight([...right, orig]);
@@ -189,6 +197,13 @@ function ClinicianBuilder() {
         />
       </div>
 
+      <RemovedModules removed={removed} onAddBack={addBack} />
+      {minError && (
+        <div style={{ marginBottom: 12, fontSize: 14, color: WF_DARK, fontWeight: 600 }}>
+          At least one module must remain on the dashboard.
+        </div>
+      )}
+
       <MessagesInfoRow
         rightText="Always accessible from the patient header"
         tooltip="Messages opens as a panel from the patient header bar. It is always available to clinicians and does not need to be placed in the layout."
@@ -202,7 +217,7 @@ function ClinicianBuilder() {
       />
       {showPreview && <ClinicianPreview left={left} right={right} />}
 
-      <SaveFooter tab="clinician" />
+      <SaveFooter tab="clinician" disabled={totalActive === 0} />
     </>
   );
 }
@@ -347,22 +362,15 @@ function ModuleCard({
     >
       <span style={{ color: WF_MID, cursor: "grab", fontSize: 16, userSelect: "none" }}>⋮⋮</span>
       <span style={{ flex: 1, fontSize: 16, color: WF_DARK }}>{m.name}</span>
-      {m.required && (
-        <span style={{ fontSize: 13, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.3 }}>
-          Required
-        </span>
-      )}
       <button onClick={onUp} disabled={!canMoveUp} style={iconBtnStyle(canMoveUp)} title="Move up">
         ↑
       </button>
       <button onClick={onDown} disabled={!canMoveDown} style={iconBtnStyle(canMoveDown)} title="Move down">
         ↓
       </button>
-      {!m.required && (
-        <button onClick={onRemove} style={{ ...iconBtnStyle(true), color: WF_DARK }} title="Remove">
-          ×
-        </button>
-      )}
+      <button onClick={onRemove} style={{ ...iconBtnStyle(true), color: WF_DARK }} title="Remove">
+        ×
+      </button>
     </div>
   );
 }
@@ -916,9 +924,10 @@ function Bubble({ from, children }: { from: "patient" | "clinician"; children: R
 function PatientBuilder() {
   const [modules, setModules] = useState<Module[]>(PATIENT_DEFAULT);
   const [showPreview, setShowPreview] = useState(false);
+  const [minError, setMinError] = useState(false);
 
   const present = new Set(modules.map((m) => m.id));
-  const removed = PATIENT_DEFAULT.filter((m) => !present.has(m.id) && !m.required);
+  const removed = PATIENT_DEFAULT.filter((m) => !present.has(m.id));
 
   const onMove = (id: string, dir: "up" | "down") => {
     const idx = modules.findIndex((m) => m.id === id);
@@ -932,10 +941,20 @@ function PatientBuilder() {
       setModules(a);
     }
   };
-  const remove = (id: string) => setModules(modules.filter((m) => m.id !== id));
+  const remove = (id: string) => {
+    if (modules.length <= 1) {
+      setMinError(true);
+      return;
+    }
+    setMinError(false);
+    setModules(modules.filter((m) => m.id !== id));
+  };
   const addBack = (id: string) => {
     const orig = PATIENT_DEFAULT.find((m) => m.id === id);
-    if (orig) setModules([...modules, orig]);
+    if (orig) {
+      setMinError(false);
+      setModules([...modules, orig]);
+    }
   };
 
   return (
@@ -953,10 +972,9 @@ function PatientBuilder() {
         MODULE ORDER
       </div>
       <p style={{ fontSize: 14, color: WF_MID, margin: "0 0 12px" }}>
-        Drag to reorder. Required modules cannot be removed. Patients can reorder after their first login —
-        this sets their starting view.
+        Drag to reorder. Patients can reorder after their first login — this sets their starting view.
       </p>
-      <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 4 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 12 }}>
         {modules.map((m, i) => (
           <ModuleCard
             key={m.id}
@@ -970,12 +988,17 @@ function PatientBuilder() {
         ))}
       </div>
 
+      <RemovedModules removed={removed} onAddBack={addBack} />
+      {minError && (
+        <div style={{ marginBottom: 12, fontSize: 14, color: WF_DARK, fontWeight: 600 }}>
+          At least one module must remain on the dashboard.
+        </div>
+      )}
+
       <MessagesInfoRow
         rightText="Always accessible as a floating button"
         tooltip="On mobile, Messages appears as a floating chat button fixed to the bottom of the screen. It is always accessible and does not need to be placed in the layout."
       />
-
-      
 
       <PreviewToggle
         label="Preview — patient view on mobile"
@@ -984,7 +1007,7 @@ function PatientBuilder() {
       />
       {showPreview && <PatientPreview modules={modules} />}
 
-      <SaveFooter tab="patient" />
+      <SaveFooter tab="patient" disabled={modules.length === 0} />
     </>
   );
 }
@@ -1133,7 +1156,7 @@ function PatientPreview({ modules }: { modules: Module[] }) {
 
 /* ============================== SAVE FOOTER ============================== */
 
-function SaveFooter({ tab }: { tab: Tab }) {
+function SaveFooter({ tab, disabled }: { tab: Tab; disabled?: boolean }) {
   const [state, setState] = useState<"idle" | "saved" | "error">("idle");
 
   const onSave = () => {
@@ -1185,15 +1208,17 @@ function SaveFooter({ tab }: { tab: Tab }) {
         <span style={{ flex: 1, fontSize: 16, color: WF_MID }}>Last saved: today at 2:34 PM</span>
         <button
           onClick={onSave}
+          disabled={disabled}
           style={{
-            background: TEAL,
+            background: disabled ? WF_MID : TEAL,
             color: "#fff",
-            border: `1px solid ${TEAL}`,
+            border: `1px solid ${disabled ? WF_MID : TEAL}`,
             borderRadius: 8,
             padding: "8px 16px",
             fontSize: 15,
-            cursor: "pointer",
+            cursor: disabled ? "not-allowed" : "pointer",
             minWidth: 130,
+            opacity: disabled ? 0.6 : 1,
           }}
         >
           {state === "saved" ? "Saved ✓" : "Save template"}
