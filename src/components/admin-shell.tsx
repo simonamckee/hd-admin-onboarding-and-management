@@ -122,6 +122,8 @@ export function AdminShell({ heading, children }: { heading: string; children: R
             <Users size={16} />
             <span>Patient roster</span>
           </Link>
+          <PatientContextLinks pathname={pathname} />
+
         </nav>
         <div style={{ borderTop: "1px solid rgba(255,255,255,0.15)", padding: 16 }}>
           <div style={{ fontSize: 14, color: "rgba(255,255,255,0.7)", marginBottom: 4 }}>
