@@ -22,6 +22,7 @@ import { Route as AuthenticatorQrRouteImport } from './routes/authenticator-qr'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as DashboardPatientIdRouteImport } from './routes/dashboard.$patientId'
 import { Route as AdminResourcesRouteImport } from './routes/admin.resources'
 import { Route as AdminPlatformRouteImport } from './routes/admin.platform'
 import { Route as AdminPatientsRouteImport } from './routes/admin.patients'
@@ -115,6 +116,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
+const DashboardPatientIdRoute = DashboardPatientIdRouteImport.update({
+  id: '/dashboard/$patientId',
+  path: '/dashboard/$patientId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminResourcesRoute = AdminResourcesRouteImport.update({
   id: '/resources',
   path: '/resources',
@@ -151,9 +157,9 @@ const AdminAuditRoute = AdminAuditRouteImport.update({
   getParentRoute: () => AdminRoute,
 } as any)
 const DashboardPatientIdIndexRoute = DashboardPatientIdIndexRouteImport.update({
-  id: '/dashboard/$patientId/',
-  path: '/dashboard/$patientId/',
-  getParentRoute: () => rootRouteImport,
+  id: '/',
+  path: '/',
+  getParentRoute: () => DashboardPatientIdRoute,
 } as any)
 const AdminResourcesIndexRoute = AdminResourcesIndexRouteImport.update({
   id: '/',
@@ -177,9 +183,9 @@ const AdminCliniciansIndexRoute = AdminCliniciansIndexRouteImport.update({
 } as any)
 const DashboardPatientIdProfileRoute =
   DashboardPatientIdProfileRouteImport.update({
-    id: '/dashboard/$patientId/profile',
-    path: '/dashboard/$patientId/profile',
-    getParentRoute: () => rootRouteImport,
+    id: '/profile',
+    path: '/profile',
+    getParentRoute: () => DashboardPatientIdRoute,
   } as any)
 const AdminResourcesNewRoute = AdminResourcesNewRouteImport.update({
   id: '/new',
@@ -273,6 +279,7 @@ export interface FileRoutesByFullPath {
   '/admin/patients': typeof AdminPatientsRouteWithChildren
   '/admin/platform': typeof AdminPlatformRoute
   '/admin/resources': typeof AdminResourcesRouteWithChildren
+  '/dashboard/$patientId': typeof DashboardPatientIdRouteWithChildren
   '/admin/': typeof AdminIndexRoute
   '/admin/clinicians/$id': typeof AdminCliniciansIdRoute
   '/admin/clinicians/batch': typeof AdminCliniciansBatchRoute
@@ -352,6 +359,7 @@ export interface FileRoutesById {
   '/admin/patients': typeof AdminPatientsRouteWithChildren
   '/admin/platform': typeof AdminPlatformRoute
   '/admin/resources': typeof AdminResourcesRouteWithChildren
+  '/dashboard/$patientId': typeof DashboardPatientIdRouteWithChildren
   '/admin/': typeof AdminIndexRoute
   '/admin/clinicians/$id': typeof AdminCliniciansIdRoute
   '/admin/clinicians/batch': typeof AdminCliniciansBatchRoute
@@ -396,6 +404,7 @@ export interface FileRouteTypes {
     | '/admin/patients'
     | '/admin/platform'
     | '/admin/resources'
+    | '/dashboard/$patientId'
     | '/admin/'
     | '/admin/clinicians/$id'
     | '/admin/clinicians/batch'
@@ -474,6 +483,7 @@ export interface FileRouteTypes {
     | '/admin/patients'
     | '/admin/platform'
     | '/admin/resources'
+    | '/dashboard/$patientId'
     | '/admin/'
     | '/admin/clinicians/$id'
     | '/admin/clinicians/batch'
@@ -510,8 +520,7 @@ export interface RootRouteChildren {
   SmsPhoneRoute: typeof SmsPhoneRoute
   SmsVerifyRoute: typeof SmsVerifyRoute
   VerifyMethodRoute: typeof VerifyMethodRoute
-  DashboardPatientIdProfileRoute: typeof DashboardPatientIdProfileRoute
-  DashboardPatientIdIndexRoute: typeof DashboardPatientIdIndexRoute
+  DashboardPatientIdRoute: typeof DashboardPatientIdRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -607,6 +616,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/dashboard/$patientId': {
+      id: '/dashboard/$patientId'
+      path: '/dashboard/$patientId'
+      fullPath: '/dashboard/$patientId'
+      preLoaderRoute: typeof DashboardPatientIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/resources': {
       id: '/admin/resources'
       path: '/resources'
@@ -658,10 +674,10 @@ declare module '@tanstack/react-router' {
     }
     '/dashboard/$patientId/': {
       id: '/dashboard/$patientId/'
-      path: '/dashboard/$patientId'
+      path: '/'
       fullPath: '/dashboard/$patientId/'
       preLoaderRoute: typeof DashboardPatientIdIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof DashboardPatientIdRoute
     }
     '/admin/resources/': {
       id: '/admin/resources/'
@@ -693,10 +709,10 @@ declare module '@tanstack/react-router' {
     }
     '/dashboard/$patientId/profile': {
       id: '/dashboard/$patientId/profile'
-      path: '/dashboard/$patientId/profile'
+      path: '/profile'
       fullPath: '/dashboard/$patientId/profile'
       preLoaderRoute: typeof DashboardPatientIdProfileRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof DashboardPatientIdRoute
     }
     '/admin/resources/new': {
       id: '/admin/resources/new'
@@ -908,6 +924,19 @@ const AdminRouteChildren: AdminRouteChildren = {
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
+interface DashboardPatientIdRouteChildren {
+  DashboardPatientIdProfileRoute: typeof DashboardPatientIdProfileRoute
+  DashboardPatientIdIndexRoute: typeof DashboardPatientIdIndexRoute
+}
+
+const DashboardPatientIdRouteChildren: DashboardPatientIdRouteChildren = {
+  DashboardPatientIdProfileRoute: DashboardPatientIdProfileRoute,
+  DashboardPatientIdIndexRoute: DashboardPatientIdIndexRoute,
+}
+
+const DashboardPatientIdRouteWithChildren =
+  DashboardPatientIdRoute._addFileChildren(DashboardPatientIdRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
@@ -921,8 +950,7 @@ const rootRouteChildren: RootRouteChildren = {
   SmsPhoneRoute: SmsPhoneRoute,
   SmsVerifyRoute: SmsVerifyRoute,
   VerifyMethodRoute: VerifyMethodRoute,
-  DashboardPatientIdProfileRoute: DashboardPatientIdProfileRoute,
-  DashboardPatientIdIndexRoute: DashboardPatientIdIndexRoute,
+  DashboardPatientIdRoute: DashboardPatientIdRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
