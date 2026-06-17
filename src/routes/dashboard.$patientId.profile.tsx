@@ -1138,11 +1138,13 @@ function CareProfilePage() {
             <HospitalizationsSection />
           </div>
           <div style={rowTwoCols}>
-            <DevicesSection />
+            <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+              <DevicesSection />
+              <InsuranceSection role={role} />
+              <GoalsSection role={role} />
+            </div>
             <MilestonesSection role={role} />
           </div>
-          <InsuranceSection role={role} />
-          <GoalsSection role={role} />
           <OtherSection />
         </div>
       </div>
