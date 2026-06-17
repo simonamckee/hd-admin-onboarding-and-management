@@ -99,11 +99,13 @@ function PatientHeader() {
         <span style={{ color: "#aac4cc", fontSize: 18, fontWeight: 300 }}>|</span>
         <Link
           to="/dashboard/$patientId/profile"
+          onMouseEnter={() => setHover(true)}
+          onMouseLeave={() => setHover(false)}
           style={{
             fontSize: 14,
             fontWeight: 500,
             color: TEAL,
-            textDecoration: "none",
+            textDecoration: hover ? "underline" : "none",
             display: "flex",
             alignItems: "center",
             gap: 4,
