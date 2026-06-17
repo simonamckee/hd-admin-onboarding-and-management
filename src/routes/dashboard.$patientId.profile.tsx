@@ -59,14 +59,15 @@ const INITIAL_MILESTONES: Record<string, Milestone> = {
 };
 
 const NAV_SECTIONS = [
-  { id: "milestones", label: "Milestones" },
-  { id: "hospitalizations", label: "Hospitalizations" },
+  { id: "primary-supporters", label: "Primary supporters" },
+  { id: "medical-team", label: "Medical team" },
   { id: "medications", label: "Medications" },
   { id: "allergies", label: "Allergies" },
+  { id: "hospitalizations", label: "Hospitalizations" },
   { id: "devices", label: "Connected devices" },
+  { id: "milestones", label: "Milestones" },
   { id: "insurance", label: "Insurance" },
   { id: "goals", label: "Goals" },
-  { id: "supporters", label: "Supporters" },
   { id: "other", label: "Other" },
 ];
 
@@ -76,8 +77,10 @@ const card: CSSProperties = {
   border: `0.5px solid ${BORDER}`,
   borderRadius: 8,
   padding: 24,
-  marginBottom: 24,
-  scrollMarginTop: 24,
+  marginBottom: 0,
+  scrollMarginTop: 80,
+  height: "100%",
+  boxSizing: "border-box",
 };
 
 function SectionHeader({ title, description }: { title: string; description: string }) {
