@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Trash2 } from "lucide-react";
+import { Trash2, User } from "lucide-react";
 import { AdminShell } from "@/components/admin-shell";
 import {
   TEAL,
@@ -57,6 +57,7 @@ function Badge({ children, bg, color }: { children: React.ReactNode; bg: string;
 }
 
 function PatientHeader() {
+  const [hover, setHover] = useState(false);
   return (
     <div
       style={{
@@ -95,6 +96,25 @@ function PatientHeader() {
         <div style={{ fontSize: 15, color: WF_DARK }}>⚕ Dr. Reyes</div>
         <span style={{ color: "#aac4cc", fontSize: 18, fontWeight: 300 }}>|</span>
         <div style={{ fontSize: 15, color: WF_MID }}>Last seen: 2 days ago</div>
+        <span style={{ color: "#aac4cc", fontSize: 18, fontWeight: 300 }}>|</span>
+        <Link
+          to="/dashboard/$patientId/profile"
+          onMouseEnter={() => setHover(true)}
+          onMouseLeave={() => setHover(false)}
+          style={{
+            fontSize: 14,
+            fontWeight: 500,
+            color: TEAL,
+            textDecoration: hover ? "underline" : "none",
+            display: "flex",
+            alignItems: "center",
+            gap: 4,
+            marginLeft: 8,
+          }}
+        >
+          <User size={14} />
+          View Care profile →
+        </Link>
       </div>
       <div style={{ display: "flex", gap: 6, marginTop: 10 }}>
         <Badge bg={SUCCESS_BG} color={SUCCESS_TEXT}>Active</Badge>
