@@ -57,6 +57,7 @@ function Badge({ children, bg, color }: { children: React.ReactNode; bg: string;
 }
 
 function PatientHeader() {
+  const [hover, setHover] = useState(false);
   return (
     <div
       style={{
