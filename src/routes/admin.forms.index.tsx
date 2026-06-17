@@ -24,7 +24,32 @@ type Form = {
   status: Status;
 };
 
+type Form = {
+  id: string;
+  name: string;
+  added: string;
+  lastUsed: string;
+  by: string;
+  status: Status;
+  prebuilt?: boolean;
+  subtitle?: string;
+  assignedTo?: string;
+  estTime?: string;
+};
+
 const FORMS: Form[] = [
+  {
+    id: "t1dal-parent-u8",
+    name: "T1DAL – Parent of Child Under 8",
+    subtitle: "Type 1 Diabetes and Life — Quality of Life Measure",
+    added: "Pre-built",
+    lastUsed: "Validated scale",
+    by: "Haibu library",
+    status: "Active",
+    prebuilt: true,
+    assignedTo: "Parent/Caregiver",
+    estTime: "5–10 min",
+  },
   { id: "initial-assessment", name: "Initial Assessment", added: "Jan 5, 2026", lastUsed: "2 days ago", by: "Dr. Sarah Chen", status: "Active" },
   { id: "monthly-checkin", name: "Monthly Check-in", added: "Feb 12, 2026", lastUsed: "1 week ago", by: "Admin", status: "Active" },
   { id: "hypo-report", name: "Hypoglycaemia Report", added: "Mar 1, 2026", lastUsed: "3 weeks ago", by: "Dr. James Okafor", status: "Active" },
