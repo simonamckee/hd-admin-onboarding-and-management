@@ -17,7 +17,7 @@ import {
 } from "@/components/wireframe";
 import { useDashboardTemplate } from "@/lib/dashboard-template";
 
-export const Route = createFileRoute("/dashboard/$patientId")({
+export const Route = createFileRoute("/dashboard/$patientId/")({
   component: DashboardPage,
 });
 
