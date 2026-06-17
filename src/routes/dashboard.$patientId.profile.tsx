@@ -909,14 +909,20 @@ function fmtDate(iso: string) {
 // ============================================================
 // Primary supporters (read-only) + Medical team (editable)
 // ============================================================
-type PrimarySupporter = { id: string; name: string; relationship: string; email: string; phone: string };
+type PrimarySupporter = { id: string; name: string; relationship: string; email: string; phone: string; status: "Active" | "Invited" | "Inactive" };
 const PRIMARY_SUPPORTERS: PrimarySupporter[] = [
-  { id: "ps1", name: "Margaret Chen", relationship: "Parent", email: "margaret.chen@example.com", phone: "(604) 555-0123" },
-  { id: "ps2", name: "David Chen", relationship: "Parent", email: "david.chen@example.com", phone: "(604) 555-0124" },
-  { id: "ps3", name: "Lisa Wong", relationship: "Family", email: "lisa.wong@example.com", phone: "(604) 555-0188" },
+  { id: "ps1", name: "Margaret Chen", relationship: "Parent", email: "margaret.chen@example.com", phone: "(604) 555-0123", status: "Active" },
+  { id: "ps2", name: "David Chen", relationship: "Parent", email: "david.chen@example.com", phone: "(604) 555-0124", status: "Invited" },
+  { id: "ps3", name: "Lisa Wong", relationship: "Family", email: "lisa.wong@example.com", phone: "(604) 555-0188", status: "Inactive" },
 ];
 
 function PrimarySupportersCard() {
+  const badgeStyle = (status: PrimarySupporter["status"]) => {
+    if (status === "Active") return { background: SUCCESS_BG, color: SUCCESS_TEXT };
+    if (status === "Invited") return { background: WARN_BG, color: WARN_TEXT };
+    return { background: BORDER, color: WF_MID };
+  };
+
   return (
     <div id="primary-supporters" style={card}>
       <SectionHeader
@@ -929,7 +935,10 @@ function PrimarySupportersCard() {
         <div>
           {PRIMARY_SUPPORTERS.map((s) => (
             <div key={s.id} style={{ padding: "12px 0", borderBottom: `0.5px solid #f0f2f3` }}>
-              <div style={{ fontSize: 14, color: WF_DARK, fontWeight: 600 }}>{s.name}</div>
+              <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                <span style={{ fontSize: 14, color: WF_DARK, fontWeight: 600 }}>{s.name}</span>
+                <span style={{ fontSize: 12, fontWeight: 500, padding: "3px 10px", borderRadius: 10, ...badgeStyle(s.status) }}>{s.status}</span>
+              </div>
               <div style={{ fontSize: 13, color: WF_MID, marginTop: 2 }}>{s.relationship}</div>
               <div style={{ fontSize: 13, color: WF_DARK, marginTop: 2 }}>{s.email}</div>
               <div style={{ fontSize: 13, color: WF_DARK, marginTop: 2 }}>{s.phone}</div>
