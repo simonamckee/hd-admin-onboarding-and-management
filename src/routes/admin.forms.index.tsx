@@ -115,7 +115,31 @@ function FormList() {
             <tbody>
               {visible.map((r) => (
                 <tr key={r.id} style={{ borderBottom: `0.5px solid ${WF_MID}`, opacity: r.status === "Archived" ? 0.6 : 1 }}>
-                  <td style={{ padding: "12px 14px", color: WF_DARK }}>{r.name}</td>
+                  <td style={{ padding: "12px 14px", color: WF_DARK }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+                      <span>{r.name}</span>
+                      {r.prebuilt && (
+                        <span style={{ fontSize: 11, padding: "2px 8px", borderRadius: 10, background: "#E6F4F5", color: TEAL, fontWeight: 600, letterSpacing: 0.3 }}>
+                          PRE-BUILT
+                        </span>
+                      )}
+                      {r.prebuilt && (
+                        <span style={{ fontSize: 11, padding: "2px 8px", borderRadius: 10, background: "#E8F7F1", color: "#1A7F5A", fontWeight: 600, letterSpacing: 0.3 }}>
+                          VALIDATED SCALE
+                        </span>
+                      )}
+                    </div>
+                    {r.subtitle && (
+                      <div style={{ fontSize: 13, color: WF_MID, marginTop: 2 }}>{r.subtitle}</div>
+                    )}
+                    {(r.assignedTo || r.estTime) && (
+                      <div style={{ fontSize: 12, color: WF_MID, marginTop: 2 }}>
+                        {r.assignedTo && <>Assigned to: {r.assignedTo}</>}
+                        {r.assignedTo && r.estTime && " · "}
+                        {r.estTime && <>Est. time: {r.estTime}</>}
+                      </div>
+                    )}
+                  </td>
                   <td style={{ padding: "12px 14px", color: WF_DARK }}>{r.added}</td>
                   <td style={{ padding: "12px 14px", color: r.lastUsed === "Never" ? WF_MID : WF_DARK }}>{r.lastUsed}</td>
                   <td style={{ padding: "12px 14px", color: WF_DARK }}>{r.by}</td>
@@ -131,6 +155,17 @@ function FormList() {
                       >
                         Restore
                       </Link>
+                    ) : r.prebuilt ? (
+                      <span style={{ display: "inline-flex", gap: 12 }}>
+                        <Link to="/admin/forms/$id" params={{ id: r.id }} style={{ fontSize: 15, color: WF_DARK, textDecoration: "underline" }}>Preview</Link>
+                        <Link
+                          to="/admin/forms"
+                          search={{ state: "default", banner: `${r.name} added to your Assign Forms list.` }}
+                          style={{ fontSize: 15, color: TEAL, textDecoration: "underline", fontWeight: 600 }}
+                        >
+                          Use Template
+                        </Link>
+                      </span>
                     ) : (
                       <span style={{ display: "inline-flex", gap: 12 }}>
                         <Link to="/admin/forms/$id" params={{ id: r.id }} style={{ fontSize: 15, color: WF_DARK, textDecoration: "underline" }}>Edit</Link>
