@@ -59,14 +59,15 @@ const INITIAL_MILESTONES: Record<string, Milestone> = {
 };
 
 const NAV_SECTIONS = [
-  { id: "milestones", label: "Milestones" },
-  { id: "hospitalizations", label: "Hospitalizations" },
+  { id: "primary-supporters", label: "Primary supporters" },
+  { id: "medical-team", label: "Medical team" },
   { id: "medications", label: "Medications" },
   { id: "allergies", label: "Allergies" },
+  { id: "hospitalizations", label: "Hospitalizations" },
   { id: "devices", label: "Connected devices" },
+  { id: "milestones", label: "Milestones" },
   { id: "insurance", label: "Insurance" },
   { id: "goals", label: "Goals" },
-  { id: "supporters", label: "Supporters" },
   { id: "other", label: "Other" },
 ];
 
@@ -76,8 +77,10 @@ const card: CSSProperties = {
   border: `0.5px solid ${BORDER}`,
   borderRadius: 8,
   padding: 24,
-  marginBottom: 24,
-  scrollMarginTop: 24,
+  marginBottom: 0,
+  scrollMarginTop: 80,
+  height: "100%",
+  boxSizing: "border-box",
 };
 
 function SectionHeader({ title, description }: { title: string; description: string }) {
@@ -904,13 +907,131 @@ function fmtDate(iso: string) {
 }
 
 // ============================================================
+// Primary supporters (read-only) + Medical team (editable)
+// ============================================================
+type PrimarySupporter = { id: string; name: string; relationship: string; email: string; phone: string };
+const PRIMARY_SUPPORTERS: PrimarySupporter[] = [
+  { id: "ps1", name: "Margaret Chen", relationship: "Parent", email: "margaret.chen@example.com", phone: "(604) 555-0123" },
+  { id: "ps2", name: "David Chen", relationship: "Parent", email: "david.chen@example.com", phone: "(604) 555-0124" },
+  { id: "ps3", name: "Lisa Wong", relationship: "Family", email: "lisa.wong@example.com", phone: "(604) 555-0188" },
+];
+
+function PrimarySupportersCard() {
+  return (
+    <div id="primary-supporters" style={card}>
+      <SectionHeader
+        title="Primary supporters"
+        description="People connected to this patient's account. Read-only here — manage from the supporters page."
+      />
+      {PRIMARY_SUPPORTERS.length === 0 ? (
+        <EmptyState>No supporters added.</EmptyState>
+      ) : (
+        <div>
+          {PRIMARY_SUPPORTERS.map((s) => (
+            <div key={s.id} style={{ padding: "12px 0", borderBottom: `0.5px solid #f0f2f3` }}>
+              <div style={{ fontSize: 14, color: WF_DARK, fontWeight: 600 }}>{s.name}</div>
+              <div style={{ fontSize: 13, color: WF_MID, marginTop: 2 }}>{s.relationship}</div>
+              <div style={{ fontSize: 13, color: WF_DARK, marginTop: 2 }}>{s.email}</div>
+              <div style={{ fontSize: 13, color: WF_DARK, marginTop: 2 }}>{s.phone}</div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+type MedicalRole = "Family doctor" | "Specialist" | "Other";
+type MedicalMember = { id: string; name: string; role: MedicalRole; email: string; phone: string; clinic: string };
+const INITIAL_MEDICAL_TEAM: MedicalMember[] = [
+  { id: "mt1", name: "Dr. Patricia Wong", role: "Family doctor", email: "p.wong@familymed.ca", phone: "604-555-0182", clinic: "UBC Family Medicine" },
+];
+
+function MedicalTeamCard() {
+  const [list, setList] = useState<MedicalMember[]>(INITIAL_MEDICAL_TEAM);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [adding, setAdding] = useState(false);
+  const blank: MedicalMember = { id: "", name: "", role: "Family doctor", email: "", phone: "", clinic: "" };
+  const [draft, setDraft] = useState<MedicalMember>(blank);
+
+  const save = () => {
+    if (!draft.name.trim()) return;
+    if (editingId) {
+      setList((cur) => cur.map((x) => (x.id === editingId ? { ...draft, id: editingId } : x)));
+    } else {
+      setList((cur) => [...cur, { ...draft, id: `mt${Date.now()}` }]);
+    }
+    setAdding(false); setEditingId(null); setDraft(blank);
+  };
+
+  return (
+    <div id="medical-team" style={card}>
+      <SectionHeader
+        title="Medical team"
+        description="Medical professionals working with this patient outside this clinic. Can be edited by both patient and clinicians."
+      />
+      {(adding || editingId) && (
+        <div style={{
+          background: WF_BG, border: `0.5px solid ${BORDER}`, borderRadius: 6, padding: 16, marginBottom: 16,
+          display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12,
+        }}>
+          <div><FieldLabel>Name *</FieldLabel><Input value={draft.name} onChange={(e) => setDraft({ ...draft, name: e.target.value })} /></div>
+          <div><FieldLabel>Role</FieldLabel>
+            <Select value={draft.role} onChange={(e) => setDraft({ ...draft, role: e.target.value as MedicalRole })}>
+              <option>Family doctor</option>
+              <option>Specialist</option>
+              <option>Other</option>
+            </Select>
+          </div>
+          <div><FieldLabel>Email</FieldLabel><Input value={draft.email} onChange={(e) => setDraft({ ...draft, email: e.target.value })} /></div>
+          <div><FieldLabel>Phone</FieldLabel><Input value={draft.phone} onChange={(e) => setDraft({ ...draft, phone: e.target.value })} /></div>
+          <div style={{ gridColumn: "1 / -1" }}><FieldLabel>Clinic name</FieldLabel><Input value={draft.clinic} onChange={(e) => setDraft({ ...draft, clinic: e.target.value })} /></div>
+          <div style={{ gridColumn: "1 / -1", display: "flex", gap: 8, justifyContent: "flex-end" }}>
+            <GhostBtn small onClick={() => { setAdding(false); setEditingId(null); setDraft(blank); }}>Cancel</GhostBtn>
+            <PrimaryBtn small onClick={save}>{editingId ? "Save changes" : "Add entry"}</PrimaryBtn>
+          </div>
+        </div>
+      )}
+      {!adding && !editingId && (
+        <div style={{ marginBottom: 12 }}>
+          <GhostBtn small onClick={() => { setAdding(true); setDraft(blank); }}>+ Add team member</GhostBtn>
+        </div>
+      )}
+      {list.length === 0 ? (
+        <EmptyState>No team members added.</EmptyState>
+      ) : (
+        <div>
+          {list.map((m) => (
+            <div key={m.id} style={{
+              display: "flex", justifyContent: "space-between", alignItems: "flex-start",
+              padding: "12px 0", borderBottom: `0.5px solid #f0f2f3`, gap: 12,
+            }}>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 14, color: WF_DARK, fontWeight: 600 }}>{m.name}</div>
+                <div style={{ fontSize: 13, color: WF_MID, marginTop: 2 }}>{m.role}</div>
+                {m.email && <div style={{ fontSize: 13, color: WF_DARK, marginTop: 2 }}>{m.email}</div>}
+                {m.phone && <div style={{ fontSize: 13, color: WF_DARK, marginTop: 2 }}>{m.phone}</div>}
+                {m.clinic && <div style={{ fontSize: 13, color: WF_MID, marginTop: 2 }}>{m.clinic}</div>}
+              </div>
+              <div style={{ display: "flex", gap: 4 }}>
+                <IconBtn label="Edit" icon={<Pencil size={14} />} onClick={() => { setEditingId(m.id); setDraft(m); setAdding(false); }} />
+                <IconBtn label="Delete" icon={<Trash2 size={14} />} onClick={() => setList((cur) => cur.filter((x) => x.id !== m.id))} />
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ============================================================
 // Page shell
 // ============================================================
 function CareProfilePage() {
   const { patientId } = Route.useParams();
   const [role, setRole] = useState<Role>("clinician");
-  const [active, setActive] = useState("milestones");
-  const isMobile = useIsNarrow();
+  const [active, setActive] = useState("primary-supporters");
 
   // Scroll-spy
   useEffect(() => {
@@ -931,9 +1052,13 @@ function CareProfilePage() {
   }, []);
 
   const scrollTo = (id: string) => {
+    setActive(id);
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   };
+
+  const rowTwoCols: CSSProperties = { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 };
+  const rowThreeCols: CSSProperties = { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 20 };
 
   return (
     <AdminShell heading="">
@@ -960,63 +1085,56 @@ function CareProfilePage() {
           <RoleToggle role={role} setRole={setRole} />
         </div>
 
+        {/* Horizontal tab bar */}
         <div style={{
-          display: isMobile ? "block" : "grid",
-          gridTemplateColumns: "220px 1fr",
-          gap: 24, padding: 24,
+          background: SURFACE, borderBottom: `0.5px solid ${BORDER}`,
+          padding: "10px 24px", overflowX: "auto", whiteSpace: "nowrap",
         }}>
-          {/* Nav */}
-          {isMobile ? (
-            <div style={{ marginBottom: 16 }}>
-              <Select value={active} onChange={(e) => { setActive(e.target.value); scrollTo(e.target.value); }}>
-                {NAV_SECTIONS.map((s) => <option key={s.id} value={s.id}>{s.label}</option>)}
-              </Select>
-            </div>
-          ) : (
-            <nav style={{ position: "sticky", top: 16, alignSelf: "start" }}>
-              <div style={{
-                background: SURFACE, border: `0.5px solid ${BORDER}`, borderRadius: 8, padding: 8,
-              }}>
-                {NAV_SECTIONS.map((s) => {
-                  const a = active === s.id;
-                  return (
-                    <button
-                      key={s.id}
-                      onClick={() => scrollTo(s.id)}
-                      style={{
-                        display: "block", width: "100%", textAlign: "left",
-                        background: a ? TINT : "transparent",
-                        color: a ? TEAL : WF_DARK,
-                        border: "none",
-                        borderRadius: 6,
-                        padding: "8px 12px",
-                        fontSize: 14,
-                        fontWeight: a ? 600 : 500,
-                        cursor: "pointer",
-                        fontFamily: "inherit",
-                        marginBottom: 2,
-                      }}
-                    >
-                      {s.label}
-                    </button>
-                  );
-                })}
-              </div>
-            </nav>
-          )}
+          <div style={{ display: "inline-flex", gap: 6 }}>
+            {NAV_SECTIONS.map((s) => {
+              const a = active === s.id;
+              return (
+                <button
+                  key={s.id}
+                  onClick={() => scrollTo(s.id)}
+                  style={{
+                    background: a ? TINT : "transparent",
+                    color: a ? TEAL : WF_DARK,
+                    border: "none",
+                    borderRadius: 999,
+                    padding: "6px 14px",
+                    fontSize: 13,
+                    fontWeight: a ? 600 : 500,
+                    cursor: "pointer",
+                    fontFamily: "inherit",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {s.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
 
-          {/* Content */}
-          <div style={{ minWidth: 0 }}>
-            <MilestonesSection role={role} />
-            <HospitalizationsSection />
+        {/* Content grid */}
+        <div style={{ padding: 24, display: "flex", flexDirection: "column", gap: 20 }}>
+          <div style={rowTwoCols}>
+            <PrimarySupportersCard />
+            <MedicalTeamCard />
+          </div>
+          <div style={rowThreeCols}>
             <MedicationsSection role={role} />
             <AllergiesSection role={role} />
-            <DevicesSection />
-            <InsuranceSection role={role} />
-            <GoalsSection role={role} />
-            <SupportersSection role={role} />
-            <OtherSection />
+            <HospitalizationsSection />
           </div>
+          <div style={rowTwoCols}>
+            <DevicesSection />
+            <MilestonesSection role={role} />
+          </div>
+          <InsuranceSection role={role} />
+          <GoalsSection role={role} />
+          <OtherSection />
         </div>
       </div>
     </AdminShell>
