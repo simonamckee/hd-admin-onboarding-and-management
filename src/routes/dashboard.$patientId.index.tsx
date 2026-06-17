@@ -950,6 +950,7 @@ function AssignedFormsModule() {
             }}
           >
             <option value="" disabled>Select a form…</option>
+            <option>T1DAL – Parent of Child Under 8</option>
             <option>Daily symptom log</option>
             <option>Nutrition diary</option>
             <option>Sleep & fatigue log</option>
