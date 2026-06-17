@@ -1,7 +1,42 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { FormBuilder, type FormDraft } from "@/components/form-builder";
 
+const T1DAL_ITEMS: Array<{ section: string; text: string }> = [
+  { section: "Emotional Well-being", text: "I feel worried about my child's blood sugar levels." },
+  { section: "Emotional Well-being", text: "I feel anxious about what could happen if my child's diabetes is not well managed." },
+  { section: "Emotional Well-being", text: "I feel overwhelmed by the demands of managing my child's diabetes." },
+  { section: "Emotional Well-being", text: "I feel sad or depressed because of my child's diabetes." },
+  { section: "Emotional Well-being", text: "Managing my child's diabetes affects my own emotional health." },
+  { section: "Diabetes Management Burden", text: "I feel confident managing my child's diabetes day-to-day." },
+  { section: "Diabetes Management Burden", text: "My child's diabetes management interferes with our family's daily routines." },
+  { section: "Diabetes Management Burden", text: "I find it difficult to manage my child's diabetes at night." },
+  { section: "Diabetes Management Burden", text: "I feel prepared to handle unexpected changes in my child's blood sugar." },
+  { section: "Diabetes Management Burden", text: "Keeping up with my child's diabetes care feels like a full-time job." },
+  { section: "Support & Relationships", text: "I feel supported by my partner or family in managing my child's diabetes." },
+  { section: "Support & Relationships", text: "My child's healthcare team listens to my concerns and questions." },
+  { section: "Support & Relationships", text: "I feel comfortable asking the healthcare team for help." },
+  { section: "Support & Relationships", text: "I feel isolated because of my child's diabetes." },
+  { section: "Impact on Family Life", text: "My child's diabetes affects the activities our family can do together." },
+  { section: "Impact on Family Life", text: "My child's diabetes affects my ability to work or maintain my own health." },
+  { section: "Impact on Family Life", text: "I feel that my other children (if any) miss out because of my child's diabetes." },
+  { section: "Impact on Family Life", text: "I am able to take breaks from diabetes management when needed." },
+];
+
 const MOCK: Record<string, FormDraft> = {
+  "t1dal-parent-u8": {
+    name: "T1DAL – Parent of Child Under 8",
+    status: "Active",
+    questions: T1DAL_ITEMS.map((q, i) => ({
+      id: `t${i + 1}`,
+      type: "Number / Rating",
+      text: `[${q.section}] ${q.text}`,
+      required: true,
+      min: 1,
+      max: 5,
+      minLabel: "Never",
+      maxLabel: "Always",
+    })),
+  },
   "monthly-checkin": {
     name: "Monthly Check-in",
     status: "Active",

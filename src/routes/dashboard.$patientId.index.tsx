@@ -677,11 +677,144 @@ function LabsModule() {
   );
 }
 
+type T1dalSub = { label: string; score: number };
+const T1DAL_SUBSCALES: T1dalSub[] = [
+  { label: "Emotional Well-being", score: 2.4 },
+  { label: "Diabetes Management Burden", score: 2.8 },
+  { label: "Support & Relationships", score: 3.6 },
+  { label: "Impact on Family Life", score: 2.2 },
+];
+const T1DAL_OVERALL = 2.7;
+
+function t1dalTier(score: number): { label: string; bar: string; bg: string; text: string } {
+  if (score < 2.5) return { label: "Needs Attention", bar: "#C0392B", bg: "#FDEDEC", text: "#7B1A1A" };
+  if (score < 3.5) return { label: "Moderate", bar: "#E0A800", bg: "#FEF3E2", text: "#8A5A00" };
+  return { label: "Good", bar: "#1A7F5A", bg: "#E8F7F1", text: "#0E5A3F" };
+}
+
+const T1DAL_RESPONSES: Array<{ section: string; q: string; ans: string; val: number }> = [
+  { section: "Emotional Well-being", q: "I feel worried about my child's blood sugar levels.", ans: "Often", val: 4 },
+  { section: "Emotional Well-being", q: "I feel anxious about what could happen if my child's diabetes is not well managed.", ans: "Often", val: 4 },
+  { section: "Emotional Well-being", q: "I feel overwhelmed by the demands of managing my child's diabetes.", ans: "Sometimes", val: 3 },
+  { section: "Emotional Well-being", q: "I feel sad or depressed because of my child's diabetes.", ans: "Rarely", val: 2 },
+  { section: "Emotional Well-being", q: "Managing my child's diabetes affects my own emotional health.", ans: "Sometimes", val: 3 },
+  { section: "Diabetes Management Burden", q: "I feel confident managing my child's diabetes day-to-day.", ans: "Sometimes", val: 3 },
+  { section: "Diabetes Management Burden", q: "My child's diabetes management interferes with our family's daily routines.", ans: "Often", val: 4 },
+  { section: "Diabetes Management Burden", q: "I find it difficult to manage my child's diabetes at night.", ans: "Often", val: 4 },
+  { section: "Diabetes Management Burden", q: "I feel prepared to handle unexpected changes in my child's blood sugar.", ans: "Sometimes", val: 3 },
+  { section: "Diabetes Management Burden", q: "Keeping up with my child's diabetes care feels like a full-time job.", ans: "Often", val: 4 },
+  { section: "Support & Relationships", q: "I feel supported by my partner or family in managing my child's diabetes.", ans: "Often", val: 4 },
+  { section: "Support & Relationships", q: "My child's healthcare team listens to my concerns and questions.", ans: "Often", val: 4 },
+  { section: "Support & Relationships", q: "I feel comfortable asking the healthcare team for help.", ans: "Often", val: 4 },
+  { section: "Support & Relationships", q: "I feel isolated because of my child's diabetes.", ans: "Rarely", val: 2 },
+  { section: "Impact on Family Life", q: "My child's diabetes affects the activities our family can do together.", ans: "Often", val: 4 },
+  { section: "Impact on Family Life", q: "My child's diabetes affects my ability to work or maintain my own health.", ans: "Often", val: 4 },
+  { section: "Impact on Family Life", q: "I feel that my other children miss out because of my child's diabetes.", ans: "Sometimes", val: 3 },
+  { section: "Impact on Family Life", q: "I am able to take breaks from diabetes management when needed.", ans: "Rarely", val: 2 },
+];
+
+function T1dalResultPanel() {
+  const [showResponses, setShowResponses] = useState(false);
+  const tiers = [
+    { label: "Needs Attention (1.0–2.4)", bar: "#C0392B" },
+    { label: "Moderate (2.5–3.4)", bar: "#E0A800" },
+    { label: "Good (3.5–5.0)", bar: "#1A7F5A" },
+  ];
+  return (
+    <div style={{
+      marginTop: 12, border: `0.5px solid ${BORDER}`, borderRadius: 8, padding: 16, background: "#FAFBFB",
+    }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 12, marginBottom: 14 }}>
+        <div>
+          <div style={{ fontSize: 16, fontWeight: 700, color: WF_DARK }}>T1DAL – Parent of Child Under 8</div>
+          <div style={{ fontSize: 13, color: WF_MID, marginTop: 2 }}>
+            Completed by Sarah M. (Parent) · June 10, 2025
+          </div>
+          <div style={{ fontSize: 13, color: WF_MID }}>
+            Patient: Brandon Chen, Age 6
+          </div>
+        </div>
+        <div style={{
+          textAlign: "right", padding: "8px 14px", borderRadius: 8,
+          background: t1dalTier(T1DAL_OVERALL).bg, color: t1dalTier(T1DAL_OVERALL).text,
+        }}>
+          <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: 0.5, fontWeight: 600 }}>Overall score</div>
+          <div style={{ fontSize: 22, fontWeight: 700 }}>{T1DAL_OVERALL.toFixed(1)} / 5</div>
+          <div style={{ fontSize: 11, fontWeight: 600 }}>{t1dalTier(T1DAL_OVERALL).label}</div>
+        </div>
+      </div>
+
+      {/* Bar chart */}
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        {T1DAL_SUBSCALES.map((s) => {
+          const tier = t1dalTier(s.score);
+          const pct = (s.score / 5) * 100;
+          return (
+            <div key={s.label} style={{ display: "grid", gridTemplateColumns: "180px 1fr 60px", gap: 10, alignItems: "center" }}>
+              <div style={{ fontSize: 13, color: WF_DARK, fontWeight: s.score < 2.5 ? 600 : 400 }}>{s.label}</div>
+              <div style={{ position: "relative", height: 22, background: "#fff", border: `0.5px solid ${BORDER}`, borderRadius: 4, overflow: "hidden" }}>
+                {/* zone dividers at 2.5 (50%) and 3.5 (70%) */}
+                <div style={{ position: "absolute", left: "50%", top: 0, bottom: 0, width: 1, background: "#E0E0E0" }} />
+                <div style={{ position: "absolute", left: "70%", top: 0, bottom: 0, width: 1, background: "#E0E0E0" }} />
+                <div style={{ width: `${pct}%`, height: "100%", background: tier.bar, transition: "width 240ms" }} />
+              </div>
+              <div style={{ fontSize: 14, fontWeight: 600, color: tier.bar }}>{s.score.toFixed(1)}</div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Legend */}
+      <div style={{ display: "flex", gap: 16, marginTop: 14, flexWrap: "wrap" }}>
+        {tiers.map((t) => (
+          <div key={t.label} style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: WF_MID }}>
+            <span style={{ width: 12, height: 12, background: t.bar, borderRadius: 2, display: "inline-block" }} />
+            {t.label}
+          </div>
+        ))}
+      </div>
+
+      <div style={{ marginTop: 10, fontSize: 12, color: WF_MID, fontStyle: "italic" }}>
+        Higher scores indicate better quality of life. Please discuss results with the care team at the next visit.
+      </div>
+
+      {/* Expandable responses */}
+      <div style={{ borderTop: `0.5px solid ${BORDER}`, marginTop: 14, paddingTop: 10 }}>
+        <button
+          onClick={() => setShowResponses((v) => !v)}
+          style={{ background: "none", border: "none", color: TEAL, fontSize: 14, fontWeight: 600, cursor: "pointer", padding: 0, fontFamily: "inherit" }}
+        >
+          {showResponses ? "▾ Hide Full Responses" : "▸ View Full Responses"}
+        </button>
+        {showResponses && (
+          <div style={{ marginTop: 10 }}>
+            {["Emotional Well-being", "Diabetes Management Burden", "Support & Relationships", "Impact on Family Life"].map((section) => (
+              <div key={section} style={{ marginBottom: 12 }}>
+                <div style={{ fontSize: 11, fontWeight: 700, color: TEAL, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 4 }}>
+                  {section}
+                </div>
+                {T1DAL_RESPONSES.filter((r) => r.section === section).map((r, i) => (
+                  <div key={i} style={{ display: "flex", justifyContent: "space-between", gap: 12, padding: "4px 0", borderBottom: "0.5px solid #f0f2f3", fontSize: 13 }}>
+                    <span style={{ color: WF_DARK, flex: 1 }}>{r.q}</span>
+                    <span style={{ color: WF_MID, whiteSpace: "nowrap" }}>{r.ans} ({r.val})</span>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function CompletedFormsModule() {
+  const [openT1dal, setOpenT1dal] = useState(true);
   const rows = [
-    ["Pre-appointment questionnaire", "28 Apr 2026", "—"],
-    ["Hypoglycaemia awareness", "12 Mar 2026", "Score: 14/20"],
-    ["Quality of life (PedsQL)", "1 Feb 2026", "Score: 72/100"],
+    { name: "T1DAL – Parent of Child Under 8", date: "10 Jun 2025", score: "Overall: 2.7/5", t1dal: true },
+    { name: "Pre-appointment questionnaire", date: "28 Apr 2026", score: "—", t1dal: false },
+    { name: "Hypoglycaemia awareness", date: "12 Mar 2026", score: "Score: 14/20", t1dal: false },
+    { name: "Quality of life (PedsQL)", date: "1 Feb 2026", score: "Score: 72/100", t1dal: false },
   ];
   return (
     <div style={CARD}>
@@ -699,19 +832,37 @@ function CompletedFormsModule() {
             </tr>
           </thead>
           <tbody>
-            {rows.map(([n, s, sc]) => (
-              <tr key={n}>
-                <td style={{ padding: "6px 0", color: WF_DARK }}>{n}</td>
-                <td style={{ padding: "6px 0", color: WF_DARK }}>{s}</td>
-                <td style={{ padding: "6px 0", color: WF_DARK }}>{sc}</td>
+            {rows.map((r) => (
+              <tr key={r.name}>
+                <td style={{ padding: "6px 0", color: WF_DARK }}>
+                  {r.name}
+                  {r.t1dal && (
+                    <span style={{ marginLeft: 8, fontSize: 10, padding: "1px 6px", borderRadius: 8, background: "#E6F4F5", color: TEAL, fontWeight: 600, letterSpacing: 0.3 }}>
+                      VALIDATED
+                    </span>
+                  )}
+                </td>
+                <td style={{ padding: "6px 0", color: WF_DARK }}>{r.date}</td>
+                <td style={{ padding: "6px 0", color: WF_DARK }}>{r.score}</td>
                 <td style={{ padding: "6px 0" }}>
-                  <span style={{ color: TEAL, textDecoration: "underline", cursor: "pointer" }}>View</span>
+                  {r.t1dal ? (
+                    <span
+                      onClick={() => setOpenT1dal((v) => !v)}
+                      style={{ color: TEAL, textDecoration: "underline", cursor: "pointer" }}
+                    >
+                      {openT1dal ? "Hide" : "View"}
+                    </span>
+                  ) : (
+                    <span style={{ color: TEAL, textDecoration: "underline", cursor: "pointer" }}>View</span>
+                  )}
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-        <div style={{ fontSize: 11, color: WF_MID, marginTop: 8 }}>Showing 3 of 7 completed forms</div>
+        <div style={{ fontSize: 11, color: WF_MID, marginTop: 8 }}>Showing 4 of 7 completed forms</div>
+
+        {openT1dal && <T1dalResultPanel />}
       </div>
     </div>
   );
@@ -950,6 +1101,7 @@ function AssignedFormsModule() {
             }}
           >
             <option value="" disabled>Select a form…</option>
+            <option>T1DAL – Parent of Child Under 8</option>
             <option>Daily symptom log</option>
             <option>Nutrition diary</option>
             <option>Sleep & fatigue log</option>
