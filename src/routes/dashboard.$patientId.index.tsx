@@ -95,6 +95,23 @@ function PatientHeader() {
         <div style={{ fontSize: 15, color: WF_DARK }}>⚕ Dr. Reyes</div>
         <span style={{ color: "#aac4cc", fontSize: 18, fontWeight: 300 }}>|</span>
         <div style={{ fontSize: 15, color: WF_MID }}>Last seen: 2 days ago</div>
+        <span style={{ color: "#aac4cc", fontSize: 18, fontWeight: 300 }}>|</span>
+        <Link
+          to="/dashboard/$patientId/profile"
+          style={{
+            fontSize: 14,
+            fontWeight: 500,
+            color: TEAL,
+            textDecoration: "none",
+            display: "flex",
+            alignItems: "center",
+            gap: 4,
+            marginLeft: 8,
+          }}
+        >
+          <User size={14} />
+          View Care profile →
+        </Link>
       </div>
       <div style={{ display: "flex", gap: 6, marginTop: 10 }}>
         <Badge bg={SUCCESS_BG} color={SUCCESS_TEXT}>Active</Badge>
