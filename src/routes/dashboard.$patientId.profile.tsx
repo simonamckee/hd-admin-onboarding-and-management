@@ -1072,57 +1072,59 @@ function CareProfilePage() {
   return (
     <AdminShell heading="">
       <div style={{ margin: "-32px", background: WF_BG, minHeight: "100vh" }}>
-        {/* Top header */}
-        <div style={{
-          background: SURFACE, borderBottom: `0.5px solid ${BORDER}`,
-          padding: "16px 24px", display: "flex", alignItems: "center",
-          justifyContent: "space-between", gap: 16, flexWrap: "wrap",
-        }}>
-          <div>
-            <Link
-              to="/dashboard/$patientId"
-              params={{ patientId }}
-              style={{ fontSize: 13, color: TEAL, textDecoration: "none", fontWeight: 500 }}
-            >
-              ← Back to dashboard
-            </Link>
-            <h1 style={{ fontSize: 24, fontWeight: 700, color: WF_DARK, margin: "6px 0 2px 0" }}>
-              {PATIENT_NAME}
-            </h1>
-            <div style={{ fontSize: 13, color: WF_MID }}>Care profile</div>
+        <div style={{ position: "sticky", top: 0, zIndex: 10, background: SURFACE }}>
+          {/* Top header */}
+          <div style={{
+            background: SURFACE, borderBottom: `0.5px solid ${BORDER}`,
+            padding: "16px 24px", display: "flex", alignItems: "center",
+            justifyContent: "space-between", gap: 16, flexWrap: "wrap",
+          }}>
+            <div>
+              <Link
+                to="/dashboard/$patientId"
+                params={{ patientId }}
+                style={{ fontSize: 13, color: TEAL, textDecoration: "none", fontWeight: 500 }}
+              >
+                ← Back to dashboard
+              </Link>
+              <h1 style={{ fontSize: 24, fontWeight: 700, color: WF_DARK, margin: "6px 0 2px 0" }}>
+                {PATIENT_NAME}
+              </h1>
+              <div style={{ fontSize: 13, color: WF_MID }}>Care profile</div>
+            </div>
+            <RoleToggle role={role} setRole={setRole} />
           </div>
-          <RoleToggle role={role} setRole={setRole} />
-        </div>
 
-        {/* Horizontal tab bar */}
-        <div style={{
-          background: SURFACE, borderBottom: `0.5px solid ${BORDER}`,
-          padding: "10px 24px", overflowX: "auto", whiteSpace: "nowrap",
-        }}>
-          <div style={{ display: "inline-flex", gap: 6 }}>
-            {NAV_SECTIONS.map((s) => {
-              const a = active === s.id;
-              return (
-                <button
-                  key={s.id}
-                  onClick={() => scrollTo(s.id)}
-                  style={{
-                    background: a ? TINT : "transparent",
-                    color: a ? TEAL : WF_DARK,
-                    border: "none",
-                    borderRadius: 999,
-                    padding: "6px 14px",
-                    fontSize: 13,
-                    fontWeight: a ? 600 : 500,
-                    cursor: "pointer",
-                    fontFamily: "inherit",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {s.label}
-                </button>
-              );
-            })}
+          {/* Horizontal tab bar */}
+          <div style={{
+            background: SURFACE, borderBottom: `0.5px solid ${BORDER}`,
+            padding: "10px 24px", overflowX: "auto", whiteSpace: "nowrap",
+          }}>
+            <div style={{ display: "inline-flex", gap: 6 }}>
+              {NAV_SECTIONS.map((s) => {
+                const a = active === s.id;
+                return (
+                  <button
+                    key={s.id}
+                    onClick={() => scrollTo(s.id)}
+                    style={{
+                      background: a ? TINT : "transparent",
+                      color: a ? TEAL : WF_DARK,
+                      border: "none",
+                      borderRadius: 999,
+                      padding: "6px 14px",
+                      fontSize: 14,
+                      fontWeight: a ? 600 : 500,
+                      cursor: "pointer",
+                      fontFamily: "inherit",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {s.label}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
 
@@ -1170,7 +1172,7 @@ function RoleToggle({ role, setRole }: { role: Role; setRole: (r: Role) => void 
               style={{
                 background: a ? TEAL : SURFACE,
                 color: a ? "#fff" : WF_DARK,
-                border: "none", padding: "6px 14px", fontSize: 13, fontWeight: 500,
+                border: "none", padding: "6px 14px", fontSize: 14, fontWeight: 500,
                 cursor: "pointer", fontFamily: "inherit",
               }}
             >{o.label}</button>
