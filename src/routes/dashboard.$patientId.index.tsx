@@ -809,7 +809,7 @@ function T1dalResultPanel() {
 }
 
 function CompletedFormsModule() {
-  const [openT1dal, setOpenT1dal] = useState(true);
+  const [openT1dal, setOpenT1dal] = useState(false);
   const rows = [
     { name: "T1DAL – Parent of Child Under 8", date: "10 Jun 2025", score: "Overall: 2.7/5", t1dal: true },
     { name: "Pre-appointment questionnaire", date: "28 Apr 2026", score: "—", t1dal: false },
