@@ -30,6 +30,7 @@ import { Route as AdminFormsRouteImport } from './routes/admin.forms'
 import { Route as AdminDashboardsRouteImport } from './routes/admin.dashboards'
 import { Route as AdminCliniciansRouteImport } from './routes/admin.clinicians'
 import { Route as AdminAuditRouteImport } from './routes/admin.audit'
+import { Route as DashboardPatientIdIndexRouteImport } from './routes/dashboard.$patientId.index'
 import { Route as AdminResourcesIndexRouteImport } from './routes/admin.resources.index'
 import { Route as AdminPatientsIndexRouteImport } from './routes/admin.patients.index'
 import { Route as AdminFormsIndexRouteImport } from './routes/admin.forms.index'
@@ -154,6 +155,11 @@ const AdminAuditRoute = AdminAuditRouteImport.update({
   id: '/audit',
   path: '/audit',
   getParentRoute: () => AdminRoute,
+} as any)
+const DashboardPatientIdIndexRoute = DashboardPatientIdIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DashboardPatientIdRoute,
 } as any)
 const AdminResourcesIndexRoute = AdminResourcesIndexRouteImport.update({
   id: '/',
@@ -289,6 +295,7 @@ export interface FileRoutesByFullPath {
   '/admin/forms/': typeof AdminFormsIndexRoute
   '/admin/patients/': typeof AdminPatientsIndexRoute
   '/admin/resources/': typeof AdminResourcesIndexRoute
+  '/dashboard/$patientId/': typeof DashboardPatientIdIndexRoute
   '/admin/patients/new/batch': typeof AdminPatientsNewBatchRoute
   '/admin/patients/new/done': typeof AdminPatientsNewDoneRoute
   '/admin/patients/new/review': typeof AdminPatientsNewReviewRoute
@@ -310,7 +317,6 @@ export interface FileRoutesByTo {
   '/admin/audit': typeof AdminAuditRoute
   '/admin/dashboards': typeof AdminDashboardsRoute
   '/admin/platform': typeof AdminPlatformRoute
-  '/dashboard/$patientId': typeof DashboardPatientIdRouteWithChildren
   '/admin': typeof AdminIndexRoute
   '/admin/clinicians/$id': typeof AdminCliniciansIdRoute
   '/admin/clinicians/batch': typeof AdminCliniciansBatchRoute
@@ -325,6 +331,7 @@ export interface FileRoutesByTo {
   '/admin/forms': typeof AdminFormsIndexRoute
   '/admin/patients': typeof AdminPatientsIndexRoute
   '/admin/resources': typeof AdminResourcesIndexRoute
+  '/dashboard/$patientId': typeof DashboardPatientIdIndexRoute
   '/admin/patients/new/batch': typeof AdminPatientsNewBatchRoute
   '/admin/patients/new/done': typeof AdminPatientsNewDoneRoute
   '/admin/patients/new/review': typeof AdminPatientsNewReviewRoute
@@ -368,6 +375,7 @@ export interface FileRoutesById {
   '/admin/forms/': typeof AdminFormsIndexRoute
   '/admin/patients/': typeof AdminPatientsIndexRoute
   '/admin/resources/': typeof AdminResourcesIndexRoute
+  '/dashboard/$patientId/': typeof DashboardPatientIdIndexRoute
   '/admin/patients/new/batch': typeof AdminPatientsNewBatchRoute
   '/admin/patients/new/done': typeof AdminPatientsNewDoneRoute
   '/admin/patients/new/review': typeof AdminPatientsNewReviewRoute
@@ -412,6 +420,7 @@ export interface FileRouteTypes {
     | '/admin/forms/'
     | '/admin/patients/'
     | '/admin/resources/'
+    | '/dashboard/$patientId/'
     | '/admin/patients/new/batch'
     | '/admin/patients/new/done'
     | '/admin/patients/new/review'
@@ -433,7 +442,6 @@ export interface FileRouteTypes {
     | '/admin/audit'
     | '/admin/dashboards'
     | '/admin/platform'
-    | '/dashboard/$patientId'
     | '/admin'
     | '/admin/clinicians/$id'
     | '/admin/clinicians/batch'
@@ -448,6 +456,7 @@ export interface FileRouteTypes {
     | '/admin/forms'
     | '/admin/patients'
     | '/admin/resources'
+    | '/dashboard/$patientId'
     | '/admin/patients/new/batch'
     | '/admin/patients/new/done'
     | '/admin/patients/new/review'
@@ -490,6 +499,7 @@ export interface FileRouteTypes {
     | '/admin/forms/'
     | '/admin/patients/'
     | '/admin/resources/'
+    | '/dashboard/$patientId/'
     | '/admin/patients/new/batch'
     | '/admin/patients/new/done'
     | '/admin/patients/new/review'
@@ -661,6 +671,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/audit'
       preLoaderRoute: typeof AdminAuditRouteImport
       parentRoute: typeof AdminRoute
+    }
+    '/dashboard/$patientId/': {
+      id: '/dashboard/$patientId/'
+      path: '/'
+      fullPath: '/dashboard/$patientId/'
+      preLoaderRoute: typeof DashboardPatientIdIndexRouteImport
+      parentRoute: typeof DashboardPatientIdRoute
     }
     '/admin/resources/': {
       id: '/admin/resources/'
@@ -909,10 +926,12 @@ const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 interface DashboardPatientIdRouteChildren {
   DashboardPatientIdProfileRoute: typeof DashboardPatientIdProfileRoute
+  DashboardPatientIdIndexRoute: typeof DashboardPatientIdIndexRoute
 }
 
 const DashboardPatientIdRouteChildren: DashboardPatientIdRouteChildren = {
   DashboardPatientIdProfileRoute: DashboardPatientIdProfileRoute,
+  DashboardPatientIdIndexRoute: DashboardPatientIdIndexRoute,
 }
 
 const DashboardPatientIdRouteWithChildren =
