@@ -86,7 +86,7 @@ const card: CSSProperties = {
 function SectionHeader({ title, description }: { title: string; description: string }) {
   return (
     <div style={{ marginBottom: 18 }}>
-      <h2 style={{ fontSize: 20, fontWeight: 700, color: WF_DARK, margin: "0 0 4px 0" }}>{title}</h2>
+      <h2 style={{ fontSize: 15, fontWeight: 700, color: WF_DARK, margin: "0 0 4px 0" }}>{title}</h2>
       <p style={{ fontSize: 14, color: WF_MID, margin: 0, lineHeight: 1.5 }}>{description}</p>
     </div>
   );
@@ -103,7 +103,7 @@ function PrimaryBtn({ children, onClick, disabled, small }: { children: ReactNod
         border: "none",
         borderRadius: 6,
         padding: small ? "6px 12px" : "8px 16px",
-        fontSize: small ? 13 : 14,
+        fontSize: 14,
         fontWeight: 500,
         cursor: disabled ? "not-allowed" : "pointer",
         fontFamily: "inherit",
@@ -122,7 +122,7 @@ function GhostBtn({ children, onClick, small }: { children: ReactNode; onClick?:
         border: `1px solid ${TEAL}`,
         borderRadius: 6,
         padding: small ? "5px 10px" : "8px 16px",
-        fontSize: small ? 13 : 14,
+        fontSize: 14,
         fontWeight: 500,
         cursor: "pointer",
         fontFamily: "inherit",
@@ -346,7 +346,7 @@ function HospitalizationsSection() {
                 <div style={{ fontSize: 14, color: WF_DARK, fontWeight: 600 }}>
                   {fmtDate(h.admitted)} – {fmtDate(h.discharged)}
                 </div>
-                {h.reason && <div style={{ fontSize: 13, color: WF_DARK, marginTop: 2 }}>{h.reason}</div>}
+                {h.reason && <div style={{ fontSize: 14, color: WF_DARK, marginTop: 2 }}>{h.reason}</div>}
                 {h.hospital && <div style={{ fontSize: 12, color: WF_MID, marginTop: 2 }}>{h.hospital}</div>}
               </div>
               <div style={{ display: "flex", gap: 4 }}>
@@ -413,7 +413,7 @@ function MedicationsSection({ role }: { role: Role }) {
             }}>
               <div>
                 <div style={{ fontSize: 14, color: WF_DARK, fontWeight: 600 }}>{m.name}</div>
-                {m.dose && <div style={{ fontSize: 13, color: WF_DARK, marginTop: 2 }}>{m.dose}</div>}
+                {m.dose && <div style={{ fontSize: 14, color: WF_DARK, marginTop: 2 }}>{m.dose}</div>}
                 <div style={{ fontSize: 12, color: WF_MID, marginTop: 2 }}>
                   {[m.reason, m.doctor && `Prescribed by ${m.doctor}`, m.start && `Started ${fmtDate(m.start)}`].filter(Boolean).join(" · ")}
                 </div>
@@ -500,7 +500,7 @@ function AllergiesSection({ role }: { role: Role }) {
                   <span style={{ fontSize: 14, color: WF_DARK, fontWeight: 600 }}>{a.name}</span>
                   {a.severity && <StatusBadge kind={sevColor(a.severity) as "teal" | "gray" | "amber" | "red"}>{a.severity}</StatusBadge>}
                 </div>
-                {a.reaction && <div style={{ fontSize: 13, color: WF_MID, marginTop: 2 }}>{a.reaction}</div>}
+                {a.reaction && <div style={{ fontSize: 14, color: WF_MID, marginTop: 2 }}>{a.reaction}</div>}
               </div>
               {canWrite && (
                 <IconBtn label="Delete" icon={<Trash2 size={14} />} onClick={() => setList((cur) => cur.filter((x) => x.id !== a.id))} />
@@ -584,7 +584,7 @@ function DevicesSection() {
               <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
                 {d.source === "glooko" ? (
                   <a href="#" style={{
-                    fontSize: 13, color: TEAL, textDecoration: "none", display: "inline-flex",
+                    fontSize: 14, color: TEAL, textDecoration: "none", display: "inline-flex",
                     alignItems: "center", gap: 4, fontWeight: 500,
                   }}>
                     Manage in Glooko <ExternalLink size={12} />
@@ -687,7 +687,7 @@ function InsuranceSection({ role }: { role: Role }) {
                   {(p.primary || (!list.some((x) => x.primary) && idx === 0)) && <StatusBadge kind="teal">Primary</StatusBadge>}
                   <StatusBadge kind="gray">{p.country}</StatusBadge>
                 </div>
-                {p.plan && <div style={{ fontSize: 13, color: WF_DARK, marginTop: 2 }}>{p.plan}</div>}
+                {p.plan && <div style={{ fontSize: 14, color: WF_DARK, marginTop: 2 }}>{p.plan}</div>}
                 {p.policyId && <div style={{ fontSize: 12, color: WF_MID, marginTop: 2 }}>ID: {p.policyId}</div>}
                 {p.coverage.length > 0 && <div style={{ fontSize: 12, color: WF_MID, marginTop: 2 }}>Coverage: {p.coverage.join(", ")}</div>}
                 {p.notes && <div style={{ fontSize: 12, color: WF_MID, marginTop: 4, fontStyle: "italic" }}>{p.notes}</div>}
@@ -783,7 +783,7 @@ function GoalsSection({ role }: { role: Role }) {
           {past.length > 0 && (
             <div style={{ marginTop: 16 }}>
               <button onClick={() => setShowPast((v) => !v)} style={{
-                background: "none", border: "none", color: TEAL, fontSize: 13, cursor: "pointer",
+                background: "none", border: "none", color: TEAL, fontSize: 14, cursor: "pointer",
                 padding: 0, fontFamily: "inherit", fontWeight: 500,
               }}>
                 {showPast ? "▾" : "▸"} Past goals ({past.length})
@@ -793,7 +793,7 @@ function GoalsSection({ role }: { role: Role }) {
                   {past.map((g) => (
                     <div key={g.id} style={{
                       padding: "8px 0", borderBottom: `0.5px solid #f0f2f3`,
-                      fontSize: 13, color: WF_MID, textDecoration: "line-through",
+                      fontSize: 14, color: WF_MID, textDecoration: "line-through",
                     }}>{g.text}</div>
                   ))}
                 </div>
@@ -832,10 +832,10 @@ function SupportersSection({ role }: { role: Role }) {
               <div style={{ flex: 1 }}>
                 <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
                   <span style={{ fontSize: 14, color: WF_DARK, fontWeight: 600 }}>{s.name}</span>
-                  <span style={{ fontSize: 13, color: WF_MID }}>· {s.relationship}</span>
+                  <span style={{ fontSize: 14, color: WF_MID }}>· {s.relationship}</span>
                   <StatusBadge kind={statusKind(s.status) as "teal" | "amber" | "gray"}>{s.status}</StatusBadge>
                 </div>
-                <div style={{ fontSize: 13, color: WF_MID, marginTop: 2 }}>{s.contact}</div>
+                <div style={{ fontSize: 14, color: WF_MID, marginTop: 2 }}>{s.contact}</div>
               </div>
             </div>
           ))}
@@ -843,7 +843,7 @@ function SupportersSection({ role }: { role: Role }) {
       )}
       {role === "patient" && (
         <div style={{ marginTop: 12 }}>
-          <a href="#" style={{ fontSize: 13, color: TEAL, fontWeight: 500, textDecoration: "none" }}>Manage supporters →</a>
+          <a href="#" style={{ fontSize: 14, color: TEAL, fontWeight: 500, textDecoration: "none" }}>Manage supporters →</a>
         </div>
       )}
     </div>
@@ -939,9 +939,9 @@ function PrimarySupportersCard() {
                 <span style={{ fontSize: 14, color: WF_DARK, fontWeight: 600 }}>{s.name}</span>
                 <span style={{ fontSize: 12, fontWeight: 500, padding: "3px 10px", borderRadius: 10, ...badgeStyle(s.status) }}>{s.status}</span>
               </div>
-              <div style={{ fontSize: 13, color: WF_MID, marginTop: 2 }}>{s.relationship}</div>
-              <div style={{ fontSize: 13, color: WF_DARK, marginTop: 2 }}>{s.email}</div>
-              <div style={{ fontSize: 13, color: WF_DARK, marginTop: 2 }}>{s.phone}</div>
+              <div style={{ fontSize: 14, color: WF_MID, marginTop: 2 }}>{s.relationship}</div>
+              <div style={{ fontSize: 14, color: WF_DARK, marginTop: 2 }}>{s.email}</div>
+              <div style={{ fontSize: 14, color: WF_DARK, marginTop: 2 }}>{s.phone}</div>
             </div>
           ))}
         </div>
@@ -1017,10 +1017,10 @@ function MedicalTeamCard() {
             }}>
               <div style={{ flex: 1 }}>
                 <div style={{ fontSize: 14, color: WF_DARK, fontWeight: 600 }}>{m.name}</div>
-                <div style={{ fontSize: 13, color: WF_MID, marginTop: 2 }}>{m.role}</div>
-                {m.email && <div style={{ fontSize: 13, color: WF_DARK, marginTop: 2 }}>{m.email}</div>}
-                {m.phone && <div style={{ fontSize: 13, color: WF_DARK, marginTop: 2 }}>{m.phone}</div>}
-                {m.clinic && <div style={{ fontSize: 13, color: WF_MID, marginTop: 2 }}>{m.clinic}</div>}
+                <div style={{ fontSize: 14, color: WF_MID, marginTop: 2 }}>{m.role}</div>
+                {m.email && <div style={{ fontSize: 14, color: WF_DARK, marginTop: 2 }}>{m.email}</div>}
+                {m.phone && <div style={{ fontSize: 14, color: WF_DARK, marginTop: 2 }}>{m.phone}</div>}
+                {m.clinic && <div style={{ fontSize: 14, color: WF_MID, marginTop: 2 }}>{m.clinic}</div>}
               </div>
               <div style={{ display: "flex", gap: 4 }}>
                 <IconBtn label="Edit" icon={<Pencil size={14} />} onClick={() => { setEditingId(m.id); setDraft(m); setAdding(false); }} />
