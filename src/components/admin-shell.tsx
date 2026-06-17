@@ -212,33 +212,6 @@ export function PrototypeBack({ to = "/admin" }: { to?: string }) {
 function PatientContextLinks({ pathname }: { pathname: string }) {
   const m = pathname.match(/^\/dashboard\/([^/]+)(?:\/(profile))?$/);
   if (!m) return null;
-  const patientId = m[1];
-  const onProfile = !!m[2];
-  return (
-    <>
-      <div style={{ height: 1, background: "rgba(255,255,255,0.15)", margin: "12px 16px" }} />
-      <Link
-        to="/dashboard/$patientId/profile"
-        params={{ patientId }}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 8,
-          height: 40,
-          padding: "0 16px",
-          fontSize: 15,
-          fontWeight: 600,
-          color: onProfile ? "#fff" : "rgba(255,255,255,0.85)",
-          textDecoration: "none",
-          background: onProfile ? "rgba(255,255,255,0.12)" : "transparent",
-          borderLeft: onProfile ? "3px solid #fff" : "3px solid transparent",
-          boxSizing: "border-box",
-        }}
-      >
-        <HeartPulse size={16} />
-        <span>Care profile</span>
-      </Link>
-    </>
-  );
+  return null;
 }
 
