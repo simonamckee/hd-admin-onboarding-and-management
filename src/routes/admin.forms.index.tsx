@@ -24,18 +24,8 @@ type Form = {
   status: Status;
 };
 
-type Form = {
-  id: string;
-  name: string;
-  added: string;
-  lastUsed: string;
-  by: string;
-  status: Status;
-  prebuilt?: boolean;
-  subtitle?: string;
-  assignedTo?: string;
-  estTime?: string;
-};
+// extended Form fields for pre-built items live alongside the base FORMS array below
+
 
 const FORMS: Form[] = [
   {
