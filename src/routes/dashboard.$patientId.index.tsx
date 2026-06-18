@@ -311,7 +311,7 @@ function ChatPanel({ onClose }: { onClose: () => void }) {
   );
 }
 
-const BADGE_OFFSET = 270; // avatar (44) + gap (14) + name block (~180) + separator gap (~32)
+const BADGE_OFFSET = 20; // first separator width (~6) + row gap (14), aligns badges under DOB
 
 function PatientHeader() {
   const [hover, setHover] = useState(false);
@@ -399,8 +399,7 @@ function PatientHeader() {
               </button>
             )}
           </div>
-          <div style={{ display: "flex", gap: 6 }}>
-            <div style={{ width: BADGE_OFFSET, flexShrink: 0 }} />
+          <div style={{ display: "flex", gap: 6, paddingLeft: BADGE_OFFSET }}>
             <Badge bg={SUCCESS_BG} color={SUCCESS_TEXT}>Active</Badge>
             <Badge bg={SUCCESS_BG} color={SUCCESS_TEXT}>CGM connected</Badge>
             <Badge bg={SUCCESS_BG} color={SUCCESS_TEXT}>Pump connected</Badge>
