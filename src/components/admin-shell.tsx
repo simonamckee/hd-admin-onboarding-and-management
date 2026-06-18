@@ -153,36 +153,9 @@ export function AdminShell({ heading, children }: { heading: string; children: R
         </div>
       </aside>
 
-      {/* Right column: top bar + main */}
+      {/* Right column: main */}
       <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0 }}>
-        <div
-          style={{
-            background: SURFACE,
-            color: WF_DARK,
-            height: TOPBAR_H,
-            padding: "0 20px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-end",
-            borderBottom: `1px solid ${BORDER}4D`,
-            boxSizing: "border-box",
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-            <MessageBubble hasMessages={false} size={22} />
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <img
-                src="https://randomuser.me/api/portraits/men/32.jpg"
-                alt="Dr. Reyes"
-                style={{
-                  width: 30, height: 30, borderRadius: "50%", border: `1.5px solid ${TEAL}`,
-                  objectFit: "cover", flexShrink: 0,
-                }}
-              />
-              <span style={{ fontSize: 14, color: WF_DARK, fontWeight: 500 }}>Dr. Reyes</span>
-            </div>
-          </div>
-        </div>
+
 
         <main style={{ flex: 1, padding: 32, background: WF_BG }}>
           <h1 style={{ fontSize: 24, fontWeight: 700, color: TEAL, margin: "0 0 24px 0" }}>
