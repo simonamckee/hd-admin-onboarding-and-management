@@ -670,20 +670,32 @@ function RosterPage() {
             <span />
           </div>
 
-          <GroupHeader label="At risk" icon={<AlertCircle size={11} />} bg="#fff8f8" color="#a32d2d" />
-          {groups.atRisk.map((p) => (
-            <PatientRow key={p.id} p={p} open={openRows.has(p.id)} onToggle={() => toggleRow(p.id)} />
-          ))}
+          {groups.atRisk.length > 0 && (
+            <>
+              <GroupHeader label="At risk" icon={<AlertCircle size={11} />} bg="#fff8f8" color="#a32d2d" />
+              {groups.atRisk.map((p) => (
+                <PatientRow key={p.id} p={p} open={openRows.has(p.id)} onToggle={() => toggleRow(p.id)} />
+              ))}
+            </>
+          )}
 
-          <GroupHeader label="Today's appointments" icon={<Calendar size={11} />} bg="#f4fbfa" color={TEAL} />
-          {groups.today.map((p) => (
-            <PatientRow key={p.id} p={p} open={openRows.has(p.id)} onToggle={() => toggleRow(p.id)} />
-          ))}
+          {groups.today.length > 0 && (
+            <>
+              <GroupHeader label="Today's appointments" icon={<Calendar size={11} />} bg="#f4fbfa" color={TEAL} />
+              {groups.today.map((p) => (
+                <PatientRow key={p.id} p={p} open={openRows.has(p.id)} onToggle={() => toggleRow(p.id)} />
+              ))}
+            </>
+          )}
 
-          <GroupHeader label="All others" icon={<Users size={11} />} bg="#fafafa" color={MUTED} />
-          {groups.others.map((p) => (
-            <PatientRow key={p.id} p={p} open={openRows.has(p.id)} onToggle={() => toggleRow(p.id)} />
-          ))}
+          {groups.others.length > 0 && (
+            <>
+              <GroupHeader label="All others" icon={<Users size={11} />} bg="#fafafa" color={MUTED} />
+              {groups.others.map((p) => (
+                <PatientRow key={p.id} p={p} open={openRows.has(p.id)} onToggle={() => toggleRow(p.id)} />
+              ))}
+            </>
+          )}
         </div>
 
         {/* Footer */}
