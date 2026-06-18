@@ -434,11 +434,16 @@ function RosterPage() {
     });
   };
 
-  const groups = useMemo(() => ({
-    atRisk: PATIENTS.filter((p) => p.group === "atRisk"),
-    today: PATIENTS.filter((p) => p.group === "today"),
-    others: PATIENTS.filter((p) => p.group === "others"),
-  }), []);
+  const groups = useMemo(() => {
+    const filtered = activeFilters.has("messages")
+      ? PATIENTS.filter((p) => p.messages === true)
+      : PATIENTS;
+    return {
+      atRisk: filtered.filter((p) => p.group === "atRisk"),
+      today: filtered.filter((p) => p.group === "today"),
+      others: filtered.filter((p) => p.group === "others"),
+    };
+  }, [activeFilters]);
 
   const selectStyle: CSSProperties = {
     appearance: "none",
