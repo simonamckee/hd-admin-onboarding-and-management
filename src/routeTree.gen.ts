@@ -28,6 +28,7 @@ import { Route as PatientVerifyMethodRouteImport } from './routes/patient.verify
 import { Route as PatientSmsVerifyRouteImport } from './routes/patient.sms-verify'
 import { Route as PatientSmsPhoneRouteImport } from './routes/patient.sms-phone'
 import { Route as PatientPasswordRouteImport } from './routes/patient.password'
+import { Route as PatientDashboardRouteImport } from './routes/patient.dashboard'
 import { Route as PatientCompleteSkippedRouteImport } from './routes/patient.complete-skipped'
 import { Route as PatientCompleteRouteImport } from './routes/patient.complete'
 import { Route as PatientAuthenticatorVerifyRouteImport } from './routes/patient.authenticator-verify'
@@ -154,6 +155,11 @@ const PatientSmsPhoneRoute = PatientSmsPhoneRouteImport.update({
 const PatientPasswordRoute = PatientPasswordRouteImport.update({
   id: '/password',
   path: '/password',
+  getParentRoute: () => PatientRoute,
+} as any)
+const PatientDashboardRoute = PatientDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => PatientRoute,
 } as any)
 const PatientCompleteSkippedRoute = PatientCompleteSkippedRouteImport.update({
@@ -346,6 +352,7 @@ export interface FileRoutesByFullPath {
   '/patient/authenticator-verify': typeof PatientAuthenticatorVerifyRoute
   '/patient/complete': typeof PatientCompleteRoute
   '/patient/complete-skipped': typeof PatientCompleteSkippedRoute
+  '/patient/dashboard': typeof PatientDashboardRoute
   '/patient/password': typeof PatientPasswordRoute
   '/patient/sms-phone': typeof PatientSmsPhoneRoute
   '/patient/sms-verify': typeof PatientSmsVerifyRoute
@@ -393,6 +400,7 @@ export interface FileRoutesByTo {
   '/patient/authenticator-verify': typeof PatientAuthenticatorVerifyRoute
   '/patient/complete': typeof PatientCompleteRoute
   '/patient/complete-skipped': typeof PatientCompleteSkippedRoute
+  '/patient/dashboard': typeof PatientDashboardRoute
   '/patient/password': typeof PatientPasswordRoute
   '/patient/sms-phone': typeof PatientSmsPhoneRoute
   '/patient/sms-verify': typeof PatientSmsVerifyRoute
@@ -446,6 +454,7 @@ export interface FileRoutesById {
   '/patient/authenticator-verify': typeof PatientAuthenticatorVerifyRoute
   '/patient/complete': typeof PatientCompleteRoute
   '/patient/complete-skipped': typeof PatientCompleteSkippedRoute
+  '/patient/dashboard': typeof PatientDashboardRoute
   '/patient/password': typeof PatientPasswordRoute
   '/patient/sms-phone': typeof PatientSmsPhoneRoute
   '/patient/sms-verify': typeof PatientSmsVerifyRoute
@@ -501,6 +510,7 @@ export interface FileRouteTypes {
     | '/patient/authenticator-verify'
     | '/patient/complete'
     | '/patient/complete-skipped'
+    | '/patient/dashboard'
     | '/patient/password'
     | '/patient/sms-phone'
     | '/patient/sms-verify'
@@ -548,6 +558,7 @@ export interface FileRouteTypes {
     | '/patient/authenticator-verify'
     | '/patient/complete'
     | '/patient/complete-skipped'
+    | '/patient/dashboard'
     | '/patient/password'
     | '/patient/sms-phone'
     | '/patient/sms-verify'
@@ -600,6 +611,7 @@ export interface FileRouteTypes {
     | '/patient/authenticator-verify'
     | '/patient/complete'
     | '/patient/complete-skipped'
+    | '/patient/dashboard'
     | '/patient/password'
     | '/patient/sms-phone'
     | '/patient/sms-verify'
@@ -778,6 +790,13 @@ declare module '@tanstack/react-router' {
       path: '/password'
       fullPath: '/patient/password'
       preLoaderRoute: typeof PatientPasswordRouteImport
+      parentRoute: typeof PatientRoute
+    }
+    '/patient/dashboard': {
+      id: '/patient/dashboard'
+      path: '/dashboard'
+      fullPath: '/patient/dashboard'
+      preLoaderRoute: typeof PatientDashboardRouteImport
       parentRoute: typeof PatientRoute
     }
     '/patient/complete-skipped': {
@@ -1121,6 +1140,7 @@ interface PatientRouteChildren {
   PatientAuthenticatorVerifyRoute: typeof PatientAuthenticatorVerifyRoute
   PatientCompleteRoute: typeof PatientCompleteRoute
   PatientCompleteSkippedRoute: typeof PatientCompleteSkippedRoute
+  PatientDashboardRoute: typeof PatientDashboardRoute
   PatientPasswordRoute: typeof PatientPasswordRoute
   PatientSmsPhoneRoute: typeof PatientSmsPhoneRoute
   PatientSmsVerifyRoute: typeof PatientSmsVerifyRoute
@@ -1133,6 +1153,7 @@ const PatientRouteChildren: PatientRouteChildren = {
   PatientAuthenticatorVerifyRoute: PatientAuthenticatorVerifyRoute,
   PatientCompleteRoute: PatientCompleteRoute,
   PatientCompleteSkippedRoute: PatientCompleteSkippedRoute,
+  PatientDashboardRoute: PatientDashboardRoute,
   PatientPasswordRoute: PatientPasswordRoute,
   PatientSmsPhoneRoute: PatientSmsPhoneRoute,
   PatientSmsVerifyRoute: PatientSmsVerifyRoute,
@@ -1175,13 +1196,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

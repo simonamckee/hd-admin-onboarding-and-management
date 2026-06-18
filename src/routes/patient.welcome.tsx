@@ -101,8 +101,8 @@ function PatientWelcome() {
             Your dashboard may look a little empty at first. Once your device is connected and your care team has added information, everything will start to appear.
           </div>
 
-          <PrimaryButton to="/roster">Go to my dashboard</PrimaryButton>
-          <TestingLink to="/roster">skip to dashboard (prototype) →</TestingLink>
+          <PrimaryButton to="/patient/dashboard">Go to my dashboard</PrimaryButton>
+          <TestingLink to="/patient/dashboard">skip to dashboard (prototype) →</TestingLink>
         </div>
       </div>
     </Page>
