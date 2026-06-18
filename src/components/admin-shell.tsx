@@ -1,8 +1,8 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useState, type ReactNode } from "react";
 import { Settings, Users, ChevronDown, ChevronRight } from "lucide-react";
-import { WF_BG, WF_DARK, WF_MID, TEAL, BORDER, SURFACE, HAIBU_LOGO_URL } from "./wireframe";
-import { MessageBubble } from "@/components/message-bubble";
+import { WF_BG, WF_DARK, WF_MID, TEAL, HAIBU_LOGO_URL } from "./wireframe";
+
 
 const ADMIN_NAV: Array<{ label: string; to: string }> = [
   { label: "Clinic information", to: "/admin" },
