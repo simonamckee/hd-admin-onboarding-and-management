@@ -311,7 +311,7 @@ function ChatPanel({ onClose }: { onClose: () => void }) {
   );
 }
 
-const BADGE_OFFSET = 270; // avatar (44) + gap (14) + name block (~180) + separator gap (~32)
+const BADGE_OFFSET = 20; // first separator width (~6) + row gap (14), aligns badges under DOB
 
 function PatientHeader() {
   const [hover, setHover] = useState(false);
