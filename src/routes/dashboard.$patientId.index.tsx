@@ -324,81 +324,87 @@ function PatientHeader() {
         padding: "14px 24px",
       }}
     >
-      <div style={{ display: "flex", gap: 14, alignItems: "center", flexWrap: "wrap" }}>
-        <img
-          src="https://randomuser.me/api/portraits/women/44.jpg"
-          alt="Sarah Chen"
-          style={{
-            width: 44, height: 44, borderRadius: "50%", flexShrink: 0,
-            border: "2px solid #c8e8df", objectFit: "cover",
-          }}
-        />
-        <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-          <div style={{ fontSize: 22, fontWeight: 700, color: WF_DARK, lineHeight: 1.1 }}>
-            Sarah Chen
+      <div style={{ display: "flex", gap: 14, alignItems: "flex-start", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: 14, alignItems: "center" }}>
+          <img
+            src="https://randomuser.me/api/portraits/women/44.jpg"
+            alt="Sarah Chen"
+            style={{
+              width: 44, height: 44, borderRadius: "50%", flexShrink: 0,
+              border: "2px solid #c8e8df", objectFit: "cover",
+            }}
+          />
+          <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            <div style={{ fontSize: 22, fontWeight: 700, color: WF_DARK, lineHeight: 1.1 }}>
+              Sarah Chen
+            </div>
+            <Link
+              to="/dashboard/$patientId/profile"
+              onMouseEnter={() => setHover(true)}
+              onMouseLeave={() => setHover(false)}
+              style={{
+                fontSize: 15,
+                fontWeight: 600,
+                color: TEAL,
+                textDecoration: hover ? "underline" : "none",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 4,
+              }}
+            >
+              <User size={14} />
+              View Care profile →
+            </Link>
           </div>
-          <Link
-            to="/dashboard/$patientId/profile"
-            onMouseEnter={() => setHover(true)}
-            onMouseLeave={() => setHover(false)}
-            style={{
-              fontSize: 15,
-              fontWeight: 600,
-              color: TEAL,
-              textDecoration: hover ? "underline" : "none",
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 4,
-            }}
-          >
-            <User size={14} />
-            View Care profile →
-          </Link>
         </div>
-        <span style={{ color: "#aac4cc", fontSize: 18, fontWeight: 300 }}>|</span>
-        <div style={{ fontSize: 15, color: WF_MID }}>15 Jun 1978 · Age 47</div>
-        <span style={{ color: "#aac4cc", fontSize: 18, fontWeight: 300 }}>|</span>
-        <span
-          title="Type 1 Diabetes, diagnosed 12 years ago"
-          style={{
-            fontSize: 15,
-            color: WF_DARK,
-            cursor: "help",
-            borderBottom: `1px dotted ${WF_MID}`,
-          }}
-        >
-          T1D · 12 years
-        </span>
-        <span style={{ color: "#aac4cc", fontSize: 18, fontWeight: 300 }}>|</span>
-        <div style={{ fontSize: 15, color: WF_DARK }}>👤 Margaret Chen — Mother</div>
-        <span style={{ color: "#aac4cc", fontSize: 18, fontWeight: 300 }}>|</span>
-        <div style={{ fontSize: 15, color: WF_DARK }}>⚕ Dr. Reyes</div>
-        <span style={{ color: "#aac4cc", fontSize: 18, fontWeight: 300 }}>|</span>
-        <div style={{ fontSize: 15, color: WF_MID }}>Last seen: 2 days ago</div>
-        {chatEnabled && (
-          <button
-            onClick={() => setChatOpen((v) => !v)}
-            aria-label="Open messages"
-            style={{
-              marginLeft: "auto",
-              background: "transparent",
-              border: "none",
-              cursor: "pointer",
-              padding: 6,
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <MessageBubble hasMessages={true} size={26} />
-          </button>
-        )}
-      </div>
-      <div style={{ display: "flex", gap: 6, marginTop: 10, paddingLeft: 58 }}>
-        <Badge bg={SUCCESS_BG} color={SUCCESS_TEXT}>Active</Badge>
-        <Badge bg={SUCCESS_BG} color={SUCCESS_TEXT}>CGM connected</Badge>
-        <Badge bg={SUCCESS_BG} color={SUCCESS_TEXT}>Pump connected</Badge>
-        <Badge bg="#fcebeb" color="#791f1f">DKA risk</Badge>
-        <Badge bg={WARN_BG} color={WARN_TEXT}>Low TIR</Badge>
+        <div style={{ display: "flex", flexDirection: "column", gap: 10, flex: 1, minWidth: 0 }}>
+          <div style={{ display: "flex", gap: 14, alignItems: "center", flexWrap: "wrap" }}>
+            <span style={{ color: "#aac4cc", fontSize: 18, fontWeight: 300 }}>|</span>
+            <div style={{ fontSize: 15, color: WF_MID }}>15 Jun 1978 · Age 47</div>
+            <span style={{ color: "#aac4cc", fontSize: 18, fontWeight: 300 }}>|</span>
+            <span
+              title="Type 1 Diabetes, diagnosed 12 years ago"
+              style={{
+                fontSize: 15,
+                color: WF_DARK,
+                cursor: "help",
+                borderBottom: `1px dotted ${WF_MID}`,
+              }}
+            >
+              T1D · 12 years
+            </span>
+            <span style={{ color: "#aac4cc", fontSize: 18, fontWeight: 300 }}>|</span>
+            <div style={{ fontSize: 15, color: WF_DARK }}>👤 Margaret Chen — Mother</div>
+            <span style={{ color: "#aac4cc", fontSize: 18, fontWeight: 300 }}>|</span>
+            <div style={{ fontSize: 15, color: WF_DARK }}>⚕ Dr. Reyes</div>
+            <span style={{ color: "#aac4cc", fontSize: 18, fontWeight: 300 }}>|</span>
+            <div style={{ fontSize: 15, color: WF_MID }}>Last seen: 2 days ago</div>
+            {chatEnabled && (
+              <button
+                onClick={() => setChatOpen((v) => !v)}
+                aria-label="Open messages"
+                style={{
+                  marginLeft: "auto",
+                  background: "transparent",
+                  border: "none",
+                  cursor: "pointer",
+                  padding: 6,
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <MessageBubble hasMessages={true} size={26} />
+              </button>
+            )}
+          </div>
+          <div style={{ display: "flex", gap: 6 }}>
+            <Badge bg={SUCCESS_BG} color={SUCCESS_TEXT}>Active</Badge>
+            <Badge bg={SUCCESS_BG} color={SUCCESS_TEXT}>CGM connected</Badge>
+            <Badge bg={SUCCESS_BG} color={SUCCESS_TEXT}>Pump connected</Badge>
+            <Badge bg="#fcebeb" color="#791f1f">DKA risk</Badge>
+            <Badge bg={WARN_BG} color={WARN_TEXT}>Low TIR</Badge>
+          </div>
+        </div>
       </div>
       {chatEnabled && chatOpen && <ChatPanel onClose={() => setChatOpen(false)} />}
     </div>
