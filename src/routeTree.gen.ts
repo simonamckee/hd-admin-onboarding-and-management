@@ -13,6 +13,7 @@ import { Route as VerifyMethodRouteImport } from './routes/verify-method'
 import { Route as SmsVerifyRouteImport } from './routes/sms-verify'
 import { Route as SmsPhoneRouteImport } from './routes/sms-phone'
 import { Route as RosterRouteImport } from './routes/roster'
+import { Route as PatientRouteImport } from './routes/patient'
 import { Route as PasswordRouteImport } from './routes/password'
 import { Route as ExpiredRouteImport } from './routes/expired'
 import { Route as CompleteSkippedRouteImport } from './routes/complete-skipped'
@@ -22,6 +23,15 @@ import { Route as AuthenticatorQrRouteImport } from './routes/authenticator-qr'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as PatientWelcomeRouteImport } from './routes/patient.welcome'
+import { Route as PatientVerifyMethodRouteImport } from './routes/patient.verify-method'
+import { Route as PatientSmsVerifyRouteImport } from './routes/patient.sms-verify'
+import { Route as PatientSmsPhoneRouteImport } from './routes/patient.sms-phone'
+import { Route as PatientPasswordRouteImport } from './routes/patient.password'
+import { Route as PatientCompleteSkippedRouteImport } from './routes/patient.complete-skipped'
+import { Route as PatientCompleteRouteImport } from './routes/patient.complete'
+import { Route as PatientAuthenticatorVerifyRouteImport } from './routes/patient.authenticator-verify'
+import { Route as PatientAuthenticatorQrRouteImport } from './routes/patient.authenticator-qr'
 import { Route as DashboardPatientIdRouteImport } from './routes/dashboard.$patientId'
 import { Route as AdminResourcesRouteImport } from './routes/admin.resources'
 import { Route as AdminPlatformRouteImport } from './routes/admin.platform'
@@ -71,6 +81,11 @@ const RosterRoute = RosterRouteImport.update({
   path: '/roster',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PatientRoute = PatientRouteImport.update({
+  id: '/patient',
+  path: '/patient',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PasswordRoute = PasswordRouteImport.update({
   id: '/password',
   path: '/password',
@@ -115,6 +130,52 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AdminRoute,
+} as any)
+const PatientWelcomeRoute = PatientWelcomeRouteImport.update({
+  id: '/welcome',
+  path: '/welcome',
+  getParentRoute: () => PatientRoute,
+} as any)
+const PatientVerifyMethodRoute = PatientVerifyMethodRouteImport.update({
+  id: '/verify-method',
+  path: '/verify-method',
+  getParentRoute: () => PatientRoute,
+} as any)
+const PatientSmsVerifyRoute = PatientSmsVerifyRouteImport.update({
+  id: '/sms-verify',
+  path: '/sms-verify',
+  getParentRoute: () => PatientRoute,
+} as any)
+const PatientSmsPhoneRoute = PatientSmsPhoneRouteImport.update({
+  id: '/sms-phone',
+  path: '/sms-phone',
+  getParentRoute: () => PatientRoute,
+} as any)
+const PatientPasswordRoute = PatientPasswordRouteImport.update({
+  id: '/password',
+  path: '/password',
+  getParentRoute: () => PatientRoute,
+} as any)
+const PatientCompleteSkippedRoute = PatientCompleteSkippedRouteImport.update({
+  id: '/complete-skipped',
+  path: '/complete-skipped',
+  getParentRoute: () => PatientRoute,
+} as any)
+const PatientCompleteRoute = PatientCompleteRouteImport.update({
+  id: '/complete',
+  path: '/complete',
+  getParentRoute: () => PatientRoute,
+} as any)
+const PatientAuthenticatorVerifyRoute =
+  PatientAuthenticatorVerifyRouteImport.update({
+    id: '/authenticator-verify',
+    path: '/authenticator-verify',
+    getParentRoute: () => PatientRoute,
+  } as any)
+const PatientAuthenticatorQrRoute = PatientAuthenticatorQrRouteImport.update({
+  id: '/authenticator-qr',
+  path: '/authenticator-qr',
+  getParentRoute: () => PatientRoute,
 } as any)
 const DashboardPatientIdRoute = DashboardPatientIdRouteImport.update({
   id: '/dashboard/$patientId',
@@ -268,6 +329,7 @@ export interface FileRoutesByFullPath {
   '/complete-skipped': typeof CompleteSkippedRoute
   '/expired': typeof ExpiredRoute
   '/password': typeof PasswordRoute
+  '/patient': typeof PatientRouteWithChildren
   '/roster': typeof RosterRoute
   '/sms-phone': typeof SmsPhoneRoute
   '/sms-verify': typeof SmsVerifyRoute
@@ -280,6 +342,15 @@ export interface FileRoutesByFullPath {
   '/admin/platform': typeof AdminPlatformRoute
   '/admin/resources': typeof AdminResourcesRouteWithChildren
   '/dashboard/$patientId': typeof DashboardPatientIdRouteWithChildren
+  '/patient/authenticator-qr': typeof PatientAuthenticatorQrRoute
+  '/patient/authenticator-verify': typeof PatientAuthenticatorVerifyRoute
+  '/patient/complete': typeof PatientCompleteRoute
+  '/patient/complete-skipped': typeof PatientCompleteSkippedRoute
+  '/patient/password': typeof PatientPasswordRoute
+  '/patient/sms-phone': typeof PatientSmsPhoneRoute
+  '/patient/sms-verify': typeof PatientSmsVerifyRoute
+  '/patient/verify-method': typeof PatientVerifyMethodRoute
+  '/patient/welcome': typeof PatientWelcomeRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/clinicians/$id': typeof AdminCliniciansIdRoute
   '/admin/clinicians/batch': typeof AdminCliniciansBatchRoute
@@ -310,6 +381,7 @@ export interface FileRoutesByTo {
   '/complete-skipped': typeof CompleteSkippedRoute
   '/expired': typeof ExpiredRoute
   '/password': typeof PasswordRoute
+  '/patient': typeof PatientRouteWithChildren
   '/roster': typeof RosterRoute
   '/sms-phone': typeof SmsPhoneRoute
   '/sms-verify': typeof SmsVerifyRoute
@@ -317,6 +389,15 @@ export interface FileRoutesByTo {
   '/admin/audit': typeof AdminAuditRoute
   '/admin/dashboards': typeof AdminDashboardsRoute
   '/admin/platform': typeof AdminPlatformRoute
+  '/patient/authenticator-qr': typeof PatientAuthenticatorQrRoute
+  '/patient/authenticator-verify': typeof PatientAuthenticatorVerifyRoute
+  '/patient/complete': typeof PatientCompleteRoute
+  '/patient/complete-skipped': typeof PatientCompleteSkippedRoute
+  '/patient/password': typeof PatientPasswordRoute
+  '/patient/sms-phone': typeof PatientSmsPhoneRoute
+  '/patient/sms-verify': typeof PatientSmsVerifyRoute
+  '/patient/verify-method': typeof PatientVerifyMethodRoute
+  '/patient/welcome': typeof PatientWelcomeRoute
   '/admin': typeof AdminIndexRoute
   '/admin/clinicians/$id': typeof AdminCliniciansIdRoute
   '/admin/clinicians/batch': typeof AdminCliniciansBatchRoute
@@ -348,6 +429,7 @@ export interface FileRoutesById {
   '/complete-skipped': typeof CompleteSkippedRoute
   '/expired': typeof ExpiredRoute
   '/password': typeof PasswordRoute
+  '/patient': typeof PatientRouteWithChildren
   '/roster': typeof RosterRoute
   '/sms-phone': typeof SmsPhoneRoute
   '/sms-verify': typeof SmsVerifyRoute
@@ -360,6 +442,15 @@ export interface FileRoutesById {
   '/admin/platform': typeof AdminPlatformRoute
   '/admin/resources': typeof AdminResourcesRouteWithChildren
   '/dashboard/$patientId': typeof DashboardPatientIdRouteWithChildren
+  '/patient/authenticator-qr': typeof PatientAuthenticatorQrRoute
+  '/patient/authenticator-verify': typeof PatientAuthenticatorVerifyRoute
+  '/patient/complete': typeof PatientCompleteRoute
+  '/patient/complete-skipped': typeof PatientCompleteSkippedRoute
+  '/patient/password': typeof PatientPasswordRoute
+  '/patient/sms-phone': typeof PatientSmsPhoneRoute
+  '/patient/sms-verify': typeof PatientSmsVerifyRoute
+  '/patient/verify-method': typeof PatientVerifyMethodRoute
+  '/patient/welcome': typeof PatientWelcomeRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/clinicians/$id': typeof AdminCliniciansIdRoute
   '/admin/clinicians/batch': typeof AdminCliniciansBatchRoute
@@ -393,6 +484,7 @@ export interface FileRouteTypes {
     | '/complete-skipped'
     | '/expired'
     | '/password'
+    | '/patient'
     | '/roster'
     | '/sms-phone'
     | '/sms-verify'
@@ -405,6 +497,15 @@ export interface FileRouteTypes {
     | '/admin/platform'
     | '/admin/resources'
     | '/dashboard/$patientId'
+    | '/patient/authenticator-qr'
+    | '/patient/authenticator-verify'
+    | '/patient/complete'
+    | '/patient/complete-skipped'
+    | '/patient/password'
+    | '/patient/sms-phone'
+    | '/patient/sms-verify'
+    | '/patient/verify-method'
+    | '/patient/welcome'
     | '/admin/'
     | '/admin/clinicians/$id'
     | '/admin/clinicians/batch'
@@ -435,6 +536,7 @@ export interface FileRouteTypes {
     | '/complete-skipped'
     | '/expired'
     | '/password'
+    | '/patient'
     | '/roster'
     | '/sms-phone'
     | '/sms-verify'
@@ -442,6 +544,15 @@ export interface FileRouteTypes {
     | '/admin/audit'
     | '/admin/dashboards'
     | '/admin/platform'
+    | '/patient/authenticator-qr'
+    | '/patient/authenticator-verify'
+    | '/patient/complete'
+    | '/patient/complete-skipped'
+    | '/patient/password'
+    | '/patient/sms-phone'
+    | '/patient/sms-verify'
+    | '/patient/verify-method'
+    | '/patient/welcome'
     | '/admin'
     | '/admin/clinicians/$id'
     | '/admin/clinicians/batch'
@@ -472,6 +583,7 @@ export interface FileRouteTypes {
     | '/complete-skipped'
     | '/expired'
     | '/password'
+    | '/patient'
     | '/roster'
     | '/sms-phone'
     | '/sms-verify'
@@ -484,6 +596,15 @@ export interface FileRouteTypes {
     | '/admin/platform'
     | '/admin/resources'
     | '/dashboard/$patientId'
+    | '/patient/authenticator-qr'
+    | '/patient/authenticator-verify'
+    | '/patient/complete'
+    | '/patient/complete-skipped'
+    | '/patient/password'
+    | '/patient/sms-phone'
+    | '/patient/sms-verify'
+    | '/patient/verify-method'
+    | '/patient/welcome'
     | '/admin/'
     | '/admin/clinicians/$id'
     | '/admin/clinicians/batch'
@@ -516,6 +637,7 @@ export interface RootRouteChildren {
   CompleteSkippedRoute: typeof CompleteSkippedRoute
   ExpiredRoute: typeof ExpiredRoute
   PasswordRoute: typeof PasswordRoute
+  PatientRoute: typeof PatientRouteWithChildren
   RosterRoute: typeof RosterRoute
   SmsPhoneRoute: typeof SmsPhoneRoute
   SmsVerifyRoute: typeof SmsVerifyRoute
@@ -551,6 +673,13 @@ declare module '@tanstack/react-router' {
       path: '/roster'
       fullPath: '/roster'
       preLoaderRoute: typeof RosterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/patient': {
+      id: '/patient'
+      path: '/patient'
+      fullPath: '/patient'
+      preLoaderRoute: typeof PatientRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/password': {
@@ -615,6 +744,69 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
+    }
+    '/patient/welcome': {
+      id: '/patient/welcome'
+      path: '/welcome'
+      fullPath: '/patient/welcome'
+      preLoaderRoute: typeof PatientWelcomeRouteImport
+      parentRoute: typeof PatientRoute
+    }
+    '/patient/verify-method': {
+      id: '/patient/verify-method'
+      path: '/verify-method'
+      fullPath: '/patient/verify-method'
+      preLoaderRoute: typeof PatientVerifyMethodRouteImport
+      parentRoute: typeof PatientRoute
+    }
+    '/patient/sms-verify': {
+      id: '/patient/sms-verify'
+      path: '/sms-verify'
+      fullPath: '/patient/sms-verify'
+      preLoaderRoute: typeof PatientSmsVerifyRouteImport
+      parentRoute: typeof PatientRoute
+    }
+    '/patient/sms-phone': {
+      id: '/patient/sms-phone'
+      path: '/sms-phone'
+      fullPath: '/patient/sms-phone'
+      preLoaderRoute: typeof PatientSmsPhoneRouteImport
+      parentRoute: typeof PatientRoute
+    }
+    '/patient/password': {
+      id: '/patient/password'
+      path: '/password'
+      fullPath: '/patient/password'
+      preLoaderRoute: typeof PatientPasswordRouteImport
+      parentRoute: typeof PatientRoute
+    }
+    '/patient/complete-skipped': {
+      id: '/patient/complete-skipped'
+      path: '/complete-skipped'
+      fullPath: '/patient/complete-skipped'
+      preLoaderRoute: typeof PatientCompleteSkippedRouteImport
+      parentRoute: typeof PatientRoute
+    }
+    '/patient/complete': {
+      id: '/patient/complete'
+      path: '/complete'
+      fullPath: '/patient/complete'
+      preLoaderRoute: typeof PatientCompleteRouteImport
+      parentRoute: typeof PatientRoute
+    }
+    '/patient/authenticator-verify': {
+      id: '/patient/authenticator-verify'
+      path: '/authenticator-verify'
+      fullPath: '/patient/authenticator-verify'
+      preLoaderRoute: typeof PatientAuthenticatorVerifyRouteImport
+      parentRoute: typeof PatientRoute
+    }
+    '/patient/authenticator-qr': {
+      id: '/patient/authenticator-qr'
+      path: '/authenticator-qr'
+      fullPath: '/patient/authenticator-qr'
+      preLoaderRoute: typeof PatientAuthenticatorQrRouteImport
+      parentRoute: typeof PatientRoute
     }
     '/dashboard/$patientId': {
       id: '/dashboard/$patientId'
@@ -924,6 +1116,33 @@ const AdminRouteChildren: AdminRouteChildren = {
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
+interface PatientRouteChildren {
+  PatientAuthenticatorQrRoute: typeof PatientAuthenticatorQrRoute
+  PatientAuthenticatorVerifyRoute: typeof PatientAuthenticatorVerifyRoute
+  PatientCompleteRoute: typeof PatientCompleteRoute
+  PatientCompleteSkippedRoute: typeof PatientCompleteSkippedRoute
+  PatientPasswordRoute: typeof PatientPasswordRoute
+  PatientSmsPhoneRoute: typeof PatientSmsPhoneRoute
+  PatientSmsVerifyRoute: typeof PatientSmsVerifyRoute
+  PatientVerifyMethodRoute: typeof PatientVerifyMethodRoute
+  PatientWelcomeRoute: typeof PatientWelcomeRoute
+}
+
+const PatientRouteChildren: PatientRouteChildren = {
+  PatientAuthenticatorQrRoute: PatientAuthenticatorQrRoute,
+  PatientAuthenticatorVerifyRoute: PatientAuthenticatorVerifyRoute,
+  PatientCompleteRoute: PatientCompleteRoute,
+  PatientCompleteSkippedRoute: PatientCompleteSkippedRoute,
+  PatientPasswordRoute: PatientPasswordRoute,
+  PatientSmsPhoneRoute: PatientSmsPhoneRoute,
+  PatientSmsVerifyRoute: PatientSmsVerifyRoute,
+  PatientVerifyMethodRoute: PatientVerifyMethodRoute,
+  PatientWelcomeRoute: PatientWelcomeRoute,
+}
+
+const PatientRouteWithChildren =
+  PatientRoute._addFileChildren(PatientRouteChildren)
+
 interface DashboardPatientIdRouteChildren {
   DashboardPatientIdProfileRoute: typeof DashboardPatientIdProfileRoute
   DashboardPatientIdIndexRoute: typeof DashboardPatientIdIndexRoute
@@ -946,6 +1165,7 @@ const rootRouteChildren: RootRouteChildren = {
   CompleteSkippedRoute: CompleteSkippedRoute,
   ExpiredRoute: ExpiredRoute,
   PasswordRoute: PasswordRoute,
+  PatientRoute: PatientRouteWithChildren,
   RosterRoute: RosterRoute,
   SmsPhoneRoute: SmsPhoneRoute,
   SmsVerifyRoute: SmsVerifyRoute,

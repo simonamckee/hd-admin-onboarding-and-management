@@ -25,6 +25,7 @@ function Screen1A() {
       </div>
       <TestingLink to="/expired">test expired state →</TestingLink>
       <TestingLink to="/admin/patients">skip to Patient management →</TestingLink>
+      <TestingLink to="/patient/password">go to patient setup flow →</TestingLink>
     </Page>
   );
 }
