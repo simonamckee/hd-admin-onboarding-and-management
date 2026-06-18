@@ -35,7 +35,11 @@ export function AdminShell({ heading, children }: { heading: string; children: R
           background: TEAL,
           display: "flex",
           flexDirection: "column",
-          alignSelf: "stretch",
+          alignSelf: "flex-start",
+          position: "sticky",
+          top: 0,
+          height: "100vh",
+          overflowY: "auto",
         }}
       >
         <div
