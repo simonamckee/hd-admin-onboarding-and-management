@@ -134,7 +134,7 @@ const PATIENTS: Patient[] = [
 
 const SORT_OPTIONS = ["At risk first", "Longest unseen", "A – Z"];
 
-type FilterKey = "risk" | "tir" | "gmi" | "cgm" | "pump";
+type FilterKey = "risk" | "tir" | "gmi" | "cgm" | "pump" | "messages";
 const FILTERS: { key: FilterKey; label: string; icon: ReactNode }[] = [
   { key: "risk", label: "Predicted risk", icon: <AlertTriangle size={10} /> },
   { key: "tir", label: "High TIR", icon: null },
