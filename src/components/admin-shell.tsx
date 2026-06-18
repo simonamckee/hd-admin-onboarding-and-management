@@ -1,8 +1,8 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useState, type ReactNode } from "react";
 import { Settings, Users, ChevronDown, ChevronRight } from "lucide-react";
-import { WF_BG, WF_DARK, WF_MID, TEAL, BORDER, SURFACE, HAIBU_LOGO_URL } from "./wireframe";
-import { MessageBubble } from "@/components/message-bubble";
+import { WF_BG, WF_DARK, WF_MID, TEAL, HAIBU_LOGO_URL } from "./wireframe";
+
 
 const ADMIN_NAV: Array<{ label: string; to: string }> = [
   { label: "Clinic information", to: "/admin" },
@@ -35,7 +35,11 @@ export function AdminShell({ heading, children }: { heading: string; children: R
           background: TEAL,
           display: "flex",
           flexDirection: "column",
-          alignSelf: "stretch",
+          alignSelf: "flex-start",
+          position: "sticky",
+          top: 0,
+          height: "100vh",
+          overflowY: "auto",
         }}
       >
         <div
@@ -126,11 +130,19 @@ export function AdminShell({ heading, children }: { heading: string; children: R
 
         </nav>
         <div style={{ borderTop: "1px solid rgba(255,255,255,0.15)", padding: 16 }}>
-          <div style={{ fontSize: 14, color: "rgba(255,255,255,0.7)", marginBottom: 4 }}>
-            Dr. Reyes
-          </div>
-          <div style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", marginBottom: 12 }}>
-            Clinician
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+            <img
+              src="https://randomuser.me/api/portraits/men/32.jpg"
+              alt="Dr. Reyes"
+              style={{
+                width: 32, height: 32, borderRadius: "50%",
+                border: "1.5px solid rgba(255,255,255,0.6)", objectFit: "cover", flexShrink: 0,
+              }}
+            />
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <div style={{ fontSize: 14, color: "rgba(255,255,255,0.9)" }}>Dr. Reyes</div>
+              <div style={{ fontSize: 12, color: "rgba(255,255,255,0.6)" }}>Clinician</div>
+            </div>
           </div>
           <Link
             to="/complete"
@@ -141,36 +153,9 @@ export function AdminShell({ heading, children }: { heading: string; children: R
         </div>
       </aside>
 
-      {/* Right column: top bar + main */}
+      {/* Right column: main */}
       <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0 }}>
-        <div
-          style={{
-            background: SURFACE,
-            color: WF_DARK,
-            height: TOPBAR_H,
-            padding: "0 20px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-end",
-            borderBottom: `1px solid ${BORDER}4D`,
-            boxSizing: "border-box",
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-            <MessageBubble hasMessages={false} size={22} />
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <img
-                src="https://randomuser.me/api/portraits/men/32.jpg"
-                alt="Dr. Reyes"
-                style={{
-                  width: 30, height: 30, borderRadius: "50%", border: `1.5px solid ${TEAL}`,
-                  objectFit: "cover", flexShrink: 0,
-                }}
-              />
-              <span style={{ fontSize: 14, color: WF_DARK, fontWeight: 500 }}>Dr. Reyes</span>
-            </div>
-          </div>
-        </div>
+
 
         <main style={{ flex: 1, padding: 32, background: WF_BG }}>
           <h1 style={{ fontSize: 24, fontWeight: 700, color: TEAL, margin: "0 0 24px 0" }}>

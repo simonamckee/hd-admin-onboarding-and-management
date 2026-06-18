@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Trash2, User } from "lucide-react";
+import { Trash2, User, X, ArrowLeft } from "lucide-react";
+import { MessageBubble } from "@/components/message-bubble";
 import { AdminShell } from "@/components/admin-shell";
 import {
   TEAL,
@@ -56,8 +57,265 @@ function Badge({ children, bg, color }: { children: React.ReactNode; bg: string;
   );
 }
 
+type ChatMsg = {
+  id: string;
+  from: "clinician" | "recipient";
+  text: string;
+  status?: "Delivered" | "Sending…" | "Failed";
+  time: string;
+  unread?: boolean;
+};
+
+type ThreadId = "margaret" | "sarah";
+
+const INITIAL_THREADS: Record<ThreadId, ChatMsg[]> = {
+  margaret: [
+    {
+      id: "m1",
+      from: "clinician",
+      text: "Hi Margaret, just a reminder that Sarah's appointment is tomorrow at 2pm. Please bring her CGM reader if possible.",
+      status: "Delivered",
+      time: "2 days ago",
+    },
+    {
+      id: "m2",
+      from: "recipient",
+      text: "Thank you! We'll be there. Should she fast beforehand?",
+      time: "1 day ago",
+      unread: true,
+    },
+    {
+      id: "m3",
+      from: "clinician",
+      text: "Also, can you confirm her insulin-to-carb ratio hasn't changed?",
+      status: "Failed",
+      time: "3 hours ago",
+    },
+  ],
+  sarah: [],
+};
+
+const RECIPIENTS: Record<ThreadId, { name: string; relationship: string }> = {
+  margaret: { name: "Margaret Chen", relationship: "Parent" },
+  sarah: { name: "Sarah Chen", relationship: "Patient" },
+};
+
+function ChatPanel({ onClose }: { onClose: () => void }) {
+  const [threads, setThreads] = useState(INITIAL_THREADS);
+  const [activeThread, setActiveThread] = useState<ThreadId | null>(null);
+  const [draft, setDraft] = useState("");
+
+  const updateStatus = (threadId: ThreadId, msgId: string, status: ChatMsg["status"]) => {
+    setThreads((prev) => ({
+      ...prev,
+      [threadId]: prev[threadId].map((m) => (m.id === msgId ? { ...m, status } : m)),
+    }));
+  };
+
+  const retry = (threadId: ThreadId, msgId: string) => {
+    updateStatus(threadId, msgId, "Sending…");
+    setTimeout(() => updateStatus(threadId, msgId, "Delivered"), 1500);
+  };
+
+  const sendMessage = () => {
+    if (!draft.trim() || !activeThread) return;
+    const newMsg: ChatMsg = {
+      id: `c${Date.now()}`,
+      from: "clinician",
+      text: draft.trim(),
+      status: "Delivered",
+      time: "Just now",
+    };
+    setThreads((prev) => ({ ...prev, [activeThread]: [...prev[activeThread], newMsg] }));
+    setDraft("");
+  };
+
+  return (
+    <div
+      style={{
+        position: "fixed",
+        bottom: 24,
+        right: 24,
+        width: 360,
+        height: 500,
+        background: "#fff",
+        border: "0.5px solid #e0e4e5",
+        borderRadius: 12,
+        boxShadow: "0 8px 32px rgba(0,0,0,0.18)",
+        zIndex: 1000,
+        display: "flex",
+        flexDirection: "column",
+        overflow: "hidden",
+      }}
+    >
+      {activeThread === null ? (
+        <>
+          <div style={{
+            padding: "14px 16px", borderBottom: `0.5px solid ${BORDER}`,
+            display: "flex", justifyContent: "space-between", alignItems: "center",
+          }}>
+            <span style={{ fontSize: 16, fontWeight: 700, color: WF_DARK }}>Messages</span>
+            <button onClick={onClose} style={{
+              background: "transparent", border: "none", cursor: "pointer", color: WF_MID,
+              padding: 4, display: "flex",
+            }}>
+              <X size={18} />
+            </button>
+          </div>
+          <div style={{ flex: 1, overflowY: "auto" }}>
+            {(Object.keys(RECIPIENTS) as ThreadId[]).map((tid) => {
+              const r = RECIPIENTS[tid];
+              const msgs = threads[tid];
+              const last = msgs[msgs.length - 1];
+              const hasUnread = msgs.some((m) => m.unread);
+              return (
+                <button
+                  key={tid}
+                  onClick={() => setActiveThread(tid)}
+                  style={{
+                    width: "100%", textAlign: "left", background: "transparent",
+                    border: "none", borderBottom: `0.5px solid ${BORDER}`,
+                    padding: "12px 16px", cursor: "pointer", fontFamily: "inherit",
+                    display: "flex", flexDirection: "column", gap: 4,
+                  }}
+                >
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span style={{ fontSize: 14, fontWeight: 600, color: WF_DARK }}>
+                      {r.name} · <span style={{ color: WF_MID, fontWeight: 400 }}>{r.relationship}</span>
+                    </span>
+                    {hasUnread && (
+                      <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#e24b4a" }} />
+                    )}
+                  </div>
+                  <div style={{
+                    fontSize: 13, color: last ? WF_MID : "#aac4cc",
+                    overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
+                    fontStyle: last ? "normal" : "italic",
+                  }}>
+                    {last ? last.text : "No messages yet"}
+                  </div>
+                  {last && (
+                    <div style={{ fontSize: 11, color: WF_MID }}>
+                      {tid === "margaret" ? "1d ago" : ""}
+                    </div>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </>
+      ) : (
+        <>
+          <div style={{
+            padding: "12px 16px", borderBottom: `0.5px solid ${BORDER}`,
+            display: "flex", alignItems: "center", gap: 10,
+          }}>
+            <button onClick={() => setActiveThread(null)} style={{
+              background: "transparent", border: "none", cursor: "pointer", color: WF_MID,
+              padding: 4, display: "flex",
+            }}>
+              <ArrowLeft size={18} />
+            </button>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 14, fontWeight: 700, color: WF_DARK }}>
+                {RECIPIENTS[activeThread].name}
+              </div>
+              <div style={{ fontSize: 12, color: WF_MID }}>
+                {RECIPIENTS[activeThread].relationship}
+              </div>
+            </div>
+            <button onClick={onClose} style={{
+              background: "transparent", border: "none", cursor: "pointer", color: WF_MID,
+              padding: 4, display: "flex",
+            }}>
+              <X size={18} />
+            </button>
+          </div>
+          <div style={{ flex: 1, overflowY: "auto", padding: 12, display: "flex", flexDirection: "column", gap: 10 }}>
+            {threads[activeThread].length === 0 ? (
+              <div style={{
+                margin: "auto", textAlign: "center", color: WF_MID, fontSize: 13,
+                padding: "0 24px",
+              }}>
+                No messages yet. Send a message to start the conversation.
+              </div>
+            ) : (
+              threads[activeThread].map((m) => {
+                const isClin = m.from === "clinician";
+                return (
+                  <div key={m.id} style={{
+                    display: "flex", flexDirection: "column",
+                    alignItems: isClin ? "flex-end" : "flex-start",
+                    gap: 2,
+                  }}>
+                    <div style={{
+                      maxWidth: "80%",
+                      background: isClin ? "#00565B" : "#f0f2f3",
+                      color: isClin ? "#fff" : WF_DARK,
+                      padding: "8px 12px",
+                      borderRadius: 12,
+                      fontSize: 13,
+                      lineHeight: 1.4,
+                    }}>
+                      {m.text}
+                    </div>
+                    <div style={{ fontSize: 10, color: WF_MID, display: "flex", gap: 6, alignItems: "center" }}>
+                      {isClin && m.status === "Failed" ? (
+                        <span
+                          onClick={() => retry(activeThread, m.id)}
+                          style={{ color: ERROR_TEXT, cursor: "pointer", fontWeight: 500 }}
+                        >
+                          Failed · Retry
+                        </span>
+                      ) : isClin && m.status ? (
+                        <span>{m.status}</span>
+                      ) : !isClin && m.unread ? (
+                        <span style={{
+                          background: TEAL, color: "#fff", padding: "1px 6px",
+                          borderRadius: 6, fontSize: 9, fontWeight: 600,
+                        }}>NEW</span>
+                      ) : null}
+                      <span>· {m.time}</span>
+                    </div>
+                  </div>
+                );
+              })
+            )}
+          </div>
+          <div style={{
+            borderTop: `0.5px solid ${BORDER}`, padding: 10,
+            display: "flex", gap: 8,
+          }}>
+            <input
+              value={draft}
+              onChange={(e) => setDraft(e.target.value)}
+              onKeyDown={(e) => { if (e.key === "Enter") sendMessage(); }}
+              placeholder="Type a message…"
+              style={{
+                flex: 1, fontSize: 13, padding: "8px 10px",
+                border: `0.5px solid ${BORDER}`, borderRadius: 6,
+                fontFamily: "inherit", outline: "none",
+              }}
+            />
+            <button onClick={sendMessage} style={{
+              background: TEAL, color: "#fff", border: "none", borderRadius: 6,
+              padding: "0 14px", fontSize: 13, fontWeight: 600, cursor: "pointer",
+              fontFamily: "inherit",
+            }}>
+              Send
+            </button>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 function PatientHeader() {
   const [hover, setHover] = useState(false);
+  const [chatOpen, setChatOpen] = useState(false);
+  const chatEnabled = true;
+
   return (
     <div
       style={{
@@ -75,7 +333,28 @@ function PatientHeader() {
             border: "2px solid #c8e8df", objectFit: "cover",
           }}
         />
-        <div style={{ fontSize: 22, fontWeight: 700, color: WF_DARK }}>Sarah Chen</div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+          <div style={{ fontSize: 22, fontWeight: 700, color: WF_DARK, lineHeight: 1.1 }}>
+            Sarah Chen
+          </div>
+          <Link
+            to="/dashboard/$patientId/profile"
+            onMouseEnter={() => setHover(true)}
+            onMouseLeave={() => setHover(false)}
+            style={{
+              fontSize: 15,
+              fontWeight: 600,
+              color: TEAL,
+              textDecoration: hover ? "underline" : "none",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 4,
+            }}
+          >
+            <User size={14} />
+            View Care profile →
+          </Link>
+        </div>
         <span style={{ color: "#aac4cc", fontSize: 18, fontWeight: 300 }}>|</span>
         <div style={{ fontSize: 15, color: WF_MID }}>15 Jun 1978 · Age 47</div>
         <span style={{ color: "#aac4cc", fontSize: 18, fontWeight: 300 }}>|</span>
@@ -96,36 +375,36 @@ function PatientHeader() {
         <div style={{ fontSize: 15, color: WF_DARK }}>⚕ Dr. Reyes</div>
         <span style={{ color: "#aac4cc", fontSize: 18, fontWeight: 300 }}>|</span>
         <div style={{ fontSize: 15, color: WF_MID }}>Last seen: 2 days ago</div>
-        <span style={{ color: "#aac4cc", fontSize: 18, fontWeight: 300 }}>|</span>
-        <Link
-          to="/dashboard/$patientId/profile"
-          onMouseEnter={() => setHover(true)}
-          onMouseLeave={() => setHover(false)}
-          style={{
-            fontSize: 14,
-            fontWeight: 500,
-            color: TEAL,
-            textDecoration: hover ? "underline" : "none",
-            display: "flex",
-            alignItems: "center",
-            gap: 4,
-            marginLeft: 8,
-          }}
-        >
-          <User size={14} />
-          View Care profile →
-        </Link>
+        {chatEnabled && (
+          <button
+            onClick={() => setChatOpen((v) => !v)}
+            aria-label="Open messages"
+            style={{
+              marginLeft: "auto",
+              background: "transparent",
+              border: "none",
+              cursor: "pointer",
+              padding: 6,
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <MessageBubble hasMessages={true} size={26} />
+          </button>
+        )}
       </div>
-      <div style={{ display: "flex", gap: 6, marginTop: 10 }}>
+      <div style={{ display: "flex", gap: 6, marginTop: 10, paddingLeft: 58 }}>
         <Badge bg={SUCCESS_BG} color={SUCCESS_TEXT}>Active</Badge>
         <Badge bg={SUCCESS_BG} color={SUCCESS_TEXT}>CGM connected</Badge>
         <Badge bg={SUCCESS_BG} color={SUCCESS_TEXT}>Pump connected</Badge>
         <Badge bg="#fcebeb" color="#791f1f">DKA risk</Badge>
         <Badge bg={WARN_BG} color={WARN_TEXT}>Low TIR</Badge>
       </div>
+      {chatEnabled && chatOpen && <ChatPanel onClose={() => setChatOpen(false)} />}
     </div>
   );
 }
+
 
 function Pill({
   active,
