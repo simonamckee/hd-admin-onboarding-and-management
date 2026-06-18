@@ -141,6 +141,7 @@ const FILTERS: { key: FilterKey; label: string; icon: ReactNode }[] = [
   { key: "gmi", label: "High GMI", icon: null },
   { key: "cgm", label: "Using CGM", icon: <Watch size={10} /> },
   { key: "pump", label: "Using pump", icon: <Droplet size={10} /> },
+  { key: "messages", label: "Pending messages", icon: <MessageBubble hasMessages={true} size={12} /> },
 ];
 
 
