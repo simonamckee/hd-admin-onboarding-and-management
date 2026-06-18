@@ -130,11 +130,19 @@ export function AdminShell({ heading, children }: { heading: string; children: R
 
         </nav>
         <div style={{ borderTop: "1px solid rgba(255,255,255,0.15)", padding: 16 }}>
-          <div style={{ fontSize: 14, color: "rgba(255,255,255,0.7)", marginBottom: 4 }}>
-            Dr. Reyes
-          </div>
-          <div style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", marginBottom: 12 }}>
-            Clinician
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+            <img
+              src="https://randomuser.me/api/portraits/men/32.jpg"
+              alt="Dr. Reyes"
+              style={{
+                width: 32, height: 32, borderRadius: "50%",
+                border: "1.5px solid rgba(255,255,255,0.6)", objectFit: "cover", flexShrink: 0,
+              }}
+            />
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <div style={{ fontSize: 14, color: "rgba(255,255,255,0.9)" }}>Dr. Reyes</div>
+              <div style={{ fontSize: 12, color: "rgba(255,255,255,0.6)" }}>Clinician</div>
+            </div>
           </div>
           <Link
             to="/complete"
