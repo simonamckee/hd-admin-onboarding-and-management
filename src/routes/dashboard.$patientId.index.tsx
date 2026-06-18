@@ -399,8 +399,7 @@ function PatientHeader() {
               </button>
             )}
           </div>
-          <div style={{ display: "flex", gap: 6 }}>
-            <div style={{ width: BADGE_OFFSET, flexShrink: 0 }} />
+          <div style={{ display: "flex", gap: 6, paddingLeft: BADGE_OFFSET }}>
             <Badge bg={SUCCESS_BG} color={SUCCESS_TEXT}>Active</Badge>
             <Badge bg={SUCCESS_BG} color={SUCCESS_TEXT}>CGM connected</Badge>
             <Badge bg={SUCCESS_BG} color={SUCCESS_TEXT}>Pump connected</Badge>
