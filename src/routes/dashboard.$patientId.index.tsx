@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Trash2, User } from "lucide-react";
+import { Trash2, User, X, ArrowLeft } from "lucide-react";
+import { MessageBubble } from "@/components/message-bubble";
 import { AdminShell } from "@/components/admin-shell";
 import {
   TEAL,
