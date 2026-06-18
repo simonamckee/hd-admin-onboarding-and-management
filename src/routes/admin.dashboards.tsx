@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
-import { WF_BG, WF_DARK, WF_MID, TEAL } from "@/components/wireframe";
+import { WF_BG, WF_DARK, WF_MID, TEAL, BORDER } from "@/components/wireframe";
 import { useDashboardTemplate, type ClinicianModules } from "@/lib/dashboard-template";
 
 export const Route = createFileRoute("/admin/dashboards")({ component: DashboardTemplates });
@@ -14,7 +14,7 @@ const CLIN_LEFT_DEFAULT: Module[] = [
   { id: "glucose", name: "Glucose" },
   { id: "insulin", name: "Insulin" },
   { id: "labs", name: "Labs & test results" },
-  { id: "completedForms", name: "Completed forms" },
+  { id: "completedForms", name: "Forms" },
   { id: "appointments", name: "Appointments" },
   { id: "completedTasks", name: "Completed tasks" },
 ];
@@ -23,6 +23,7 @@ const CLIN_RIGHT_DEFAULT: Module[] = [
   { id: "resources", name: "Resources" },
   { id: "assignedForms", name: "Assigned forms" },
   { id: "assignedTasks", name: "Assigned tasks" },
+  { id: "tasks", name: "Tasks" },
 ];
 const CLIN_ALL = [...CLIN_LEFT_DEFAULT, ...CLIN_RIGHT_DEFAULT];
 const CLIN_BY_ID: Record<string, Module> = Object.fromEntries(CLIN_ALL.map((m) => [m.id, m]));
@@ -31,9 +32,12 @@ const CLIN_BY_ID: Record<string, Module> = Object.fromEntries(CLIN_ALL.map((m) =
 const PATIENT_DEFAULT: Module[] = [
   { id: "glucose", name: "Glucose" },
   { id: "insulin", name: "Insulin" },
-  { id: "labs", name: "Labs & test results" },
-  { id: "completedForms", name: "Completed forms" },
+  { id: "forms", name: "Forms" },
+  { id: "tasks", name: "Tasks" },
+  { id: "recommendations", name: "Recommendations" },
+  { id: "resources", name: "Resources" },
   { id: "appointments", name: "Appointments" },
+  { id: "labs", name: "Labs and test results" },
 ];
 
 const CARD: React.CSSProperties = {
@@ -49,7 +53,7 @@ function DashboardTemplates() {
   const helper =
     tab === "clinician"
       ? "Define how the patient dashboard is laid out when a clinician opens it. Changes apply to new clinician accounts only — existing layouts are not affected."
-      : "Define how the patient dashboard is laid out when a patient opens it. Most patients access Haibu on mobile. Changes apply to new patient accounts only — existing layouts are not affected.";
+      : "Define the default order of modules on the patient dashboard. Patients can reorder their own modules after first login — this sets their starting view. The Care profile section is fixed and cannot be reordered.";
 
   return (
     <AdminShell heading="">
@@ -941,7 +945,6 @@ function Bubble({ from, children }: { from: "patient" | "clinician"; children: R
 
 function PatientBuilder() {
   const [modules, setModules] = useState<Module[]>(PATIENT_DEFAULT);
-  const [showPreview, setShowPreview] = useState(false);
   const [minError, setMinError] = useState(false);
 
   const present = new Set(modules.map((m) => m.id));
@@ -1018,12 +1021,17 @@ function PatientBuilder() {
         tooltip="On mobile, Messages appears as a floating chat button fixed to the bottom of the screen. It is always accessible and does not need to be placed in the layout."
       />
 
-      <PreviewToggle
-        label="Preview — patient view on mobile"
-        open={showPreview}
-        onToggle={() => setShowPreview(!showPreview)}
-      />
-      {showPreview && <PatientPreview modules={modules} />}
+      <div style={{
+        fontSize: 14,
+        color: WF_MID,
+        fontStyle: "italic",
+        marginTop: 16,
+        padding: "10px 14px",
+        border: `1px dashed ${BORDER}`,
+        borderRadius: 8,
+      }}>
+        Patient dashboard preview coming soon.
+      </div>
 
       <SaveFooter tab="patient" disabled={modules.length === 0} />
     </>
