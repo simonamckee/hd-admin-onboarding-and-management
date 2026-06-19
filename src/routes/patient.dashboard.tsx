@@ -709,7 +709,7 @@ function BottomNav({ active, onTab }: {
     { key: "forms", label: "Forms", dotCat: "forms" },
     { key: "tasks", label: "Tasks", dotCat: "tasks" },
     { key: "recommendations", label: "Recommendations", dotCat: "recommendations" },
-    { key: "chat", label: "Chat" },
+    ...(chatEnabled ? [{ key: "chat" as TabKey, label: "Chat" }] : []),
   ];
   return (
     <div style={{
@@ -719,7 +719,9 @@ function BottomNav({ active, onTab }: {
     }}>
       {tabs.map((t) => {
         const isActive = active === t.key;
-        const hasDot = t.dotCat ? notif.state[t.dotCat].length > 0 : false;
+        const hasDot = t.key === "chat"
+          ? notif.hasUnreadChat
+          : t.dotCat ? notif.state[t.dotCat].length > 0 : false;
         return (
           <div
             key={t.key}
@@ -737,9 +739,11 @@ function BottomNav({ active, onTab }: {
                 height: 2, background: TEAL,
               }} />
             )}
-            <NavIcon kind={t.key} />
+            {t.key === "chat"
+              ? <MessageBubble hasMessages={notif.hasUnreadChat} size={20} />
+              : <NavIcon kind={t.key} />}
             <div style={{ fontSize: 11, fontWeight: 500 }}>{t.label}</div>
-            {hasDot && (
+            {hasDot && t.key !== "chat" && (
               <span style={{
                 position: "absolute", top: 8, right: "calc(50% - 14px)",
                 width: 7, height: 7, borderRadius: "50%", background: RED,
@@ -748,6 +752,237 @@ function BottomNav({ active, onTab }: {
           </div>
         );
       })}
+    </div>
+  );
+}
+
+// ============ PATIENT CHAT PANEL ============
+
+type ChatMsg = {
+  id: string;
+  from: "patient" | "clinician";
+  text: string;
+  time: string;
+  status?: "delivered" | "failed";
+};
+
+type ChatThread = {
+  id: string;
+  name: string;
+  role: string;
+  initials: string;
+  preview: string;
+  timestamp: string;
+  unread: boolean;
+  messages: ChatMsg[];
+};
+
+const INITIAL_THREADS: ChatThread[] = [
+  {
+    id: "reyes",
+    name: "Dr. Sarah Reyes",
+    role: "Pediatric Endocrinologist",
+    initials: "SR",
+    preview: "Your glucose levels look stable this week.",
+    timestamp: "Today, 9:41 AM",
+    unread: true,
+    messages: [
+      { id: "m1", from: "clinician", text: "Your glucose levels look stable this week.", time: "Today, 9:41 AM" },
+      { id: "m2", from: "patient", text: "Thanks! I had a few highs after dinner on Wednesday.", time: "Today, 9:45 AM", status: "delivered" },
+      { id: "m3", from: "clinician", text: "That can happen. Try to log what you ate so we can review it at your next visit.", time: "Today, 9:47 AM" },
+    ],
+  },
+  {
+    id: "tran",
+    name: "Dr. Michael Tran",
+    role: "Diabetes Nurse Educator",
+    initials: "MT",
+    preview: "Remember to log your meals before your next appointment.",
+    timestamp: "Yesterday",
+    unread: false,
+    messages: [
+      { id: "m1", from: "clinician", text: "Remember to log your meals before your next appointment.", time: "Yesterday, 2:15 PM" },
+    ],
+  },
+];
+
+function PatientChatPanel({ onClose }: { onClose: () => void }) {
+  const notif = useNotif();
+  const [threads, setThreads] = useState<ChatThread[]>(INITIAL_THREADS);
+  const [openId, setOpenId] = useState<string | null>(null);
+  const [draft, setDraft] = useState("");
+
+  const openThread = (id: string) => {
+    setOpenId(id);
+    setThreads((ts) => {
+      const next = ts.map((t) => t.id === id ? { ...t, unread: false } : t);
+      if (!next.some((t) => t.unread)) notif.setHasUnreadChat(false);
+      return next;
+    });
+  };
+
+  const sendMessage = () => {
+    if (!draft.trim() || !openId) return;
+    const newMsg: ChatMsg = {
+      id: `m-${Date.now()}`,
+      from: "patient",
+      text: draft.trim(),
+      time: "Now",
+      status: "delivered",
+    };
+    setThreads((ts) => ts.map((t) =>
+      t.id === openId ? { ...t, messages: [...t.messages, newMsg] } : t
+    ));
+    setDraft("");
+  };
+
+  const retry = (threadId: string, msgId: string) => {
+    setTimeout(() => {
+      setThreads((ts) => ts.map((t) =>
+        t.id === threadId
+          ? { ...t, messages: t.messages.map((m) => m.id === msgId ? { ...m, status: "delivered" } : m) }
+          : t
+      ));
+    }, 800);
+  };
+
+  const openThreadObj = threads.find((t) => t.id === openId) || null;
+
+  const FAIL_RED = "#EF4444";
+
+  return (
+    <div style={{
+      position: "fixed", inset: 0, background: WF_BG, zIndex: 200,
+      display: "flex", flexDirection: "column",
+      maxWidth: 480, margin: "0 auto",
+      fontFamily: '"Urbanist", system-ui, -apple-system, Segoe UI, sans-serif',
+    }}>
+      {/* Header */}
+      <div style={{
+        position: "sticky", top: 0, background: SURFACE,
+        borderBottom: `1px solid ${BORDER}`, height: 56,
+        display: "flex", alignItems: "center", padding: "0 12px", gap: 8,
+      }}>
+        <button
+          onClick={() => openThreadObj ? setOpenId(null) : onClose()}
+          style={{
+            background: "none", border: "none", fontSize: 22, color: WF_DARK,
+            cursor: "pointer", padding: "4px 8px", fontFamily: "inherit",
+          }}
+        >←</button>
+        <div style={{ flex: 1, textAlign: "center", fontSize: 16, fontWeight: 600, color: WF_DARK }}>
+          {openThreadObj ? openThreadObj.name : "Messages"}
+        </div>
+        <div style={{ width: 36 }} />
+      </div>
+
+      {/* Body */}
+      {!openThreadObj ? (
+        <div style={{ flex: 1, overflowY: "auto" }}>
+          {threads.map((t) => (
+            <div
+              key={t.id}
+              onClick={() => openThread(t.id)}
+              style={{
+                display: "flex", alignItems: "center", gap: 12,
+                padding: "14px 16px", background: SURFACE,
+                borderBottom: `0.5px solid ${BORDER}`, cursor: "pointer",
+              }}
+            >
+              <span style={{
+                width: 8, height: 8, borderRadius: "50%",
+                background: t.unread ? TEAL : "transparent", flexShrink: 0,
+              }} />
+              <div style={{
+                width: 40, height: 40, borderRadius: "50%", background: TEAL,
+                color: "#fff", display: "flex", alignItems: "center",
+                justifyContent: "center", fontSize: 14, fontWeight: 600, flexShrink: 0,
+              }}>{t.initials}</div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: 15, fontWeight: 600, color: WF_DARK }}>{t.name}</div>
+                <div style={{ fontSize: 12, color: WF_MID, marginBottom: 2 }}>{t.role}</div>
+                <div style={{
+                  fontSize: 13, color: WF_MID, overflow: "hidden",
+                  textOverflow: "ellipsis", whiteSpace: "nowrap",
+                }}>{t.preview}</div>
+              </div>
+              <div style={{ fontSize: 11, color: WF_MID, flexShrink: 0, alignSelf: "flex-start" }}>
+                {t.timestamp}
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <>
+          <div style={{ flex: 1, overflowY: "auto", padding: 16 }}>
+            {openThreadObj.messages.map((m) => {
+              const isPatient = m.from === "patient";
+              return (
+                <div key={m.id} style={{
+                  display: "flex", flexDirection: "column",
+                  alignItems: isPatient ? "flex-end" : "flex-start",
+                  marginBottom: 14,
+                }}>
+                  <div style={{
+                    maxWidth: "78%", padding: "10px 14px", borderRadius: 14,
+                    background: isPatient ? TEAL : SURFACE,
+                    color: isPatient ? "#fff" : WF_DARK,
+                    border: isPatient ? "none" : `1px solid ${BORDER}`,
+                    fontSize: 15, lineHeight: 1.4, wordBreak: "break-word",
+                  }}>{m.text}</div>
+                  <div style={{ fontSize: 11, color: WF_MID, marginTop: 4 }}>{m.time}</div>
+                  {isPatient && m.status === "delivered" && (
+                    <div style={{ fontSize: 11, color: WF_MID, marginTop: 2 }}>Delivered</div>
+                  )}
+                  {isPatient && m.status === "failed" && (
+                    <div style={{ fontSize: 11, color: FAIL_RED, marginTop: 2 }}>
+                      Failed ·{" "}
+                      <span
+                        onClick={() => retry(openThreadObj.id, m.id)}
+                        style={{ textDecoration: "underline", cursor: "pointer" }}
+                      >Retry</span>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+          <div style={{
+            borderTop: `1px solid ${BORDER}`, background: SURFACE,
+            padding: "10px 12px", display: "flex", gap: 8, alignItems: "center",
+          }}>
+            <input
+              value={draft}
+              onChange={(e) => setDraft(e.target.value)}
+              onKeyDown={(e) => { if (e.key === "Enter") sendMessage(); }}
+              placeholder="Type a message…"
+              style={{
+                flex: 1, border: `1px solid ${BORDER}`, borderRadius: 20,
+                padding: "9px 14px", fontSize: 15, fontFamily: "inherit",
+                outline: "none", color: WF_DARK, background: SURFACE,
+              }}
+            />
+            <button
+              onClick={sendMessage}
+              disabled={!draft.trim()}
+              style={{
+                width: 38, height: 38, borderRadius: "50%",
+                background: draft.trim() ? TEAL : BORDER,
+                border: "none", color: "#fff",
+                cursor: draft.trim() ? "pointer" : "not-allowed",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                flexShrink: 0,
+              }}
+              aria-label="Send"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14M13 6l6 6-6 6" />
+              </svg>
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 }
