@@ -1066,8 +1066,8 @@ function CareProfilePage() {
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
-  const rowTwoCols: CSSProperties = { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 };
-  const rowThreeCols: CSSProperties = { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 20 };
+  const rowTwoCols: CSSProperties = { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 20 };
+  const rowThreeCols: CSSProperties = { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20 };
 
   return (
     <AdminShell heading="">
