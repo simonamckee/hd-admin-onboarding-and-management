@@ -528,7 +528,7 @@ function RosterPage() {
             </div>
           </div>
 
-          <MessageBubble hasMessages={true} size={22} />
+          
         </div>
 
         {/* Toolbar */}
