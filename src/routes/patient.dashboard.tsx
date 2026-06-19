@@ -8,6 +8,10 @@ import { MessageBubble } from "@/components/message-bubble";
 
 export const Route = createFileRoute("/patient/dashboard")({ component: PatientDashboard });
 
+// ============ Platform config (mock) ============
+
+const chatEnabled = true;
+
 // ============ Notification context ============
 
 type Category = "forms" | "tasks" | "recommendations" | "resources" | "labs";
@@ -17,6 +21,8 @@ type NotifCtx = {
   state: NotifState;
   markSeen: (cat: Category, id: string) => void;
   markAllSeen: (cat: Category) => void;
+  hasUnreadChat: boolean;
+  setHasUnreadChat: (v: boolean) => void;
 };
 
 const NotificationContext = createContext<NotifCtx | null>(null);
