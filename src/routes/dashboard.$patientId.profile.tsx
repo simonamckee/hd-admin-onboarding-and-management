@@ -878,7 +878,7 @@ function FormGrid({ children }: { children: ReactNode }) {
   return (
     <div style={{
       background: WF_BG, border: `0.5px solid ${BORDER}`, borderRadius: 6, padding: 16, marginBottom: 16,
-      display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12,
+      display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 12,
     }}>{children}</div>
   );
 }
