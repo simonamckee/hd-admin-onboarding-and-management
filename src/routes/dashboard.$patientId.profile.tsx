@@ -878,7 +878,7 @@ function FormGrid({ children }: { children: ReactNode }) {
   return (
     <div style={{
       background: WF_BG, border: `0.5px solid ${BORDER}`, borderRadius: 6, padding: 16, marginBottom: 16,
-      display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12,
+      display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 12,
     }}>{children}</div>
   );
 }
@@ -1066,8 +1066,8 @@ function CareProfilePage() {
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
-  const rowTwoCols: CSSProperties = { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 };
-  const rowThreeCols: CSSProperties = { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 20 };
+  const rowTwoCols: CSSProperties = { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 20 };
+  const rowThreeCols: CSSProperties = { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 20 };
 
   return (
     <AdminShell heading="">
@@ -1099,6 +1099,7 @@ function CareProfilePage() {
           <div style={{
             background: SURFACE, borderBottom: `0.5px solid ${BORDER}`,
             padding: "10px 24px", overflowX: "auto", whiteSpace: "nowrap",
+            WebkitOverflowScrolling: "touch",
           }}>
             <div style={{ display: "inline-flex", gap: 6 }}>
               {NAV_SECTIONS.map((s) => {
@@ -1129,7 +1130,7 @@ function CareProfilePage() {
         </div>
 
         {/* Content grid */}
-        <div style={{ padding: 24, display: "flex", flexDirection: "column", gap: 20 }}>
+        <div style={{ padding: 24, display: "flex", flexDirection: "column", gap: 20, maxWidth: 1200, margin: "0 auto", width: "100%", boxSizing: "border-box" }}>
           <div style={rowTwoCols}>
             <PrimarySupportersCard />
             <MedicalTeamCard />
