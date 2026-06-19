@@ -1002,7 +1002,13 @@ function PatientDashboard() {
   const markAllSeen = (cat: Category) =>
     setState((s) => ({ ...s, [cat]: [] }));
 
-  const ctx = useMemo<NotifCtx>(() => ({ state, markSeen, markAllSeen }), [state]);
+  const [hasUnreadChat, setHasUnreadChat] = useState(true);
+  const [chatOpen, setChatOpen] = useState(false);
+
+  const ctx = useMemo<NotifCtx>(
+    () => ({ state, markSeen, markAllSeen, hasUnreadChat, setHasUnreadChat }),
+    [state, hasUnreadChat],
+  );
 
   const [activeTab, setActiveTab] = useState<TabKey>("dashboard");
   const refs = {
