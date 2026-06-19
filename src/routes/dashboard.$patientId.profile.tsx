@@ -1099,6 +1099,7 @@ function CareProfilePage() {
           <div style={{
             background: SURFACE, borderBottom: `0.5px solid ${BORDER}`,
             padding: "10px 24px", overflowX: "auto", whiteSpace: "nowrap",
+            WebkitOverflowScrolling: "touch",
           }}>
             <div style={{ display: "inline-flex", gap: 6 }}>
               {NAV_SECTIONS.map((s) => {
