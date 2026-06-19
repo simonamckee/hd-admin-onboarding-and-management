@@ -1148,7 +1148,7 @@ function CareProfilePage() {
             </div>
             <MilestonesSection role={role} />
           </div>
-          <OtherSection />
+          {role === "clinician" && <OtherSection />}
         </div>
       </div>
     </AdminShell>
