@@ -1039,8 +1039,9 @@ function PatientDashboard() {
     } else if (k === "recommendations") {
       scrollTo("recommendations");
       markAllSeen("recommendations");
+    } else if (k === "chat") {
+      setChatOpen((v) => !v);
     }
-    // chat: no action
   };
 
   return (
