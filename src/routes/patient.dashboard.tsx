@@ -1091,6 +1091,7 @@ function PatientDashboard() {
           </div>
         </div>
         <BottomNav active={activeTab} onTab={onTab} />
+        {chatEnabled && chatOpen && <PatientChatPanel onClose={() => setChatOpen(false)} />}
       </div>
     </NotificationContext.Provider>
   );
