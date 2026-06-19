@@ -696,7 +696,7 @@ function NavIcon({ kind }: { kind: TabKey }) {
     case "recommendations":
       return <svg {...common}><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z" /></svg>;
     case "chat":
-      return <MessageBubble hasMessages={false} size={20} />;
+      return null;
   }
 }
 
