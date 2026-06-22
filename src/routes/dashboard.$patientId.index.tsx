@@ -1517,7 +1517,9 @@ function DashboardPage() {
   return (
     <AdminShell heading="">
       <div style={{ margin: "-32px", background: WF_BG, minHeight: "100vh" }}>
-        <PatientHeader />
+        <div style={{ position: "sticky", top: 0, zIndex: 10 }}>
+          <PatientHeader />
+        </div>
         <div style={{ padding: 24, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, alignItems: "start" }}>
           <div>{renderColumn(clinicianModules.patientData)}</div>
           <div style={{ position: "sticky", top: 20 }}>{renderColumn(clinicianModules.clinicalActions)}</div>
