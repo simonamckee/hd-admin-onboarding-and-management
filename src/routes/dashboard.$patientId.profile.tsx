@@ -916,24 +916,66 @@ const PRIMARY_SUPPORTERS: PrimarySupporter[] = [
   { id: "ps3", name: "Lisa Wong", relationship: "Family", email: "lisa.wong@example.com", phone: "(604) 555-0188", status: "Inactive" },
 ];
 
-function PrimarySupportersCard() {
+function PrimarySupportersCard({ role }: { role: Role }) {
+  const [supporters, setSupporters] = useState<PrimarySupporter[]>(PRIMARY_SUPPORTERS);
+  const [formOpen, setFormOpen] = useState(false);
+  const blank = { firstName: "", lastName: "", relationship: "", email: "" };
+  const [formValues, setFormValues] = useState(blank);
+  const [emailError, setEmailError] = useState<string | null>(null);
+
   const badgeStyle = (status: PrimarySupporter["status"]) => {
     if (status === "Active") return { background: SUCCESS_BG, color: SUCCESS_TEXT };
     if (status === "Invited") return { background: WARN_BG, color: WARN_TEXT };
     return { background: BORDER, color: WF_MID };
   };
 
+  const description =
+    role === "patient"
+      ? "People connected to this patient's account. Send an invitation to add a new supporter."
+      : "People connected to this patient's account. You can add a supporter on the patient's behalf.";
+
+  const emailValid = (e: string) => e.includes("@") && e.includes(".");
+  const isValid =
+    formValues.firstName.trim() !== "" &&
+    formValues.lastName.trim() !== "" &&
+    formValues.relationship !== "" &&
+    formValues.email.trim() !== "" &&
+    emailValid(formValues.email.trim());
+
+  const closeForm = () => {
+    setFormOpen(false);
+    setFormValues(blank);
+    setEmailError(null);
+  };
+
+  const submit = () => {
+    if (!isValid) return;
+    const email = formValues.email.trim();
+    const duplicate = supporters.some((s) => s.email.toLowerCase() === email.toLowerCase());
+    if (duplicate) {
+      setEmailError("A supporter with this email has already been invited.");
+      return;
+    }
+    const newSupporter: PrimarySupporter = {
+      id: "ps" + Date.now(),
+      name: `${formValues.firstName.trim()} ${formValues.lastName.trim()}`,
+      relationship: formValues.relationship,
+      email,
+      phone: "",
+      status: "Invited",
+    };
+    setSupporters((cur) => [...cur, newSupporter]);
+    closeForm();
+  };
+
   return (
     <div id="primary-supporters" style={card}>
-      <SectionHeader
-        title="Primary supporters"
-        description="People connected to this patient's account. Read-only here — manage from the supporters page."
-      />
-      {PRIMARY_SUPPORTERS.length === 0 ? (
+      <SectionHeader title="Primary supporters" description={description} />
+      {supporters.length === 0 ? (
         <EmptyState>No supporters added.</EmptyState>
       ) : (
         <div>
-          {PRIMARY_SUPPORTERS.map((s) => (
+          {supporters.map((s) => (
             <div key={s.id} style={{ padding: "12px 0", borderBottom: `0.5px solid #f0f2f3` }}>
               <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
                 <span style={{ fontSize: 14, color: WF_DARK, fontWeight: 600 }}>{s.name}</span>
@@ -941,10 +983,71 @@ function PrimarySupportersCard() {
               </div>
               <div style={{ fontSize: 14, color: WF_MID, marginTop: 2 }}>{s.relationship}</div>
               <div style={{ fontSize: 14, color: WF_DARK, marginTop: 2 }}>{s.email}</div>
-              <div style={{ fontSize: 14, color: WF_DARK, marginTop: 2 }}>{s.phone}</div>
+              {s.phone && <div style={{ fontSize: 14, color: WF_DARK, marginTop: 2 }}>{s.phone}</div>}
             </div>
           ))}
         </div>
+      )}
+
+      {formOpen ? (
+        <div style={{
+          background: WF_BG, border: `0.5px solid ${BORDER}`, borderRadius: 6, padding: 16, marginTop: 16,
+          display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12,
+        }}>
+          <div>
+            <FieldLabel>First name *</FieldLabel>
+            <Input value={formValues.firstName} onChange={(e) => setFormValues({ ...formValues, firstName: e.target.value })} />
+          </div>
+          <div>
+            <FieldLabel>Last name *</FieldLabel>
+            <Input value={formValues.lastName} onChange={(e) => setFormValues({ ...formValues, lastName: e.target.value })} />
+          </div>
+          <div style={{ gridColumn: "1 / -1" }}>
+            <FieldLabel>Relationship to patient *</FieldLabel>
+            <Select
+              value={formValues.relationship}
+              onChange={(e) => setFormValues({ ...formValues, relationship: e.target.value })}
+            >
+              <option value="">Select…</option>
+              <option>Parent</option>
+              <option>Guardian</option>
+              <option>Grandparent</option>
+              <option>Sibling</option>
+              <option>School staff</option>
+              <option>Other</option>
+            </Select>
+          </div>
+          <div style={{ gridColumn: "1 / -1" }}>
+            <FieldLabel>Email address *</FieldLabel>
+            <Input
+              type="email"
+              value={formValues.email}
+              onChange={(e) => { setFormValues({ ...formValues, email: e.target.value }); if (emailError) setEmailError(null); }}
+            />
+            {emailError && (
+              <div style={{ fontSize: 12, color: ERROR_TEXT, marginTop: 4 }}>{emailError}</div>
+            )}
+          </div>
+          <div style={{ gridColumn: "1 / -1", display: "flex", gap: 8, justifyContent: "flex-end", alignItems: "center" }}>
+            <button
+              onClick={closeForm}
+              style={{
+                background: "transparent", border: "none", color: WF_MID,
+                fontSize: 14, fontWeight: 500, cursor: "pointer", fontFamily: "inherit", padding: "6px 12px",
+              }}
+            >Cancel</button>
+            <PrimaryBtn small onClick={submit} disabled={!isValid}>Send invite</PrimaryBtn>
+          </div>
+        </div>
+      ) : (
+        <button
+          onClick={() => setFormOpen(true)}
+          style={{
+            marginTop: 16, width: "100%", background: "transparent", color: TEAL,
+            border: `1px solid ${TEAL}`, borderRadius: 6, padding: "10px 16px",
+            fontSize: 14, fontWeight: 500, cursor: "pointer", fontFamily: "inherit",
+          }}
+        >+ Add supporter</button>
       )}
     </div>
   );
