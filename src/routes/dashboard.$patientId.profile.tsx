@@ -1235,7 +1235,7 @@ function CareProfilePage() {
         {/* Content grid */}
         <div style={{ padding: 24, display: "flex", flexDirection: "column", gap: 20, maxWidth: 1200, margin: "0 auto", width: "100%", boxSizing: "border-box" }}>
           <div style={rowTwoCols}>
-            <PrimarySupportersCard />
+            <PrimarySupportersCard role={role} />
             <MedicalTeamCard />
           </div>
           <div style={rowThreeCols}>
