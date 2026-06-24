@@ -55,6 +55,7 @@ export function FormBuilder({ mode, existing }: { mode: "new" | "edit"; existing
   const [editingName, setEditingName] = useState(false);
   const [status, setStatus] = useState<"Draft" | "Active">(initialStatus);
   const [questions, setQuestions] = useState<Question[]>(initialQuestions);
+  const [patientVisible, setPatientVisible] = useState<boolean>(existing?.patientVisible ?? true);
   const [selectedId, setSelectedId] = useState<string | null>(initialQuestions[0]?.id ?? null);
   const [pickerOpen, setPickerOpen] = useState(false);
   const [dragId, setDragId] = useState<string | null>(null);
