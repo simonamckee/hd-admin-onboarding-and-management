@@ -1425,7 +1425,7 @@ function AssignedFormsTab({ role }: { role: Role }) {
             <div style={{ fontSize: 15, color: WF_DARK }}>{r.assigned}</div>
             <div style={{ fontSize: 11, color: overdue ? ERROR_TEXT : WF_MID, fontWeight: overdue ? 600 : 400, display: "flex", alignItems: "center", gap: 3 }}>
               <Calendar size={11} color={overdue ? ERROR_TEXT : WF_MID} />
-              <span>Due: {r.due}</span>
+              <span>{r.due}</span>
             </div>
             <div>
               <Badge
@@ -1473,14 +1473,17 @@ function AssignedFormsTab({ role }: { role: Role }) {
             <option>Nutrition diary</option>
             <option>Sleep & fatigue log</option>
           </select>
-          <input
-            type="date"
-            value={selDue}
-            onChange={(e) => setSelDue(e.target.value)}
-            aria-label="Due date (optional)"
-            placeholder="Due date (optional)"
-            style={{ border: `0.5px solid ${BORDER}`, borderRadius: 4, padding: "4px", fontSize: 12 }}
-          />
+          <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            <label style={{ fontSize: 11, color: WF_MID, fontWeight: 500 }}>
+              Due date — the patient will be asked to complete this form by this date
+            </label>
+            <input
+              type="date"
+              value={selDue}
+              onChange={(e) => setSelDue(e.target.value)}
+              style={{ border: `0.5px solid ${BORDER}`, borderRadius: 4, padding: "4px", fontSize: 12 }}
+            />
+          </div>
           <button
             onClick={() => {
               if (!selName) return;
@@ -1605,7 +1608,7 @@ function AssignedTasksTab({ role }: { role: Role }) {
             <span style={{ fontSize: 15, color: WF_DARK, minWidth: 0 }}>{t.text}</span>
             <span style={{ fontSize: 11, color: overdue ? ERROR_TEXT : WF_MID, fontWeight: overdue ? 600 : 400, display: "inline-flex", alignItems: "center", gap: 3 }}>
               <Calendar size={11} color={overdue ? ERROR_TEXT : WF_MID} />
-              <span>Due: {t.due}</span>
+              <span>{t.due}</span>
             </span>
             <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
               {overdue && <OverdueBadge />}
@@ -1660,13 +1663,17 @@ function AssignedTasksTab({ role }: { role: Role }) {
                 onChange={(e) => setNewText(e.target.value)}
                 style={{ flex: 1, border: `0.5px solid ${BORDER}`, borderRadius: 4, padding: "4px 8px", fontSize: 12 }}
               />
-              <input
-                type="date"
-                value={newDue}
-                onChange={(e) => setNewDue(e.target.value)}
-                aria-label="Due date (optional)"
-                style={{ border: `0.5px solid ${BORDER}`, borderRadius: 4, padding: "4px", fontSize: 12 }}
-              />
+              <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                <label style={{ fontSize: 11, color: WF_MID, fontWeight: 500 }}>
+                  Due date — the patient will be asked to complete this task by this date
+                </label>
+                <input
+                  type="date"
+                  value={newDue}
+                  onChange={(e) => setNewDue(e.target.value)}
+                  style={{ border: `0.5px solid ${BORDER}`, borderRadius: 4, padding: "4px", fontSize: 12 }}
+                />
+              </div>
               <button
                 onClick={() => {
                   if (newText.trim()) {
@@ -1692,13 +1699,17 @@ function AssignedTasksTab({ role }: { role: Role }) {
                 <option value="" disabled>Select a task…</option>
                 {LIBRARY_TASKS.map((t) => <option key={t}>{t}</option>)}
               </select>
-              <input
-                type="date"
-                value={newDue}
-                onChange={(e) => setNewDue(e.target.value)}
-                aria-label="Due date (optional)"
-                style={{ border: `0.5px solid ${BORDER}`, borderRadius: 4, padding: "4px", fontSize: 12 }}
-              />
+              <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                <label style={{ fontSize: 11, color: WF_MID, fontWeight: 500 }}>
+                  Due date — the patient will be asked to complete this task by this date
+                </label>
+                <input
+                  type="date"
+                  value={newDue}
+                  onChange={(e) => setNewDue(e.target.value)}
+                  style={{ border: `0.5px solid ${BORDER}`, borderRadius: 4, padding: "4px", fontSize: 12 }}
+                />
+              </div>
               <button
                 onClick={() => {
                   if (!libPick) return;
