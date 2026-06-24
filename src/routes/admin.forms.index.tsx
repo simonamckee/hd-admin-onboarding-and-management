@@ -22,33 +22,30 @@ type Form = {
   lastUsed: string;
   by: string;
   status: Status;
-  prebuilt?: boolean;
   subtitle?: string;
   assignedTo?: string;
   estTime?: string;
+  patientVisible?: boolean;
 };
-
-// extended Form fields for pre-built items live alongside the base FORMS array below
-
 
 const FORMS: Form[] = [
   {
     id: "t1dal-parent-u8",
     name: "T1DAL – Parent of Child Under 8",
     subtitle: "Type 1 Diabetes and Life — Quality of Life Measure",
-    added: "Pre-built",
-    lastUsed: "Validated scale",
-    by: "Haibu library",
+    added: "12 Jan 2026",
+    lastUsed: "Yesterday",
+    by: "Admin",
     status: "Active",
-    prebuilt: true,
     assignedTo: "Parent/Caregiver",
     estTime: "5–10 min",
+    patientVisible: true,
   },
-  { id: "initial-assessment", name: "Initial Assessment", added: "Jan 5, 2026", lastUsed: "2 days ago", by: "Dr. Sarah Chen", status: "Active" },
-  { id: "monthly-checkin", name: "Monthly Check-in", added: "Feb 12, 2026", lastUsed: "1 week ago", by: "Admin", status: "Active" },
-  { id: "hypo-report", name: "Hypoglycaemia Report", added: "Mar 1, 2026", lastUsed: "3 weeks ago", by: "Dr. James Okafor", status: "Active" },
-  { id: "school-nurse", name: "School Nurse Briefing", added: "Mar 18, 2026", lastUsed: "Never", by: "Admin", status: "Active" },
-  { id: "old-intake", name: "Old Intake Form", added: "Nov 3, 2025", lastUsed: "6 months ago", by: "Admin", status: "Archived" },
+  { id: "initial-assessment", name: "Initial Assessment", added: "Jan 5, 2026", lastUsed: "2 days ago", by: "Dr. Sarah Chen", status: "Active", patientVisible: true },
+  { id: "monthly-checkin", name: "Monthly Check-in", added: "Feb 12, 2026", lastUsed: "1 week ago", by: "Admin", status: "Active", patientVisible: true },
+  { id: "hypo-report", name: "Hypoglycaemia Report", added: "Mar 1, 2026", lastUsed: "3 weeks ago", by: "Dr. James Okafor", status: "Active", patientVisible: true },
+  { id: "school-nurse", name: "School Nurse Briefing", added: "Mar 18, 2026", lastUsed: "Never", by: "Admin", status: "Active", patientVisible: true },
+  { id: "old-intake", name: "Old Intake Form", added: "Nov 3, 2025", lastUsed: "6 months ago", by: "Admin", status: "Archived", patientVisible: true },
 ];
 
 function FormList() {
