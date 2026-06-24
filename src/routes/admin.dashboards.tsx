@@ -394,6 +394,7 @@ function ModuleCard({
     border: "none",
     cursor: "pointer",
     padding: "0 4px",
+    fontFamily: "inherit",
   };
   return (
     <div
@@ -418,12 +419,12 @@ function ModuleCard({
       <button onClick={onDown} disabled={!canMoveDown} style={iconBtnStyle(canMoveDown)} title="Move down">
         ↓
       </button>
-      {col === "right" && onMoveToCol && (
+      {MOVEABLE_IDS.includes(m.id) && col === "right" && onMoveToCol && (
         <button onClick={() => onMoveToCol(m.id, "left")} style={arrowStyle} title="Move to left column">
           ← Left
         </button>
       )}
-      {col === "left" && onMoveToCol && (
+      {MOVEABLE_IDS.includes(m.id) && col === "left" && onMoveToCol && (
         <button onClick={() => onMoveToCol(m.id, "right")} style={arrowStyle} title="Move to right column">
           Right →
         </button>
