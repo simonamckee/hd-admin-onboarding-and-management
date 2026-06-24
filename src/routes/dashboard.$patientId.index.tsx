@@ -1291,9 +1291,10 @@ function AssignedFormsTab({ role }: { role: Role }) {
     { name: "Monthly Check-in", assigned: "1 May 2026", due: "15 Jun 2026", status: "Pending" },
     { name: "Daily symptom log", assigned: "28 Apr 2026", due: "10 Jun 2026", status: "Pending" },
     { name: "Hypoglycaemia awareness", assigned: "1 May 2026", due: "1 Jul 2026", status: "Pending" },
-    { name: "Pre-appointment questionnaire", assigned: "1 May 2026", due: "—", status: "Completed" },
   ]);
   const [showSel, setShowSel] = useState(false);
+  const [selName, setSelName] = useState("");
+  const [selDue, setSelDue] = useState("");
   return (
     <div style={{ padding: 16 }}>
       <div
@@ -1340,7 +1341,7 @@ function AssignedFormsTab({ role }: { role: Role }) {
               </Badge>
             </div>
             <div style={{ display: "flex", justifyContent: "flex-end" }}>
-              {role === "clinician" && (
+              {role === "clinician" && r.status !== "Completed" && (
                 <Trash2
                   size={14}
                   color={WF_MID}
@@ -1362,27 +1363,44 @@ function AssignedFormsTab({ role }: { role: Role }) {
         + Assign form
       </button>
       {showSel && (
-        <select
-          onChange={(e) => {
-            const v = e.target.value;
-            if (v) {
+        <div style={{ display: "flex", gap: 6, marginTop: 8, alignItems: "center" }}>
+          <select
+            value={selName}
+            onChange={(e) => setSelName(e.target.value)}
+            style={{
+              flex: 1, border: `0.5px solid ${BORDER}`,
+              borderRadius: 4, padding: "4px 8px", fontSize: 12, fontFamily: "inherit",
+            }}
+          >
+            <option value="" disabled>Select a form…</option>
+            <option>T1DAL – Parent of Child Under 8</option>
+            <option>Daily symptom log</option>
+            <option>Nutrition diary</option>
+            <option>Sleep & fatigue log</option>
+          </select>
+          <input
+            type="date"
+            value={selDue}
+            onChange={(e) => setSelDue(e.target.value)}
+            aria-label="Due date (optional)"
+            placeholder="Due date (optional)"
+            style={{ border: `0.5px solid ${BORDER}`, borderRadius: 4, padding: "4px", fontSize: 12 }}
+          />
+          <button
+            onClick={() => {
+              if (!selName) return;
               const today = new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
-              setList((cur) => [...cur, { name: v, assigned: today, due: "—", status: "Pending" }]);
+              const due = selDue ? new Date(selDue).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }) : "—";
+              setList((cur) => [...cur, { name: selName, assigned: today, due, status: "Pending" }]);
+              setSelName("");
+              setSelDue("");
               setShowSel(false);
-            }
-          }}
-          defaultValue=""
-          style={{
-            width: "100%", marginTop: 8, border: `0.5px solid ${BORDER}`,
-            borderRadius: 4, padding: "4px 8px", fontSize: 15, fontFamily: "inherit",
-          }}
-        >
-          <option value="" disabled>Select a form…</option>
-          <option>T1DAL – Parent of Child Under 8</option>
-          <option>Daily symptom log</option>
-          <option>Nutrition diary</option>
-          <option>Sleep & fatigue log</option>
-        </select>
+            }}
+            style={{ background: TEAL, color: "#fff", border: "none", borderRadius: 4, fontSize: 16, padding: "4px 10px", cursor: "pointer" }}
+          >
+            Assign
+          </button>
+        </div>
       )}
     </div>
   );
@@ -1461,8 +1479,17 @@ function AssignedTasksTab({ role }: { role: Role }) {
     { text: "Check pump site daily and report any issues", due: "Ongoing" },
   ]);
   const [showAdd, setShowAdd] = useState(false);
+  const [addMode, setAddMode] = useState<"library" | "free">("free");
   const [newText, setNewText] = useState("");
   const [newDue, setNewDue] = useState("");
+  const [libPick, setLibPick] = useState("");
+  const LIBRARY_TASKS = [
+    "Log meals for 3 days",
+    "Check pump site daily",
+    "Upload CGM data before appointment",
+    "Log blood glucose 4x daily",
+    "Share school diabetes management plan",
+  ];
   return (
     <div style={{ padding: 16 }}>
       {list.map((t, i) => {
@@ -1471,31 +1498,33 @@ function AssignedTasksTab({ role }: { role: Role }) {
           <div
             key={i}
             style={{
-              display: "flex",
-              alignItems: "center",
+              display: "grid",
+              gridTemplateColumns: "1fr auto auto auto",
               gap: 8,
+              alignItems: "center",
               paddingBottom: 8,
               borderBottom: "0.5px solid #f0f2f3",
               marginBottom: 8,
-              flexWrap: "wrap",
             }}
           >
-            <span style={{ fontSize: 15, color: WF_DARK, flex: 1, minWidth: 0, display: "inline-flex", alignItems: "center", gap: 6 }}>
-              <span>{t.text}</span>
-              {overdue && <OverdueBadge />}
-            </span>
+            <span style={{ fontSize: 15, color: WF_DARK, minWidth: 0 }}>{t.text}</span>
             <span style={{ fontSize: 11, color: overdue ? ERROR_TEXT : WF_MID, fontWeight: overdue ? 600 : 400 }}>
               Due: {t.due}
             </span>
-            {overdue && <GhostBtnSmall>Send reminder</GhostBtnSmall>}
-            {role === "clinician" && (
-              <Trash2
-                size={14}
-                color={WF_MID}
-                style={{ cursor: "pointer", flexShrink: 0 }}
-                onClick={() => setList((cur) => cur.filter((_, j) => j !== i))}
-              />
-            )}
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+              {overdue && <OverdueBadge />}
+              {overdue && <GhostBtnSmall>Send reminder</GhostBtnSmall>}
+            </span>
+            <span style={{ display: "inline-flex", justifyContent: "flex-end", minWidth: 14 }}>
+              {role === "clinician" && (
+                <Trash2
+                  size={14}
+                  color={WF_MID}
+                  style={{ cursor: "pointer", flexShrink: 0 }}
+                  onClick={() => setList((cur) => cur.filter((_, j) => j !== i))}
+                />
+              )}
+            </span>
           </div>
         );
       })}
@@ -1509,33 +1538,86 @@ function AssignedTasksTab({ role }: { role: Role }) {
         + Add task
       </button>
       {showAdd && (
-        <div style={{ display: "flex", gap: 6, marginTop: 8 }}>
-          <input
-            placeholder="Task description"
-            value={newText}
-            onChange={(e) => setNewText(e.target.value)}
-            style={{ flex: 1, border: `0.5px solid ${BORDER}`, borderRadius: 4, padding: "4px 8px", fontSize: 12 }}
-          />
-          <input
-            type="date"
-            value={newDue}
-            onChange={(e) => setNewDue(e.target.value)}
-            style={{ border: `0.5px solid ${BORDER}`, borderRadius: 4, padding: "4px", fontSize: 12 }}
-          />
-          <button
-            onClick={() => {
-              if (newText.trim()) {
-                const due = newDue ? new Date(newDue).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }) : "—";
-                setList((cur) => [...cur, { text: newText.trim(), due }]);
-                setNewText("");
-                setNewDue("");
-                setShowAdd(false);
-              }
-            }}
-            style={{ background: TEAL, color: "#fff", border: "none", borderRadius: 4, fontSize: 16, padding: "4px 10px", cursor: "pointer" }}
-          >
-            Add
-          </button>
+        <div style={{ marginTop: 8 }}>
+          <div style={{ display: "flex", gap: 6, marginBottom: 8 }}>
+            {(["library", "free"] as const).map((m) => (
+              <button
+                key={m}
+                onClick={() => setAddMode(m)}
+                style={{
+                  border: `0.5px solid ${addMode === m ? TEAL : BORDER}`,
+                  background: addMode === m ? TEAL : SURFACE,
+                  color: addMode === m ? "#fff" : WF_DARK,
+                  borderRadius: 999, fontSize: 12, padding: "4px 10px",
+                  cursor: "pointer", fontFamily: "inherit",
+                }}
+              >
+                {m === "library" ? "From library" : "Free text"}
+              </button>
+            ))}
+          </div>
+          {addMode === "free" ? (
+            <div style={{ display: "flex", gap: 6 }}>
+              <input
+                placeholder="Task description"
+                value={newText}
+                onChange={(e) => setNewText(e.target.value)}
+                style={{ flex: 1, border: `0.5px solid ${BORDER}`, borderRadius: 4, padding: "4px 8px", fontSize: 12 }}
+              />
+              <input
+                type="date"
+                value={newDue}
+                onChange={(e) => setNewDue(e.target.value)}
+                aria-label="Due date (optional)"
+                style={{ border: `0.5px solid ${BORDER}`, borderRadius: 4, padding: "4px", fontSize: 12 }}
+              />
+              <button
+                onClick={() => {
+                  if (newText.trim()) {
+                    const due = newDue ? new Date(newDue).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }) : "—";
+                    setList((cur) => [...cur, { text: newText.trim(), due }]);
+                    setNewText("");
+                    setNewDue("");
+                    setShowAdd(false);
+                  }
+                }}
+                style={{ background: TEAL, color: "#fff", border: "none", borderRadius: 4, fontSize: 16, padding: "4px 10px", cursor: "pointer" }}
+              >
+                Add
+              </button>
+            </div>
+          ) : (
+            <div style={{ display: "flex", gap: 6 }}>
+              <select
+                value={libPick}
+                onChange={(e) => setLibPick(e.target.value)}
+                style={{ flex: 1, border: `0.5px solid ${BORDER}`, borderRadius: 4, padding: "4px 8px", fontSize: 12, fontFamily: "inherit" }}
+              >
+                <option value="" disabled>Select a task…</option>
+                {LIBRARY_TASKS.map((t) => <option key={t}>{t}</option>)}
+              </select>
+              <input
+                type="date"
+                value={newDue}
+                onChange={(e) => setNewDue(e.target.value)}
+                aria-label="Due date (optional)"
+                style={{ border: `0.5px solid ${BORDER}`, borderRadius: 4, padding: "4px", fontSize: 12 }}
+              />
+              <button
+                onClick={() => {
+                  if (!libPick) return;
+                  const due = newDue ? new Date(newDue).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }) : "—";
+                  setList((cur) => [...cur, { text: libPick, due }]);
+                  setLibPick("");
+                  setNewDue("");
+                  setShowAdd(false);
+                }}
+                style={{ background: TEAL, color: "#fff", border: "none", borderRadius: 4, fontSize: 16, padding: "4px 10px", cursor: "pointer" }}
+              >
+                Assign
+              </button>
+            </div>
+          )}
         </div>
       )}
     </div>
