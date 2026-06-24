@@ -24,6 +24,7 @@ const CLIN_RIGHT_DEFAULT: Module[] = [
 ];
 const CLIN_ALL = [...CLIN_LEFT_DEFAULT, ...CLIN_RIGHT_DEFAULT];
 const CLIN_BY_ID: Record<string, Module> = Object.fromEntries(CLIN_ALL.map((m) => [m.id, m]));
+const MOVEABLE_IDS = ["appointments", "forms", "tasks"];
 
 
 const PATIENT_DEFAULT: Module[] = [
@@ -128,6 +129,7 @@ function ClinicianBuilder() {
   };
 
   const moveToCol = (id: string, targetCol: "left" | "right") => {
+    if (!MOVEABLE_IDS.includes(id)) return;
     const inLeft = left.some((m) => m.id === id);
     if (targetCol === "right" && inLeft) {
       const mod = left.find((m) => m.id === id)!;
@@ -140,7 +142,6 @@ function ClinicianBuilder() {
     }
   };
 
-
   const remove = (id: string) => {
     if (totalActive <= 1) {
       setMinError(true);
@@ -150,6 +151,7 @@ function ClinicianBuilder() {
     setLeft(left.filter((m) => m.id !== id));
     setRight(right.filter((m) => m.id !== id));
   };
+
   const addBack = (id: string) => {
     const orig = CLIN_ALL.find((m) => m.id === id);
     if (!orig) return;
@@ -392,6 +394,7 @@ function ModuleCard({
     border: "none",
     cursor: "pointer",
     padding: "0 4px",
+    fontFamily: "inherit",
   };
   return (
     <div
@@ -416,12 +419,12 @@ function ModuleCard({
       <button onClick={onDown} disabled={!canMoveDown} style={iconBtnStyle(canMoveDown)} title="Move down">
         ↓
       </button>
-      {col === "right" && onMoveToCol && (
+      {MOVEABLE_IDS.includes(m.id) && col === "right" && onMoveToCol && (
         <button onClick={() => onMoveToCol(m.id, "left")} style={arrowStyle} title="Move to left column">
           ← Left
         </button>
       )}
-      {col === "left" && onMoveToCol && (
+      {MOVEABLE_IDS.includes(m.id) && col === "left" && onMoveToCol && (
         <button onClick={() => onMoveToCol(m.id, "right")} style={arrowStyle} title="Move to right column">
           Right →
         </button>
