@@ -201,7 +201,7 @@ function PatientList() {
   const { state, banner, assignedTo } = useSearch({ from: "/admin/patients/" });
   const navigate = useNavigate();
   const [q, setQ] = useState("");
-  const [statusFilter, setStatusFilter] = useState("All");
+  const [statusFilter, setStatusFilter] = useState("All statuses");
   const [bannerOpen, setBannerOpen] = useState(true);
 
   const assignedClinicianName = assignedTo ? CLINICIAN_NAMES[assignedTo] : "";
@@ -212,7 +212,7 @@ function PatientList() {
     if (state === "noresults") return [];
     let rows = PATIENTS;
     if (assignedIds) rows = rows.filter((p) => assignedIds.includes(p.id));
-    if (statusFilter !== "All") rows = rows.filter((p) => p.status === statusFilter);
+    if (statusFilter !== "All statuses") rows = rows.filter((p) => p.status === statusFilter);
     if (q.trim()) rows = rows.filter((p) =>
       p.name.toLowerCase().includes(q.toLowerCase()) || p.last4.includes(q),
     );
@@ -344,7 +344,7 @@ function PatientList() {
                       params={{ id: p.id }}
                       style={{ fontSize: 15, color: WF_DARK, textDecoration: "underline" }}
                     >
-                      View/Edit
+                      View / Edit
                     </Link>
                   </td>
                 </tr>

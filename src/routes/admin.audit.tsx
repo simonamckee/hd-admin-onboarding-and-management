@@ -122,8 +122,8 @@ function AuditLog() {
       </p>
 
       {/* Filters */}
-      <div style={{ display: "flex", gap: 12, alignItems: "flex-end", marginBottom: 16, flexWrap: "wrap" }}>
-        <div style={{ minWidth: 180, flex: 1 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "minmax(240px, 1.5fr) minmax(160px, 1fr) minmax(200px, 1.5fr) auto", gap: 16, alignItems: "flex-end", marginBottom: 16 }}>
+        <div>
           <div style={{ fontSize: 13, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 4 }}>Date range</div>
           <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
             <input
@@ -141,19 +141,19 @@ function AuditLog() {
             />
           </div>
         </div>
-        <div style={{ minWidth: 160, flex: 1 }}>
+        <div>
           <div style={{ fontSize: 13, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 4 }}>User</div>
           <Select value={userFilter} onChange={(e) => setUserFilter(e.target.value)} style={{ width: "100%" }}>
             {USERS.map((u) => <option key={u}>{u}</option>)}
           </Select>
         </div>
-        <div style={{ minWidth: 200, flex: 2 }}>
+        <div>
           <div style={{ fontSize: 13, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 4 }}>Action type</div>
           <Select value={actionFilter} onChange={(e) => setActionFilter(e.target.value)} style={{ width: "100%" }}>
             {ACTION_TYPES.map((a) => <option key={a}>{a}</option>)}
           </Select>
         </div>
-        <div style={{ minWidth: 120 }}>
+        <div>
           <Btn onClick={() => setExportOpen(true)}>Export CSV</Btn>
         </div>
       </div>
