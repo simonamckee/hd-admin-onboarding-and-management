@@ -1764,25 +1764,24 @@ const MODULE_COMPONENTS: Record<string, React.ComponentType> = {
 function DashboardPage() {
   const { clinicianModules } = useDashboardTemplate();
   const [role, setRole] = useState<Role>("clinician");
-  const transformIds = (ids: string[]) => {
-    const out: string[] = [];
-    const seen = new Set<string>();
-    for (const id of ids) {
-      const key =
-        id === "completedForms" || id === "assignedForms"
-          ? "forms"
-          : id === "completedTasks" || id === "assignedTasks"
-          ? "tasks"
-          : id;
-      if (!seen.has(key)) {
-        seen.add(key);
-        out.push(key);
-      }
-    }
-    return out;
-  };
+  const normaliseId = (id: string): string =>
+    id === "completedForms" || id === "assignedForms" ? "forms"
+    : id === "completedTasks" || id === "assignedTasks" ? "tasks"
+    : id;
+
+  const seenGlobal = new Set<string>();
+  const leftIds: string[] = [];
+  const rightIds: string[] = [];
+
+  clinicianModules.patientData.map(normaliseId).forEach((id) => {
+    if (!seenGlobal.has(id)) { seenGlobal.add(id); leftIds.push(id); }
+  });
+  clinicianModules.clinicalActions.map(normaliseId).forEach((id) => {
+    if (!seenGlobal.has(id)) { seenGlobal.add(id); rightIds.push(id); }
+  });
+
   const renderColumn = (ids: string[]) =>
-    transformIds(ids).map((id) => {
+    ids.map((id) => {
       if (id === "forms") return <FormsModule key={`forms-${role}`} role={role} />;
       if (id === "tasks") return <TasksModule key={`tasks-${role}`} role={role} />;
       if (id === "recommendations") return <RecommendationsModule key={`recommendations-${role}`} role={role} />;
@@ -1837,10 +1836,8 @@ function DashboardPage() {
           </div>
         </div>
         <div style={{ padding: 24, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, alignItems: "start" }}>
-          <div>{renderColumn(clinicianModules.patientData)}</div>
-          <div>
-            {renderColumn(clinicianModules.clinicalActions)}
-          </div>
+          <div>{renderColumn(leftIds)}</div>
+          <div>{renderColumn(rightIds)}</div>
         </div>
         <div style={{
           background: SURFACE, padding: "10px 24px", borderTop: `0.5px solid ${BORDER}`,
