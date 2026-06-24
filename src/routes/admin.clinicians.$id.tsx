@@ -122,7 +122,11 @@ function EditClinician() {
               onCancel={() => setTitle(base.title)}
               onSave={saveTitle}
             >
-              <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+              <Select value={title} onChange={(e) => setTitle(e.target.value)}>
+                {CLINIC_ROLES.map((r) => (
+                  <option key={r}>{r}</option>
+                ))}
+              </Select>
             </InlineEdit>
           </Field>
 
