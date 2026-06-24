@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
-import { WF_BG, WF_DARK, WF_MID, TEAL, BORDER } from "@/components/wireframe";
+import { WF_BG, WF_DARK, WF_MID, TEAL, SUCCESS_BG, SUCCESS_TEXT } from "@/components/wireframe";
 import { useDashboardTemplate, type ClinicianModules } from "@/lib/dashboard-template";
 
 export const Route = createFileRoute("/admin/dashboards")({ component: DashboardTemplates });
@@ -23,7 +23,6 @@ const CLIN_RIGHT_DEFAULT: Module[] = [
   { id: "resources", name: "Resources" },
   { id: "assignedForms", name: "Assigned forms" },
   { id: "assignedTasks", name: "Assigned tasks" },
-  { id: "tasks", name: "Tasks" },
 ];
 const CLIN_ALL = [...CLIN_LEFT_DEFAULT, ...CLIN_RIGHT_DEFAULT];
 const CLIN_BY_ID: Record<string, Module> = Object.fromEntries(CLIN_ALL.map((m) => [m.id, m]));
@@ -52,8 +51,8 @@ function DashboardTemplates() {
 
   const helper =
     tab === "clinician"
-      ? "Define how the patient dashboard is laid out when a clinician opens it. Changes apply to new clinician accounts only — existing layouts are not affected."
-      : "Define the default order of modules on the patient dashboard. Patients can reorder their own modules after first login — this sets their starting view. The Care profile section is fixed and cannot be reordered.";
+      ? "Set the default layout clinicians see when they open the patient dashboard. This only applies to clinician accounts created after this setting is saved — existing clinician dashboards will not be changed."
+      : "Set the default order of modules a patient sees on first login. Patients can reorder their own modules afterward — this only sets the starting view. The Care profile sections cannot be reordered.";
 
   return (
     <AdminShell heading="">
@@ -216,10 +215,8 @@ function ClinicianBuilder() {
         </div>
       )}
 
-      <MessagesInfoRow
-        rightText="Always accessible from the patient header"
-        tooltip="Messages opens as a panel from the patient header bar. It is always available to clinicians and does not need to be placed in the layout."
-      />
+
+
 
 
       <PreviewToggle
@@ -411,46 +408,8 @@ function iconBtnStyle(enabled: boolean): React.CSSProperties {
   };
 }
 
-function MessagesInfoRow({ rightText, tooltip }: { rightText: string; tooltip: string }) {
-  return (
-    <>
-      <div style={{ height: 1, background: WF_MID, opacity: 0.3, margin: "16px 0" }} />
-      <div
-        style={{
-          ...CARD,
-          background: WF_BG,
-          borderColor: "#E0E0E0",
-          padding: "10px 12px",
-          display: "flex",
-          alignItems: "center",
-          gap: 8,
-          color: WF_MID,
-          marginBottom: 16,
-        }}
-      >
-        <span style={{ fontSize: 13, fontWeight: 600, textTransform: "uppercase", letterSpacing: 0.5, color: WF_MID }}>MESSAGES</span>
-        <span
-          title={tooltip}
-          style={{
-            display: "inline-flex",
-            width: 16,
-            height: 16,
-            borderRadius: "50%",
-            border: `1px solid ${WF_MID}`,
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: 12,
-            cursor: "help",
-          }}
-        >
-          ⓘ
-        </span>
-        <span style={{ flex: 1 }} />
-        <span style={{ fontSize: 14 }}>{rightText}</span>
-      </div>
-    </>
-  );
-}
+
+
 
 function RemovedModules({ removed, onAddBack }: { removed: Module[]; onAddBack: (id: string) => void }) {
   if (removed.length === 0) return null;
@@ -537,38 +496,82 @@ function PreviewToggle({ label, open, onToggle }: { label: string; open: boolean
 /* ============================== CLINICIAN PREVIEW ============================== */
 
 function ClinicianPreview({ left, right }: { left: Module[]; right: Module[] }) {
-  const [msgOpen, setMsgOpen] = useState(false);
+  const pill: React.CSSProperties = {
+    background: SUCCESS_BG,
+    color: SUCCESS_TEXT,
+    fontSize: 11,
+    padding: "2px 8px",
+    borderRadius: 999,
+    fontWeight: 500,
+  };
+  const riskPill: React.CSSProperties = {
+    background: "#faeeda",
+    color: "#633806",
+    fontSize: 11,
+    padding: "2px 8px",
+    borderRadius: 999,
+    fontWeight: 500,
+  };
+  const sep = <span style={{ color: WF_MID }}>·</span>;
   return (
     <div style={{ ...CARD, padding: 16, marginBottom: 16, position: "relative" }}>
       {/* Patient header */}
-      <div style={{ borderBottom: `1px solid ${WF_MID}`, paddingBottom: 12, marginBottom: 12, display: "flex", alignItems: "center", gap: 12 }}>
-        <div style={{ flex: 1 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <span style={{ fontSize: 18, fontWeight: 600, color: WF_DARK }}>Emma Tremblay</span>
-            <span style={{ fontSize: 13, border: `1px solid ${WF_DARK}`, padding: "2px 6px", color: WF_DARK }}>
-              Active
-            </span>
-          </div>
-          <div style={{ fontSize: 13, color: WF_MID, marginTop: 4 }}>
-            DOB: March 4, 2018 · Diagnosed: June 12, 2020 · Last sync: 2h ago
-          </div>
-        </div>
-        <button
-          onClick={() => setMsgOpen(true)}
+      <div style={{ borderBottom: `1px solid ${WF_MID}`, paddingBottom: 12, marginBottom: 12 }}>
+        <div
           style={{
-            border: `1px solid ${WF_DARK}`,
-            background: "#fff",
-            padding: "6px 12px",
-            fontSize: 14,
-            color: WF_DARK,
-            cursor: "pointer",
-            display: "inline-flex",
+            display: "flex",
+            flexDirection: "row",
             alignItems: "center",
-            gap: 6,
+            gap: 8,
+            fontSize: 13,
+            color: WF_DARK,
+            flexWrap: "nowrap",
+            overflow: "hidden",
           }}
         >
-          💬 Messages
-        </button>
+          <span
+            style={{
+              width: 24,
+              height: 24,
+              borderRadius: "50%",
+              background: WF_BG,
+              border: `1px solid ${WF_MID}`,
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: 11,
+              color: WF_DARK,
+              flexShrink: 0,
+            }}
+          >
+            ET
+          </span>
+          {sep}
+          <span style={{ fontWeight: 600, fontSize: 14, color: WF_DARK }}>Emma Tremblay</span>
+          {sep}
+          <span style={{ color: WF_MID }}>4 Aug 2014 · Age 11</span>
+          {sep}
+          <span style={{ color: WF_MID }}>T1D · 3 years</span>
+          {sep}
+          <span style={{ color: WF_MID }}>Margaret Chen — Mother</span>
+          {sep}
+          <span style={{ color: WF_MID }}>Dr. Reyes</span>
+          {sep}
+          <span style={{ color: WF_MID }}>Last seen: 2 days ago</span>
+          <span style={{ flex: 1 }} />
+          <a
+            href="#"
+            style={{ color: TEAL, fontWeight: 500, marginLeft: 16, textDecoration: "none", flexShrink: 0 }}
+          >
+            View Care profile →
+          </a>
+        </div>
+        <div style={{ display: "flex", gap: 8, marginTop: 6 }}>
+          <span style={pill}>Active</span>
+          <span style={pill}>CGM connected</span>
+          <span style={pill}>Pump connected</span>
+          <span style={riskPill}>A1c</span>
+        </div>
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
@@ -583,8 +586,6 @@ function ClinicianPreview({ left, right }: { left: Module[]; right: Module[] }) 
           ))}
         </div>
       </div>
-
-      {msgOpen && <MessagesPanel onClose={() => setMsgOpen(false)} />}
     </div>
   );
 }
@@ -820,14 +821,8 @@ function ModuleBody({ id, compact }: { id: string; compact: boolean }) {
       </div>
     );
   }
-  if (id === "tasks") {
-    return (
-      <div style={{ fontSize: 13, color: WF_MID, display: "flex", flexDirection: "column", gap: 4 }}>
-        <div style={{ textDecoration: "line-through" }}>Upload CGM data — Completed 28 Apr</div>
-        <div style={{ textDecoration: "line-through" }}>Book next appointment — Completed 20 Apr</div>
-      </div>
-    );
-  }
+
+
   if (id === "completedTasks") {
     return (
       <div style={{ fontSize: 13, color: WF_MID, display: "flex", flexDirection: "column", gap: 4 }}>
@@ -874,52 +869,8 @@ function miniBtn(primary: boolean): React.CSSProperties {
   };
 }
 
-function MessagesPanel({ onClose, mobile = false }: { onClose: () => void; mobile?: boolean }) {
-  return (
-    <div
-      style={{
-        position: "absolute",
-        top: 0,
-        right: 0,
-        bottom: 0,
-        width: mobile ? "100%" : 320,
-        background: "#fff",
-        borderLeft: mobile ? "none" : `1px solid ${WF_MID}`,
-        display: "flex",
-        flexDirection: "column",
-        boxShadow: "-4px 0 12px rgba(0,0,0,0.08)",
-        zIndex: 5,
-      }}
-    >
-      <div style={{ padding: 12, borderBottom: `1px solid ${WF_MID}`, display: "flex", alignItems: "center" }}>
-        <span style={{ flex: 1, fontSize: 15, fontWeight: 600, color: WF_DARK }}>Messages</span>
-        <button
-          onClick={onClose}
-          style={{ background: "transparent", border: "none", fontSize: 18, cursor: "pointer", color: WF_DARK }}
-        >
-          ×
-        </button>
-      </div>
-      <div style={{ flex: 1, padding: 12, display: "flex", flexDirection: "column", gap: 8, overflowY: "auto" }}>
-        <Bubble from="patient">Hi, my readings have been high after dinner this week.</Bubble>
-        <Bubble from="patient">Should I adjust my dose?</Bubble>
-        <Bubble from="clinician">Let's try increasing your evening basal by 1U and review in 3 days.</Bubble>
-      </div>
-      <div style={{ padding: 10, borderTop: `1px solid ${WF_MID}` }}>
-        <div
-          style={{
-            border: `1px solid ${WF_MID}`,
-            padding: "8px 10px",
-            fontSize: 14,
-            color: WF_MID,
-          }}
-        >
-          Type a message…
-        </div>
-      </div>
-    </div>
-  );
-}
+
+
 
 function Bubble({ from, children }: { from: "patient" | "clinician"; children: React.ReactNode }) {
   const isPatient = from === "patient";
@@ -946,6 +897,8 @@ function Bubble({ from, children }: { from: "patient" | "clinician"; children: R
 function PatientBuilder() {
   const [modules, setModules] = useState<Module[]>(PATIENT_DEFAULT);
   const [minError, setMinError] = useState(false);
+  const [drag, setDrag] = useState<string | null>(null);
+  const [dropIdx, setDropIdx] = useState<number | null>(null);
 
   const present = new Set(modules.map((m) => m.id));
   const removed = PATIENT_DEFAULT.filter((m) => !present.has(m.id));
@@ -978,6 +931,34 @@ function PatientBuilder() {
     }
   };
 
+  const onDragStart = (id: string) => setDrag(id);
+  const onDragOverItem = (index: number) => {
+    if (!drag) return;
+    setDropIdx(index);
+  };
+  const onDragEnd = () => {
+    setDrag(null);
+    setDropIdx(null);
+  };
+  const onDrop = () => {
+    if (!drag || dropIdx === null) {
+      onDragEnd();
+      return;
+    }
+    const from = modules.findIndex((m) => m.id === drag);
+    if (from < 0) {
+      onDragEnd();
+      return;
+    }
+    let to = dropIdx;
+    const a = [...modules];
+    const [moved] = a.splice(from, 1);
+    if (to > from) to -= 1;
+    a.splice(to, 0, moved);
+    setModules(a);
+    onDragEnd();
+  };
+
   return (
     <>
       <div
@@ -993,20 +974,46 @@ function PatientBuilder() {
         MODULE ORDER
       </div>
       <p style={{ fontSize: 14, color: WF_MID, margin: "0 0 12px" }}>
-        Drag to reorder. Patients can reorder after their first login — this sets their starting view.
+        Drag to reorder. Patients can reorder their own modules afterward — this only sets their starting view.
       </p>
-      <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 12 }}>
+      <div
+        onDragOver={(e) => {
+          if (drag) e.preventDefault();
+        }}
+        onDrop={(e) => {
+          e.preventDefault();
+          onDrop();
+        }}
+        style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 12 }}
+      >
         {modules.map((m, i) => (
-          <ModuleCard
+          <div
             key={m.id}
-            module={m}
-            onRemove={() => remove(m.id)}
-            canMoveUp={i > 0}
-            canMoveDown={i < modules.length - 1}
-            onUp={() => onMove(m.id, "up")}
-            onDown={() => onMove(m.id, "down")}
-          />
+            onDragOver={(e) => {
+              if (!drag) return;
+              e.preventDefault();
+              e.stopPropagation();
+              const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
+              const before = e.clientY < rect.top + rect.height / 2;
+              onDragOverItem(before ? i : i + 1);
+            }}
+          >
+            <DropIndicator active={dropIdx === i} />
+            <ModuleCard
+              module={m}
+              onRemove={() => remove(m.id)}
+              canMoveUp={i > 0}
+              canMoveDown={i < modules.length - 1}
+              onUp={() => onMove(m.id, "up")}
+              onDown={() => onMove(m.id, "down")}
+              draggable
+              dragging={drag === m.id}
+              onDragStart={() => onDragStart(m.id)}
+              onDragEnd={onDragEnd}
+            />
+          </div>
         ))}
+        <DropIndicator active={dropIdx === modules.length} />
       </div>
 
       <RemovedModules removed={removed} onAddBack={addBack} />
@@ -1016,22 +1023,7 @@ function PatientBuilder() {
         </div>
       )}
 
-      <MessagesInfoRow
-        rightText="Always accessible as a floating button"
-        tooltip="On mobile, Messages appears as a floating chat button fixed to the bottom of the screen. It is always accessible and does not need to be placed in the layout."
-      />
-
-      <div style={{
-        fontSize: 14,
-        color: WF_MID,
-        fontStyle: "italic",
-        marginTop: 16,
-        padding: "10px 14px",
-        border: `1px dashed ${BORDER}`,
-        borderRadius: 8,
-      }}>
-        Patient dashboard preview coming soon.
-      </div>
+      <PatientPreview modules={modules} />
 
       <SaveFooter tab="patient" disabled={modules.length === 0} />
     </>
