@@ -1,8 +1,8 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
 import { Btn, Select } from "@/components/patient-ui";
-import { WF_DARK, WF_MID, WF_BG, BORDER, TEAL } from "@/components/wireframe";
+import { WF_DARK, WF_MID, WF_BG, BORDER, TEAL, SURFACE } from "@/components/wireframe";
 
 export const Route = createFileRoute("/admin/platform")({
   component: PlatformConfig,
@@ -21,7 +21,9 @@ function PlatformConfig() {
 
       <ChatSection />
       <Divider />
-      <NotificationsSection />
+      <CliniciansSection />
+      <Divider />
+      <RosterColumnsSection />
       <Divider />
       <RosterSection />
 
@@ -37,7 +39,7 @@ function Divider() {
 function SectionCard({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div style={{ background: "#fff", border: `1px solid ${BORDER}66`, padding: 24, borderRadius: 8 }}>
-      <h2 style={{ fontSize: 18, fontWeight: 600, color: WF_DARK, margin: "0 0 18px" }}>
+      <h2 style={{ fontSize: 18, fontWeight: 800, color: WF_DARK, margin: "0 0 18px" }}>
         {title}
       </h2>
       {children}
@@ -173,7 +175,7 @@ function ChatSection() {
         <div style={{ borderTop: `0.5px solid ${WF_MID}`, paddingTop: 14, marginTop: 6 }}>
           <LabelBlock
             label="Persistent chat message"
-            helper="This message is shown to patients when they open chat. It cannot be a clinical guarantee."
+            helper="This message is shown to patients when they open the chat. It is for information only and does not constitute medical advice, diagnosis, or a promised outcome."
           />
           <textarea
             value={msg}
@@ -218,50 +220,345 @@ function ChatSection() {
   );
 }
 
-/* ----------------- Notifications ----------------- */
+/* ----------------- Clinician role definitions ----------------- */
 
-function NotificationsSection() {
-  const [notify, setNotify] = useState(false);
-  const [savedAt, setSavedAt] = useState(0);
+function CliniciansSection() {
+  const rows: Array<{ label: string; helper: string }> = [
+    {
+      label: "Patient management",
+      helper:
+        "Give clinicians access to add new patients and edit existing patient information, including inviting additional supporters to the platform.",
+    },
+    {
+      label: "Form library",
+      helper: "Give clinicians access to creating new form templates and editing existing ones.",
+    },
+    {
+      label: "Task library",
+      helper: "Give clinicians access to creating new task templates and editing existing ones.",
+    },
+    {
+      label: "Resource library",
+      helper: "Give clinicians access to adding new patient resources and editing existing ones.",
+    },
+  ];
+
+  const [states, setStates] = useState<boolean[]>(() => rows.map(() => false));
+  const [savedAt, setSavedAt] = useState<number[]>(() => rows.map(() => 0));
 
   return (
-    <SectionCard title="Notifications">
-      <Row>
-        <LabelBlock
-          label="Notify clinician when patient declines a recommendation"
-          helper="When enabled, the assigned clinician is notified when a patient declines a recommendation and provides a reason. Disable this if your clinic does not have capacity to follow up."
-        />
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <SavedFlash when={savedAt} />
-          <Toggle
-            on={notify}
-            onClick={() => {
-              setNotify((v) => !v);
-              setSavedAt(Date.now());
-            }}
-          />
+    <SectionCard title="Clinician role definitions">
+      <div style={{ fontSize: 14, color: WF_MID, marginBottom: 18, lineHeight: 1.5 }}>
+        Control which parts of the admin section clinicians can access. These permissions apply to all clinician accounts in this clinic.
+      </div>
+      {rows.map((r, i) => (
+        <div key={r.label} style={{ borderTop: i === 0 ? "none" : `0.5px solid ${BORDER}66` }}>
+          <Row>
+            <LabelBlock label={r.label} helper={r.helper} />
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <SavedFlash when={savedAt[i]} />
+              <Toggle
+                on={states[i]}
+                onClick={() => {
+                  setStates((prev) => prev.map((v, j) => (j === i ? !v : v)));
+                  setSavedAt((prev) => prev.map((v, j) => (j === i ? Date.now() : v)));
+                }}
+              />
+            </div>
+          </Row>
         </div>
-      </Row>
-
-      <div style={{ borderTop: `0.5px solid ${WF_MID}` }} />
-
-      <Row>
-        <LabelBlock label="Clinic notification email" />
-        <div style={{ textAlign: "right" }}>
-          <div style={{ fontSize: 16, color: WF_DARK }}>notifications@sunriseclinic.ca</div>
-          <div style={{ fontSize: 16, color: WF_MID, marginTop: 4 }}>
-            This is set under Clinic information.{" "}
-            <Link
-              to="/admin"
-              style={{ color: WF_DARK, textDecoration: "underline" }}
-            >
-              Go to Clinic information →
-            </Link>
-          </div>
-        </div>
-      </Row>
+      ))}
     </SectionCard>
   );
+}
+
+/* ----------------- Patient roster columns ----------------- */
+
+type ColKey =
+  | "risk"
+  | "tir"
+  | "gmi"
+  | "devices"
+  | "lastVisit"
+  | "nextAppt"
+  | "hospitalVisits"
+  | "pendingForms"
+  | "pendingTasks";
+
+function RosterColumnsSection() {
+  const primaryCols: Array<{ key: ColKey; label: string; helper?: string }> = [
+    {
+      key: "risk",
+      label: "Predicted risk",
+      helper: "Includes risk assessment from patient-provided information such as Diabetes Distress scores.",
+    },
+    { key: "tir", label: "TIR (14d)" },
+    { key: "gmi", label: "GMI" },
+    { key: "devices", label: "Devices" },
+    { key: "lastVisit", label: "Last visit" },
+    { key: "nextAppt", label: "Next appointment" },
+  ];
+
+  const accordionCols: Array<{ key: ColKey; label: string; helper?: string }> = [
+    {
+      key: "hospitalVisits",
+      label: "Hospital visits",
+      helper: "Shows number of hospital visits since last clinic visit.",
+    },
+    { key: "pendingForms", label: "Pending forms" },
+    { key: "pendingTasks", label: "Pending tasks" },
+  ];
+
+  const [cols, setCols] = useState<Record<ColKey, boolean>>({
+    risk: true,
+    tir: true,
+    gmi: true,
+    devices: true,
+    lastVisit: true,
+    nextAppt: true,
+    hospitalVisits: true,
+    pendingForms: true,
+    pendingTasks: true,
+  });
+  const [savedAt, setSavedAt] = useState<Record<ColKey, number>>({
+    risk: 0,
+    tir: 0,
+    gmi: 0,
+    devices: 0,
+    lastVisit: 0,
+    nextAppt: 0,
+    hospitalVisits: 0,
+    pendingForms: 0,
+    pendingTasks: 0,
+  });
+
+  const toggle = (k: ColKey) => {
+    setCols((p) => ({ ...p, [k]: !p[k] }));
+    setSavedAt((p) => ({ ...p, [k]: Date.now() }));
+  };
+
+  return (
+    <SectionCard title="Patient roster columns">
+      <div style={{ fontSize: 14, color: WF_MID, marginBottom: 18, lineHeight: 1.5 }}>
+        Choose which columns appear on the patient roster. Patient (name, DOB, age) and the Dashboard button are always shown and cannot be removed.
+      </div>
+
+      {/* Locked: Patient */}
+      <LockedRow label="Patient" />
+      {primaryCols.map((c) => (
+        <div key={c.key} style={{ borderTop: `0.5px solid ${BORDER}66` }}>
+          <Row>
+            <LabelBlock label={c.label} helper={c.helper} />
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <SavedFlash when={savedAt[c.key]} />
+              <Toggle on={cols[c.key]} onClick={() => toggle(c.key)} />
+            </div>
+          </Row>
+        </div>
+      ))}
+      <div style={{ borderTop: `0.5px solid ${BORDER}66` }}>
+        <LockedRow label="Dashboard button" />
+      </div>
+
+      <div style={{ marginTop: 20, marginBottom: 8, fontSize: 14, fontWeight: 600, color: WF_DARK }}>
+        Accordion row (expanded per patient)
+      </div>
+      {accordionCols.map((c, i) => (
+        <div key={c.key} style={{ borderTop: i === 0 ? "none" : `0.5px solid ${BORDER}66` }}>
+          <Row>
+            <LabelBlock label={c.label} helper={c.helper} />
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <SavedFlash when={savedAt[c.key]} />
+              <Toggle on={cols[c.key]} onClick={() => toggle(c.key)} />
+            </div>
+          </Row>
+        </div>
+      ))}
+
+      {/* Preview */}
+      <div
+        style={{
+          fontSize: 13,
+          color: WF_MID,
+          textTransform: "uppercase",
+          letterSpacing: 0.5,
+          marginTop: 24,
+          marginBottom: 10,
+          fontWeight: 600,
+        }}
+      >
+        Preview
+      </div>
+      <RosterPreview cols={cols} />
+    </SectionCard>
+  );
+}
+
+function LockedRow({ label }: { label: string }) {
+  return (
+    <Row>
+      <LabelBlock label={label} />
+      <div style={{ display: "flex", alignItems: "center", fontSize: 14, color: WF_MID, fontStyle: "italic" }}>
+        Always shown
+      </div>
+    </Row>
+  );
+}
+
+function RosterPreview({ cols }: { cols: Record<ColKey, boolean> }) {
+  const headers: Array<{ key: ColKey | "patient" | "dash"; label: string }> = [
+    { key: "patient", label: "Patient" },
+  ];
+  if (cols.risk) headers.push({ key: "risk", label: "Risk" });
+  if (cols.tir) headers.push({ key: "tir", label: "TIR (14d)" });
+  if (cols.gmi) headers.push({ key: "gmi", label: "GMI" });
+  if (cols.devices) headers.push({ key: "devices", label: "Devices" });
+  if (cols.lastVisit) headers.push({ key: "lastVisit", label: "Last visit" });
+  if (cols.nextAppt) headers.push({ key: "nextAppt", label: "Next appt" });
+  headers.push({ key: "dash", label: "" });
+
+  const cellStyle: React.CSSProperties = {
+    padding: "10px 12px",
+    fontSize: 13,
+    color: WF_DARK,
+    borderBottom: `1px solid ${BORDER}66`,
+    verticalAlign: "middle",
+  };
+  const headStyle: React.CSSProperties = {
+    ...cellStyle,
+    fontWeight: 600,
+    color: WF_MID,
+    background: WF_BG,
+    textTransform: "uppercase",
+    fontSize: 11,
+    letterSpacing: 0.5,
+  };
+
+  return (
+    <div
+      style={{
+        border: `1px solid ${BORDER}66`,
+        borderRadius: 8,
+        overflow: "hidden",
+        background: SURFACE,
+      }}
+    >
+      <div style={{ overflowX: "auto" }}>
+        <table style={{ width: "100%", borderCollapse: "collapse" }}>
+          <thead>
+            <tr>
+              {headers.map((h) => (
+                <th key={h.key} style={{ ...headStyle, textAlign: "left" }}>
+                  {h.label}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              {headers.map((h) => (
+                <td key={h.key} style={cellStyle}>
+                  {renderCell(h.key)}
+                </td>
+              ))}
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+function renderCell(key: string) {
+  switch (key) {
+    case "patient":
+      return (
+        <div>
+          <div style={{ fontWeight: 600, color: WF_DARK }}>Emma Tremblay</div>
+          <div style={{ fontSize: 12, color: WF_MID, marginTop: 2 }}>4 Aug 2014 · Age 11</div>
+        </div>
+      );
+    case "risk":
+      return (
+        <span
+          style={{
+            display: "inline-block",
+            padding: "2px 8px",
+            background: WF_BG,
+            border: `1px solid ${BORDER}`,
+            borderRadius: 999,
+            fontSize: 12,
+            color: WF_DARK,
+            fontWeight: 600,
+          }}
+        >
+          A1c
+        </span>
+      );
+    case "tir":
+      return <span style={{ color: "#B45309", fontWeight: 600 }}>65%</span>;
+    case "gmi":
+      return <span>7.5%</span>;
+    case "devices":
+      return (
+        <div style={{ display: "flex", gap: 6 }}>
+          <span
+            style={{
+              padding: "2px 8px",
+              background: TEAL,
+              color: "#fff",
+              borderRadius: 999,
+              fontSize: 11,
+              fontWeight: 600,
+            }}
+          >
+            CGM
+          </span>
+          <span
+            style={{
+              padding: "2px 8px",
+              background: WF_BG,
+              color: WF_MID,
+              border: `1px solid ${BORDER}`,
+              borderRadius: 999,
+              fontSize: 11,
+              fontWeight: 600,
+            }}
+          >
+            Pump
+          </span>
+        </div>
+      );
+    case "lastVisit":
+      return <span>14 Feb 2026</span>;
+    case "nextAppt":
+      return (
+        <div>
+          <div style={{ color: WF_DARK, fontWeight: 600 }}>Today</div>
+          <div style={{ fontSize: 12, color: WF_MID }}>2:00 PM</div>
+        </div>
+      );
+    case "dash":
+      return (
+        <button
+          type="button"
+          style={{
+            padding: "6px 12px",
+            background: TEAL,
+            color: "#fff",
+            border: "none",
+            borderRadius: 6,
+            fontSize: 12,
+            fontWeight: 600,
+            cursor: "pointer",
+          }}
+        >
+          Dashboard
+        </button>
+      );
+    default:
+      return null;
+  }
 }
 
 /* ----------------- Roster ----------------- */
