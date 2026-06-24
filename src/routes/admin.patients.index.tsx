@@ -344,7 +344,7 @@ function PatientList() {
                       params={{ id: p.id }}
                       style={{ fontSize: 15, color: WF_DARK, textDecoration: "underline" }}
                     >
-                      View
+                      View/Edit
                     </Link>
                   </td>
                 </tr>
