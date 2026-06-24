@@ -24,6 +24,7 @@ const CLIN_RIGHT_DEFAULT: Module[] = [
 ];
 const CLIN_ALL = [...CLIN_LEFT_DEFAULT, ...CLIN_RIGHT_DEFAULT];
 const CLIN_BY_ID: Record<string, Module> = Object.fromEntries(CLIN_ALL.map((m) => [m.id, m]));
+const MOVEABLE_IDS = ["appointments", "forms", "tasks"];
 
 
 const PATIENT_DEFAULT: Module[] = [
