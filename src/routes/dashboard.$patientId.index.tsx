@@ -1291,9 +1291,10 @@ function AssignedFormsTab({ role }: { role: Role }) {
     { name: "Monthly Check-in", assigned: "1 May 2026", due: "15 Jun 2026", status: "Pending" },
     { name: "Daily symptom log", assigned: "28 Apr 2026", due: "10 Jun 2026", status: "Pending" },
     { name: "Hypoglycaemia awareness", assigned: "1 May 2026", due: "1 Jul 2026", status: "Pending" },
-    { name: "Pre-appointment questionnaire", assigned: "1 May 2026", due: "—", status: "Completed" },
   ]);
   const [showSel, setShowSel] = useState(false);
+  const [selName, setSelName] = useState("");
+  const [selDue, setSelDue] = useState("");
   return (
     <div style={{ padding: 16 }}>
       <div
