@@ -408,46 +408,8 @@ function iconBtnStyle(enabled: boolean): React.CSSProperties {
   };
 }
 
-function MessagesInfoRow({ rightText, tooltip }: { rightText: string; tooltip: string }) {
-  return (
-    <>
-      <div style={{ height: 1, background: WF_MID, opacity: 0.3, margin: "16px 0" }} />
-      <div
-        style={{
-          ...CARD,
-          background: WF_BG,
-          borderColor: "#E0E0E0",
-          padding: "10px 12px",
-          display: "flex",
-          alignItems: "center",
-          gap: 8,
-          color: WF_MID,
-          marginBottom: 16,
-        }}
-      >
-        <span style={{ fontSize: 13, fontWeight: 600, textTransform: "uppercase", letterSpacing: 0.5, color: WF_MID }}>MESSAGES</span>
-        <span
-          title={tooltip}
-          style={{
-            display: "inline-flex",
-            width: 16,
-            height: 16,
-            borderRadius: "50%",
-            border: `1px solid ${WF_MID}`,
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: 12,
-            cursor: "help",
-          }}
-        >
-          ⓘ
-        </span>
-        <span style={{ flex: 1 }} />
-        <span style={{ fontSize: 14 }}>{rightText}</span>
-      </div>
-    </>
-  );
-}
+
+
 
 function RemovedModules({ removed, onAddBack }: { removed: Module[]; onAddBack: (id: string) => void }) {
   if (removed.length === 0) return null;
