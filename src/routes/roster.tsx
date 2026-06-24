@@ -12,7 +12,6 @@ import {
   Droplet,
   FileText,
   ClipboardList,
-  CheckSquare,
   Activity,
   Circle,
   CircleCheck,
