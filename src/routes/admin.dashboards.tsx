@@ -196,6 +196,7 @@ function ClinicianBuilder() {
           col="left"
           modules={left}
           onMove={move}
+          onMoveToCol={moveToCol}
           onRemove={remove}
           drag={drag}
           dropIdx={dropIdx}
@@ -209,6 +210,7 @@ function ClinicianBuilder() {
           col="right"
           modules={right}
           onMove={move}
+          onMoveToCol={moveToCol}
           onRemove={remove}
           drag={drag}
           dropIdx={dropIdx}
@@ -282,7 +284,7 @@ function ColumnZone({
   col: Col;
   modules: Module[];
   onMove: (id: string, dir: "up" | "down") => void;
-  onMoveToCol: (id: string, targetCol: "left" | "right") => void;
+  onMoveToCol?: (id: string, targetCol: "left" | "right") => void;
   onRemove: (id: string) => void;
   drag: { id: string; col: Col } | null;
   dropIdx: { col: Col; index: number } | null;
