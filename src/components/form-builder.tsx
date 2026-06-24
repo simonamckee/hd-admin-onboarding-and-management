@@ -25,6 +25,7 @@ export type FormDraft = {
   name: string;
   status: "Draft" | "Active";
   questions: Question[];
+  patientVisible?: boolean;
 };
 
 const Q_TYPES: QType[] = ["Yes / No", "Free text", "Number / Rating", "Multiple choice", "Date"];
