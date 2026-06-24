@@ -42,6 +42,7 @@ import { Route as AdminDashboardsRouteImport } from './routes/admin.dashboards'
 import { Route as AdminCliniciansRouteImport } from './routes/admin.clinicians'
 import { Route as AdminAuditRouteImport } from './routes/admin.audit'
 import { Route as DashboardPatientIdIndexRouteImport } from './routes/dashboard.$patientId.index'
+import { Route as AdminTasksIndexRouteImport } from './routes/admin.tasks.index'
 import { Route as AdminResourcesIndexRouteImport } from './routes/admin.resources.index'
 import { Route as AdminPatientsIndexRouteImport } from './routes/admin.patients.index'
 import { Route as AdminFormsIndexRouteImport } from './routes/admin.forms.index'
@@ -228,6 +229,11 @@ const DashboardPatientIdIndexRoute = DashboardPatientIdIndexRouteImport.update({
   path: '/',
   getParentRoute: () => DashboardPatientIdRoute,
 } as any)
+const AdminTasksIndexRoute = AdminTasksIndexRouteImport.update({
+  id: '/tasks/',
+  path: '/tasks/',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminResourcesIndexRoute = AdminResourcesIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -373,6 +379,7 @@ export interface FileRoutesByFullPath {
   '/admin/forms/': typeof AdminFormsIndexRoute
   '/admin/patients/': typeof AdminPatientsIndexRoute
   '/admin/resources/': typeof AdminResourcesIndexRoute
+  '/admin/tasks/': typeof AdminTasksIndexRoute
   '/dashboard/$patientId/': typeof DashboardPatientIdIndexRoute
   '/admin/patients/new/batch': typeof AdminPatientsNewBatchRoute
   '/admin/patients/new/done': typeof AdminPatientsNewDoneRoute
@@ -420,6 +427,7 @@ export interface FileRoutesByTo {
   '/admin/forms': typeof AdminFormsIndexRoute
   '/admin/patients': typeof AdminPatientsIndexRoute
   '/admin/resources': typeof AdminResourcesIndexRoute
+  '/admin/tasks': typeof AdminTasksIndexRoute
   '/dashboard/$patientId': typeof DashboardPatientIdIndexRoute
   '/admin/patients/new/batch': typeof AdminPatientsNewBatchRoute
   '/admin/patients/new/done': typeof AdminPatientsNewDoneRoute
@@ -475,6 +483,7 @@ export interface FileRoutesById {
   '/admin/forms/': typeof AdminFormsIndexRoute
   '/admin/patients/': typeof AdminPatientsIndexRoute
   '/admin/resources/': typeof AdminResourcesIndexRoute
+  '/admin/tasks/': typeof AdminTasksIndexRoute
   '/dashboard/$patientId/': typeof DashboardPatientIdIndexRoute
   '/admin/patients/new/batch': typeof AdminPatientsNewBatchRoute
   '/admin/patients/new/done': typeof AdminPatientsNewDoneRoute
@@ -531,6 +540,7 @@ export interface FileRouteTypes {
     | '/admin/forms/'
     | '/admin/patients/'
     | '/admin/resources/'
+    | '/admin/tasks/'
     | '/dashboard/$patientId/'
     | '/admin/patients/new/batch'
     | '/admin/patients/new/done'
@@ -578,6 +588,7 @@ export interface FileRouteTypes {
     | '/admin/forms'
     | '/admin/patients'
     | '/admin/resources'
+    | '/admin/tasks'
     | '/dashboard/$patientId'
     | '/admin/patients/new/batch'
     | '/admin/patients/new/done'
@@ -632,6 +643,7 @@ export interface FileRouteTypes {
     | '/admin/forms/'
     | '/admin/patients/'
     | '/admin/resources/'
+    | '/admin/tasks/'
     | '/dashboard/$patientId/'
     | '/admin/patients/new/batch'
     | '/admin/patients/new/done'
@@ -890,6 +902,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardPatientIdIndexRouteImport
       parentRoute: typeof DashboardPatientIdRoute
     }
+    '/admin/tasks/': {
+      id: '/admin/tasks/'
+      path: '/tasks'
+      fullPath: '/admin/tasks/'
+      preLoaderRoute: typeof AdminTasksIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/resources/': {
       id: '/admin/resources/'
       path: '/'
@@ -1120,6 +1139,7 @@ interface AdminRouteChildren {
   AdminPlatformRoute: typeof AdminPlatformRoute
   AdminResourcesRoute: typeof AdminResourcesRouteWithChildren
   AdminIndexRoute: typeof AdminIndexRoute
+  AdminTasksIndexRoute: typeof AdminTasksIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
@@ -1131,6 +1151,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminPlatformRoute: AdminPlatformRoute,
   AdminResourcesRoute: AdminResourcesRouteWithChildren,
   AdminIndexRoute: AdminIndexRoute,
+  AdminTasksIndexRoute: AdminTasksIndexRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)

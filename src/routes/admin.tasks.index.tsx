@@ -1,0 +1,215 @@
+import { createFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-router";
+import { useMemo, useState } from "react";
+import { AdminShell, PrototypeBack } from "@/components/admin-shell";
+import { Btn, Input, Select, TextLink, Modal, Pill } from "@/components/patient-ui";
+import { WF_DARK, WF_MID, TEAL } from "@/components/wireframe";
+
+type StateMode = "default" | "empty" | "noresults" | "loading";
+type Status = "Active" | "Archived";
+
+export const Route = createFileRoute("/admin/tasks/")({
+  validateSearch: (s: Record<string, unknown>) => ({
+    state: (s.state as StateMode) || "default",
+    banner: (s.banner as string) || "",
+  }),
+  component: TaskList,
+});
+
+type Task = {
+  id: string;
+  name: string;
+  added: string;
+  lastUsed: string;
+  by: string;
+  status: Status;
+};
+
+const TASKS: Task[] = [
+  { id: "log-meals", name: "Log meals for 3 days", added: "Jan 10, 2026", lastUsed: "2 days ago", by: "Dr. Sarah Chen", status: "Active" },
+  { id: "check-pump", name: "Check pump site daily", added: "Feb 5, 2026", lastUsed: "1 week ago", by: "Admin", status: "Active" },
+  { id: "cgm-upload", name: "Upload CGM data before appointment", added: "Feb 20, 2026", lastUsed: "3 days ago", by: "Nurse Priya Mehta", status: "Active" },
+  { id: "bg-log", name: "Log blood glucose 4x daily", added: "Mar 1, 2026", lastUsed: "Yesterday", by: "Dr. James Okafor", status: "Active" },
+  { id: "school-plan", name: "Share school diabetes management plan", added: "Mar 18, 2026", lastUsed: "Never", by: "Admin", status: "Active" },
+  { id: "old-log", name: "Old daily diary", added: "Oct 3, 2025", lastUsed: "4 months ago", by: "Admin", status: "Archived" },
+];
+
+function TaskList() {
+  const { state, banner } = useSearch({ from: "/admin/tasks/" });
+  const navigate = useNavigate();
+  const [q, setQ] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All");
+  const [bannerOpen, setBannerOpen] = useState(true);
+  const [confirm, setConfirm] = useState<Task | null>(null);
+
+  const visible: Task[] = useMemo(() => {
+    if (state === "empty" || state === "noresults") return [];
+    let rows = TASKS;
+    if (statusFilter !== "All") rows = rows.filter((r) => r.status === statusFilter);
+    if (q.trim()) rows = rows.filter((r) => r.name.toLowerCase().includes(q.toLowerCase()));
+    return rows;
+  }, [q, statusFilter, state]);
+
+  return (
+    <AdminShell heading="">
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+        <h1 style={{ fontSize: 24, fontWeight: 700, color: TEAL, margin: 0 }}>Task library</h1>
+        <Btn primary to="#">+ Add task</Btn>
+      </div>
+
+      {banner && bannerOpen && (
+        <div style={{ border: `1px solid ${WF_DARK}`, background: "#fff", padding: "10px 14px", fontSize: 15, color: WF_DARK, margin: "16px 0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <span>{banner}</span>
+          <button onClick={() => setBannerOpen(false)} style={{ background: "none", border: "none", cursor: "pointer", color: WF_DARK, fontSize: 18 }}>×</button>
+        </div>
+      )}
+
+      <div style={{ display: "flex", gap: 12, alignItems: "center", marginTop: 20, marginBottom: 16, flexWrap: "wrap" }}>
+        <div style={{ flex: 1, minWidth: 220, maxWidth: 280 }}>
+          <Input placeholder="Search by name" value={q} onChange={(e) => setQ(e.target.value)} />
+        </div>
+        <Select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} style={{ width: 160 }}>
+          <option value="All">All statuses</option>
+          <option>Active</option><option>Archived</option>
+        </Select>
+        <div style={{ flex: 1, textAlign: "right", fontSize: 14, color: WF_MID, minWidth: 80 }}>
+          {state === "empty" ? "0 tasks" : `${TASKS.length} tasks`}
+        </div>
+      </div>
+
+      {state === "loading" ? (
+        <SkeletonTable />
+      ) : state === "empty" ? (
+        <EmptyState />
+      ) : state === "noresults" ? (
+        <NoResultsState />
+      ) : (
+        <div style={{ background: "#fff", border: `1px solid ${WF_MID}` }}>
+          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 15 }}>
+            <thead>
+              <tr style={{ background: "#F5F5F5", borderBottom: `1px solid ${WF_MID}` }}>
+                {["Task name", "Date added", "Last used", "Created by", "Status", "Actions"].map((h) => (
+                  <th key={h} style={{ padding: "10px 14px", textAlign: "left", fontSize: 13, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, fontWeight: 500 }}>
+                    {h}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {visible.map((r) => (
+                <tr key={r.id} style={{ borderBottom: `0.5px solid ${WF_MID}`, opacity: r.status === "Archived" ? 0.6 : 1 }}>
+                  <td style={{ padding: "12px 14px", color: WF_DARK }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+                      <span>{r.name}</span>
+                    </div>
+                  </td>
+                  <td style={{ padding: "12px 14px", color: WF_DARK }}>{r.added}</td>
+                  <td style={{ padding: "12px 14px", color: r.lastUsed === "Never" ? WF_MID : WF_DARK }}>{r.lastUsed}</td>
+                  <td style={{ padding: "12px 14px", color: WF_DARK }}>{r.by}</td>
+                  <td style={{ padding: "12px 14px" }}>
+                    <Pill label={r.status} weight={r.status === "Active" ? "dark" : "light"} />
+                  </td>
+                  <td style={{ padding: "12px 14px" }}>
+                    {r.status === "Archived" ? (
+                      <Link
+                        to="/admin/tasks"
+                        search={{ state: "default", banner: `${r.name} has been restored.` }}
+                        style={{ fontSize: 15, color: WF_DARK, textDecoration: "underline" }}
+                      >
+                        Restore
+                      </Link>
+                    ) : (
+                      <span style={{ display: "inline-flex", gap: 6, alignItems: "center" }}>
+                        <Link to="#" style={{ fontSize: 15, color: WF_DARK, textDecoration: "underline" }}>Edit</Link>
+                        <span style={{ fontSize: 15, color: WF_MID }}>/</span>
+                        <button
+                          onClick={() => setConfirm(r)}
+                          style={{ background: "none", border: "none", padding: 0, fontSize: 15, color: WF_DARK, textDecoration: "underline", cursor: "pointer", fontFamily: "inherit" }}
+                        >
+                          Archive
+                        </button>
+                      </span>
+                    )}
+                  </td>
+
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      <div style={{ marginTop: 24, padding: 12, border: `1px dashed ${WF_MID}`, fontSize: 13, color: WF_MID, fontStyle: "italic" }}>
+        <div style={{ marginBottom: 6 }}>[ Prototype: switch list state ]</div>
+        <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+          {(["default", "empty", "noresults", "loading"] as StateMode[]).map((s) => (
+            <Link
+              key={s}
+              to="/admin/tasks"
+              search={{ state: s, banner: "" }}
+              style={{ fontSize: 13, color: state === s ? WF_DARK : WF_MID, textDecoration: "underline", fontWeight: state === s ? 600 : 400 }}
+            >
+              {s}
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      <Modal open={!!confirm} title={`Archive ${confirm?.name}?`} onClose={() => setConfirm(null)}>
+        <p style={{ fontSize: 15, color: WF_DARK, margin: "0 0 20px", lineHeight: 1.5 }}>
+          Archived tasks will no longer appear when assigning tasks to patients. Existing task assignments will not be affected.
+        </p>
+        <div style={{ display: "flex", justifyContent: "flex-end", gap: 8 }}>
+          <Btn onClick={() => setConfirm(null)}>Cancel</Btn>
+          <Btn
+            primary
+            onClick={() => {
+              const name = confirm?.name;
+              setConfirm(null);
+              navigate({ to: "/admin/tasks", search: { state: "default", banner: name ? `${name} has been archived.` : "" } });
+            }}
+          >
+            Archive task
+          </Btn>
+        </div>
+      </Modal>
+
+      <PrototypeBack to="/admin" />
+    </AdminShell>
+  );
+}
+
+function SkeletonTable() {
+  return (
+    <div style={{ background: "#fff", border: `1px solid ${WF_MID}` }}>
+      {[...Array(6)].map((_, i) => (
+        <div key={i} style={{ display: "flex", padding: "16px 14px", borderBottom: `0.5px solid ${WF_MID}`, gap: 16 }}>
+          {[220, 110, 110, 140, 80, 100].map((w, j) => (
+            <div key={j} style={{ width: w, height: 12, background: "#F5F5F5", border: `1px solid ${WF_MID}` }} />
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function EmptyState() {
+  return (
+    <div style={{ background: "#fff", border: `1px solid ${WF_MID}`, padding: 60, textAlign: "center" }}>
+      <div style={{ width: 48, height: 48, border: `1.5px solid ${WF_MID}`, borderRadius: "50%", margin: "0 auto 16px", display: "flex", alignItems: "center", justifyContent: "center", color: WF_MID, fontSize: 24 }}>○</div>
+      <div style={{ fontSize: 18, color: WF_DARK, marginBottom: 6 }}>No tasks yet</div>
+      <div style={{ fontSize: 15, color: WF_MID, marginBottom: 20 }}>
+        Add your first task to make it available to clinicians.
+      </div>
+      <Btn primary to="#">+ Add task</Btn>
+    </div>
+  );
+}
+
+function NoResultsState() {
+  return (
+    <div style={{ background: "#fff", border: `1px solid ${WF_MID}`, padding: 60, textAlign: "center" }}>
+      <div style={{ fontSize: 16, color: WF_DARK, marginBottom: 12 }}>No tasks match your search</div>
+      <TextLink to="/admin/tasks">Clear search</TextLink>
+    </div>
+  );
+}
