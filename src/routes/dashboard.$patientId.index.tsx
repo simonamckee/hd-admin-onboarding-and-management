@@ -1341,7 +1341,7 @@ function AssignedFormsTab({ role }: { role: Role }) {
               </Badge>
             </div>
             <div style={{ display: "flex", justifyContent: "flex-end" }}>
-              {role === "clinician" && (
+              {role === "clinician" && r.status !== "Completed" && (
                 <Trash2
                   size={14}
                   color={WF_MID}
