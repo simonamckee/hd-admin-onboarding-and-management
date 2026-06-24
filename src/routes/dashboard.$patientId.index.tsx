@@ -1199,7 +1199,7 @@ function RecommendationsModule() {
     { text: "Reviewed basal rate — consider reducing overnight dose by 10%. Monitor for 2 weeks.", meta: "Dr. Reyes · 28 Apr 2026" },
     { text: "Recommended referral to dietitian for carb-counting refresher.", meta: "Dr. Reyes · 12 Mar 2026" },
   ]);
-  const [showPop, setShowPop] = useState(false);
+  
   return (
     <div style={CARD}>
       <div style={CARD_HEADER}>Recommendations</div>
