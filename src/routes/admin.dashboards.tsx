@@ -127,6 +127,20 @@ function ClinicianBuilder() {
     }
   };
 
+  const moveToCol = (id: string, targetCol: "left" | "right") => {
+    const inLeft = left.some((m) => m.id === id);
+    if (targetCol === "right" && inLeft) {
+      const mod = left.find((m) => m.id === id)!;
+      setLeft(left.filter((m) => m.id !== id));
+      setRight([...right, mod]);
+    } else if (targetCol === "left" && !inLeft) {
+      const mod = right.find((m) => m.id === id)!;
+      setRight(right.filter((m) => m.id !== id));
+      setLeft([...left, mod]);
+    }
+  };
+
+
   const remove = (id: string) => {
     if (totalActive <= 1) {
       setMinError(true);
@@ -140,10 +154,9 @@ function ClinicianBuilder() {
     const orig = CLIN_ALL.find((m) => m.id === id);
     if (!orig) return;
     setMinError(false);
-    const wasLeft = CLIN_LEFT_DEFAULT.some((m) => m.id === id);
-    if (wasLeft) setLeft([...left, orig]);
-    else setRight([...right, orig]);
+    setLeft([...left, orig]);
   };
+
 
   const onDragStart = (id: string, col: Col) => setDrag({ id, col });
   const onDragOverItem = (col: Col, index: number) => {
@@ -256,6 +269,7 @@ function ColumnZone({
   col,
   modules,
   onMove,
+  onMoveToCol,
   onRemove,
   drag,
   dropIdx,
@@ -268,6 +282,7 @@ function ColumnZone({
   col: Col;
   modules: Module[];
   onMove: (id: string, dir: "up" | "down") => void;
+  onMoveToCol: (id: string, targetCol: "left" | "right") => void;
   onRemove: (id: string) => void;
   drag: { id: string; col: Col } | null;
   dropIdx: { col: Col; index: number } | null;
@@ -321,11 +336,13 @@ function ColumnZone({
             <DropIndicator active={sameCol && dropIdx?.col === col && dropIdx?.index === i} />
             <ModuleCard
               module={m}
+              col={col}
               onRemove={() => onRemove(m.id)}
               canMoveUp={i > 0}
               canMoveDown={i < modules.length - 1}
               onUp={() => onMove(m.id, "up")}
               onDown={() => onMove(m.id, "down")}
+              onMoveToCol={onMoveToCol}
               draggable
               dragging={drag?.id === m.id}
               onDragStart={() => onDragStart(m.id, col)}
@@ -341,27 +358,39 @@ function ColumnZone({
 
 function ModuleCard({
   module: m,
+  col,
   onRemove,
   canMoveUp,
   canMoveDown,
   onUp,
   onDown,
+  onMoveToCol,
   draggable,
   dragging,
   onDragStart,
   onDragEnd,
 }: {
   module: Module;
+  col?: Col;
   onRemove: () => void;
   canMoveUp: boolean;
   canMoveDown: boolean;
   onUp: () => void;
   onDown: () => void;
+  onMoveToCol?: (id: string, targetCol: "left" | "right") => void;
   draggable?: boolean;
   dragging?: boolean;
   onDragStart?: () => void;
   onDragEnd?: () => void;
 }) {
+  const arrowStyle: React.CSSProperties = {
+    fontSize: 11,
+    color: TEAL,
+    background: "transparent",
+    border: "none",
+    cursor: "pointer",
+    padding: "0 4px",
+  };
   return (
     <div
       draggable={draggable}
@@ -385,6 +414,16 @@ function ModuleCard({
       <button onClick={onDown} disabled={!canMoveDown} style={iconBtnStyle(canMoveDown)} title="Move down">
         ↓
       </button>
+      {col === "right" && (
+        <button onClick={() => onMoveToCol?.(m.id, "left")} style={arrowStyle} title="Move to left column">
+          ← Left
+        </button>
+      )}
+      {col === "left" && (
+        <button onClick={() => onMoveToCol?.(m.id, "right")} style={arrowStyle} title="Move to right column">
+          Right →
+        </button>
+      )}
       <button onClick={onRemove} style={{ ...iconBtnStyle(true), color: WF_DARK }} title="Remove">
         ×
       </button>
