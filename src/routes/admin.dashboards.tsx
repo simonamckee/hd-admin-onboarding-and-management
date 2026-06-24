@@ -127,7 +127,10 @@ function ClinicianBuilder() {
     }
   };
 
+  const MOVEABLE_IDS = ["appointments", "forms", "tasks"];
+
   const moveToCol = (id: string, targetCol: "left" | "right") => {
+    if (!MOVEABLE_IDS.includes(id)) return;
     const inLeft = left.some((m) => m.id === id);
     if (targetCol === "right" && inLeft) {
       const mod = left.find((m) => m.id === id)!;
@@ -140,7 +143,6 @@ function ClinicianBuilder() {
     }
   };
 
-
   const remove = (id: string) => {
     if (totalActive <= 1) {
       setMinError(true);
@@ -150,6 +152,7 @@ function ClinicianBuilder() {
     setLeft(left.filter((m) => m.id !== id));
     setRight(right.filter((m) => m.id !== id));
   };
+
   const addBack = (id: string) => {
     const orig = CLIN_ALL.find((m) => m.id === id);
     if (!orig) return;
