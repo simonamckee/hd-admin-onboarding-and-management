@@ -1087,65 +1087,6 @@ function T1dalResultPanel() {
   );
 }
 
-function CompletedFormsModule() {
-  const [openT1dal, setOpenT1dal] = useState(false);
-  const rows = [
-    { name: "T1DAL – Parent of Child Under 8", date: "10 Jun 2025", score: "Overall: 2.7/5", t1dal: true },
-    { name: "Pre-appointment questionnaire", date: "28 Apr 2026", score: "—", t1dal: false },
-    { name: "Hypoglycaemia awareness", date: "12 Mar 2026", score: "Score: 14/20", t1dal: false },
-    { name: "Quality of life (PedsQL)", date: "1 Feb 2026", score: "Score: 72/100", t1dal: false },
-  ];
-  return (
-    <div style={CARD}>
-      <div style={CARD_HEADER}>
-        <span>Completed forms</span>
-        <span style={{ fontSize: 15, color: TEAL, textDecoration: "underline", cursor: "pointer" }}>View all</span>
-      </div>
-      <div style={{ padding: 16 }}>
-        <table style={{ width: "100%", fontSize: 15, borderCollapse: "collapse" }}>
-          <thead>
-            <tr>
-              {["Form name", "Submitted", "Score/result", "Action"].map((h) => (
-                <th key={h} style={{ textAlign: "left", fontSize: 11, textTransform: "uppercase", color: WF_MID, fontWeight: 500, padding: "4px 0" }}>{h}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((r) => (
-              <tr key={r.name}>
-                <td style={{ padding: "6px 0", color: WF_DARK }}>
-                  {r.name}
-                  {r.t1dal && (
-                    <span style={{ marginLeft: 8, fontSize: 10, padding: "1px 6px", borderRadius: 8, background: "#E6F4F5", color: TEAL, fontWeight: 600, letterSpacing: 0.3 }}>
-                      VALIDATED
-                    </span>
-                  )}
-                </td>
-                <td style={{ padding: "6px 0", color: WF_DARK }}>{r.date}</td>
-                <td style={{ padding: "6px 0", color: WF_DARK }}>{r.score}</td>
-                <td style={{ padding: "6px 0" }}>
-                  {r.t1dal ? (
-                    <span
-                      onClick={() => setOpenT1dal((v) => !v)}
-                      style={{ color: TEAL, textDecoration: "underline", cursor: "pointer" }}
-                    >
-                      {openT1dal ? "Hide" : "View"}
-                    </span>
-                  ) : (
-                    <span style={{ color: TEAL, textDecoration: "underline", cursor: "pointer" }}>View</span>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <div style={{ fontSize: 11, color: WF_MID, marginTop: 8 }}>Showing 4 of 7 completed forms</div>
-
-        {openT1dal && <T1dalResultPanel />}
-      </div>
-    </div>
-  );
-}
 
 function AppointmentsModule() {
   const past = [
@@ -1467,19 +1408,35 @@ const MODULE_COMPONENTS: Record<string, React.ComponentType> = {
   glucose: GlucoseModule,
   insulin: InsulinModule,
   labs: LabsModule,
-  completedForms: CompletedFormsModule,
   appointments: AppointmentsModule,
-  completedTasks: CompletedTasksModule,
   recommendations: RecommendationsModule,
   resources: ResourcesModule,
-  assignedForms: AssignedFormsModule,
-  assignedTasks: AssignedTasksModule,
 };
 
 function DashboardPage() {
   const { clinicianModules } = useDashboardTemplate();
+  const [role, setRole] = useState<Role>("clinician");
+  const transformIds = (ids: string[]) => {
+    const out: string[] = [];
+    const seen = new Set<string>();
+    for (const id of ids) {
+      const key =
+        id === "completedForms" || id === "assignedForms"
+          ? "forms"
+          : id === "completedTasks" || id === "assignedTasks"
+          ? "tasks"
+          : id;
+      if (!seen.has(key)) {
+        seen.add(key);
+        out.push(key);
+      }
+    }
+    return out;
+  };
   const renderColumn = (ids: string[]) =>
-    ids.map((id) => {
+    transformIds(ids).map((id) => {
+      if (id === "forms") return <FormsModule key={`forms-${role}`} role={role} />;
+      if (id === "tasks") return <TasksModule key={`tasks-${role}`} role={role} />;
       const C = MODULE_COMPONENTS[id];
       return C ? <C key={id} /> : null;
     });
@@ -1488,10 +1445,53 @@ function DashboardPage() {
       <div style={{ margin: "-32px", background: WF_BG, minHeight: "100vh" }}>
         <div style={{ position: "sticky", top: 0, zIndex: 10 }}>
           <PatientHeader />
+          <div
+            style={{
+              background: SURFACE,
+              padding: "6px 24px",
+              borderBottom: `0.5px solid ${BORDER}`,
+              display: "flex",
+              justifyContent: "flex-end",
+              gap: 8,
+              alignItems: "center",
+            }}
+          >
+            <span
+              style={{
+                fontSize: 11,
+                color: WF_MID,
+                textTransform: "uppercase",
+                letterSpacing: 0.5,
+              }}
+            >
+              View as
+            </span>
+            {(["clinician", "patient"] as Role[]).map((r) => (
+              <button
+                key={r}
+                onClick={() => setRole(r)}
+                style={{
+                  background: role === r ? TEAL : "transparent",
+                  color: role === r ? "#fff" : WF_DARK,
+                  border: `0.5px solid ${role === r ? TEAL : BORDER}`,
+                  borderRadius: 4,
+                  padding: "2px 10px",
+                  fontSize: 12,
+                  cursor: "pointer",
+                  fontFamily: "inherit",
+                  textTransform: "capitalize",
+                }}
+              >
+                {r}
+              </button>
+            ))}
+          </div>
         </div>
         <div style={{ padding: 24, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, alignItems: "start" }}>
           <div>{renderColumn(clinicianModules.patientData)}</div>
-          <div style={{ position: "sticky", top: 20 }}>{renderColumn(clinicianModules.clinicalActions)}</div>
+          <div style={{ height: "calc(100vh - 140px)", overflowY: "auto", paddingRight: 4 }}>
+            {renderColumn(clinicianModules.clinicalActions)}
+          </div>
         </div>
         <div style={{
           background: SURFACE, padding: "10px 24px", borderTop: `0.5px solid ${BORDER}`,
