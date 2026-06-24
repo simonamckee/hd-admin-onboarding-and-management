@@ -14,15 +14,13 @@ const CLIN_LEFT_DEFAULT: Module[] = [
   { id: "glucose", name: "Glucose" },
   { id: "insulin", name: "Insulin" },
   { id: "labs", name: "Labs & test results" },
-  { id: "completedForms", name: "Forms" },
+  { id: "forms", name: "Forms" },
+  { id: "tasks", name: "Tasks" },
   { id: "appointments", name: "Appointments" },
-  { id: "completedTasks", name: "Completed tasks" },
 ];
 const CLIN_RIGHT_DEFAULT: Module[] = [
   { id: "recommendations", name: "Recommendations" },
   { id: "resources", name: "Resources" },
-  { id: "assignedForms", name: "Assigned forms" },
-  { id: "assignedTasks", name: "Assigned tasks" },
 ];
 const CLIN_ALL = [...CLIN_LEFT_DEFAULT, ...CLIN_RIGHT_DEFAULT];
 const CLIN_BY_ID: Record<string, Module> = Object.fromEntries(CLIN_ALL.map((m) => [m.id, m]));
@@ -610,8 +608,10 @@ function ModuleHeader({ id, compact }: { id: string; compact: boolean }) {
     resources: ["Resources", "+ Share resource"],
     labs: ["Labs & test results", ""],
     completedForms: ["Completed forms", "View all"],
+    forms: ["Forms", ""],
     appointments: ["Appointments", ""],
     completedTasks: ["Completed tasks", ""],
+    tasks: ["Tasks", ""],
     assignedForms: ["Assigned forms", "+ Assign"],
     assignedTasks: ["Assigned tasks", "+ Add task"],
   };
@@ -776,6 +776,22 @@ function ModuleBody({ id, compact }: { id: string; compact: boolean }) {
         <div>Thyroid panel · Last: 3 Mar 2024 · Next: 3 Mar 2025</div>
         <div>Retinopathy · Last: 22 Nov 2023 · Next: 22 Nov 2024</div>
         <div>Neuropathy · Last: 22 Nov 2023 · Next: 22 Nov 2024</div>
+      </div>
+    );
+  }
+  if (id === "forms") {
+    return (
+      <div style={{ fontSize: 13, color: WF_MID, display: "flex", flexDirection: "column", gap: 4 }}>
+        <div>Monthly Check-in — Pending</div>
+        <div>Daily symptom log — <span style={{ color: "#C0392B" }}>Overdue</span></div>
+      </div>
+    );
+  }
+  if (id === "tasks") {
+    return (
+      <div style={{ fontSize: 13, color: WF_MID, display: "flex", flexDirection: "column", gap: 4 }}>
+        <div>Log meals for 3 days — Due 15 Jun</div>
+        <div>Check pump site daily — Ongoing</div>
       </div>
     );
   }
