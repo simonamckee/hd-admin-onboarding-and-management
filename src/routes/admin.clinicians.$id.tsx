@@ -36,6 +36,23 @@ function statusPill(s: Row["status"]) {
   return <Pill label="Archived" weight="light" />;
 }
 
+const CLINIC_ROLES = [
+  "Endocrinologist",
+  "Dietician",
+  "Nurse",
+  "Diabetes Nurse Educator",
+  "Psychologist",
+  "Social Worker / Mental Health Professional",
+  "Admin",
+  "Pharmacist",
+  "Nurse Practitioner",
+  "Physician Assistant",
+  "Education Specialist",
+  "Podiatrist",
+  "Optometrist / Ophthalmologist",
+  "Other",
+];
+
 function EditClinician() {
   const { id } = Route.useParams();
   const { sso } = useSearch({ from: "/admin/clinicians/$id" });
@@ -43,15 +60,31 @@ function EditClinician() {
   const base = MOCK[id] || MOCK["james-okafor"];
   const ssoOn = sso === "on";
 
+  const [name, setName] = useState(base.name);
+  const [email, setEmail] = useState(base.email);
   const [title, setTitle] = useState(base.title);
   const [role, setRole] = useState<Row["role"]>(base.role);
   const [warn, setWarn] = useState(false);
   const [confirm, setConfirm] = useState(false);
   const assignedPatients = ASSIGNED_PATIENTS[id] || [];
 
+  const nameDirty = name !== base.name;
+  const emailDirty = email !== base.email;
   const titleDirty = title !== base.title;
   const roleDirty = role !== base.role;
 
+  const saveName = () => {
+    navigate({
+      to: "/admin/clinicians",
+      search: { state: "default", sso, banner: `Name updated for ${base.name}.` },
+    });
+  };
+  const saveEmail = () => {
+    navigate({
+      to: "/admin/clinicians",
+      search: { state: "default", sso, banner: `Email updated for ${base.name}.` },
+    });
+  };
   const saveTitle = () => {
     navigate({
       to: "/admin/clinicians",
