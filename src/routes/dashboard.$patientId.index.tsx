@@ -1217,43 +1217,120 @@ function ResourcesModule() {
   );
 }
 
-function AssignedFormsModule() {
-  const [list, setList] = useState<Array<{ name: string; assigned: string; status: "Pending" | "Completed" }>>([
-    { name: "Daily symptom log", assigned: "28 Apr 2026", status: "Pending" },
-    { name: "Hypoglycaemia awareness", assigned: "1 May 2026", status: "Pending" },
-    { name: "Pre-appointment questionnaire", assigned: "1 May 2026", status: "Completed" },
+type Role = "clinician" | "patient";
+
+const TODAY_REF = new Date("2026-06-23T00:00:00");
+function parseDueDate(s: string): Date | null {
+  if (!s || s === "—" || s.toLowerCase() === "ongoing") return null;
+  const d = new Date(s);
+  return isNaN(d.getTime()) ? null : d;
+}
+function isOverdueDate(s: string): boolean {
+  const d = parseDueDate(s);
+  return d ? d.getTime() < TODAY_REF.getTime() : false;
+}
+
+function OverdueBadge() {
+  return (
+    <span
+      style={{
+        marginLeft: 6,
+        background: ERROR_BG,
+        color: ERROR_TEXT,
+        fontSize: 11,
+        padding: "1px 8px",
+        borderRadius: 10,
+        fontWeight: 600,
+      }}
+    >
+      Overdue
+    </span>
+  );
+}
+
+function GhostBtnSmall({ children, onClick }: { children: React.ReactNode; onClick?: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        background: "transparent",
+        color: TEAL,
+        border: `0.5px solid ${TEAL}`,
+        borderRadius: 4,
+        fontSize: 11,
+        padding: "2px 8px",
+        cursor: "pointer",
+        fontFamily: "inherit",
+      }}
+    >
+      {children}
+    </button>
+  );
+}
+
+function FormsModule({ role }: { role: Role }) {
+  const [tab, setTab] = useState<"Assigned" | "Completed">("Assigned");
+  return (
+    <div style={CARD}>
+      <div style={CARD_HEADER}>
+        <span>Forms</span>
+      </div>
+      <div style={{ borderBottom: `1px solid ${BORDER}`, padding: "0 16px", display: "flex" }}>
+        <TabButton active={tab === "Assigned"} onClick={() => setTab("Assigned")}>Assigned</TabButton>
+        <TabButton active={tab === "Completed"} onClick={() => setTab("Completed")}>Completed</TabButton>
+      </div>
+      {tab === "Assigned" && <AssignedFormsTab role={role} />}
+      {tab === "Completed" && <CompletedFormsTab role={role} />}
+    </div>
+  );
+}
+
+function AssignedFormsTab({ role }: { role: Role }) {
+  const [list, setList] = useState<Array<{ name: string; assigned: string; due: string; status: "Pending" | "Completed" }>>([
+    { name: "T1DAL – Parent of Child Under 8", assigned: "1 Jun 2026", due: "30 Jun 2026", status: "Pending" },
+    { name: "Monthly Check-in", assigned: "1 May 2026", due: "15 Jun 2026", status: "Pending" },
+    { name: "Daily symptom log", assigned: "28 Apr 2026", due: "10 Jun 2026", status: "Pending" },
+    { name: "Hypoglycaemia awareness", assigned: "1 May 2026", due: "1 Jul 2026", status: "Pending" },
+    { name: "Pre-appointment questionnaire", assigned: "1 May 2026", due: "—", status: "Completed" },
   ]);
   const [showSel, setShowSel] = useState(false);
   return (
-    <div style={CARD}>
-      <div style={CARD_HEADER}>Assigned forms</div>
-      <div style={{ padding: 16 }}>
-        {/* Header row */}
-        <div style={{
+    <div style={{ padding: 16 }}>
+      <div
+        style={{
           display: "grid",
-          gridTemplateColumns: "1fr 100px 90px 32px",
+          gridTemplateColumns: "1fr 100px 100px 90px 32px",
           gap: 8,
           padding: "0 0 6px 0",
           borderBottom: `0.5px solid ${BORDER}`,
           marginBottom: 4,
-        }}>
-          {["Form name", "Assigned", "Status", ""].map((h) => (
-            <div key={h} style={{ fontSize: 11, fontWeight: 600, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.3 }}>{h}</div>
-          ))}
-        </div>
-
-        {/* Data rows */}
-        {list.map((r, i) => (
-          <div key={i} style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 100px 90px 32px",
-            gap: 8,
-            alignItems: "center",
-            padding: "8px 0",
-            borderBottom: "0.5px solid #f0f2f3",
-          }}>
-            <div style={{ fontSize: 15, color: WF_DARK }}>{r.name}</div>
+        }}
+      >
+        {["Form name", "Assigned", "Due", "Status", ""].map((h) => (
+          <div key={h} style={{ fontSize: 11, fontWeight: 600, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.3 }}>{h}</div>
+        ))}
+      </div>
+      {list.map((r, i) => {
+        const overdue = r.status === "Pending" && isOverdueDate(r.due);
+        return (
+          <div
+            key={i}
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 100px 100px 90px 32px",
+              gap: 8,
+              alignItems: "center",
+              padding: "8px 0",
+              borderBottom: "0.5px solid #f0f2f3",
+            }}
+          >
+            <div style={{ fontSize: 15, color: WF_DARK, display: "flex", alignItems: "center", flexWrap: "wrap", gap: 6 }}>
+              <span>{r.name}</span>
+              {overdue && <OverdueBadge />}
+              {overdue && <GhostBtnSmall>Send reminder</GhostBtnSmall>}
+            </div>
             <div style={{ fontSize: 15, color: WF_DARK }}>{r.assigned}</div>
+            <div style={{ fontSize: 11, color: overdue ? ERROR_TEXT : WF_MID, fontWeight: overdue ? 600 : 400 }}>{r.due}</div>
             <div>
               <Badge
                 bg={r.status === "Pending" ? WARN_BG : SUCCESS_BG}
@@ -1263,53 +1340,121 @@ function AssignedFormsModule() {
               </Badge>
             </div>
             <div style={{ display: "flex", justifyContent: "flex-end" }}>
-              <Trash2
-                size={14}
-                color={WF_MID}
-                style={{ cursor: "pointer" }}
-                onClick={() => setList((cur) => cur.filter((_, j) => j !== i))}
-              />
+              {role === "clinician" && (
+                <Trash2
+                  size={14}
+                  color={WF_MID}
+                  style={{ cursor: "pointer" }}
+                  onClick={() => setList((cur) => cur.filter((_, j) => j !== i))}
+                />
+              )}
             </div>
           </div>
-        ))}
-        <button
-          onClick={() => setShowSel((v) => !v)}
+        );
+      })}
+      <button
+        onClick={() => setShowSel((v) => !v)}
+        style={{
+          width: "100%", border: `0.5px solid ${TEAL}`, background: SURFACE, color: TEAL,
+          borderRadius: 6, fontSize: 16, padding: "6px 0", cursor: "pointer", marginTop: 10, fontFamily: "inherit",
+        }}
+      >
+        + Assign form
+      </button>
+      {showSel && (
+        <select
+          onChange={(e) => {
+            const v = e.target.value;
+            if (v) {
+              const today = new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
+              setList((cur) => [...cur, { name: v, assigned: today, due: "—", status: "Pending" }]);
+              setShowSel(false);
+            }
+          }}
+          defaultValue=""
           style={{
-            width: "100%", border: `0.5px solid ${TEAL}`, background: SURFACE, color: TEAL,
-            borderRadius: 6, fontSize: 16, padding: "6px 0", cursor: "pointer", marginTop: 10, fontFamily: "inherit",
+            width: "100%", marginTop: 8, border: `0.5px solid ${BORDER}`,
+            borderRadius: 4, padding: "4px 8px", fontSize: 15, fontFamily: "inherit",
           }}
         >
-          + Assign form
-        </button>
-        {showSel && (
-          <select
-            onChange={(e) => {
-              const v = e.target.value;
-              if (v) {
-                const today = new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
-                setList((cur) => [...cur, { name: v, assigned: today, status: "Pending" }]);
-                setShowSel(false);
-              }
-            }}
-            defaultValue=""
-            style={{
-              width: "100%", marginTop: 8, border: `0.5px solid ${BORDER}`,
-              borderRadius: 4, padding: "4px 8px", fontSize: 15, fontFamily: "inherit",
-            }}
-          >
-            <option value="" disabled>Select a form…</option>
-            <option>T1DAL – Parent of Child Under 8</option>
-            <option>Daily symptom log</option>
-            <option>Nutrition diary</option>
-            <option>Sleep & fatigue log</option>
-          </select>
-        )}
-      </div>
+          <option value="" disabled>Select a form…</option>
+          <option>T1DAL – Parent of Child Under 8</option>
+          <option>Daily symptom log</option>
+          <option>Nutrition diary</option>
+          <option>Sleep & fatigue log</option>
+        </select>
+      )}
     </div>
   );
 }
 
-function AssignedTasksModule() {
+function CompletedFormsTab({ role }: { role: Role }) {
+  const [openT1dal, setOpenT1dal] = useState(false);
+  const allRows = [
+    { name: "T1DAL – Parent of Child Under 8", date: "10 Jun 2025", score: "Overall: 2.7/5", t1dal: true },
+    { name: "Pre-appointment questionnaire", date: "28 Apr 2026", score: "—", t1dal: false },
+    { name: "Hypoglycaemia awareness", date: "12 Mar 2026", score: "Score: 14/20", t1dal: false },
+    { name: "Quality of life (PedsQL)", date: "1 Feb 2026", score: "Score: 72/100", t1dal: false },
+  ];
+  const rows = role === "patient" ? allRows.filter((r) => !r.t1dal) : allRows;
+  return (
+    <div style={{ padding: 16 }}>
+      <table style={{ width: "100%", fontSize: 15, borderCollapse: "collapse" }}>
+        <thead>
+          <tr>
+            {["Form name", "Submitted", "Score/result", "Action"].map((h) => (
+              <th key={h} style={{ textAlign: "left", fontSize: 11, textTransform: "uppercase", color: WF_MID, fontWeight: 500, padding: "4px 0" }}>{h}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r) => (
+            <tr key={r.name}>
+              <td style={{ padding: "6px 0", color: WF_DARK }}>{r.name}</td>
+              <td style={{ padding: "6px 0", color: WF_DARK }}>{r.date}</td>
+              <td style={{ padding: "6px 0", color: WF_DARK }}>{r.score}</td>
+              <td style={{ padding: "6px 0" }}>
+                {r.t1dal ? (
+                  <span
+                    onClick={() => setOpenT1dal((v) => !v)}
+                    style={{ color: TEAL, textDecoration: "underline", cursor: "pointer" }}
+                  >
+                    {openT1dal ? "Hide" : "View"}
+                  </span>
+                ) : (
+                  <span style={{ color: TEAL, textDecoration: "underline", cursor: "pointer" }}>View</span>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <div style={{ fontSize: 11, color: WF_MID, marginTop: 8 }}>
+        Showing {rows.length} of {rows.length + 3} completed forms
+      </div>
+      {openT1dal && role !== "patient" && <T1dalResultPanel />}
+    </div>
+  );
+}
+
+function TasksModule({ role }: { role: Role }) {
+  const [tab, setTab] = useState<"Assigned" | "Completed">("Assigned");
+  return (
+    <div style={CARD}>
+      <div style={CARD_HEADER}>
+        <span>Tasks</span>
+      </div>
+      <div style={{ borderBottom: `1px solid ${BORDER}`, padding: "0 16px", display: "flex" }}>
+        <TabButton active={tab === "Assigned"} onClick={() => setTab("Assigned")}>Assigned</TabButton>
+        <TabButton active={tab === "Completed"} onClick={() => setTab("Completed")}>Completed</TabButton>
+      </div>
+      {tab === "Assigned" && <AssignedTasksTab role={role} />}
+      {tab === "Completed" && <CompletedTasksTab />}
+    </div>
+  );
+}
+
+function AssignedTasksTab({ role }: { role: Role }) {
   const [list, setList] = useState([
     { text: "Log meals for 3 days", due: "15 May 2026" },
     { text: "Complete hypoglycaemia awareness form", due: "10 May 2026" },
@@ -1319,87 +1464,102 @@ function AssignedTasksModule() {
   const [newText, setNewText] = useState("");
   const [newDue, setNewDue] = useState("");
   return (
-    <div style={CARD}>
-      <div style={CARD_HEADER}>Assigned tasks</div>
-      <div style={{ padding: 16 }}>
-        {list.map((t, i) => (
-          <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, paddingBottom: 8, borderBottom: "0.5px solid #f0f2f3", marginBottom: 8 }}>
-            
-            <span style={{ fontSize: 15, color: WF_DARK, flex: 1 }}>{t.text}</span>
-            <span style={{ fontSize: 11, color: WF_MID }}>Due: {t.due}</span>
-            <Trash2
-              size={14}
-              color={WF_MID}
-              style={{ cursor: "pointer", flexShrink: 0 }}
-              onClick={() => setList((cur) => cur.filter((_, j) => j !== i))}
-            />
+    <div style={{ padding: 16 }}>
+      {list.map((t, i) => {
+        const overdue = isOverdueDate(t.due);
+        return (
+          <div
+            key={i}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              paddingBottom: 8,
+              borderBottom: "0.5px solid #f0f2f3",
+              marginBottom: 8,
+              flexWrap: "wrap",
+            }}
+          >
+            <span style={{ fontSize: 15, color: WF_DARK, flex: 1, minWidth: 0, display: "inline-flex", alignItems: "center", gap: 6 }}>
+              <span>{t.text}</span>
+              {overdue && <OverdueBadge />}
+            </span>
+            <span style={{ fontSize: 11, color: overdue ? ERROR_TEXT : WF_MID, fontWeight: overdue ? 600 : 400 }}>
+              Due: {t.due}
+            </span>
+            {overdue && <GhostBtnSmall>Send reminder</GhostBtnSmall>}
+            {role === "clinician" && (
+              <Trash2
+                size={14}
+                color={WF_MID}
+                style={{ cursor: "pointer", flexShrink: 0 }}
+                onClick={() => setList((cur) => cur.filter((_, j) => j !== i))}
+              />
+            )}
           </div>
-        ))}
-        <button
-          onClick={() => setShowAdd((v) => !v)}
-          style={{
-            width: "100%", border: `0.5px solid ${TEAL}`, background: SURFACE, color: TEAL,
-            borderRadius: 6, fontSize: 16, padding: "6px 0", cursor: "pointer", marginTop: 8, fontFamily: "inherit",
-          }}
-        >
-          + Add task
-        </button>
-        {showAdd && (
-          <div style={{ display: "flex", gap: 6, marginTop: 8 }}>
-            <input
-              placeholder="Task description"
-              value={newText}
-              onChange={(e) => setNewText(e.target.value)}
-              style={{ flex: 1, border: `0.5px solid ${BORDER}`, borderRadius: 4, padding: "4px 8px", fontSize: 12 }}
-            />
-            <input
-              type="date"
-              value={newDue}
-              onChange={(e) => setNewDue(e.target.value)}
-              style={{ border: `0.5px solid ${BORDER}`, borderRadius: 4, padding: "4px", fontSize: 12 }}
-            />
-            <button
-              onClick={() => {
-                if (newText.trim()) {
-                  const due = newDue ? new Date(newDue).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }) : "—";
-                  setList((cur) => [...cur, { text: newText.trim(), due }]);
-                  setNewText("");
-                  setNewDue("");
-                  setShowAdd(false);
-                }
-              }}
-              style={{ background: TEAL, color: "#fff", border: "none", borderRadius: 4, fontSize: 16, padding: "4px 10px", cursor: "pointer" }}
-            >
-              Add
-            </button>
-          </div>
-        )}
-      </div>
+        );
+      })}
+      <button
+        onClick={() => setShowAdd((v) => !v)}
+        style={{
+          width: "100%", border: `0.5px solid ${TEAL}`, background: SURFACE, color: TEAL,
+          borderRadius: 6, fontSize: 16, padding: "6px 0", cursor: "pointer", marginTop: 8, fontFamily: "inherit",
+        }}
+      >
+        + Add task
+      </button>
+      {showAdd && (
+        <div style={{ display: "flex", gap: 6, marginTop: 8 }}>
+          <input
+            placeholder="Task description"
+            value={newText}
+            onChange={(e) => setNewText(e.target.value)}
+            style={{ flex: 1, border: `0.5px solid ${BORDER}`, borderRadius: 4, padding: "4px 8px", fontSize: 12 }}
+          />
+          <input
+            type="date"
+            value={newDue}
+            onChange={(e) => setNewDue(e.target.value)}
+            style={{ border: `0.5px solid ${BORDER}`, borderRadius: 4, padding: "4px", fontSize: 12 }}
+          />
+          <button
+            onClick={() => {
+              if (newText.trim()) {
+                const due = newDue ? new Date(newDue).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }) : "—";
+                setList((cur) => [...cur, { text: newText.trim(), due }]);
+                setNewText("");
+                setNewDue("");
+                setShowAdd(false);
+              }
+            }}
+            style={{ background: TEAL, color: "#fff", border: "none", borderRadius: 4, fontSize: 16, padding: "4px 10px", cursor: "pointer" }}
+          >
+            Add
+          </button>
+        </div>
+      )}
     </div>
   );
 }
 
-function CompletedTasksModule() {
+function CompletedTasksTab() {
   const items = [
     ["Upload CGM data", "Completed 28 Apr 2026"],
     ["Book next appointment", "Completed 20 Apr 2026"],
     ["Submit pre-appointment form", "Completed 28 Apr 2026"],
   ];
   return (
-    <div style={CARD}>
-      <div style={CARD_HEADER}>Completed tasks</div>
-      <div style={{ padding: 16 }}>
-        {items.map(([t, d]) => (
-          <div key={t} style={{ display: "flex", alignItems: "center", gap: 8, paddingBottom: 8, borderBottom: "0.5px solid #f0f2f3", marginBottom: 8 }}>
-            <span style={{
-              width: 14, height: 14, background: TEAL, color: "#fff",
-              display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 10,
-            }}>✓</span>
-            <span style={{ fontSize: 15, color: WF_MID, flex: 1 }}>{t}</span>
-            <span style={{ fontSize: 11, color: WF_MID }}>{d}</span>
-          </div>
-        ))}
-      </div>
+    <div style={{ padding: 16 }}>
+      {items.map(([t, d]) => (
+        <div key={t} style={{ display: "flex", alignItems: "center", gap: 8, paddingBottom: 8, borderBottom: "0.5px solid #f0f2f3", marginBottom: 8 }}>
+          <span style={{
+            width: 14, height: 14, background: TEAL, color: "#fff",
+            display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 10,
+          }}>✓</span>
+          <span style={{ fontSize: 15, color: WF_MID, flex: 1 }}>{t}</span>
+          <span style={{ fontSize: 11, color: WF_MID }}>{d}</span>
+        </div>
+      ))}
     </div>
   );
 }
