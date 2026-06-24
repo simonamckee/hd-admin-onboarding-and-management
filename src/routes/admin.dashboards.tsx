@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
-import { WF_BG, WF_DARK, WF_MID, TEAL, BORDER } from "@/components/wireframe";
+import { WF_BG, WF_DARK, WF_MID, TEAL, BORDER, SUCCESS_BG, SUCCESS_TEXT } from "@/components/wireframe";
 import { useDashboardTemplate, type ClinicianModules } from "@/lib/dashboard-template";
 
 export const Route = createFileRoute("/admin/dashboards")({ component: DashboardTemplates });
