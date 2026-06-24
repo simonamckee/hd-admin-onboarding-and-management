@@ -128,8 +128,6 @@ function ClinicianBuilder() {
     }
   };
 
-  const MOVEABLE_IDS = ["appointments", "forms", "tasks"];
-
   const moveToCol = (id: string, targetCol: "left" | "right") => {
     if (!MOVEABLE_IDS.includes(id)) return;
     const inLeft = left.some((m) => m.id === id);
