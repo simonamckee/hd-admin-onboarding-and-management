@@ -384,7 +384,6 @@ function AccordionRow({ data }: { data: AccordionData }) {
     { label: "Hospital visits", value: data.hospitalVisits, icon: <Activity size={11} /> },
     { label: "Pending forms", value: data.pendingForms, icon: <FileText size={11} /> },
     { label: "Pending tasks", value: data.pendingTasks, icon: <ClipboardList size={11} /> },
-    { label: "Pending actions", value: data.pendingActions, icon: <CheckSquare size={11} />, teal: true },
   ];
   return (
     <div
