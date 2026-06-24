@@ -15,6 +15,7 @@ import {
   WARN_TEXT,
   WARN_BG,
   ERROR_TEXT,
+  ERROR_BG,
 } from "@/components/wireframe";
 import { useDashboardTemplate } from "@/lib/dashboard-template";
 
@@ -911,19 +912,10 @@ function LabsModule() {
               gap: 8,
             }}>
               <div style={{ fontSize: 15, fontWeight: 600, color: WF_DARK }}>{l.name}</div>
-              <div>
-                <div style={{ fontSize: 11, color: WF_MID }}>Recommended</div>
-                <div style={{ fontSize: 15, color: WF_DARK }}>{l.recommended}</div>
-              </div>
-              <div>
-                <div style={{ fontSize: 11, color: WF_MID }}>Last completed</div>
-                <div style={{ fontSize: 15, color: WF_DARK }}>{fmt(l.last)}</div>
-              </div>
-              <div>
-                <div style={{ fontSize: 11, color: WF_MID }}>Next due</div>
-                <div style={{ fontSize: 15, color: l.overdue ? ERROR_TEXT : WF_DARK, fontWeight: l.overdue ? 600 : 400 }}>
-                  {fmt(l.next)}
-                </div>
+              <div style={{ fontSize: 15, color: WF_DARK }}>{l.recommended}</div>
+              <div style={{ fontSize: 15, color: WF_DARK }}>{fmt(l.last)}</div>
+              <div style={{ fontSize: 15, color: l.overdue ? ERROR_TEXT : WF_DARK, fontWeight: l.overdue ? 600 : 400 }}>
+                {fmt(l.next)}
               </div>
               <span
                 onClick={() => { setEditId(l.id); setEditLast(l.last); setEditNext(l.next); }}
@@ -1221,30 +1213,7 @@ function RecommendationsModule() {
             fontSize: 15, padding: 8, fontFamily: "inherit", resize: "none", boxSizing: "border-box",
           }}
         />
-        <div style={{ display: "flex", gap: 8, marginTop: 8, position: "relative" }}>
-          <button
-            onClick={() => setShowPop((v) => !v)}
-            style={{
-              border: `0.5px solid ${TEAL}`, background: SURFACE, color: TEAL,
-              borderRadius: 5, fontSize: 16, padding: "4px 10px", cursor: "pointer", fontFamily: "inherit",
-            }}
-          >
-            Add resource
-          </button>
-          {showPop && (
-            <div style={{
-              position: "absolute", top: 30, left: 0, background: "#fff",
-              border: `0.5px solid ${BORDER}`, borderRadius: 6, padding: 6, zIndex: 10, minWidth: 140,
-            }}>
-              {["From library", "New resource"].map((o) => (
-                <div key={o} style={{ padding: "6px 10px", fontSize: 15, cursor: "pointer" }}
-                  onMouseEnter={(e) => (e.currentTarget.style.background = "#f4fbfa")}
-                  onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}>
-                  {o}
-                </div>
-              ))}
-            </div>
-          )}
+        <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
           <button
             onClick={() => {
               if (text.trim()) {
