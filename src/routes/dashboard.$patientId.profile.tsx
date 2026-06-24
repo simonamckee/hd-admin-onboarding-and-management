@@ -1063,7 +1063,7 @@ function MedicalTeamCard() {
   const [list, setList] = useState<MedicalMember[]>(INITIAL_MEDICAL_TEAM);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [adding, setAdding] = useState(false);
-  const blank: MedicalMember = { id: "", name: "", role: "Family doctor", email: "", phone: "", clinic: "" };
+  const blank: MedicalMember = { id: "", name: "", role: "Family doctor", otherRole: "", email: "", phone: "", clinic: "" };
   const [draft, setDraft] = useState<MedicalMember>(blank);
 
   const save = () => {
