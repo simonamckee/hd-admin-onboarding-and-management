@@ -1743,7 +1743,6 @@ const MODULE_COMPONENTS: Record<string, React.ComponentType> = {
   insulin: InsulinModule,
   labs: LabsModule,
   appointments: AppointmentsModule,
-  recommendations: RecommendationsModule,
   resources: ResourcesModule,
 };
 
@@ -1771,6 +1770,7 @@ function DashboardPage() {
     transformIds(ids).map((id) => {
       if (id === "forms") return <FormsModule key={`forms-${role}`} role={role} />;
       if (id === "tasks") return <TasksModule key={`tasks-${role}`} role={role} />;
+      if (id === "recommendations") return <RecommendationsModule key={`recommendations-${role}`} role={role} />;
       const C = MODULE_COMPONENTS[id];
       return C ? <C key={id} /> : null;
     });
