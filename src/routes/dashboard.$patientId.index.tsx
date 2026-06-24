@@ -1363,27 +1363,44 @@ function AssignedFormsTab({ role }: { role: Role }) {
         + Assign form
       </button>
       {showSel && (
-        <select
-          onChange={(e) => {
-            const v = e.target.value;
-            if (v) {
+        <div style={{ display: "flex", gap: 6, marginTop: 8, alignItems: "center" }}>
+          <select
+            value={selName}
+            onChange={(e) => setSelName(e.target.value)}
+            style={{
+              flex: 1, border: `0.5px solid ${BORDER}`,
+              borderRadius: 4, padding: "4px 8px", fontSize: 12, fontFamily: "inherit",
+            }}
+          >
+            <option value="" disabled>Select a form…</option>
+            <option>T1DAL – Parent of Child Under 8</option>
+            <option>Daily symptom log</option>
+            <option>Nutrition diary</option>
+            <option>Sleep & fatigue log</option>
+          </select>
+          <input
+            type="date"
+            value={selDue}
+            onChange={(e) => setSelDue(e.target.value)}
+            aria-label="Due date (optional)"
+            placeholder="Due date (optional)"
+            style={{ border: `0.5px solid ${BORDER}`, borderRadius: 4, padding: "4px", fontSize: 12 }}
+          />
+          <button
+            onClick={() => {
+              if (!selName) return;
               const today = new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
-              setList((cur) => [...cur, { name: v, assigned: today, due: "—", status: "Pending" }]);
+              const due = selDue ? new Date(selDue).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }) : "—";
+              setList((cur) => [...cur, { name: selName, assigned: today, due, status: "Pending" }]);
+              setSelName("");
+              setSelDue("");
               setShowSel(false);
-            }
-          }}
-          defaultValue=""
-          style={{
-            width: "100%", marginTop: 8, border: `0.5px solid ${BORDER}`,
-            borderRadius: 4, padding: "4px 8px", fontSize: 15, fontFamily: "inherit",
-          }}
-        >
-          <option value="" disabled>Select a form…</option>
-          <option>T1DAL – Parent of Child Under 8</option>
-          <option>Daily symptom log</option>
-          <option>Nutrition diary</option>
-          <option>Sleep & fatigue log</option>
-        </select>
+            }}
+            style={{ background: TEAL, color: "#fff", border: "none", borderRadius: 4, fontSize: 16, padding: "4px 10px", cursor: "pointer" }}
+          >
+            Assign
+          </button>
+        </div>
       )}
     </div>
   );
