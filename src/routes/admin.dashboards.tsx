@@ -496,38 +496,82 @@ function PreviewToggle({ label, open, onToggle }: { label: string; open: boolean
 /* ============================== CLINICIAN PREVIEW ============================== */
 
 function ClinicianPreview({ left, right }: { left: Module[]; right: Module[] }) {
-  const [msgOpen, setMsgOpen] = useState(false);
+  const pill: React.CSSProperties = {
+    background: SUCCESS_BG,
+    color: SUCCESS_TEXT,
+    fontSize: 11,
+    padding: "2px 8px",
+    borderRadius: 999,
+    fontWeight: 500,
+  };
+  const riskPill: React.CSSProperties = {
+    background: "#faeeda",
+    color: "#633806",
+    fontSize: 11,
+    padding: "2px 8px",
+    borderRadius: 999,
+    fontWeight: 500,
+  };
+  const sep = <span style={{ color: WF_MID }}>·</span>;
   return (
     <div style={{ ...CARD, padding: 16, marginBottom: 16, position: "relative" }}>
       {/* Patient header */}
-      <div style={{ borderBottom: `1px solid ${WF_MID}`, paddingBottom: 12, marginBottom: 12, display: "flex", alignItems: "center", gap: 12 }}>
-        <div style={{ flex: 1 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <span style={{ fontSize: 18, fontWeight: 600, color: WF_DARK }}>Emma Tremblay</span>
-            <span style={{ fontSize: 13, border: `1px solid ${WF_DARK}`, padding: "2px 6px", color: WF_DARK }}>
-              Active
-            </span>
-          </div>
-          <div style={{ fontSize: 13, color: WF_MID, marginTop: 4 }}>
-            DOB: March 4, 2018 · Diagnosed: June 12, 2020 · Last sync: 2h ago
-          </div>
-        </div>
-        <button
-          onClick={() => setMsgOpen(true)}
+      <div style={{ borderBottom: `1px solid ${WF_MID}`, paddingBottom: 12, marginBottom: 12 }}>
+        <div
           style={{
-            border: `1px solid ${WF_DARK}`,
-            background: "#fff",
-            padding: "6px 12px",
-            fontSize: 14,
-            color: WF_DARK,
-            cursor: "pointer",
-            display: "inline-flex",
+            display: "flex",
+            flexDirection: "row",
             alignItems: "center",
-            gap: 6,
+            gap: 8,
+            fontSize: 13,
+            color: WF_DARK,
+            flexWrap: "nowrap",
+            overflow: "hidden",
           }}
         >
-          💬 Messages
-        </button>
+          <span
+            style={{
+              width: 24,
+              height: 24,
+              borderRadius: "50%",
+              background: WF_BG,
+              border: `1px solid ${WF_MID}`,
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: 11,
+              color: WF_DARK,
+              flexShrink: 0,
+            }}
+          >
+            ET
+          </span>
+          {sep}
+          <span style={{ fontWeight: 600, fontSize: 14, color: WF_DARK }}>Emma Tremblay</span>
+          {sep}
+          <span style={{ color: WF_MID }}>4 Aug 2014 · Age 11</span>
+          {sep}
+          <span style={{ color: WF_MID }}>T1D · 3 years</span>
+          {sep}
+          <span style={{ color: WF_MID }}>Margaret Chen — Mother</span>
+          {sep}
+          <span style={{ color: WF_MID }}>Dr. Reyes</span>
+          {sep}
+          <span style={{ color: WF_MID }}>Last seen: 2 days ago</span>
+          <span style={{ flex: 1 }} />
+          <a
+            href="#"
+            style={{ color: TEAL, fontWeight: 500, marginLeft: 16, textDecoration: "none", flexShrink: 0 }}
+          >
+            View Care profile →
+          </a>
+        </div>
+        <div style={{ display: "flex", gap: 8, marginTop: 6 }}>
+          <span style={pill}>Active</span>
+          <span style={pill}>CGM connected</span>
+          <span style={pill}>Pump connected</span>
+          <span style={riskPill}>A1c</span>
+        </div>
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
@@ -542,8 +586,6 @@ function ClinicianPreview({ left, right }: { left: Module[]; right: Module[] }) 
           ))}
         </div>
       </div>
-
-      {msgOpen && <MessagesPanel onClose={() => setMsgOpen(false)} />}
     </div>
   );
 }
