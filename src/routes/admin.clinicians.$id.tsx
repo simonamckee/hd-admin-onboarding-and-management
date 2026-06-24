@@ -153,12 +153,28 @@ function EditClinician() {
             borderStyle: "dashed",
           }}
         >
-          <ReadField label="Name" value={base.name} note="Name is fixed after account creation." />
-          <ReadField
+          <Field label="Name" required>
+            <InlineEdit
+              dirty={nameDirty}
+              onCancel={() => setName(base.name)}
+              onSave={saveName}
+            >
+              <Input value={name} onChange={(e) => setName(e.target.value)} />
+            </InlineEdit>
+          </Field>
+          <Field
             label="Email"
-            value={base.email}
-            note={ssoOn ? "Sourced from identity provider." : "Email is fixed after account creation."}
-          />
+            required
+            helper={ssoOn ? "Sourced from identity provider." : undefined}
+          >
+            <InlineEdit
+              dirty={emailDirty}
+              onCancel={() => setEmail(base.email)}
+              onSave={saveEmail}
+            >
+              <Input value={email} onChange={(e) => setEmail(e.target.value)} />
+            </InlineEdit>
+          </Field>
           <Grid>
             <ReadField label="Last sign-in" value={base.lastSignIn} />
             <ReadField label="Member since" value={base.memberSince} />
