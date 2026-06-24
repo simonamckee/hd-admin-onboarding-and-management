@@ -318,7 +318,12 @@ function PatientRow({
           {p.lastVisit}
         </div>
         <div>
-          {p.nextAppt ? (
+          {p.risks.length > 0 && p.nextAppt === "Today" ? (
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 4, fontSize: 14, color: TEAL, fontWeight: 700 }}>
+              <Calendar size={12} color={TEAL} />
+              Today
+            </div>
+          ) : p.nextAppt ? (
             <>
               <div style={{ fontSize: 14, color: TEAL, fontWeight: 600 }}>{p.nextAppt}</div>
               {p.nextApptSub && <div style={{ fontSize: 12, color: MUTED }}>{p.nextApptSub}</div>}
