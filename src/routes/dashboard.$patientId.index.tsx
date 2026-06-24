@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Trash2, User, X, ArrowLeft, ChevronUp } from "lucide-react";
+import { Trash2, User, X, ArrowLeft, ChevronUp, Calendar } from "lucide-react";
 import { MessageBubble } from "@/components/message-bubble";
 import { AdminShell } from "@/components/admin-shell";
 import {
@@ -1399,7 +1399,7 @@ function AssignedFormsTab({ role }: { role: Role }) {
           marginBottom: 4,
         }}
       >
-        {["Form name", "Assigned", "Due", "Status", ""].map((h) => (
+        {["Form name", "Assigned", "Due date", "Status", ""].map((h) => (
           <div key={h} style={{ fontSize: 11, fontWeight: 600, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.3 }}>{h}</div>
         ))}
       </div>
@@ -1423,7 +1423,10 @@ function AssignedFormsTab({ role }: { role: Role }) {
               {overdue && <GhostBtnSmall>Send reminder</GhostBtnSmall>}
             </div>
             <div style={{ fontSize: 15, color: WF_DARK }}>{r.assigned}</div>
-            <div style={{ fontSize: 11, color: overdue ? ERROR_TEXT : WF_MID, fontWeight: overdue ? 600 : 400 }}>{r.due}</div>
+            <div style={{ fontSize: 11, color: overdue ? ERROR_TEXT : WF_MID, fontWeight: overdue ? 600 : 400, display: "flex", alignItems: "center", gap: 3 }}>
+              <Calendar size={11} color={overdue ? ERROR_TEXT : WF_MID} />
+              <span>Due: {r.due}</span>
+            </div>
             <div>
               <Badge
                 bg={r.status === "Pending" ? WARN_BG : SUCCESS_BG}
@@ -1600,8 +1603,9 @@ function AssignedTasksTab({ role }: { role: Role }) {
             }}
           >
             <span style={{ fontSize: 15, color: WF_DARK, minWidth: 0 }}>{t.text}</span>
-            <span style={{ fontSize: 11, color: overdue ? ERROR_TEXT : WF_MID, fontWeight: overdue ? 600 : 400 }}>
-              Due: {t.due}
+            <span style={{ fontSize: 11, color: overdue ? ERROR_TEXT : WF_MID, fontWeight: overdue ? 600 : 400, display: "inline-flex", alignItems: "center", gap: 3 }}>
+              <Calendar size={11} color={overdue ? ERROR_TEXT : WF_MID} />
+              <span>Due: {t.due}</span>
             </span>
             <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
               {overdue && <OverdueBadge />}
@@ -1823,7 +1827,7 @@ function DashboardPage() {
         </div>
         <div style={{ padding: 24, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, alignItems: "start" }}>
           <div>{renderColumn(clinicianModules.patientData)}</div>
-          <div style={{ height: "calc(100vh - 140px)", overflowY: "auto", paddingRight: 4 }}>
+          <div>
             {renderColumn(clinicianModules.clinicalActions)}
           </div>
         </div>
