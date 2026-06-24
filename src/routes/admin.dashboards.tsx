@@ -869,52 +869,8 @@ function miniBtn(primary: boolean): React.CSSProperties {
   };
 }
 
-function MessagesPanel({ onClose, mobile = false }: { onClose: () => void; mobile?: boolean }) {
-  return (
-    <div
-      style={{
-        position: "absolute",
-        top: 0,
-        right: 0,
-        bottom: 0,
-        width: mobile ? "100%" : 320,
-        background: "#fff",
-        borderLeft: mobile ? "none" : `1px solid ${WF_MID}`,
-        display: "flex",
-        flexDirection: "column",
-        boxShadow: "-4px 0 12px rgba(0,0,0,0.08)",
-        zIndex: 5,
-      }}
-    >
-      <div style={{ padding: 12, borderBottom: `1px solid ${WF_MID}`, display: "flex", alignItems: "center" }}>
-        <span style={{ flex: 1, fontSize: 15, fontWeight: 600, color: WF_DARK }}>Messages</span>
-        <button
-          onClick={onClose}
-          style={{ background: "transparent", border: "none", fontSize: 18, cursor: "pointer", color: WF_DARK }}
-        >
-          ×
-        </button>
-      </div>
-      <div style={{ flex: 1, padding: 12, display: "flex", flexDirection: "column", gap: 8, overflowY: "auto" }}>
-        <Bubble from="patient">Hi, my readings have been high after dinner this week.</Bubble>
-        <Bubble from="patient">Should I adjust my dose?</Bubble>
-        <Bubble from="clinician">Let's try increasing your evening basal by 1U and review in 3 days.</Bubble>
-      </div>
-      <div style={{ padding: 10, borderTop: `1px solid ${WF_MID}` }}>
-        <div
-          style={{
-            border: `1px solid ${WF_MID}`,
-            padding: "8px 10px",
-            fontSize: 14,
-            color: WF_MID,
-          }}
-        >
-          Type a message…
-        </div>
-      </div>
-    </div>
-  );
-}
+
+
 
 function Bubble({ from, children }: { from: "patient" | "clinician"; children: React.ReactNode }) {
   const isPatient = from === "patient";
