@@ -1769,11 +1769,6 @@ function DashboardPage() {
     : id === "completedTasks" || id === "assignedTasks" ? "tasks"
     : id;
 
-  const allIds = [
-    ...clinicianModules.patientData,
-    ...clinicianModules.clinicalActions,
-  ].map(normaliseId);
-
   const seenGlobal = new Set<string>();
   const leftIds: string[] = [];
   const rightIds: string[] = [];
