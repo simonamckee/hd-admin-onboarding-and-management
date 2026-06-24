@@ -416,13 +416,13 @@ function ModuleCard({
       <button onClick={onDown} disabled={!canMoveDown} style={iconBtnStyle(canMoveDown)} title="Move down">
         ↓
       </button>
-      {col === "right" && (
-        <button onClick={() => onMoveToCol?.(m.id, "left")} style={arrowStyle} title="Move to left column">
+      {col === "right" && onMoveToCol && (
+        <button onClick={() => onMoveToCol(m.id, "left")} style={arrowStyle} title="Move to left column">
           ← Left
         </button>
       )}
-      {col === "left" && (
-        <button onClick={() => onMoveToCol?.(m.id, "right")} style={arrowStyle} title="Move to right column">
+      {col === "left" && onMoveToCol && (
+        <button onClick={() => onMoveToCol(m.id, "right")} style={arrowStyle} title="Move to right column">
           Right →
         </button>
       )}
