@@ -23,7 +23,6 @@ const CLIN_RIGHT_DEFAULT: Module[] = [
   { id: "resources", name: "Resources" },
   { id: "assignedForms", name: "Assigned forms" },
   { id: "assignedTasks", name: "Assigned tasks" },
-  { id: "tasks", name: "Tasks" },
 ];
 const CLIN_ALL = [...CLIN_LEFT_DEFAULT, ...CLIN_RIGHT_DEFAULT];
 const CLIN_BY_ID: Record<string, Module> = Object.fromEntries(CLIN_ALL.map((m) => [m.id, m]));
