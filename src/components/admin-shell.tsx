@@ -11,6 +11,7 @@ const ADMIN_NAV: Array<{ label: string; to: string }> = [
   { label: "Clinician management", to: "/admin/clinicians" },
   { label: "Patient management", to: "/admin/patients" },
   { label: "Form library", to: "/admin/forms" },
+  { label: "Task library", to: "/admin/tasks" },
   { label: "Resource library", to: "/admin/resources" },
   { label: "Audit log", to: "/admin/audit" },
 ];
