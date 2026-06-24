@@ -1054,7 +1054,7 @@ function PrimarySupportersCard({ role }: { role: Role }) {
 }
 
 type MedicalRole = "Family doctor" | "Specialist" | "Other";
-type MedicalMember = { id: string; name: string; role: MedicalRole; email: string; phone: string; clinic: string };
+type MedicalMember = { id: string; name: string; role: MedicalRole; otherRole?: string; email: string; phone: string; clinic: string };
 const INITIAL_MEDICAL_TEAM: MedicalMember[] = [
   { id: "mt1", name: "Dr. Patricia Wong", role: "Family doctor", email: "p.wong@familymed.ca", phone: "604-555-0182", clinic: "UBC Family Medicine" },
 ];
@@ -1063,7 +1063,7 @@ function MedicalTeamCard() {
   const [list, setList] = useState<MedicalMember[]>(INITIAL_MEDICAL_TEAM);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [adding, setAdding] = useState(false);
-  const blank: MedicalMember = { id: "", name: "", role: "Family doctor", email: "", phone: "", clinic: "" };
+  const blank: MedicalMember = { id: "", name: "", role: "Family doctor", otherRole: "", email: "", phone: "", clinic: "" };
   const [draft, setDraft] = useState<MedicalMember>(blank);
 
   const save = () => {
@@ -1095,6 +1095,12 @@ function MedicalTeamCard() {
               <option>Other</option>
             </Select>
           </div>
+          {draft.role === "Other" && (
+            <div style={{ gridColumn: "1 / -1" }}>
+              <FieldLabel>Please specify</FieldLabel>
+              <Input value={draft.otherRole || ""} onChange={(e) => setDraft({ ...draft, otherRole: e.target.value })} />
+            </div>
+          )}
           <div><FieldLabel>Email</FieldLabel><Input value={draft.email} onChange={(e) => setDraft({ ...draft, email: e.target.value })} /></div>
           <div><FieldLabel>Phone</FieldLabel><Input value={draft.phone} onChange={(e) => setDraft({ ...draft, phone: e.target.value })} /></div>
           <div style={{ gridColumn: "1 / -1" }}><FieldLabel>Clinic name</FieldLabel><Input value={draft.clinic} onChange={(e) => setDraft({ ...draft, clinic: e.target.value })} /></div>
@@ -1120,7 +1126,7 @@ function MedicalTeamCard() {
             }}>
               <div style={{ flex: 1 }}>
                 <div style={{ fontSize: 14, color: WF_DARK, fontWeight: 600 }}>{m.name}</div>
-                <div style={{ fontSize: 14, color: WF_MID, marginTop: 2 }}>{m.role}</div>
+                <div style={{ fontSize: 14, color: WF_MID, marginTop: 2 }}>{m.role === "Other" ? m.otherRole || "Other" : m.role}</div>
                 {m.email && <div style={{ fontSize: 14, color: WF_DARK, marginTop: 2 }}>{m.email}</div>}
                 {m.phone && <div style={{ fontSize: 14, color: WF_DARK, marginTop: 2 }}>{m.phone}</div>}
                 {m.clinic && <div style={{ fontSize: 14, color: WF_MID, marginTop: 2 }}>{m.clinic}</div>}
