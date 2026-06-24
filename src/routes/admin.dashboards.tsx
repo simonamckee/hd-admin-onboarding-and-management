@@ -215,10 +215,8 @@ function ClinicianBuilder() {
         </div>
       )}
 
-      <MessagesInfoRow
-        rightText="Always accessible from the patient header"
-        tooltip="Messages opens as a panel from the patient header bar. It is always available to clinicians and does not need to be placed in the layout."
-      />
+
+
 
 
       <PreviewToggle
