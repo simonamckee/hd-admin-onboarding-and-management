@@ -1134,42 +1134,46 @@ function AppointmentsModule() {
   );
 }
 
-function RecommendationsModule() {
-  const [text, setText] = useState("");
+function RecommendationsModule({ role }: { role: Role }) {
   const [list, setList] = useState([
     { text: "Reviewed basal rate — consider reducing overnight dose by 10%. Monitor for 2 weeks.", meta: "Dr. Reyes · 28 Apr 2026" },
     { text: "Recommended referral to dietitian for carb-counting refresher.", meta: "Dr. Reyes · 12 Mar 2026" },
   ]);
-  
+  const [composing, setComposing] = useState(false);
+  const [minimised, setMinimised] = useState(false);
+  const [draft, setDraft] = useState("");
+
+  const tryClose = () => {
+    if (draft.trim() && !window.confirm("Discard this recommendation?")) return;
+    setComposing(false);
+    setMinimised(false);
+    setDraft("");
+  };
+
+  const save = () => {
+    if (!draft.trim()) return;
+    setList((cur) => [{ text: draft.trim(), meta: "Dr. Reyes · Today" }, ...cur]);
+    setDraft("");
+    setComposing(false);
+    setMinimised(false);
+  };
+
   return (
     <div style={CARD}>
       <div style={CARD_HEADER}>Recommendations</div>
       <div style={{ padding: 16 }}>
-        <textarea
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          placeholder="Add a recommendation…"
-          style={{
-            width: "100%", height: 72, border: `0.5px solid ${BORDER}`, borderRadius: 6,
-            fontSize: 15, padding: 8, fontFamily: "inherit", resize: "none", boxSizing: "border-box",
-          }}
-        />
-        <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
+        {role === "clinician" && (
           <button
-            onClick={() => {
-              if (text.trim()) {
-                setList((cur) => [{ text: text.trim(), meta: "Dr. Reyes · Today" }, ...cur]);
-                setText("");
-              }
-            }}
+            onClick={() => { setComposing(true); setMinimised(false); }}
             style={{
-              background: TEAL, color: "#fff", border: "none", borderRadius: 5,
-              fontSize: 16, padding: "4px 10px", cursor: "pointer", fontFamily: "inherit",
+              width: "100%", border: `0.5px solid ${TEAL}`, background: SURFACE, color: TEAL,
+              borderRadius: 6, fontSize: 15, padding: "6px 0", cursor: "pointer", fontFamily: "inherit",
+              marginBottom: 8,
             }}
           >
-            Save
+            + Write recommendation
           </button>
-        </div>
+        )}
         {list.map((r, i) => (
           <div key={i} style={{ border: "0.5px solid #e8ecee", borderRadius: 6, padding: 10, marginTop: 8 }}>
             <div style={{ fontSize: 15, color: WF_DARK }}>{r.text}</div>
@@ -1177,6 +1181,94 @@ function RecommendationsModule() {
           </div>
         ))}
       </div>
+      {role === "clinician" && composing && (
+        <div
+          style={{
+            position: "fixed", bottom: 24, right: 24, width: 380,
+            background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 10,
+            boxShadow: "0 8px 32px rgba(0,0,0,0.16)", zIndex: 100,
+            display: "flex", flexDirection: "column", overflow: "hidden",
+          }}
+        >
+          <div
+            style={{
+              background: TEAL, padding: "10px 14px",
+              display: "flex", alignItems: "center", justifyContent: "space-between",
+            }}
+          >
+            <span style={{ fontSize: 14, fontWeight: 600, color: "#fff" }}>New recommendation</span>
+            <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+              {minimised ? (
+                <button
+                  onClick={() => setMinimised(false)}
+                  style={{ border: "none", background: "transparent", color: "rgba(255,255,255,0.8)", cursor: "pointer", fontSize: 16, padding: 0, lineHeight: 1, display: "flex", alignItems: "center" }}
+                  aria-label="Restore"
+                >
+                  <ChevronUp size={16} />
+                </button>
+              ) : (
+                <button
+                  onClick={() => setMinimised(true)}
+                  style={{ border: "none", background: "transparent", color: "rgba(255,255,255,0.8)", cursor: "pointer", fontSize: 18, padding: 0, lineHeight: 1 }}
+                  aria-label="Minimise"
+                >
+                  –
+                </button>
+              )}
+              <button
+                onClick={tryClose}
+                style={{ border: "none", background: "transparent", color: "rgba(255,255,255,0.8)", cursor: "pointer", fontSize: 20, padding: 0, lineHeight: 1 }}
+                aria-label="Close"
+              >
+                ×
+              </button>
+            </div>
+          </div>
+          {!minimised && (
+            <>
+              <div style={{ padding: 12 }}>
+                <textarea
+                  autoFocus
+                  value={draft}
+                  onChange={(e) => setDraft(e.target.value)}
+                  placeholder="Write a recommendation for this patient…"
+                  style={{
+                    width: "100%", height: 140, border: `0.5px solid ${BORDER}`, borderRadius: 6,
+                    fontSize: 15, padding: 10, fontFamily: "inherit", resize: "none", boxSizing: "border-box",
+                  }}
+                />
+              </div>
+              <div
+                style={{
+                  padding: "10px 12px", borderTop: `0.5px solid ${BORDER}`,
+                  display: "flex", justifyContent: "flex-end", gap: 8,
+                }}
+              >
+                <button
+                  onClick={tryClose}
+                  style={{
+                    border: `0.5px solid ${WF_MID}`, color: WF_MID, background: "transparent",
+                    borderRadius: 5, fontSize: 14, padding: "4px 12px", cursor: "pointer", fontFamily: "inherit",
+                  }}
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={save}
+                  disabled={!draft.trim()}
+                  style={{
+                    background: TEAL, color: "#fff", border: "none", borderRadius: 5,
+                    fontSize: 14, padding: "4px 14px", cursor: draft.trim() ? "pointer" : "not-allowed",
+                    fontFamily: "inherit", opacity: draft.trim() ? 1 : 0.5,
+                  }}
+                >
+                  Save
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 }
