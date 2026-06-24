@@ -1126,7 +1126,7 @@ function MedicalTeamCard() {
             }}>
               <div style={{ flex: 1 }}>
                 <div style={{ fontSize: 14, color: WF_DARK, fontWeight: 600 }}>{m.name}</div>
-                <div style={{ fontSize: 14, color: WF_MID, marginTop: 2 }}>{m.role}</div>
+                <div style={{ fontSize: 14, color: WF_MID, marginTop: 2 }}>{m.role === "Other" ? m.otherRole || "Other" : m.role}</div>
                 {m.email && <div style={{ fontSize: 14, color: WF_DARK, marginTop: 2 }}>{m.email}</div>}
                 {m.phone && <div style={{ fontSize: 14, color: WF_DARK, marginTop: 2 }}>{m.phone}</div>}
                 {m.clinic && <div style={{ fontSize: 14, color: WF_MID, marginTop: 2 }}>{m.clinic}</div>}
