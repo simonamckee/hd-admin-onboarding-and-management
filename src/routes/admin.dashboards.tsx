@@ -51,8 +51,8 @@ function DashboardTemplates() {
 
   const helper =
     tab === "clinician"
-      ? "Define how the patient dashboard is laid out when a clinician opens it. Changes apply to new clinician accounts only — existing layouts are not affected."
-      : "Define the default order of modules on the patient dashboard. Patients can reorder their own modules after first login — this sets their starting view. The Care profile section is fixed and cannot be reordered.";
+      ? "Set the default layout clinicians see when they open the patient dashboard. This only applies to clinician accounts created after this setting is saved — existing clinician dashboards will not be changed."
+      : "Set the default order of modules a patient sees on first login. Patients can reorder their own modules afterward — this only sets the starting view. The Care profile sections cannot be reordered.";
 
   return (
     <AdminShell heading="">
