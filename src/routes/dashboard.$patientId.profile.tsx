@@ -1095,6 +1095,12 @@ function MedicalTeamCard() {
               <option>Other</option>
             </Select>
           </div>
+          {draft.role === "Other" && (
+            <div style={{ gridColumn: "1 / -1" }}>
+              <FieldLabel>Please specify</FieldLabel>
+              <Input value={draft.otherRole || ""} onChange={(e) => setDraft({ ...draft, otherRole: e.target.value })} />
+            </div>
+          )}
           <div><FieldLabel>Email</FieldLabel><Input value={draft.email} onChange={(e) => setDraft({ ...draft, email: e.target.value })} /></div>
           <div><FieldLabel>Phone</FieldLabel><Input value={draft.phone} onChange={(e) => setDraft({ ...draft, phone: e.target.value })} /></div>
           <div style={{ gridColumn: "1 / -1" }}><FieldLabel>Clinic name</FieldLabel><Input value={draft.clinic} onChange={(e) => setDraft({ ...draft, clinic: e.target.value })} /></div>
