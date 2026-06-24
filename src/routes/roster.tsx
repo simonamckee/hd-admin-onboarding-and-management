@@ -12,7 +12,6 @@ import {
   Droplet,
   FileText,
   ClipboardList,
-  CheckSquare,
   Activity,
   Circle,
   CircleCheck,
@@ -38,7 +37,6 @@ type AccordionData = {
   hospitalVisits: number;
   pendingForms: number;
   pendingTasks: number;
-  pendingActions: number;
 };
 
 type Patient = {
@@ -77,7 +75,7 @@ const PATIENTS: Patient[] = [
     nextApptSub: "Tomorrow",
     messages: true,
     group: "atRisk",
-    accordion: { hospitalVisits: 1, pendingForms: 1, pendingTasks: 2, pendingActions: 1 },
+    accordion: { hospitalVisits: 1, pendingForms: 1, pendingTasks: 2 },
   },
   {
     id: "marcus-thompson",
@@ -94,7 +92,7 @@ const PATIENTS: Patient[] = [
     nextApptSub: "Today · 10:30 AM",
     messages: false,
     group: "today",
-    accordion: { hospitalVisits: 0, pendingForms: 1, pendingTasks: 0, pendingActions: 0 },
+    accordion: { hospitalVisits: 0, pendingForms: 1, pendingTasks: 0 },
   },
   {
     id: "lily-park",
@@ -111,7 +109,7 @@ const PATIENTS: Patient[] = [
     nextApptSub: "Today · 2:00 PM",
     messages: true,
     group: "today",
-    accordion: { hospitalVisits: 0, pendingForms: 1, pendingTasks: 0, pendingActions: 0 },
+    accordion: { hospitalVisits: 0, pendingForms: 1, pendingTasks: 0 },
   },
   {
     id: "james-wilson",
@@ -128,9 +126,35 @@ const PATIENTS: Patient[] = [
     nextAppt: null,
     messages: false,
     group: "others",
-    accordion: { hospitalVisits: 0, pendingForms: 0, pendingTasks: 0, pendingActions: 0 },
+    accordion: { hospitalVisits: 0, pendingForms: 0, pendingTasks: 0 },
   },
+  { id: "amara-osei", name: "Amara Osei", dob: "12 Mar 2012", age: 13, risks: ["DKA"], tir: 44, gmi: 8.6, cgm: true, pump: false, lastVisit: "15 Jan 2026", lastVisitDaysAgo: 158, nextAppt: null, messages: true, group: "atRisk", accordion: { hospitalVisits: 2, pendingForms: 1, pendingTasks: 3 } },
+  { id: "ben-hartley", name: "Ben Hartley", dob: "7 Nov 2015", age: 10, risks: [], tir: 78, gmi: 6.8, cgm: true, pump: true, lastVisit: "10 May 2026", lastVisitDaysAgo: 13, nextAppt: "15 Jul 2026", messages: false, group: "others", accordion: { hospitalVisits: 0, pendingForms: 0, pendingTasks: 1 } },
+  { id: "chloe-martin", name: "Chloe Martin", dob: "22 Jun 2010", age: 15, risks: ["A1c", "Low TIR"], tir: 52, gmi: 8.1, cgm: true, pump: true, lastVisit: "3 Mar 2026", lastVisitDaysAgo: 81, nextAppt: "Today", nextApptSub: "Today · 11:00 AM", messages: true, group: "atRisk", accordion: { hospitalVisits: 1, pendingForms: 2, pendingTasks: 1 } },
+  { id: "daniel-nguyen", name: "Daniel Nguyen", dob: "5 Sep 2013", age: 12, risks: [], tir: 71, gmi: 7.0, cgm: false, pump: false, lastVisit: "22 Apr 2026", lastVisitDaysAgo: 31, nextAppt: "30 Jun 2026", messages: false, group: "others", accordion: { hospitalVisits: 0, pendingForms: 1, pendingTasks: 0 } },
+  { id: "elena-volkov", name: "Elena Volkov", dob: "18 Jan 2009", age: 17, risks: ["DKA"], tir: 38, gmi: 9.1, cgm: true, pump: false, lastVisit: "5 Nov 2025", lastVisitDaysAgo: 199, nextAppt: "Today", nextApptSub: "Today · 3:30 PM", messages: true, group: "atRisk", accordion: { hospitalVisits: 3, pendingForms: 1, pendingTasks: 2 } },
+  { id: "finn-obrien", name: "Finn O'Brien", dob: "30 Apr 2016", age: 9, risks: [], tir: 82, gmi: 6.5, cgm: true, pump: true, lastVisit: "18 May 2026", lastVisitDaysAgo: 5, nextAppt: "18 Aug 2026", messages: false, group: "others", accordion: { hospitalVisits: 0, pendingForms: 0, pendingTasks: 0 } },
+  { id: "grace-kim", name: "Grace Kim", dob: "14 Aug 2011", age: 14, risks: ["Low TIR"], tir: 58, gmi: 7.8, cgm: true, pump: true, lastVisit: "2 Feb 2026", lastVisitDaysAgo: 141, nextAppt: "25 Jun 2026", messages: false, group: "atRisk", accordion: { hospitalVisits: 0, pendingForms: 1, pendingTasks: 1 } },
+  { id: "henry-patel", name: "Henry Patel", dob: "9 Dec 2014", age: 11, risks: [], tir: 69, gmi: 7.4, cgm: true, pump: false, lastVisit: "14 Apr 2026", lastVisitDaysAgo: 39, nextAppt: "14 Jul 2026", messages: true, group: "others", accordion: { hospitalVisits: 0, pendingForms: 0, pendingTasks: 2 } },
+  { id: "isla-santos", name: "Isla Santos", dob: "3 Feb 2018", age: 7, risks: [], tir: 74, gmi: 6.9, cgm: true, pump: true, lastVisit: "6 May 2026", lastVisitDaysAgo: 17, nextAppt: "Today", nextApptSub: "Today · 9:00 AM", messages: false, group: "today", accordion: { hospitalVisits: 0, pendingForms: 1, pendingTasks: 0 } },
+  { id: "jake-morrison", name: "Jake Morrison", dob: "27 Jul 2008", age: 17, risks: ["A1c"], tir: 61, gmi: 7.9, cgm: false, pump: false, lastVisit: "20 Jan 2026", lastVisitDaysAgo: 153, nextAppt: "1 Jul 2026", messages: false, group: "atRisk", accordion: { hospitalVisits: 1, pendingForms: 0, pendingTasks: 1 } },
+  { id: "kira-lefevre", name: "Kira Lefèvre", dob: "11 Oct 2015", age: 10, risks: [], tir: 76, gmi: 7.0, cgm: true, pump: true, lastVisit: "30 Apr 2026", lastVisitDaysAgo: 23, nextAppt: "30 Jul 2026", messages: false, group: "others", accordion: { hospitalVisits: 0, pendingForms: 0, pendingTasks: 0 } },
+  { id: "liam-chen", name: "Liam Chen", dob: "16 May 2013", age: 12, risks: ["DKA", "A1c"], tir: 35, gmi: 9.4, cgm: true, pump: true, lastVisit: "8 Dec 2025", lastVisitDaysAgo: 196, nextAppt: null, messages: true, group: "atRisk", accordion: { hospitalVisits: 2, pendingForms: 2, pendingTasks: 3 } },
+  { id: "mia-johansson", name: "Mia Johansson", dob: "25 Jun 2017", age: 8, risks: [], tir: 80, gmi: 6.6, cgm: true, pump: false, lastVisit: "12 May 2026", lastVisitDaysAgo: 11, nextAppt: "12 Aug 2026", messages: false, group: "others", accordion: { hospitalVisits: 0, pendingForms: 1, pendingTasks: 0 } },
+  { id: "noah-ibrahim", name: "Noah Ibrahim", dob: "8 Mar 2020", age: 5, risks: [], tir: 73, gmi: 7.1, cgm: true, pump: true, lastVisit: "25 Apr 2026", lastVisitDaysAgo: 28, nextAppt: "Today", nextApptSub: "Today · 1:00 PM", messages: false, group: "today", accordion: { hospitalVisits: 0, pendingForms: 0, pendingTasks: 1 } },
+  { id: "olivia-tremblay", name: "Olivia Tremblay", dob: "19 Nov 2012", age: 13, risks: ["Low TIR"], tir: 55, gmi: 8.0, cgm: true, pump: false, lastVisit: "18 Feb 2026", lastVisitDaysAgo: 124, nextAppt: "2 Jul 2026", messages: true, group: "atRisk", accordion: { hospitalVisits: 0, pendingForms: 1, pendingTasks: 2 } },
 ];
+
+function deriveGroup(p: Patient): "atRisk" | "today" | "others" {
+  if (p.risks.length > 0) return "atRisk";
+  if (p.nextAppt === "Today") return "today";
+  return "others";
+}
+
+function lastName(name: string): string {
+  const parts = name.trim().split(" ");
+  return parts[parts.length - 1] || name;
+}
 
 const SORT_OPTIONS = ["At risk first", "Longest unseen", "A – Z"];
 
@@ -293,7 +317,12 @@ function PatientRow({
           {p.lastVisit}
         </div>
         <div>
-          {p.nextAppt ? (
+          {p.risks.length > 0 && p.nextAppt === "Today" ? (
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 4, fontSize: 14, color: TEAL, fontWeight: 700 }}>
+              <Calendar size={12} color={TEAL} />
+              Today
+            </div>
+          ) : p.nextAppt ? (
             <>
               <div style={{ fontSize: 14, color: TEAL, fontWeight: 600 }}>{p.nextAppt}</div>
               {p.nextApptSub && <div style={{ fontSize: 12, color: MUTED }}>{p.nextApptSub}</div>}
@@ -359,7 +388,6 @@ function AccordionRow({ data }: { data: AccordionData }) {
     { label: "Hospital visits", value: data.hospitalVisits, icon: <Activity size={11} /> },
     { label: "Pending forms", value: data.pendingForms, icon: <FileText size={11} /> },
     { label: "Pending tasks", value: data.pendingTasks, icon: <ClipboardList size={11} /> },
-    { label: "Pending actions", value: data.pendingActions, icon: <CheckSquare size={11} />, teal: true },
   ];
   return (
     <div
@@ -438,12 +466,22 @@ function RosterPage() {
     const filtered = activeFilters.has("messages")
       ? PATIENTS.filter((p) => p.messages === true)
       : PATIENTS;
-    return {
-      atRisk: filtered.filter((p) => p.group === "atRisk"),
-      today: filtered.filter((p) => p.group === "today"),
-      others: filtered.filter((p) => p.group === "others"),
+    const sortFn = (a: Patient, b: Patient) => {
+      if (sort === "A – Z") {
+        return lastName(a.name).localeCompare(lastName(b.name));
+      }
+      if (sort === "Longest unseen") {
+        return (b.lastVisitDaysAgo ?? 0) - (a.lastVisitDaysAgo ?? 0);
+      }
+      return 0;
     };
-  }, [activeFilters]);
+    const sorted = [...filtered].sort(sortFn);
+    return {
+      atRisk: sorted.filter((p) => deriveGroup(p) === "atRisk"),
+      today: sorted.filter((p) => deriveGroup(p) === "today"),
+      others: sorted.filter((p) => deriveGroup(p) === "others"),
+    };
+  }, [activeFilters, sort]);
 
   const selectStyle: CSSProperties = {
     appearance: "none",
