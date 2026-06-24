@@ -300,6 +300,7 @@ function PatientList() {
           <option>Invited</option>
           <option>Not yet invited</option>
           <option>Expired</option>
+          <option>Bounced</option>
         </Select>
         <div style={{ flex: 1, textAlign: "right", fontSize: 14, color: WF_MID }}>
           {state === "empty" ? "0 patients" : `${PATIENTS.length} patients`}
