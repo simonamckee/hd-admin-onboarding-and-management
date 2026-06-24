@@ -6,8 +6,8 @@ export type ClinicianModules = {
 };
 
 export const DEFAULT_CLINICIAN_MODULES: ClinicianModules = {
-  patientData: ["glucose", "insulin", "labs", "completedForms", "appointments", "completedTasks"],
-  clinicalActions: ["recommendations", "resources", "assignedForms", "assignedTasks"],
+  patientData: ["glucose", "insulin", "labs", "forms", "tasks", "appointments"],
+  clinicalActions: ["recommendations", "resources"],
 };
 
 type Ctx = {
