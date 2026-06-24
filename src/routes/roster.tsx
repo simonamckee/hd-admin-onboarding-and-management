@@ -467,12 +467,22 @@ function RosterPage() {
     const filtered = activeFilters.has("messages")
       ? PATIENTS.filter((p) => p.messages === true)
       : PATIENTS;
-    return {
-      atRisk: filtered.filter((p) => p.group === "atRisk"),
-      today: filtered.filter((p) => p.group === "today"),
-      others: filtered.filter((p) => p.group === "others"),
+    const sortFn = (a: Patient, b: Patient) => {
+      if (sort === "A – Z") {
+        return lastName(a.name).localeCompare(lastName(b.name));
+      }
+      if (sort === "Longest unseen") {
+        return (b.lastVisitDaysAgo ?? 0) - (a.lastVisitDaysAgo ?? 0);
+      }
+      return 0;
     };
-  }, [activeFilters]);
+    const sorted = [...filtered].sort(sortFn);
+    return {
+      atRisk: sorted.filter((p) => deriveGroup(p) === "atRisk"),
+      today: sorted.filter((p) => deriveGroup(p) === "today"),
+      others: sorted.filter((p) => deriveGroup(p) === "others"),
+    };
+  }, [activeFilters, sort]);
 
   const selectStyle: CSSProperties = {
     appearance: "none",
