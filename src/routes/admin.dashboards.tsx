@@ -821,14 +821,8 @@ function ModuleBody({ id, compact }: { id: string; compact: boolean }) {
       </div>
     );
   }
-  if (id === "tasks") {
-    return (
-      <div style={{ fontSize: 13, color: WF_MID, display: "flex", flexDirection: "column", gap: 4 }}>
-        <div style={{ textDecoration: "line-through" }}>Upload CGM data — Completed 28 Apr</div>
-        <div style={{ textDecoration: "line-through" }}>Book next appointment — Completed 20 Apr</div>
-      </div>
-    );
-  }
+
+
   if (id === "completedTasks") {
     return (
       <div style={{ fontSize: 13, color: WF_MID, display: "flex", flexDirection: "column", gap: 4 }}>
