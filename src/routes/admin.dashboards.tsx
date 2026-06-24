@@ -905,6 +905,8 @@ function Bubble({ from, children }: { from: "patient" | "clinician"; children: R
 function PatientBuilder() {
   const [modules, setModules] = useState<Module[]>(PATIENT_DEFAULT);
   const [minError, setMinError] = useState(false);
+  const [drag, setDrag] = useState<string | null>(null);
+  const [dropIdx, setDropIdx] = useState<number | null>(null);
 
   const present = new Set(modules.map((m) => m.id));
   const removed = PATIENT_DEFAULT.filter((m) => !present.has(m.id));
@@ -937,6 +939,34 @@ function PatientBuilder() {
     }
   };
 
+  const onDragStart = (id: string) => setDrag(id);
+  const onDragOverItem = (index: number) => {
+    if (!drag) return;
+    setDropIdx(index);
+  };
+  const onDragEnd = () => {
+    setDrag(null);
+    setDropIdx(null);
+  };
+  const onDrop = () => {
+    if (!drag || dropIdx === null) {
+      onDragEnd();
+      return;
+    }
+    const from = modules.findIndex((m) => m.id === drag);
+    if (from < 0) {
+      onDragEnd();
+      return;
+    }
+    let to = dropIdx;
+    const a = [...modules];
+    const [moved] = a.splice(from, 1);
+    if (to > from) to -= 1;
+    a.splice(to, 0, moved);
+    setModules(a);
+    onDragEnd();
+  };
+
   return (
     <>
       <div
@@ -952,20 +982,46 @@ function PatientBuilder() {
         MODULE ORDER
       </div>
       <p style={{ fontSize: 14, color: WF_MID, margin: "0 0 12px" }}>
-        Drag to reorder. Patients can reorder after their first login — this sets their starting view.
+        Drag to reorder. Patients can reorder their own modules afterward — this only sets their starting view.
       </p>
-      <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 12 }}>
+      <div
+        onDragOver={(e) => {
+          if (drag) e.preventDefault();
+        }}
+        onDrop={(e) => {
+          e.preventDefault();
+          onDrop();
+        }}
+        style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 12 }}
+      >
         {modules.map((m, i) => (
-          <ModuleCard
+          <div
             key={m.id}
-            module={m}
-            onRemove={() => remove(m.id)}
-            canMoveUp={i > 0}
-            canMoveDown={i < modules.length - 1}
-            onUp={() => onMove(m.id, "up")}
-            onDown={() => onMove(m.id, "down")}
-          />
+            onDragOver={(e) => {
+              if (!drag) return;
+              e.preventDefault();
+              e.stopPropagation();
+              const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
+              const before = e.clientY < rect.top + rect.height / 2;
+              onDragOverItem(before ? i : i + 1);
+            }}
+          >
+            <DropIndicator active={dropIdx === i} />
+            <ModuleCard
+              module={m}
+              onRemove={() => remove(m.id)}
+              canMoveUp={i > 0}
+              canMoveDown={i < modules.length - 1}
+              onUp={() => onMove(m.id, "up")}
+              onDown={() => onMove(m.id, "down")}
+              draggable
+              dragging={drag === m.id}
+              onDragStart={() => onDragStart(m.id)}
+              onDragEnd={onDragEnd}
+            />
+          </div>
         ))}
+        <DropIndicator active={dropIdx === modules.length} />
       </div>
 
       <RemovedModules removed={removed} onAddBack={addBack} />
@@ -975,22 +1031,7 @@ function PatientBuilder() {
         </div>
       )}
 
-      <MessagesInfoRow
-        rightText="Always accessible as a floating button"
-        tooltip="On mobile, Messages appears as a floating chat button fixed to the bottom of the screen. It is always accessible and does not need to be placed in the layout."
-      />
-
-      <div style={{
-        fontSize: 14,
-        color: WF_MID,
-        fontStyle: "italic",
-        marginTop: 16,
-        padding: "10px 14px",
-        border: `1px dashed ${BORDER}`,
-        borderRadius: 8,
-      }}>
-        Patient dashboard preview coming soon.
-      </div>
+      <PatientPreview modules={modules} />
 
       <SaveFooter tab="patient" disabled={modules.length === 0} />
     </>
