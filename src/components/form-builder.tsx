@@ -25,6 +25,7 @@ export type FormDraft = {
   name: string;
   status: "Draft" | "Active";
   questions: Question[];
+  patientVisible?: boolean;
 };
 
 const Q_TYPES: QType[] = ["Yes / No", "Free text", "Number / Rating", "Multiple choice", "Date"];
@@ -54,6 +55,7 @@ export function FormBuilder({ mode, existing }: { mode: "new" | "edit"; existing
   const [editingName, setEditingName] = useState(false);
   const [status, setStatus] = useState<"Draft" | "Active">(initialStatus);
   const [questions, setQuestions] = useState<Question[]>(initialQuestions);
+  const [patientVisible, setPatientVisible] = useState<boolean>(existing?.patientVisible ?? true);
   const [selectedId, setSelectedId] = useState<string | null>(initialQuestions[0]?.id ?? null);
   const [pickerOpen, setPickerOpen] = useState(false);
   const [dragId, setDragId] = useState<string | null>(null);
@@ -184,6 +186,22 @@ export function FormBuilder({ mode, existing }: { mode: "new" | "edit"; existing
             </h1>
           )}
           <Pill label={status} weight={status === "Active" ? "dark" : "light"} />
+        </div>
+
+        <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 12, flexWrap: "wrap" }}>
+          <label style={{ display: "inline-flex", alignItems: "center", gap: 8, cursor: "pointer", fontSize: 14, color: WF_DARK }}>
+            <input
+              type="checkbox"
+              checked={patientVisible}
+              onChange={(e) => setPatientVisible(e.target.checked)}
+            />
+            Results visible to patient
+          </label>
+          <span style={{ fontSize: 13, color: WF_MID }}>
+            {patientVisible
+              ? "Patients will see their answers and any computed result."
+              : "Patients will only see a confirmation that the form was completed, plus the date."}
+          </span>
         </div>
 
         <div style={{ borderBottom: `0.5px solid ${WF_MID}`, marginTop: 16 }} />

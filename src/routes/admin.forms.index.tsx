@@ -22,33 +22,30 @@ type Form = {
   lastUsed: string;
   by: string;
   status: Status;
-  prebuilt?: boolean;
   subtitle?: string;
   assignedTo?: string;
   estTime?: string;
+  patientVisible?: boolean;
 };
-
-// extended Form fields for pre-built items live alongside the base FORMS array below
-
 
 const FORMS: Form[] = [
   {
     id: "t1dal-parent-u8",
     name: "T1DAL – Parent of Child Under 8",
     subtitle: "Type 1 Diabetes and Life — Quality of Life Measure",
-    added: "Pre-built",
-    lastUsed: "Validated scale",
-    by: "Haibu library",
+    added: "12 Jan 2026",
+    lastUsed: "Yesterday",
+    by: "Admin",
     status: "Active",
-    prebuilt: true,
     assignedTo: "Parent/Caregiver",
     estTime: "5–10 min",
+    patientVisible: true,
   },
-  { id: "initial-assessment", name: "Initial Assessment", added: "Jan 5, 2026", lastUsed: "2 days ago", by: "Dr. Sarah Chen", status: "Active" },
-  { id: "monthly-checkin", name: "Monthly Check-in", added: "Feb 12, 2026", lastUsed: "1 week ago", by: "Admin", status: "Active" },
-  { id: "hypo-report", name: "Hypoglycaemia Report", added: "Mar 1, 2026", lastUsed: "3 weeks ago", by: "Dr. James Okafor", status: "Active" },
-  { id: "school-nurse", name: "School Nurse Briefing", added: "Mar 18, 2026", lastUsed: "Never", by: "Admin", status: "Active" },
-  { id: "old-intake", name: "Old Intake Form", added: "Nov 3, 2025", lastUsed: "6 months ago", by: "Admin", status: "Archived" },
+  { id: "initial-assessment", name: "Initial Assessment", added: "Jan 5, 2026", lastUsed: "2 days ago", by: "Dr. Sarah Chen", status: "Active", patientVisible: true },
+  { id: "monthly-checkin", name: "Monthly Check-in", added: "Feb 12, 2026", lastUsed: "1 week ago", by: "Admin", status: "Active", patientVisible: true },
+  { id: "hypo-report", name: "Hypoglycaemia Report", added: "Mar 1, 2026", lastUsed: "3 weeks ago", by: "Dr. James Okafor", status: "Active", patientVisible: true },
+  { id: "school-nurse", name: "School Nurse Briefing", added: "Mar 18, 2026", lastUsed: "Never", by: "Admin", status: "Active", patientVisible: true },
+  { id: "old-intake", name: "Old Intake Form", added: "Nov 3, 2025", lastUsed: "6 months ago", by: "Admin", status: "Archived", patientVisible: true },
 ];
 
 function FormList() {
@@ -118,16 +115,6 @@ function FormList() {
                   <td style={{ padding: "12px 14px", color: WF_DARK }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
                       <span>{r.name}</span>
-                      {r.prebuilt && (
-                        <span style={{ fontSize: 11, padding: "2px 8px", borderRadius: 10, background: "#E6F4F5", color: TEAL, fontWeight: 600, letterSpacing: 0.3 }}>
-                          PRE-BUILT
-                        </span>
-                      )}
-                      {r.prebuilt && (
-                        <span style={{ fontSize: 11, padding: "2px 8px", borderRadius: 10, background: "#E8F7F1", color: "#1A7F5A", fontWeight: 600, letterSpacing: 0.3 }}>
-                          VALIDATED SCALE
-                        </span>
-                      )}
                     </div>
                     {r.subtitle && (
                       <div style={{ fontSize: 13, color: WF_MID, marginTop: 2 }}>{r.subtitle}</div>
@@ -155,20 +142,10 @@ function FormList() {
                       >
                         Restore
                       </Link>
-                    ) : r.prebuilt ? (
-                      <span style={{ display: "inline-flex", gap: 12 }}>
-                        <Link to="/admin/forms/$id" params={{ id: r.id }} style={{ fontSize: 15, color: WF_DARK, textDecoration: "underline" }}>Preview</Link>
-                        <Link
-                          to="/admin/forms"
-                          search={{ state: "default", banner: `${r.name} added to your Assign Forms list.` }}
-                          style={{ fontSize: 15, color: TEAL, textDecoration: "underline", fontWeight: 600 }}
-                        >
-                          Use Template
-                        </Link>
-                      </span>
                     ) : (
-                      <span style={{ display: "inline-flex", gap: 12 }}>
+                      <span style={{ display: "inline-flex", gap: 6, alignItems: "center" }}>
                         <Link to="/admin/forms/$id" params={{ id: r.id }} style={{ fontSize: 15, color: WF_DARK, textDecoration: "underline" }}>Edit</Link>
+                        <span style={{ fontSize: 15, color: WF_MID }}>/</span>
                         <button
                           onClick={() => setConfirm(r)}
                           style={{ background: "none", border: "none", padding: 0, fontSize: 15, color: WF_DARK, textDecoration: "underline", cursor: "pointer", fontFamily: "inherit" }}
@@ -178,6 +155,7 @@ function FormList() {
                       </span>
                     )}
                   </td>
+
                 </tr>
               ))}
             </tbody>

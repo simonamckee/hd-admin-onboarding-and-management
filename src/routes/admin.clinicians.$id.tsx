@@ -36,6 +36,23 @@ function statusPill(s: Row["status"]) {
   return <Pill label="Archived" weight="light" />;
 }
 
+const CLINIC_ROLES = [
+  "Endocrinologist",
+  "Dietician",
+  "Nurse",
+  "Diabetes Nurse Educator",
+  "Psychologist",
+  "Social Worker / Mental Health Professional",
+  "Admin",
+  "Pharmacist",
+  "Nurse Practitioner",
+  "Physician Assistant",
+  "Education Specialist",
+  "Podiatrist",
+  "Optometrist / Ophthalmologist",
+  "Other",
+];
+
 function EditClinician() {
   const { id } = Route.useParams();
   const { sso } = useSearch({ from: "/admin/clinicians/$id" });
@@ -43,15 +60,31 @@ function EditClinician() {
   const base = MOCK[id] || MOCK["james-okafor"];
   const ssoOn = sso === "on";
 
+  const [name, setName] = useState(base.name);
+  const [email, setEmail] = useState(base.email);
   const [title, setTitle] = useState(base.title);
   const [role, setRole] = useState<Row["role"]>(base.role);
   const [warn, setWarn] = useState(false);
   const [confirm, setConfirm] = useState(false);
   const assignedPatients = ASSIGNED_PATIENTS[id] || [];
 
+  const nameDirty = name !== base.name;
+  const emailDirty = email !== base.email;
   const titleDirty = title !== base.title;
   const roleDirty = role !== base.role;
 
+  const saveName = () => {
+    navigate({
+      to: "/admin/clinicians",
+      search: { state: "default", sso, banner: `Name updated for ${base.name}.` },
+    });
+  };
+  const saveEmail = () => {
+    navigate({
+      to: "/admin/clinicians",
+      search: { state: "default", sso, banner: `Email updated for ${base.name}.` },
+    });
+  };
   const saveTitle = () => {
     navigate({
       to: "/admin/clinicians",
@@ -89,7 +122,11 @@ function EditClinician() {
               onCancel={() => setTitle(base.title)}
               onSave={saveTitle}
             >
-              <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+              <Select value={title} onChange={(e) => setTitle(e.target.value)}>
+                {CLINIC_ROLES.map((r) => (
+                  <option key={r}>{r}</option>
+                ))}
+              </Select>
             </InlineEdit>
           </Field>
 
@@ -116,12 +153,28 @@ function EditClinician() {
             borderStyle: "dashed",
           }}
         >
-          <ReadField label="Name" value={base.name} note="Name is fixed after account creation." />
-          <ReadField
+          <Field label="Name" required>
+            <InlineEdit
+              dirty={nameDirty}
+              onCancel={() => setName(base.name)}
+              onSave={saveName}
+            >
+              <Input value={name} onChange={(e) => setName(e.target.value)} />
+            </InlineEdit>
+          </Field>
+          <Field
             label="Email"
-            value={base.email}
-            note={ssoOn ? "Sourced from identity provider." : "Email is fixed after account creation."}
-          />
+            required
+            helper={ssoOn ? "Sourced from identity provider." : undefined}
+          >
+            <InlineEdit
+              dirty={emailDirty}
+              onCancel={() => setEmail(base.email)}
+              onSave={saveEmail}
+            >
+              <Input value={email} onChange={(e) => setEmail(e.target.value)} />
+            </InlineEdit>
+          </Field>
           <Grid>
             <ReadField label="Last sign-in" value={base.lastSignIn} />
             <ReadField label="Member since" value={base.memberSince} />

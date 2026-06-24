@@ -78,8 +78,8 @@ const ALL_ROWS: AuditRow[] = [
 ];
 
 function AuditLog() {
-  const [startDate, setStartDate] = useState("May 1, 2026");
-  const [endDate, setEndDate] = useState("May 27, 2026");
+  const [startDate, setStartDate] = useState("2026-05-01");
+  const [endDate, setEndDate] = useState("2026-05-27");
   const [userFilter, setUserFilter] = useState("All users");
   const [actionFilter, setActionFilter] = useState("All actions");
   const [visibleCount, setVisibleCount] = useState(15);
@@ -127,14 +127,14 @@ function AuditLog() {
           <div style={{ fontSize: 13, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 4 }}>Date range</div>
           <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
             <input
-              type="text"
+              type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
               style={inputStyle}
             />
             <span style={{ fontSize: 15, color: WF_MID }}>–</span>
             <input
-              type="text"
+              type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
               style={inputStyle}
