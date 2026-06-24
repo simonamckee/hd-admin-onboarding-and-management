@@ -1054,7 +1054,7 @@ function PrimarySupportersCard({ role }: { role: Role }) {
 }
 
 type MedicalRole = "Family doctor" | "Specialist" | "Other";
-type MedicalMember = { id: string; name: string; role: MedicalRole; email: string; phone: string; clinic: string };
+type MedicalMember = { id: string; name: string; role: MedicalRole; otherRole?: string; email: string; phone: string; clinic: string };
 const INITIAL_MEDICAL_TEAM: MedicalMember[] = [
   { id: "mt1", name: "Dr. Patricia Wong", role: "Family doctor", email: "p.wong@familymed.ca", phone: "604-555-0182", clinic: "UBC Family Medicine" },
 ];
