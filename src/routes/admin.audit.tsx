@@ -127,14 +127,14 @@ function AuditLog() {
           <div style={{ fontSize: 13, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 4 }}>Date range</div>
           <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
             <input
-              type="text"
+              type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
               style={inputStyle}
             />
             <span style={{ fontSize: 15, color: WF_MID }}>–</span>
             <input
-              type="text"
+              type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
               style={inputStyle}
