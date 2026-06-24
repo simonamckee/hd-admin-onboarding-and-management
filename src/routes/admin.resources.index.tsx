@@ -141,6 +141,7 @@ function ResourceList() {
                       </Link>
                     ) : (
                       <span style={{ display: "inline-flex", gap: 12 }}>
+                        <a href="#" style={{ fontSize: 15, color: WF_DARK, textDecoration: "underline" }}>View</a>
                         <Link to="/admin/resources/$id" params={{ id: r.id }} style={{ fontSize: 15, color: WF_DARK, textDecoration: "underline" }}>Edit</Link>
                         <button
                           onClick={() => setConfirm(r)}
