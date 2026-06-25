@@ -160,7 +160,7 @@ const SORT_OPTIONS = ["At risk first", "Longest unseen", "A – Z"];
 
 type FilterKey = "risk" | "tir" | "gmi" | "cgm" | "pump" | "messages";
 const FILTERS: { key: FilterKey; label: string; icon: ReactNode }[] = [
-  { key: "risk", label: "Predicted risk", icon: <AlertTriangle size={10} /> },
+  { key: "risk", label: "Flags", icon: <AlertTriangle size={10} /> },
   { key: "tir", label: "High TIR", icon: null },
   { key: "gmi", label: "High GMI", icon: null },
   { key: "cgm", label: "Using CGM", icon: <Watch size={10} /> },
@@ -699,7 +699,7 @@ function RosterPage() {
           >
             <span />
             <span>Patient</span>
-            <span>Predicted risk</span>
+            <span>Flags</span>
             <span>TIR (14d)</span>
             <span>GMI</span>
             <span>Devices</span>

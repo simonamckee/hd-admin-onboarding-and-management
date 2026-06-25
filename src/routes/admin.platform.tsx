@@ -289,7 +289,7 @@ function RosterColumnsSection() {
   const primaryCols: Array<{ key: ColKey; label: string; helper?: string }> = [
     {
       key: "risk",
-      label: "Predicted risk",
+      label: "Flags",
       helper: "Includes risk assessment from patient-provided information such as Diabetes Distress scores.",
     },
     { key: "tir", label: "TIR (14d)" },
