@@ -593,7 +593,7 @@ function LockedRow({ label, helper }: { label: string; helper?: string }) {
   );
 }
 
-function RosterPreview({ cols }: { cols: Record<ColKey, boolean> }) {
+function RosterPreview({ cols }: { cols: { devices: boolean; lastVisit: boolean; nextAppt: boolean } }) {
   const headers: Array<{ key: ColKey | "patient" | "dash"; label: string }> = [
     { key: "patient", label: "Patient" },
   ];
