@@ -298,9 +298,6 @@ function CliniciansSection() {
 /* ----------------- Patient roster columns ----------------- */
 
 type ColKey =
-  | "risk"
-  | "tir"
-  | "gmi"
   | "devices"
   | "lastVisit"
   | "nextAppt"
@@ -308,34 +305,82 @@ type ColKey =
   | "pendingForms"
   | "pendingTasks";
 
+type FlagKey = "a1c" | "lowTIR" | "gmi" | "dd" | "dka";
+type FlagState = { clinician: boolean; patient: boolean };
+
+const FLAG_ROWS: Array<{ key: FlagKey; label: string; helper: string }> = [
+  {
+    key: "a1c",
+    label: "A1c",
+    helper:
+      "⚠ Threshold TBC with Shazhan — Predicted A1c above [X]% in the next 90 days, based on trend analysis of the patient's CGM and device data.",
+  },
+  {
+    key: "lowTIR",
+    label: "Low TIR (14d)",
+    helper:
+      "Patients whose glucose has been within the target range (3.9–10.0 mmol/L) less than 70% of the time over the past 14 days.",
+  },
+  {
+    key: "gmi",
+    label: "GMI",
+    helper:
+      "⚠ Threshold TBC with Shazhan — Patients with a Glucose Management Indicator above [X]% over the past 14 days, suggesting suboptimal average glucose control.",
+  },
+  {
+    key: "dd",
+    label: "DD",
+    helper:
+      "Patients or supporters who have scored above the distress threshold on the PAID (Problem Areas in Diabetes) questionnaire — a self-reported tool, not a clinical diagnosis. Flag appears when the questionnaire has been completed and the score meets the threshold.",
+  },
+  {
+    key: "dka",
+    label: "DKA",
+    helper:
+      "⚠ Risk model source TBC with Shazhan — Patients identified as being at elevated risk for diabetic ketoacidosis, based on population-level trend modelling. This is a predictive flag, not a clinical confirmation of DKA.",
+  },
+];
+
 function RosterColumnsSection() {
   const primaryCols: Array<{ key: ColKey; label: string; helper?: string }> = [
     {
-      key: "risk",
-      label: "Flags",
-      helper: "Includes risk assessment from patient-provided information such as Diabetes Distress scores.",
+      key: "devices",
+      label: "Devices",
+      helper: "Connected devices.",
     },
-    { key: "tir", label: "TIR (14d)" },
-    { key: "gmi", label: "GMI" },
-    { key: "devices", label: "Devices" },
-    { key: "lastVisit", label: "Last appointment" },
-    { key: "nextAppt", label: "Next appointment" },
+    {
+      key: "lastVisit",
+      label: "Last appointment",
+      helper: "Last time the patient was seen by the clinic, in person or virtually.",
+    },
+    {
+      key: "nextAppt",
+      label: "Next appointment",
+      helper:
+        "Next time patient is scheduled for an appointment with the clinic, in person or virtually.",
+    },
   ];
 
   const accordionCols: Array<{ key: ColKey; label: string; helper?: string }> = [
     {
       key: "hospitalVisits",
       label: "Hospital visits",
-      helper: "Shows number of hospital visits since last clinic visit.",
+      helper:
+        "Self-reported by patient or supporter via the Care Profile. A pre-appointment task can be automatically assigned to prompt the patient to update this information before each visit.",
     },
-    { key: "pendingForms", label: "Pending forms" },
-    { key: "pendingTasks", label: "Pending tasks" },
+    {
+      key: "pendingForms",
+      label: "Pending forms",
+      helper: "Number of forms awaiting completion by the patient or supporter.",
+    },
+    {
+      key: "pendingTasks",
+      label: "Pending tasks",
+      helper: "Number of tasks awaiting completion by the patient or supporter.",
+    },
   ];
 
   const [cols, setCols] = useState<Record<ColKey, boolean>>({
-    risk: true,
-    tir: true,
-    gmi: true,
     devices: true,
     lastVisit: true,
     nextAppt: true,
@@ -344,15 +389,20 @@ function RosterColumnsSection() {
     pendingTasks: true,
   });
   const [savedAt, setSavedAt] = useState<Record<ColKey, number>>({
-    risk: 0,
-    tir: 0,
-    gmi: 0,
     devices: 0,
     lastVisit: 0,
     nextAppt: 0,
     hospitalVisits: 0,
     pendingForms: 0,
     pendingTasks: 0,
+  });
+
+  const [flags, setFlags] = useState<Record<FlagKey, FlagState>>({
+    a1c: { clinician: true, patient: true },
+    lowTIR: { clinician: true, patient: true },
+    gmi: { clinician: true, patient: false },
+    dd: { clinician: true, patient: true },
+    dka: { clinician: true, patient: false },
   });
 
   const toggle = (k: ColKey) => {
@@ -367,7 +417,84 @@ function RosterColumnsSection() {
       </div>
 
       {/* Locked: Patient */}
-      <LockedRow label="Patient first and last name, date of birth, age" />
+      <LockedRow
+        label="Patient first and last name, date of birth, age"
+        helper="Patient's name as shown on their official document, their date of birth and age."
+      />
+
+      {/* Flags sub-section */}
+      <div style={{ borderTop: `0.5px solid ${BORDER}66` }}>
+        <Row>
+          <LabelBlock
+            label="Flags for clinicians and patients"
+            helper="Risk indicators derived from two sources: population-level machine learning models (A1c, DKA) and the patient's own device and questionnaire data (TIR, GMI, DD)."
+          />
+        </Row>
+        <div
+          style={{
+            background: WF_BG,
+            border: `0.5px solid ${BORDER}`,
+            borderRadius: 6,
+            padding: "10px 0",
+            marginTop: 8,
+            marginBottom: 4,
+          }}
+        >
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 140px 140px",
+              padding: "6px 14px",
+              fontSize: 11,
+              color: WF_MID,
+              textTransform: "uppercase",
+              letterSpacing: 0.5,
+              fontWeight: 600,
+            }}
+          >
+            <div>Flag</div>
+            <div style={{ textAlign: "center" }}>Visible to clinicians</div>
+            <div style={{ textAlign: "center" }}>Visible to patients</div>
+          </div>
+          {FLAG_ROWS.map((f, i) => (
+            <div
+              key={f.key}
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 140px 140px",
+                alignItems: "start",
+                padding: "10px 14px",
+                borderTop: i === 0 ? `0.5px solid ${BORDER}66` : `0.5px solid ${BORDER}66`,
+              }}
+            >
+              <LabelBlock label={f.label} helper={f.helper} />
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <Toggle
+                  on={flags[f.key].clinician}
+                  onClick={() =>
+                    setFlags((prev) => ({
+                      ...prev,
+                      [f.key]: { ...prev[f.key], clinician: !prev[f.key].clinician },
+                    }))
+                  }
+                />
+              </div>
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <Toggle
+                  on={flags[f.key].patient}
+                  onClick={() =>
+                    setFlags((prev) => ({
+                      ...prev,
+                      [f.key]: { ...prev[f.key], patient: !prev[f.key].patient },
+                    }))
+                  }
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {primaryCols.map((c) => (
         <div key={c.key} style={{ borderTop: `0.5px solid ${BORDER}66` }}>
           <Row>
@@ -380,11 +507,37 @@ function RosterColumnsSection() {
         </div>
       ))}
       <div style={{ borderTop: `0.5px solid ${BORDER}66` }}>
-        <LockedRow label="Dashboard button" />
+        <LockedRow
+          label="Dashboard button"
+          helper="Opens the patient's full clinical dashboard, including glucose trends, insulin data, tasks, forms, and recommendations."
+        />
       </div>
 
-      <div style={{ marginTop: 20, marginBottom: 8, fontSize: 14, fontWeight: 600, color: WF_DARK }}>
-        Accordion row (expanded per patient)
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 8,
+          marginTop: 24,
+          marginBottom: 4,
+          paddingTop: 16,
+          borderTop: `1px dashed ${BORDER}`,
+        }}
+      >
+        <span
+          style={{
+            fontSize: 11,
+            fontWeight: 700,
+            color: TEAL,
+            textTransform: "uppercase",
+            letterSpacing: 0.8,
+          }}
+        >
+          ↳ Accordion row
+        </span>
+        <span style={{ fontSize: 12, color: WF_MID, fontStyle: "italic" }}>
+          Expanded when a clinician opens a patient row
+        </span>
       </div>
       {accordionCols.map((c, i) => (
         <div key={c.key} style={{ borderTop: i === 0 ? "none" : `0.5px solid ${BORDER}66` }}>
@@ -417,10 +570,10 @@ function RosterColumnsSection() {
   );
 }
 
-function LockedRow({ label }: { label: string }) {
+function LockedRow({ label, helper }: { label: string; helper?: string }) {
   return (
     <Row>
-      <LabelBlock label={label} />
+      <LabelBlock label={label} helper={helper} />
       <div style={{ display: "flex", alignItems: "center", fontSize: 14, color: WF_MID, fontStyle: "italic" }}>
         Always shown
       </div>
