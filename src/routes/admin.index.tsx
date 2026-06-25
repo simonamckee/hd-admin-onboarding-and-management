@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { ShieldCheck, Briefcase, Stethoscope } from "lucide-react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
-import { WF_DARK, WF_MID, WF_BG, SUCCESS_BG, SUCCESS_TEXT, TEAL } from "@/components/wireframe";
+import { WF_DARK, WF_MID, WF_BG, SUCCESS_BG, SUCCESS_TEXT, TEAL, BORDER, SURFACE } from "@/components/wireframe";
 
 export const Route = createFileRoute("/admin/")({ component: ClinicInformation });
 
