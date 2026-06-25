@@ -10,6 +10,7 @@ import {
 
 import appCss from "../styles.css?url";
 import { DashboardTemplateProvider } from "@/lib/dashboard-template";
+import { PlatformConfigProvider } from "@/lib/platform-config";
 
 function NotFoundComponent() {
   return (
@@ -120,9 +121,11 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <DashboardTemplateProvider>
-        <Outlet />
-      </DashboardTemplateProvider>
+      <PlatformConfigProvider>
+        <DashboardTemplateProvider>
+          <Outlet />
+        </DashboardTemplateProvider>
+      </PlatformConfigProvider>
     </QueryClientProvider>
   );
 }
