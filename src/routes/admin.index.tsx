@@ -154,6 +154,10 @@ function ClinicInformation() {
 
       <ClinicRolesCard />
 
+      <AccessLevelsCard />
+
+
+
       <p style={{ textAlign: "center", fontSize: 14, color: WF_MID, marginTop: 16 }}>
         To update read-only fields, contact support@haibudiabetes.com
       </p>
