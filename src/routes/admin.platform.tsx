@@ -167,6 +167,9 @@ function ChatSection() {
 
   return (
     <SectionCard title="Chat">
+      <DescriptionBox>
+        One-on-one direct messages between clinicians and patients or their supporters.
+      </DescriptionBox>
       <Row>
         <LabelBlock
           label="Enable chat"
