@@ -236,10 +236,10 @@ function ClinicRolesCard() {
       }}
     >
       <h2 style={{ fontSize: 18, fontWeight: 600, color: WF_DARK, margin: "0 0 4px" }}>
-        Clinic roles
+        Clinic functions
       </h2>
       <div style={{ fontSize: 14, color: WF_MID, marginBottom: 16 }}>
-        These are the roles that will populate the Clinician management section when adding or editing clinicians.
+        These are the functions that will populate the Clinician management section when adding or editing clinicians.
       </div>
 
       <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 16 }}>
