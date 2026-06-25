@@ -510,7 +510,7 @@ function RosterColumnsSection() {
             <LabelBlock label={c.label} helper={c.helper} />
             <div style={{ display: "flex", alignItems: "center" }}>
               <SavedFlash when={savedAt[c.key]} />
-              <Toggle on={cols[c.key]} onClick={() => toggle(c.key)} />
+              <Toggle on={cols[c.key as PrimaryKey]} onClick={() => togglePrimary(c.key as PrimaryKey)} />
             </div>
           </Row>
         </div>
@@ -554,7 +554,10 @@ function RosterColumnsSection() {
             <LabelBlock label={c.label} helper={c.helper} />
             <div style={{ display: "flex", alignItems: "center" }}>
               <SavedFlash when={savedAt[c.key]} />
-              <Toggle on={cols[c.key]} onClick={() => toggle(c.key)} />
+              <Toggle
+                on={config.accordionCols[c.key as keyof typeof config.accordionCols]}
+                onClick={() => toggleAccordion(c.key as "hospitalVisits" | "pendingForms" | "pendingTasks")}
+              />
             </div>
           </Row>
         </div>
