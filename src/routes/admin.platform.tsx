@@ -16,8 +16,12 @@ function DescriptionBox({ children }: { children: React.ReactNode }) {
   return (
     <div
       style={{
-        fontSize: 16,
-        color: "rgb(115,115,115)",
+        background: "#f7f8f8",
+        borderLeft: `3px solid ${TEAL}`,
+        borderRadius: 4,
+        padding: "8px 12px",
+        fontSize: 14,
+        color: WF_MID,
         lineHeight: 1.6,
         marginBottom: 18,
       }}
@@ -54,7 +58,7 @@ function Divider() {
 function SectionCard({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div style={{ background: "#fff", border: `1px solid ${BORDER}66`, padding: 24, borderRadius: 8 }}>
-      <h2 style={{ fontSize: 24, fontWeight: 800, color: "rgb(18,87,92)", margin: "0 0 18px" }}>
+      <h2 style={{ fontSize: 17, fontWeight: 600, color: WF_DARK, margin: "0 0 14px" }}>
         {title}
       </h2>
       {children}
@@ -74,7 +78,7 @@ function LabelBlock({ label, helper }: { label: string; helper?: string }) {
   return (
     <div style={{ flex: 1, minWidth: 0 }}>
       <div style={{ fontSize: 16, color: WF_DARK, fontWeight: 500 }}>{label}</div>
-      {helper && <div style={{ fontSize: 13, color: WF_MID, marginTop: 3, lineHeight: 1.5, fontStyle: "italic" }}>{helper}</div>}
+      {helper && <div style={{ fontSize: 13, color: WF_MID, marginTop: 3, lineHeight: 1.5 }}>{helper}</div>}
     </div>
   );
 }
