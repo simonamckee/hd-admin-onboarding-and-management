@@ -12,6 +12,26 @@ const SORT_OPTIONS = ["At-risk first", "Longest unseen", "Soonest appointment", 
 const DEFAULT_CHAT_MSG =
   "Our team reviews messages during clinic hours, Monday–Friday 9am–5pm. For urgent concerns, please contact the clinic directly.";
 
+function DescriptionBox({ children }: { children: React.ReactNode }) {
+  return (
+    <div
+      style={{
+        background: "#f0f5f5",
+        border: `1px solid ${TEAL}33`,
+        borderLeft: `3px solid ${TEAL}`,
+        borderRadius: 6,
+        padding: "10px 14px",
+        fontSize: 14,
+        color: WF_DARK,
+        lineHeight: 1.6,
+        marginBottom: 18,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
 function PlatformConfig() {
   return (
     <AdminShell heading="">
