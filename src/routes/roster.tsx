@@ -703,7 +703,7 @@ function RosterPage() {
             <span>TIR (14d)</span>
             <span>GMI</span>
             <span>Devices</span>
-            <span>Last visit</span>
+            <span>Last appointment</span>
             <span>Next appt</span>
             <span />
           </div>
