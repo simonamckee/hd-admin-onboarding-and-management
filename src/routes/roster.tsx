@@ -179,15 +179,21 @@ const FILTERS: { key: FilterKey; label: string; icon: ReactNode }[] = [
 
 
 function RiskPills({ risks }: { risks: Risk[] }) {
-  if (risks.length === 0) return <span style={{ color: MUTED }}>—</span>;
+  const { config } = usePlatformConfig();
+  const visibleRisks = risks.filter(
+    (r) => config.flags[FLAG_KEY_MAP[r]]?.clinician !== false,
+  );
+  if (visibleRisks.length === 0) return <span style={{ color: MUTED }}>—</span>;
   const styles: Record<Risk, { bg: string; color: string }> = {
     DKA: { bg: "#fcebeb", color: "#791f1f" },
     A1c: { bg: "#faeeda", color: "#633806" },
     "Low TIR": { bg: "#fff3e0", color: "#854f0b" },
+    GMI: { bg: "#e8f5e9", color: "#1b5e20" },
+    DD: { bg: "#f3e5f5", color: "#4a148c" },
   };
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 3, alignItems: "flex-start" }}>
-      {risks.map((r) => (
+      {visibleRisks.map((r) => (
         <span
           key={r}
           style={{
