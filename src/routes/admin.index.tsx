@@ -346,7 +346,7 @@ function ClinicRolesCard() {
             marginBottom: 12,
           }}
         >
-          + Add role
+          + Add function
         </button>
       )}
 
