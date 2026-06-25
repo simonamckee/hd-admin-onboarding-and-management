@@ -413,7 +413,7 @@ function RosterPreview({ cols }: { cols: Record<ColKey, boolean> }) {
   if (cols.tir) headers.push({ key: "tir", label: "TIR (14d)" });
   if (cols.gmi) headers.push({ key: "gmi", label: "GMI" });
   if (cols.devices) headers.push({ key: "devices", label: "Devices" });
-  if (cols.lastVisit) headers.push({ key: "lastVisit", label: "Last visit" });
+  if (cols.lastVisit) headers.push({ key: "lastVisit", label: "Last appointment" });
   if (cols.nextAppt) headers.push({ key: "nextAppt", label: "Next appt" });
   headers.push({ key: "dash", label: "" });
 
