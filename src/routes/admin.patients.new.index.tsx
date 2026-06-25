@@ -5,7 +5,7 @@ import {
   Btn, Field, Input, Select, StepIndicator, Callout, Modal, TextLink,
 } from "@/components/patient-ui";
 import { Info } from "lucide-react";
-import { WF_DARK, WF_MID } from "@/components/wireframe";
+import { WF_DARK, WF_MID, TEAL } from "@/components/wireframe";
 import {
   loadDraft, saveDraft, ageFromDob, clearDraft,
   loadPersistedDraft, savePersistedDraft, clearPersistedDraft,
@@ -98,7 +98,7 @@ function Step1() {
   return (
     <AdminShell heading="">
       <div style={{ maxWidth: 720 }}>
-        <h1 style={{ fontSize: 24, fontWeight: 500, margin: "0 0 6px" }}>Add a new patient</h1>
+        <h1 style={{ fontSize: 24, fontWeight: 700, color: TEAL, margin: "0 0 6px" }}>Add a new patient</h1>
         <div style={{ fontSize: 14, color: WF_MID, marginBottom: 24 }}>Step 1 of 4 — Patient information</div>
 
         {showBanner && (

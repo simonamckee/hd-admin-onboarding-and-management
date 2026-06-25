@@ -235,7 +235,7 @@ function ClinicRolesCard() {
         marginTop: 24,
       }}
     >
-      <h2 style={{ fontSize: 18, fontWeight: 600, color: WF_DARK, margin: "0 0 4px" }}>
+      <h2 style={{ fontSize: 17, fontWeight: 600, color: WF_DARK, margin: "0 0 4px" }}>
         Clinic functions
       </h2>
       <div style={{ fontSize: 14, color: WF_MID, marginBottom: 16 }}>

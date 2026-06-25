@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
 import { Btn, Card, StepIndicator, TextLink } from "@/components/patient-ui";
-import { WF_DARK, WF_MID } from "@/components/wireframe";
+import { WF_DARK, WF_MID, TEAL } from "@/components/wireframe";
 import { loadDraft, savePersistedDraft } from "@/lib/patient-store";
 import { SaveDraftButton, useDraftPersistence } from "@/components/draft-guard";
 
@@ -31,7 +31,7 @@ function Step3() {
   return (
     <AdminShell heading="">
       <div style={{ maxWidth: 720 }}>
-        <h1 style={{ fontSize: 24, fontWeight: 500, margin: "0 0 6px" }}>Review and send invitations</h1>
+        <h1 style={{ fontSize: 24, fontWeight: 700, color: TEAL, margin: "0 0 6px" }}>Review and send invitations</h1>
         <div style={{ fontSize: 14, color: WF_MID, marginBottom: 24 }}>Step 3 of 4</div>
 
         <StepIndicator step={3} />
