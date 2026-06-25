@@ -288,7 +288,7 @@ function ClinicRolesCard() {
               if (e.key === "Enter") addRole();
               if (e.key === "Escape") { setDraft(""); setAdding(false); }
             }}
-            placeholder="New role name"
+            placeholder="New function name"
             style={{
               padding: "8px 12px",
               border: `1px solid ${WF_MID}`,
