@@ -79,7 +79,7 @@ function LabelBlock({ label, helper }: { label: string; helper?: string }) {
   return (
     <div style={{ flex: 1, minWidth: 0 }}>
       <div style={{ fontSize: 16, color: WF_DARK, fontWeight: 500 }}>{label}</div>
-      {helper && <div style={{ fontSize: 16, color: WF_MID, marginTop: 4, lineHeight: 1.5 }}>{helper}</div>}
+      {helper && <div style={{ fontSize: 13, color: WF_MID, marginTop: 3, lineHeight: 1.5, fontStyle: "italic" }}>{helper}</div>}
     </div>
   );
 }
