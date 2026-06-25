@@ -175,7 +175,7 @@ function ChatSection() {
         <div style={{ borderTop: `0.5px solid ${WF_MID}`, paddingTop: 14, marginTop: 6 }}>
           <LabelBlock
             label="Persistent chat message"
-            helper="This message is shown to patients when they open the chat. It is for information only and does not constitute medical advice, diagnosis, or a promised outcome."
+            helper="Set the message shown to patients when they open the chat.\u00a0"
           />
           <textarea
             value={msg}
@@ -227,19 +227,19 @@ function CliniciansSection() {
     {
       label: "Patient management",
       helper:
-        "Give clinicians access to add new patients and edit existing patient information, including inviting additional supporters to the platform.",
+        "Allow clinicians to add new patients and edit existing patient information, including inviting additional supporters to the platform.",
     },
     {
       label: "Form library",
-      helper: "Give clinicians access to creating new form templates and editing existing ones.",
+      helper: "Allow clinicians to create new form templates and edit existing ones.",
     },
     {
       label: "Task library",
-      helper: "Give clinicians access to creating new task templates and editing existing ones.",
+      helper: "Allow clinicians to create new task templates and edit existing ones.",
     },
     {
       label: "Resource library",
-      helper: "Give clinicians access to adding new patient resources and editing existing ones.",
+      helper: "Allow clinicians access to add new patient resources and edit existing ones.",
     },
   ];
 
@@ -247,7 +247,7 @@ function CliniciansSection() {
   const [savedAt, setSavedAt] = useState<number[]>(() => rows.map(() => 0));
 
   return (
-    <SectionCard title="Clinician role definitions">
+    <SectionCard title="Clinician permissions">
       <div style={{ fontSize: 14, color: WF_MID, marginBottom: 18, lineHeight: 1.5 }}>
         Control which parts of the admin section clinicians can access. These permissions apply to all clinician accounts in this clinic.
       </div>
@@ -344,7 +344,7 @@ function RosterColumnsSection() {
       </div>
 
       {/* Locked: Patient */}
-      <LockedRow label="Patient" />
+      <LockedRow label="Patient first and last name" />
       {primaryCols.map((c) => (
         <div key={c.key} style={{ borderTop: `0.5px solid ${BORDER}66` }}>
           <Row>
