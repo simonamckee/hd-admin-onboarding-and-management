@@ -344,7 +344,7 @@ function RosterColumnsSection() {
       </div>
 
       {/* Locked: Patient */}
-      <LockedRow label="Patient first and last name" />
+      <LockedRow label="Patient first and last name, date of birth, age" />
       {primaryCols.map((c) => (
         <div key={c.key} style={{ borderTop: `0.5px solid ${BORDER}66` }}>
           <Row>
