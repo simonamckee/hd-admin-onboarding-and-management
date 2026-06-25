@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { AdminShell } from "@/components/admin-shell";
 import { MessageBubble } from "@/components/message-bubble";
+import { usePlatformConfig } from "@/lib/platform-config";
 
 export const Route = createFileRoute("/roster")({
   component: RosterPage,
@@ -31,7 +32,15 @@ const DARK = "#1f2a2c";
 const DANGER = "#a32d2d";
 const SUCCESS = "#27500a";
 
-type Risk = "DKA" | "A1c" | "Low TIR";
+type Risk = "DKA" | "A1c" | "Low TIR" | "GMI" | "DD";
+
+const FLAG_KEY_MAP: Record<Risk, "dka" | "a1c" | "lowTIR" | "gmi" | "dd"> = {
+  DKA: "dka",
+  A1c: "a1c",
+  "Low TIR": "lowTIR",
+  GMI: "gmi",
+  DD: "dd",
+};
 
 type AccordionData = {
   hospitalVisits: number;
