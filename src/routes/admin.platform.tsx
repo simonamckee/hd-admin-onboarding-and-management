@@ -409,7 +409,7 @@ function RosterPreview({ cols }: { cols: Record<ColKey, boolean> }) {
   const headers: Array<{ key: ColKey | "patient" | "dash"; label: string }> = [
     { key: "patient", label: "Patient" },
   ];
-  if (cols.risk) headers.push({ key: "risk", label: "Risk" });
+  if (cols.risk) headers.push({ key: "risk", label: "Flags" });
   if (cols.tir) headers.push({ key: "tir", label: "TIR (14d)" });
   if (cols.gmi) headers.push({ key: "gmi", label: "GMI" });
   if (cols.devices) headers.push({ key: "devices", label: "Devices" });
