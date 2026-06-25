@@ -295,7 +295,7 @@ function RosterColumnsSection() {
     { key: "tir", label: "TIR (14d)" },
     { key: "gmi", label: "GMI" },
     { key: "devices", label: "Devices" },
-    { key: "lastVisit", label: "Last visit" },
+    { key: "lastVisit", label: "Last appointment" },
     { key: "nextAppt", label: "Next appointment" },
   ];
 
