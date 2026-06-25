@@ -312,7 +312,7 @@ const FLAG_ROWS: Array<{ key: FlagKey; label: string; helper: string }> = [
     key: "a1c",
     label: "A1c",
     helper:
-      "⚠ Threshold TBC with Shazhan — Predicted A1c above [X]% in the next 90 days, based on trend analysis of the patient's CGM and device data.",
+      "Predicted A1c above [X]% in the next 90 days, based on trend analysis of the patient's CGM and device data.",
   },
   {
     key: "lowTIR",
@@ -324,7 +324,7 @@ const FLAG_ROWS: Array<{ key: FlagKey; label: string; helper: string }> = [
     key: "gmi",
     label: "GMI",
     helper:
-      "⚠ Threshold TBC with Shazhan — Patients with a Glucose Management Indicator above [X]% over the past 14 days, suggesting suboptimal average glucose control.",
+      "Patients with a Glucose Management Indicator above [X]% over the past 14 days, suggesting suboptimal average glucose control.",
   },
   {
     key: "dd",
@@ -336,7 +336,7 @@ const FLAG_ROWS: Array<{ key: FlagKey; label: string; helper: string }> = [
     key: "dka",
     label: "DKA",
     helper:
-      "⚠ Risk model source TBC with Shazhan — Patients identified as being at elevated risk for diabetic ketoacidosis, based on population-level trend modelling. This is a predictive flag, not a clinical confirmation of DKA.",
+      "Patients identified as being at elevated risk for diabetic ketoacidosis, based on population-level trend modelling. This is a predictive flag, not a clinical confirmation of DKA.",
   },
 ];
 
