@@ -381,13 +381,13 @@ function RosterColumnsSection() {
     },
   ];
 
-  const [cols, setCols] = useState<Record<ColKey, boolean>>({
+  const { config, setConfig } = usePlatformConfig();
+
+  type PrimaryKey = "devices" | "lastVisit" | "nextAppt";
+  const [cols, setCols] = useState<Record<PrimaryKey, boolean>>({
     devices: true,
     lastVisit: true,
     nextAppt: true,
-    hospitalVisits: true,
-    pendingForms: true,
-    pendingTasks: true,
   });
   const [savedAt, setSavedAt] = useState<Record<ColKey, number>>({
     devices: 0,
@@ -398,16 +398,18 @@ function RosterColumnsSection() {
     pendingTasks: 0,
   });
 
-  const [flags, setFlags] = useState<Record<FlagKey, FlagState>>({
-    a1c: { clinician: true, patient: true },
-    lowTIR: { clinician: true, patient: true },
-    gmi: { clinician: true, patient: false },
-    dd: { clinician: true, patient: true },
-    dka: { clinician: true, patient: false },
-  });
+  const flags = config.flags;
 
-  const toggle = (k: ColKey) => {
+  const togglePrimary = (k: PrimaryKey) => {
     setCols((p) => ({ ...p, [k]: !p[k] }));
+    setSavedAt((p) => ({ ...p, [k]: Date.now() }));
+  };
+
+  const toggleAccordion = (k: "hospitalVisits" | "pendingForms" | "pendingTasks") => {
+    setConfig({
+      ...config,
+      accordionCols: { ...config.accordionCols, [k]: !config.accordionCols[k] },
+    });
     setSavedAt((p) => ({ ...p, [k]: Date.now() }));
   };
 
