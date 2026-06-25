@@ -59,7 +59,7 @@ function Divider() {
 function SectionCard({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div style={{ background: "#fff", border: `1px solid ${BORDER}66`, padding: 24, borderRadius: 8 }}>
-      <h2 style={{ fontSize: 18, fontWeight: 800, color: WF_DARK, margin: "0 0 18px" }}>
+      <h2 style={{ fontSize: 24, fontWeight: 800, color: "rgb(18,87,92)", margin: "0 0 18px" }}>
         {title}
       </h2>
       {children}
