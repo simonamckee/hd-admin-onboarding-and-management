@@ -289,7 +289,7 @@ function RosterColumnsSection() {
   const primaryCols: Array<{ key: ColKey; label: string; helper?: string }> = [
     {
       key: "risk",
-      label: "Predicted risk",
+      label: "Flags",
       helper: "Includes risk assessment from patient-provided information such as Diabetes Distress scores.",
     },
     { key: "tir", label: "TIR (14d)" },
@@ -409,7 +409,7 @@ function RosterPreview({ cols }: { cols: Record<ColKey, boolean> }) {
   const headers: Array<{ key: ColKey | "patient" | "dash"; label: string }> = [
     { key: "patient", label: "Patient" },
   ];
-  if (cols.risk) headers.push({ key: "risk", label: "Risk" });
+  if (cols.risk) headers.push({ key: "risk", label: "Flags" });
   if (cols.tir) headers.push({ key: "tir", label: "TIR (14d)" });
   if (cols.gmi) headers.push({ key: "gmi", label: "GMI" });
   if (cols.devices) headers.push({ key: "devices", label: "Devices" });
