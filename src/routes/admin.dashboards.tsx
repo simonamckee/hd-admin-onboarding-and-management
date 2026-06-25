@@ -84,7 +84,16 @@ function DashboardTemplates() {
         })}
       </div>
 
-      <p style={{ fontSize: 16, color: WF_MID, margin: "0 0 24px", lineHeight: 1.5 }}>{helper}</p>
+      <div style={{
+        background: "#f7f8f8",
+        borderLeft: `3px solid ${TEAL}`,
+        borderRadius: 4,
+        padding: "8px 12px",
+        fontSize: 14,
+        color: WF_MID,
+        lineHeight: 1.6,
+        marginBottom: 24,
+      }}>{helper}</div>
 
       {tab === "clinician" ? <ClinicianBuilder /> : <PatientBuilder />}
 

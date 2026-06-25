@@ -27,7 +27,7 @@ function BatchUploadPage() {
           ← Clinician management
         </Link>
       </div>
-      <h1 style={{ fontSize: 24, fontWeight: 500, color: WF_DARK, margin: "0 0 24px" }}>
+      <h1 style={{ fontSize: 24, fontWeight: 700, color: TEAL, margin: "0 0 24px" }}>
         Upload clinicians via CSV
       </h1>
 
@@ -348,7 +348,7 @@ function DoneState() {
       >
         ✓
       </div>
-      <h1 style={{ fontSize: 24, fontWeight: 500, color: WF_DARK, margin: "0 0 20px" }}>
+      <h1 style={{ fontSize: 24, fontWeight: 700, color: TEAL, margin: "0 0 20px" }}>
         4 invitations sent
       </h1>
       <div style={{ fontSize: 15, color: WF_MID, lineHeight: 1.7, marginBottom: 28 }}>

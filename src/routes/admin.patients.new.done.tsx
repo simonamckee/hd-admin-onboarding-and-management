@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
 import { Btn } from "@/components/patient-ui";
-import { WF_DARK, WF_MID } from "@/components/wireframe";
+import { WF_DARK, WF_MID, TEAL } from "@/components/wireframe";
 import { loadDraft, clearDraft, clearPersistedDraft } from "@/lib/patient-store";
 
 export const Route = createFileRoute("/admin/patients/new/done")({ component: Step4 });
@@ -36,7 +36,7 @@ function Step4() {
         >
           ✓
         </div>
-        <h1 style={{ fontSize: 24, fontWeight: 500, margin: "0 0 12px", color: WF_DARK }}>
+        <h1 style={{ fontSize: 24, fontWeight: 700, color: TEAL, margin: "0 0 12px" }}>
           {inviteYes ? "Invitations sent" : "Patient profile saved"}
         </h1>
         <p style={{ fontSize: 16, color: WF_MID, margin: "0 0 32px", lineHeight: 1.5 }}>

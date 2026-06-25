@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
 import { Btn, Field, Input, Select, TextLink } from "@/components/patient-ui";
-import { WF_DARK, WF_MID } from "@/components/wireframe";
+import { WF_DARK, WF_MID, TEAL } from "@/components/wireframe";
 
 export const Route = createFileRoute("/admin/resources/new")({
   component: () => <ResourceForm mode="new" />,
@@ -52,7 +52,7 @@ export function ResourceForm({ mode, existing }: { mode: "new" | "edit"; existin
   return (
     <AdminShell heading="">
       <div style={{ maxWidth: 640 }}>
-        <h1 style={{ fontSize: 24, fontWeight: 500, margin: "0 0 24px" }}>
+        <h1 style={{ fontSize: 24, fontWeight: 700, color: TEAL, margin: "0 0 24px" }}>
           {mode === "new" ? "Add a resource" : "Edit resource"}
         </h1>
 

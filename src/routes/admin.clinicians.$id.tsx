@@ -3,7 +3,7 @@ import { useState } from "react";
 import type { ReactNode } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
 import { Btn, Card, Field, Input, Select, Pill, Modal, TextLink, DangerDivider } from "@/components/patient-ui";
-import { WF_DARK, WF_MID } from "@/components/wireframe";
+import { WF_DARK, WF_MID, TEAL } from "@/components/wireframe";
 import { ASSIGNED_PATIENTS, deactivateClinician } from "@/lib/clinician-assignments";
 
 export const Route = createFileRoute("/admin/clinicians/$id")({
@@ -109,7 +109,7 @@ function EditClinician() {
           ← Clinician management
         </Link>
         <div style={{ display: "flex", alignItems: "center", gap: 12, margin: "12px 0 28px" }}>
-          <h1 style={{ fontSize: 24, fontWeight: 500, margin: 0 }}>{base.name}</h1>
+          <h1 style={{ fontSize: 24, fontWeight: 700, color: TEAL, margin: 0 }}>{base.name}</h1>
           {statusPill(base.status)}
         </div>
 

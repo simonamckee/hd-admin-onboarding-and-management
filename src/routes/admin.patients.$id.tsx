@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate, Link, useBlocker } from "@tanstack/react-
 import { useEffect, useState } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
 import { Btn, Card, Field, Input, Select, Pill, Modal, TextLink, DangerDivider } from "@/components/patient-ui";
-import { WF_DARK, WF_MID } from "@/components/wireframe";
+import { WF_DARK, WF_MID, TEAL } from "@/components/wireframe";
 import {
   formatPHN, phnDigits, isValidPHN,
   PHN_LABEL, PHN_HELPER, PHN_LENGTH_ERROR,
@@ -150,7 +150,7 @@ function PatientDetail() {
           ← Patient management
         </Link>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", margin: "12px 0 24px" }}>
-          <h1 style={{ fontSize: 24, fontWeight: 500, margin: 0 }}>{base.name}</h1>
+          <h1 style={{ fontSize: 24, fontWeight: 700, color: TEAL, margin: 0 }}>{base.name}</h1>
           {statusPill(base.status)}
         </div>
 
