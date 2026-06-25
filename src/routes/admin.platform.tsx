@@ -475,10 +475,13 @@ function RosterColumnsSection() {
                 <Toggle
                   on={flags[f.key].clinician}
                   onClick={() =>
-                    setFlags((prev) => ({
-                      ...prev,
-                      [f.key]: { ...prev[f.key], clinician: !prev[f.key].clinician },
-                    }))
+                    setConfig({
+                      ...config,
+                      flags: {
+                        ...config.flags,
+                        [f.key]: { ...config.flags[f.key], clinician: !config.flags[f.key].clinician },
+                      },
+                    })
                   }
                 />
               </div>
@@ -486,10 +489,13 @@ function RosterColumnsSection() {
                 <Toggle
                   on={flags[f.key].patient}
                   onClick={() =>
-                    setFlags((prev) => ({
-                      ...prev,
-                      [f.key]: { ...prev[f.key], patient: !prev[f.key].patient },
-                    }))
+                    setConfig({
+                      ...config,
+                      flags: {
+                        ...config.flags,
+                        [f.key]: { ...config.flags[f.key], patient: !config.flags[f.key].patient },
+                      },
+                    })
                   }
                 />
               </div>
