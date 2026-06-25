@@ -116,7 +116,7 @@ function EditClinician() {
         {/* Clinician details — editable */}
         <SectionLabel>Clinician details</SectionLabel>
         <Card style={{ marginBottom: 28 }}>
-          <Field label="Title" required>
+          <Field label="Function" required>
             <InlineEdit
               dirty={titleDirty}
               onCancel={() => setTitle(base.title)}
