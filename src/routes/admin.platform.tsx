@@ -175,7 +175,7 @@ function ChatSection() {
         <div style={{ borderTop: `0.5px solid ${WF_MID}`, paddingTop: 14, marginTop: 6 }}>
           <LabelBlock
             label="Persistent chat message"
-            helper="Set the message shown to patients when they open the chat. "
+            helper="Set the message shown to patients when they open the chat.\u00a0"
           />
           <textarea
             value={msg}
