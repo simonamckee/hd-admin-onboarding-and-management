@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
 import { Btn, Select } from "@/components/patient-ui";
 import { WF_DARK, WF_MID, WF_BG, BORDER, TEAL, SURFACE } from "@/components/wireframe";
+import { usePlatformConfig } from "@/lib/platform-config";
 
 export const Route = createFileRoute("/admin/platform")({
   component: PlatformConfig,
@@ -156,7 +157,8 @@ function SavedFlash({ when }: { when: number }) {
 /* ----------------- Chat ----------------- */
 
 function ChatSection() {
-  const [enabled, setEnabled] = useState(true);
+  const { config, setConfig } = usePlatformConfig();
+  const enabled = config.chatEnabled;
   const [savedEnabledAt, setSavedEnabledAt] = useState(0);
 
   const [msg, setMsg] = useState(DEFAULT_CHAT_MSG);
@@ -179,7 +181,7 @@ function ChatSection() {
           <Toggle
             on={enabled}
             onClick={() => {
-              setEnabled((v) => !v);
+              setConfig({ ...config, chatEnabled: !config.chatEnabled });
               setSavedEnabledAt(Date.now());
             }}
           />
