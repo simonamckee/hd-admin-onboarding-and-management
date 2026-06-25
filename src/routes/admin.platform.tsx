@@ -16,13 +16,8 @@ function DescriptionBox({ children }: { children: React.ReactNode }) {
   return (
     <div
       style={{
-        background: "#f0f5f5",
-        border: `1px solid ${TEAL}33`,
-        borderLeft: `3px solid ${TEAL}`,
-        borderRadius: 6,
-        padding: "10px 14px",
-        fontSize: 14,
-        color: WF_DARK,
+        fontSize: 16,
+        color: "rgb(115,115,115)",
         lineHeight: 1.6,
         marginBottom: 18,
       }}
@@ -271,9 +266,9 @@ function CliniciansSection() {
 
   return (
     <SectionCard title="Clinician permissions">
-      <div style={{ fontSize: 14, color: WF_MID, marginBottom: 18, lineHeight: 1.5 }}>
+      <DescriptionBox>
         Control which parts of the admin section clinicians can access. These permissions apply to all clinician accounts in this clinic.
-      </div>
+      </DescriptionBox>
       {rows.map((r, i) => (
         <div key={r.label} style={{ borderTop: i === 0 ? "none" : `0.5px solid ${BORDER}66` }}>
           <Row>
@@ -412,9 +407,9 @@ function RosterColumnsSection() {
 
   return (
     <SectionCard title="Patient roster columns">
-      <div style={{ fontSize: 14, color: WF_MID, marginBottom: 18, lineHeight: 1.5 }}>
+      <DescriptionBox>
         Choose which columns appear on the patient roster. Patient (name, DOB, age) and the Dashboard button are always shown and cannot be removed.
-      </div>
+      </DescriptionBox>
 
       {/* Locked: Patient */}
       <LockedRow
