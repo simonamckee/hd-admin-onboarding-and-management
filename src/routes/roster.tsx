@@ -497,9 +497,9 @@ function RosterPage() {
     };
     const sorted = [...filtered].sort(sortFn);
     return {
-      atRisk: sorted.filter((p) => deriveGroup(p) === "atRisk"),
-      today: sorted.filter((p) => deriveGroup(p) === "today"),
-      others: sorted.filter((p) => deriveGroup(p) === "others"),
+      atRisk: sorted.filter((p) => deriveGroup(p, config.flags) === "atRisk"),
+      today: sorted.filter((p) => deriveGroup(p, config.flags) === "today"),
+      others: sorted.filter((p) => deriveGroup(p, config.flags) === "others"),
     };
   }, [activeFilters, sort]);
 
