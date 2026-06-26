@@ -408,8 +408,8 @@ function PatientHeader({ role }: { role: Role }) {
             <Badge bg={SUCCESS_BG} color={SUCCESS_TEXT}>Active</Badge>
             <Badge bg={SUCCESS_BG} color={SUCCESS_TEXT}>CGM connected</Badge>
             <Badge bg={SUCCESS_BG} color={SUCCESS_TEXT}>Pump connected</Badge>
-            <Badge bg="#fcebeb" color="#791f1f">DKA risk</Badge>
-            <Badge bg={WARN_BG} color={WARN_TEXT}>Low TIR</Badge>
+            {role === "clinician" && <Badge bg="#fcebeb" color="#791f1f">DKA risk</Badge>}
+            {role === "clinician" && <Badge bg={WARN_BG} color={WARN_TEXT}>Low TIR</Badge>}
             {role === "patient" && config.flags.lowTIR.patient && patientTIR < 70 && (
               <Badge bg="#fff3e0" color="#854f0b">Low TIR</Badge>
             )}
