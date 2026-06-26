@@ -987,6 +987,8 @@ function PatientChatPanel({ onClose }: { onClose: () => void }) {
 // ============ ROOT ============
 
 function PatientDashboard() {
+  const { config } = usePlatformConfig();
+  const chatEnabled = config.chatEnabled;
   const [state, setState] = useState<NotifState>({
     forms: ["form-1"],
     tasks: ["task-1"],
@@ -1074,6 +1076,30 @@ function PatientDashboard() {
               }}
             >Care profile</Link>
           </div>
+
+          {(config.flags.lowTIR.patient || config.flags.gmi.patient) && (
+            <div style={{
+              display: "flex", gap: 8, padding: "8px 16px", background: SURFACE,
+              borderBottom: `0.5px solid ${BORDER}`,
+            }}>
+              {config.flags.lowTIR.patient && (
+                <span style={{
+                  fontSize: 12, fontWeight: 600, color: "#b45309",
+                  background: "#fef3c7", padding: "3px 10px", borderRadius: 999,
+                }}>
+                  Low TIR
+                </span>
+              )}
+              {config.flags.gmi.patient && (
+                <span style={{
+                  fontSize: 12, fontWeight: 600, color: "#7c3aed",
+                  background: "#ede9fe", padding: "3px 10px", borderRadius: 999,
+                }}>
+                  High GMI
+                </span>
+              )}
+            </div>
+          )}
 
           {/* Modules */}
           <div style={{ padding: 16 }}>
