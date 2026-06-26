@@ -725,7 +725,7 @@ function RosterPage() {
               borderBottom: `0.5px solid ${ROW_BORDER}`,
             }}
           >
-            <span />
+            {config.chatEnabled && <span />}
             <span>Patient</span>
             <span>Flags</span>
             <span>TIR (14d)</span>
