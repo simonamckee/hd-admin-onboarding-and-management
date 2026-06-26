@@ -300,7 +300,7 @@ function PatientRow({
           color: DARK,
         }}
       >
-        {config.chatEnabled ? <MessageBubble hasMessages={p.messages} /> : <div />}
+        {config.chatEnabled && <MessageBubble hasMessages={p.messages} />}
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <div style={{
             width: 34, height: 34, borderRadius: "50%", flexShrink: 0,
