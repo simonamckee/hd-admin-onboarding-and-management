@@ -1,16 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { createContext, useContext, useMemo, useRef, useState } from "react";
 import type { ReactNode, CSSProperties } from "react";
+import { usePlatformConfig } from "@/lib/platform-config";
 import {
   WF_BG, WF_DARK, WF_MID, TEAL, SURFACE, BORDER, TINT,
 } from "@/components/wireframe";
 import { MessageBubble } from "@/components/message-bubble";
 
 export const Route = createFileRoute("/patient/dashboard")({ component: PatientDashboard });
-
-// ============ Platform config (mock) ============
-
-const chatEnabled = true;
 
 // ============ Notification context ============
 
@@ -700,8 +697,8 @@ function NavIcon({ kind }: { kind: TabKey }) {
   }
 }
 
-function BottomNav({ active, onTab }: {
-  active: TabKey; onTab: (k: TabKey) => void;
+function BottomNav({ active, onTab, chatEnabled }: {
+  active: TabKey; onTab: (k: TabKey) => void; chatEnabled: boolean;
 }) {
   const notif = useNotif();
   const tabs: { key: TabKey; label: string; dotCat?: Category }[] = [
@@ -990,6 +987,8 @@ function PatientChatPanel({ onClose }: { onClose: () => void }) {
 // ============ ROOT ============
 
 function PatientDashboard() {
+  const { config } = usePlatformConfig();
+  const chatEnabled = config.chatEnabled;
   const [state, setState] = useState<NotifState>({
     forms: ["form-1"],
     tasks: ["task-1"],
@@ -1078,6 +1077,30 @@ function PatientDashboard() {
             >Care profile</Link>
           </div>
 
+          {(config.flags.lowTIR.patient || config.flags.gmi.patient) && (
+            <div style={{
+              display: "flex", gap: 8, padding: "8px 16px", background: SURFACE,
+              borderBottom: `0.5px solid ${BORDER}`,
+            }}>
+              {config.flags.lowTIR.patient && (
+                <span style={{
+                  fontSize: 12, fontWeight: 600, color: "#b45309",
+                  background: "#fef3c7", padding: "3px 10px", borderRadius: 999,
+                }}>
+                  Low TIR
+                </span>
+              )}
+              {config.flags.gmi.patient && (
+                <span style={{
+                  fontSize: 12, fontWeight: 600, color: "#7c3aed",
+                  background: "#ede9fe", padding: "3px 10px", borderRadius: 999,
+                }}>
+                  High GMI
+                </span>
+              )}
+            </div>
+          )}
+
           {/* Modules */}
           <div style={{ padding: 16 }}>
             <div ref={refs.glucose} style={CARD}><GlucoseModule /></div>
@@ -1090,7 +1113,7 @@ function PatientDashboard() {
             <div ref={refs.labs} style={CARD}><LabsModule /></div>
           </div>
         </div>
-        <BottomNav active={activeTab} onTab={onTab} />
+        <BottomNav active={activeTab} onTab={onTab} chatEnabled={chatEnabled} />
         {chatEnabled && chatOpen && <PatientChatPanel onClose={() => setChatOpen(false)} />}
       </div>
     </NotificationContext.Provider>
