@@ -935,7 +935,7 @@ function LabsModule() {
       <div style={{ padding: 16 }}>
         <div style={{
           display: "grid",
-          gridTemplateColumns: "1fr 120px 120px 120px",
+          gridTemplateColumns: "1.6fr 100px 105px 140px",
           gap: 8,
           padding: "0 0 6px 0",
           borderBottom: `0.5px solid ${BORDER}`,
