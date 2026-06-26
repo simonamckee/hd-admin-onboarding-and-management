@@ -236,7 +236,8 @@ function DevicePill({ label, on }: { label: string; on: boolean }) {
   );
 }
 
-const GRID = "34px minmax(200px, 1.5fr) repeat(6, 1fr) 112px";
+const GRID_WITH_CHAT = "34px minmax(200px, 1.5fr) repeat(6, 1fr) 112px";
+const GRID_NO_CHAT = "minmax(200px, 1.5fr) repeat(6, 1fr) 112px";
 
 function GroupHeader({ label, icon, bg, color }: { label: string; icon: ReactNode; bg: string; color: string }) {
   return (
