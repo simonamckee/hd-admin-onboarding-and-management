@@ -877,20 +877,54 @@ function MDITab() {
   );
 }
 
-type LabRow = { id: string; name: string; last: string; next: string; overdue: boolean; recommended: string };
+type LabRow = {
+  id: string;
+  name: string;
+  last: string;
+  next: string;
+  overdue: boolean;
+  recommended: string;
+  description: string;
+  labUrl: string;
+};
 
 function LabsModule() {
   const [labs, setLabs] = useState<LabRow[]>([
-    { id: "a1c", name: "A1c", last: "2026-01-01", next: "2026-04-01", overdue: false, recommended: "Every 3 months" },
-    { id: "lipid", name: "Lipid panel", last: "2025-01-14", next: "2025-07-14", overdue: false, recommended: "Every 3 years" },
-    { id: "renal", name: "Renal function", last: "2025-01-14", next: "2025-07-14", overdue: false, recommended: "Yearly" },
-    { id: "thyroid", name: "Thyroid panel", last: "2024-03-03", next: "2025-03-03", overdue: true, recommended: "Every 2 years" },
-    { id: "retino", name: "Retinopathy", last: "2023-11-22", next: "2024-11-22", overdue: true, recommended: "Yearly" },
-    { id: "neuro", name: "Neuropathy", last: "2023-11-22", next: "2024-11-22", overdue: true, recommended: "Yearly" },
+    { id: "a1c", name: "A1c",
+      last: "2026-01-01", next: "2026-04-01", overdue: false,
+      recommended: "Every 3 months",
+      description: "Measures average blood glucose over the past 2–3 months. A key indicator of long-term glycaemic control.",
+      labUrl: "https://labresults.example.com/patient/sarah-chen/a1c" },
+    { id: "lipid", name: "Lipid panel",
+      last: "2025-01-14", next: "2028-01-14", overdue: false,
+      recommended: "Every 3 years",
+      description: "Measures cholesterol and triglycerides. People with T1D have an increased risk of cardiovascular disease.",
+      labUrl: "https://labresults.example.com/patient/sarah-chen/lipid" },
+    { id: "renal", name: "Renal function",
+      last: "2025-01-14", next: "2026-01-14", overdue: false,
+      recommended: "Yearly",
+      description: "Checks kidney health including eGFR and urine albumin-to-creatinine ratio. Diabetes is a leading cause of kidney disease.",
+      labUrl: "https://labresults.example.com/patient/sarah-chen/renal" },
+    { id: "thyroid", name: "Thyroid panel",
+      last: "2024-03-03", next: "2025-03-03", overdue: true,
+      recommended: "Every 2 years",
+      description: "Screens for thyroid dysfunction, which is more common in people with T1D and can affect glucose control.",
+      labUrl: "https://labresults.example.com/patient/sarah-chen/thyroid" },
+    { id: "retino", name: "Retinopathy",
+      last: "2023-11-22", next: "2024-11-22", overdue: true,
+      recommended: "Yearly",
+      description: "Dilated eye exam to screen for diabetic retinopathy, a leading cause of blindness that is preventable with early detection.",
+      labUrl: "https://labresults.example.com/patient/sarah-chen/retinopathy" },
+    { id: "neuro", name: "Neuropathy",
+      last: "2023-11-22", next: "2024-11-22", overdue: true,
+      recommended: "Yearly",
+      description: "Assessment for nerve damage including peripheral and autonomic neuropathy, common complications of T1D.",
+      labUrl: "https://labresults.example.com/patient/sarah-chen/neuropathy" },
   ]);
   const [editId, setEditId] = useState<string | null>(null);
   const [editLast, setEditLast] = useState("");
   const [editNext, setEditNext] = useState("");
+  const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const fmt = (iso: string) =>
     new Date(iso).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
@@ -901,13 +935,13 @@ function LabsModule() {
       <div style={{ padding: 16 }}>
         <div style={{
           display: "grid",
-          gridTemplateColumns: "1fr 120px 120px 120px 60px",
+          gridTemplateColumns: "1fr 120px 120px 120px",
           gap: 8,
           padding: "0 0 6px 0",
           borderBottom: `0.5px solid ${BORDER}`,
           marginBottom: 4,
         }}>
-          {["Test", "Recommended", "Last completed", "Next due", ""].map((h) => (
+          {["Test", "View results", "Last completed", "Next due", ""].map((h) => (
             <div key={h} style={{ fontSize: 11, fontWeight: 600, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.3 }}>{h}</div>
           ))}
         </div>
@@ -915,24 +949,92 @@ function LabsModule() {
           <div key={l.id}>
             <div style={{
               display: "grid",
-              gridTemplateColumns: "1fr 120px 120px 120px 60px",
-              alignItems: "center",
+              gridTemplateColumns: "1fr 120px 120px 120px",
+              alignItems: "flex-start",
               padding: "8px 0",
               borderBottom: "0.5px solid #f0f2f3",
               gap: 8,
             }}>
-              <div style={{ fontSize: 15, fontWeight: 600, color: WF_DARK }}>{l.name}</div>
-              <div style={{ fontSize: 15, color: WF_DARK }}>{l.recommended}</div>
-              <div style={{ fontSize: 15, color: WF_DARK }}>{fmt(l.last)}</div>
-              <div style={{ fontSize: 15, color: l.overdue ? ERROR_TEXT : WF_DARK, fontWeight: l.overdue ? 600 : 400 }}>
-                {fmt(l.next)}
+              <div>
+                <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                  <span style={{ fontSize: 15, fontWeight: 600, color: WF_DARK }}>{l.name}</span>
+                  <button
+                    onClick={() => setExpandedId(expandedId === l.id ? null : l.id)}
+                    aria-label={expandedId === l.id ? "Hide info" : "Show info"}
+                    style={{
+                      width: 18, height: 18, borderRadius: "50%",
+                      border: `1px solid ${TEAL}`, background: expandedId === l.id ? TEAL : "transparent",
+                      color: expandedId === l.id ? "#fff" : TEAL,
+                      fontSize: 11, fontWeight: 700,
+                      display: "inline-flex", alignItems: "center", justifyContent: "center",
+                      cursor: "pointer", flexShrink: 0, fontFamily: "inherit",
+                      lineHeight: 1,
+                    }}
+                  >i</button>
+                </div>
+                {expandedId === l.id && (
+                  <div style={{
+                    marginTop: 6,
+                    fontSize: 13,
+                    color: WF_MID,
+                    lineHeight: 1.6,
+                    background: "#f7f8f8",
+                    borderLeft: `3px solid ${TEAL}`,
+                    borderRadius: 4,
+                    padding: "6px 10px",
+                  }}>
+                    <div style={{ fontWeight: 500, color: WF_DARK, marginBottom: 2 }}>
+                      Recommended: {l.recommended}
+                    </div>
+                    {l.description}
+                  </div>
+                )}
               </div>
-              <span
-                onClick={() => { setEditId(l.id); setEditLast(l.last); setEditNext(l.next); }}
-                style={{ fontSize: 13, color: TEAL, textDecoration: "underline", cursor: "pointer" }}
+              <a
+                href={l.labUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  fontSize: 14, color: TEAL,
+                  textDecoration: "none",
+                  display: "inline-flex", alignItems: "center", gap: 4,
+                }}
               >
-                Update
-              </span>
+                View results
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" strokeWidth="2" strokeLinecap="round"
+                  strokeLinejoin="round">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                  <polyline points="15 3 21 3 21 9" />
+                  <line x1="10" y1="14" x2="21" y2="3" />
+                </svg>
+              </a>
+              <div style={{ fontSize: 15, color: WF_DARK }}>{fmt(l.last)}</div>
+              <div>
+                <div style={{
+                  fontSize: 15,
+                  color: l.overdue ? ERROR_TEXT : WF_DARK,
+                  fontWeight: l.overdue ? 600 : 400,
+                }}>
+                  {fmt(l.next)}
+                  {l.overdue && (
+                    <span style={{
+                      fontSize: 11, fontWeight: 600,
+                      background: ERROR_BG, color: ERROR_TEXT,
+                      borderRadius: 4, padding: "2px 6px",
+                      marginLeft: 6,
+                    }}>Overdue</span>
+                  )}
+                </div>
+                <span
+                  onClick={() => { setEditId(l.id); setEditLast(l.last); setEditNext(l.next); }}
+                  style={{
+                    fontSize: 12, color: WF_MID,
+                    textDecoration: "underline", cursor: "pointer",
+                    display: "inline-block", marginTop: 2,
+                  }}
+                >Update</span>
+              </div>
             </div>
             {editId === l.id && (
               <div style={{ display: "flex", gap: 8, alignItems: "flex-end", padding: "8px 0", borderBottom: `0.5px solid #f0f2f3` }}>
