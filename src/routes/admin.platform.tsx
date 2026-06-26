@@ -296,7 +296,7 @@ function CliniciansSection() {
   );
 }
 
-/* ----------------- Patient roster columns ----------------- */
+/* ----------------- Patient roster configuration ----------------- */
 
 type ColKey =
   | "devices"
@@ -414,7 +414,7 @@ function RosterColumnsSection() {
   };
 
   return (
-    <SectionCard title="Patient roster columns">
+    <SectionCard title="Patient roster configuration">
       <DescriptionBox>
         Choose which columns appear on the patient roster. Patient (name, DOB, age) and the Dashboard button are always shown and cannot be removed.
       </DescriptionBox>
