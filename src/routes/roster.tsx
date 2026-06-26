@@ -291,7 +291,7 @@ function PatientRow({
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: GRID,
+          gridTemplateColumns: config.chatEnabled ? GRID_WITH_CHAT : GRID_NO_CHAT,
           alignItems: "center",
           padding: "8px 10px",
           borderBottom: `0.5px solid ${ROW_BORDER}`,
