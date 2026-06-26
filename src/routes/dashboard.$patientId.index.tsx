@@ -1802,7 +1802,7 @@ function DashboardPage() {
     <AdminShell heading="">
       <div style={{ margin: "-32px", background: WF_BG, minHeight: "100vh" }}>
         <div style={{ position: "sticky", top: 0, zIndex: 10 }}>
-          <PatientHeader />
+          <PatientHeader role={role} />
           <div
             style={{
               background: SURFACE,
