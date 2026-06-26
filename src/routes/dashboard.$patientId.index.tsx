@@ -1011,20 +1011,24 @@ function LabsModule() {
                   <line x1="10" y1="14" x2="21" y2="3" />
                 </svg>
               </a>
-              <div style={{ fontSize: 15, color: WF_DARK }}>{fmt(l.last)}</div>
+              <div style={{ fontSize: 15, color: WF_DARK, whiteSpace: "nowrap" }}>{fmt(l.last)}</div>
               <div>
                 <div style={{
                   fontSize: 15,
                   color: l.overdue ? ERROR_TEXT : WF_DARK,
                   fontWeight: l.overdue ? 600 : 400,
+                  display: "flex",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                  gap: 6,
                 }}>
-                  {fmt(l.next)}
+                  <span style={{ whiteSpace: "nowrap" }}>{fmt(l.next)}</span>
                   {l.overdue && (
                     <span style={{
                       fontSize: 11, fontWeight: 600,
                       background: ERROR_BG, color: ERROR_TEXT,
                       borderRadius: 4, padding: "2px 6px",
-                      marginLeft: 6,
+                      flexShrink: 0,
                     }}>Overdue</span>
                   )}
                 </div>
