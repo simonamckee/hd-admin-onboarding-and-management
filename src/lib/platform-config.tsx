@@ -12,11 +12,11 @@ export type PlatformConfig = {
 export const DEFAULT_PLATFORM_CONFIG: PlatformConfig = {
   chatEnabled: true,
   flags: {
-    a1c: { clinician: true, patient: true },
-    lowTIR: { clinician: true, patient: true },
-    gmi: { clinician: true, patient: false },
-    dd: { clinician: true, patient: true },
-    dka: { clinician: true, patient: false },
+    a1c:    { clinician: true,  patient: true  },
+    lowTIR: { clinician: true,  patient: true  },
+    gmi:    { clinician: true,  patient: false },
+    dd:     { clinician: true,  patient: true  },
+    dka:    { clinician: true,  patient: false },
   },
   accordionCols: { hospitalVisits: true, pendingForms: true, pendingTasks: true },
 };
