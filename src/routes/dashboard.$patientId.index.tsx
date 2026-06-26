@@ -884,7 +884,6 @@ type LabRow = {
   next: string;
   overdue: boolean;
   recommended: string;
-  description: string;
   labUrl: string;
 };
 
