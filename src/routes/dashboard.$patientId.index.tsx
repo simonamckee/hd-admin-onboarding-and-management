@@ -1773,6 +1773,8 @@ const MODULE_COMPONENTS: Record<string, React.ComponentType> = {
 
 function DashboardPage() {
   const { clinicianModules } = useDashboardTemplate();
+  const { config } = usePlatformConfig();
+  void config;
   const [role, setRole] = useState<Role>("clinician");
   const normaliseId = (id: string): string =>
     id === "completedForms" || id === "assignedForms" ? "forms"
