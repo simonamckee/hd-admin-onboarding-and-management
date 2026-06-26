@@ -1113,7 +1113,7 @@ function PatientDashboard() {
             <div ref={refs.labs} style={CARD}><LabsModule /></div>
           </div>
         </div>
-        <BottomNav active={activeTab} onTab={onTab} />
+        <BottomNav active={activeTab} onTab={onTab} chatEnabled={chatEnabled} />
         {chatEnabled && chatOpen && <PatientChatPanel onClose={() => setChatOpen(false)} />}
       </div>
     </NotificationContext.Provider>
