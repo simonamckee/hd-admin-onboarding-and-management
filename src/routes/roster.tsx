@@ -714,7 +714,7 @@ function RosterPage() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: GRID,
+              gridTemplateColumns: config.chatEnabled ? GRID_WITH_CHAT : GRID_NO_CHAT,
               gap: 8,
               padding: "7px 10px",
               background: "#f4f6f7",
