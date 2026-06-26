@@ -154,8 +154,12 @@ const PATIENTS: Patient[] = [
   { id: "olivia-tremblay", name: "Olivia Tremblay", dob: "19 Nov 2012", age: 13, risks: ["Low TIR", "DD"], tir: 55, gmi: 8.0, cgm: true, pump: false, lastVisit: "18 Feb 2026", lastVisitDaysAgo: 124, nextAppt: "2 Jul 2026", messages: true, group: "atRisk", accordion: { hospitalVisits: 0, pendingForms: 1, pendingTasks: 2 } },
 ];
 
-function deriveGroup(p: Patient): "atRisk" | "today" | "others" {
-  if (p.risks.length > 0) return "atRisk";
+function deriveGroup(
+  p: Patient,
+  flags: ReturnType<typeof usePlatformConfig>["config"]["flags"],
+): "atRisk" | "today" | "others" {
+  const visible = p.risks.filter((r) => flags[FLAG_KEY_MAP[r]]?.clinician !== false);
+  if (visible.length > 0) return "atRisk";
   if (p.nextAppt === "Today") return "today";
   return "others";
 }
@@ -451,6 +455,7 @@ function AccordionRow({ data }: { data: AccordionData }) {
 }
 
 function RosterPage() {
+  const { config } = usePlatformConfig();
   const [clinician, setClinician] = useState("Dr. Reyes");
   const [sort, setSort] = useState("At risk first");
   const [filterOpen, setFilterOpen] = useState(false);
