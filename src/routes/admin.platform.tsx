@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { AdminShell, PrototypeBack } from "@/components/admin-shell";
 import { Btn, Select } from "@/components/patient-ui";
 import { WF_DARK, WF_MID, WF_BG, BORDER, TEAL, SURFACE } from "@/components/wireframe";
+import { usePlatformConfig } from "@/lib/platform-config";
 
 export const Route = createFileRoute("/admin/platform")({
   component: PlatformConfig,
@@ -156,7 +157,8 @@ function SavedFlash({ when }: { when: number }) {
 /* ----------------- Chat ----------------- */
 
 function ChatSection() {
-  const [enabled, setEnabled] = useState(true);
+  const { config, setConfig } = usePlatformConfig();
+  const enabled = config.chatEnabled;
   const [savedEnabledAt, setSavedEnabledAt] = useState(0);
 
   const [msg, setMsg] = useState(DEFAULT_CHAT_MSG);
@@ -179,7 +181,7 @@ function ChatSection() {
           <Toggle
             on={enabled}
             onClick={() => {
-              setEnabled((v) => !v);
+              setConfig({ ...config, chatEnabled: !config.chatEnabled });
               setSavedEnabledAt(Date.now());
             }}
           />
@@ -379,13 +381,13 @@ function RosterColumnsSection() {
     },
   ];
 
-  const [cols, setCols] = useState<Record<ColKey, boolean>>({
+  const { config, setConfig } = usePlatformConfig();
+
+  type PrimaryKey = "devices" | "lastVisit" | "nextAppt";
+  const [cols, setCols] = useState<Record<PrimaryKey, boolean>>({
     devices: true,
     lastVisit: true,
     nextAppt: true,
-    hospitalVisits: true,
-    pendingForms: true,
-    pendingTasks: true,
   });
   const [savedAt, setSavedAt] = useState<Record<ColKey, number>>({
     devices: 0,
@@ -396,16 +398,18 @@ function RosterColumnsSection() {
     pendingTasks: 0,
   });
 
-  const [flags, setFlags] = useState<Record<FlagKey, FlagState>>({
-    a1c: { clinician: true, patient: true },
-    lowTIR: { clinician: true, patient: true },
-    gmi: { clinician: true, patient: false },
-    dd: { clinician: true, patient: true },
-    dka: { clinician: true, patient: false },
-  });
+  const flags = config.flags;
 
-  const toggle = (k: ColKey) => {
+  const togglePrimary = (k: PrimaryKey) => {
     setCols((p) => ({ ...p, [k]: !p[k] }));
+    setSavedAt((p) => ({ ...p, [k]: Date.now() }));
+  };
+
+  const toggleAccordion = (k: "hospitalVisits" | "pendingForms" | "pendingTasks") => {
+    setConfig({
+      ...config,
+      accordionCols: { ...config.accordionCols, [k]: !config.accordionCols[k] },
+    });
     setSavedAt((p) => ({ ...p, [k]: Date.now() }));
   };
 
@@ -471,10 +475,13 @@ function RosterColumnsSection() {
                 <Toggle
                   on={flags[f.key].clinician}
                   onClick={() =>
-                    setFlags((prev) => ({
-                      ...prev,
-                      [f.key]: { ...prev[f.key], clinician: !prev[f.key].clinician },
-                    }))
+                    setConfig({
+                      ...config,
+                      flags: {
+                        ...config.flags,
+                        [f.key]: { ...config.flags[f.key], clinician: !config.flags[f.key].clinician },
+                      },
+                    })
                   }
                 />
               </div>
@@ -482,10 +489,13 @@ function RosterColumnsSection() {
                 <Toggle
                   on={flags[f.key].patient}
                   onClick={() =>
-                    setFlags((prev) => ({
-                      ...prev,
-                      [f.key]: { ...prev[f.key], patient: !prev[f.key].patient },
-                    }))
+                    setConfig({
+                      ...config,
+                      flags: {
+                        ...config.flags,
+                        [f.key]: { ...config.flags[f.key], patient: !config.flags[f.key].patient },
+                      },
+                    })
                   }
                 />
               </div>
@@ -500,7 +510,7 @@ function RosterColumnsSection() {
             <LabelBlock label={c.label} helper={c.helper} />
             <div style={{ display: "flex", alignItems: "center" }}>
               <SavedFlash when={savedAt[c.key]} />
-              <Toggle on={cols[c.key]} onClick={() => toggle(c.key)} />
+              <Toggle on={cols[c.key as PrimaryKey]} onClick={() => togglePrimary(c.key as PrimaryKey)} />
             </div>
           </Row>
         </div>
@@ -544,7 +554,10 @@ function RosterColumnsSection() {
             <LabelBlock label={c.label} helper={c.helper} />
             <div style={{ display: "flex", alignItems: "center" }}>
               <SavedFlash when={savedAt[c.key]} />
-              <Toggle on={cols[c.key]} onClick={() => toggle(c.key)} />
+              <Toggle
+                on={config.accordionCols[c.key as keyof typeof config.accordionCols]}
+                onClick={() => toggleAccordion(c.key as "hospitalVisits" | "pendingForms" | "pendingTasks")}
+              />
             </div>
           </Row>
         </div>
@@ -580,7 +593,7 @@ function LockedRow({ label, helper }: { label: string; helper?: string }) {
   );
 }
 
-function RosterPreview({ cols }: { cols: Record<ColKey, boolean> }) {
+function RosterPreview({ cols }: { cols: { devices: boolean; lastVisit: boolean; nextAppt: boolean } }) {
   const headers: Array<{ key: ColKey | "patient" | "dash"; label: string }> = [
     { key: "patient", label: "Patient" },
   ];

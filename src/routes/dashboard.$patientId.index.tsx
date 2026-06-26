@@ -18,6 +18,7 @@ import {
   ERROR_BG,
 } from "@/components/wireframe";
 import { useDashboardTemplate } from "@/lib/dashboard-template";
+import { usePlatformConfig } from "@/lib/platform-config";
 
 export const Route = createFileRoute("/dashboard/$patientId/")({
   component: DashboardPage,
@@ -314,10 +315,13 @@ function ChatPanel({ onClose }: { onClose: () => void }) {
 
 const BADGE_OFFSET = 20; // first separator width (~6) + row gap (14), aligns badges under DOB
 
-function PatientHeader() {
+function PatientHeader({ role }: { role: Role }) {
+  const { config } = usePlatformConfig();
   const [hover, setHover] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
-  const chatEnabled = true;
+  const chatEnabled = config.chatEnabled;
+  const patientTIR = 65;
+  const patientGMI = 8.1;
 
   return (
     <div
@@ -404,8 +408,14 @@ function PatientHeader() {
             <Badge bg={SUCCESS_BG} color={SUCCESS_TEXT}>Active</Badge>
             <Badge bg={SUCCESS_BG} color={SUCCESS_TEXT}>CGM connected</Badge>
             <Badge bg={SUCCESS_BG} color={SUCCESS_TEXT}>Pump connected</Badge>
-            <Badge bg="#fcebeb" color="#791f1f">DKA risk</Badge>
-            <Badge bg={WARN_BG} color={WARN_TEXT}>Low TIR</Badge>
+            {role === "clinician" && <Badge bg="#fcebeb" color="#791f1f">DKA risk</Badge>}
+            {role === "clinician" && <Badge bg={WARN_BG} color={WARN_TEXT}>Low TIR</Badge>}
+            {role === "patient" && config.flags.lowTIR.patient && patientTIR < 70 && (
+              <Badge bg="#fff3e0" color="#854f0b">Low TIR</Badge>
+            )}
+            {role === "patient" && config.flags.gmi.patient && patientGMI > 8 && (
+              <Badge bg="#e8f5e9" color="#1b5e20">High GMI</Badge>
+            )}
           </div>
         </div>
       </div>
@@ -1763,6 +1773,8 @@ const MODULE_COMPONENTS: Record<string, React.ComponentType> = {
 
 function DashboardPage() {
   const { clinicianModules } = useDashboardTemplate();
+  const { config } = usePlatformConfig();
+  void config;
   const [role, setRole] = useState<Role>("clinician");
   const normaliseId = (id: string): string =>
     id === "completedForms" || id === "assignedForms" ? "forms"
@@ -1792,7 +1804,7 @@ function DashboardPage() {
     <AdminShell heading="">
       <div style={{ margin: "-32px", background: WF_BG, minHeight: "100vh" }}>
         <div style={{ position: "sticky", top: 0, zIndex: 10 }}>
-          <PatientHeader />
+          <PatientHeader role={role} />
           <div
             style={{
               background: SURFACE,

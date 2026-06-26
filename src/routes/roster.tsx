@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { AdminShell } from "@/components/admin-shell";
 import { MessageBubble } from "@/components/message-bubble";
+import { usePlatformConfig } from "@/lib/platform-config";
 
 export const Route = createFileRoute("/roster")({
   component: RosterPage,
@@ -31,7 +32,15 @@ const DARK = "#1f2a2c";
 const DANGER = "#a32d2d";
 const SUCCESS = "#27500a";
 
-type Risk = "DKA" | "A1c" | "Low TIR";
+type Risk = "DKA" | "A1c" | "Low TIR" | "GMI" | "DD";
+
+const FLAG_KEY_MAP: Record<Risk, "dka" | "a1c" | "lowTIR" | "gmi" | "dd"> = {
+  DKA: "dka",
+  A1c: "a1c",
+  "Low TIR": "lowTIR",
+  GMI: "gmi",
+  DD: "dd",
+};
 
 type AccordionData = {
   hospitalVisits: number;
@@ -128,25 +137,29 @@ const PATIENTS: Patient[] = [
     group: "others",
     accordion: { hospitalVisits: 0, pendingForms: 0, pendingTasks: 0 },
   },
-  { id: "amara-osei", name: "Amara Osei", dob: "12 Mar 2012", age: 13, risks: ["DKA"], tir: 44, gmi: 8.6, cgm: true, pump: false, lastVisit: "15 Jan 2026", lastVisitDaysAgo: 158, nextAppt: null, messages: true, group: "atRisk", accordion: { hospitalVisits: 2, pendingForms: 1, pendingTasks: 3 } },
+  { id: "amara-osei", name: "Amara Osei", dob: "12 Mar 2012", age: 13, risks: ["DKA", "GMI"], tir: 44, gmi: 8.6, cgm: true, pump: false, lastVisit: "15 Jan 2026", lastVisitDaysAgo: 158, nextAppt: null, messages: true, group: "atRisk", accordion: { hospitalVisits: 2, pendingForms: 1, pendingTasks: 3 } },
   { id: "ben-hartley", name: "Ben Hartley", dob: "7 Nov 2015", age: 10, risks: [], tir: 78, gmi: 6.8, cgm: true, pump: true, lastVisit: "10 May 2026", lastVisitDaysAgo: 13, nextAppt: "15 Jul 2026", messages: false, group: "others", accordion: { hospitalVisits: 0, pendingForms: 0, pendingTasks: 1 } },
-  { id: "chloe-martin", name: "Chloe Martin", dob: "22 Jun 2010", age: 15, risks: ["A1c", "Low TIR"], tir: 52, gmi: 8.1, cgm: true, pump: true, lastVisit: "3 Mar 2026", lastVisitDaysAgo: 81, nextAppt: "Today", nextApptSub: "Today · 11:00 AM", messages: true, group: "atRisk", accordion: { hospitalVisits: 1, pendingForms: 2, pendingTasks: 1 } },
+  { id: "chloe-martin", name: "Chloe Martin", dob: "22 Jun 2010", age: 15, risks: ["A1c", "Low TIR", "DD"], tir: 52, gmi: 8.1, cgm: true, pump: true, lastVisit: "3 Mar 2026", lastVisitDaysAgo: 81, nextAppt: "Today", nextApptSub: "Today · 11:00 AM", messages: true, group: "atRisk", accordion: { hospitalVisits: 1, pendingForms: 2, pendingTasks: 1 } },
   { id: "daniel-nguyen", name: "Daniel Nguyen", dob: "5 Sep 2013", age: 12, risks: [], tir: 71, gmi: 7.0, cgm: false, pump: false, lastVisit: "22 Apr 2026", lastVisitDaysAgo: 31, nextAppt: "30 Jun 2026", messages: false, group: "others", accordion: { hospitalVisits: 0, pendingForms: 1, pendingTasks: 0 } },
-  { id: "elena-volkov", name: "Elena Volkov", dob: "18 Jan 2009", age: 17, risks: ["DKA"], tir: 38, gmi: 9.1, cgm: true, pump: false, lastVisit: "5 Nov 2025", lastVisitDaysAgo: 199, nextAppt: "Today", nextApptSub: "Today · 3:30 PM", messages: true, group: "atRisk", accordion: { hospitalVisits: 3, pendingForms: 1, pendingTasks: 2 } },
+  { id: "elena-volkov", name: "Elena Volkov", dob: "18 Jan 2009", age: 17, risks: ["DKA", "GMI"], tir: 38, gmi: 9.1, cgm: true, pump: false, lastVisit: "5 Nov 2025", lastVisitDaysAgo: 199, nextAppt: "Today", nextApptSub: "Today · 3:30 PM", messages: true, group: "atRisk", accordion: { hospitalVisits: 3, pendingForms: 1, pendingTasks: 2 } },
   { id: "finn-obrien", name: "Finn O'Brien", dob: "30 Apr 2016", age: 9, risks: [], tir: 82, gmi: 6.5, cgm: true, pump: true, lastVisit: "18 May 2026", lastVisitDaysAgo: 5, nextAppt: "18 Aug 2026", messages: false, group: "others", accordion: { hospitalVisits: 0, pendingForms: 0, pendingTasks: 0 } },
-  { id: "grace-kim", name: "Grace Kim", dob: "14 Aug 2011", age: 14, risks: ["Low TIR"], tir: 58, gmi: 7.8, cgm: true, pump: true, lastVisit: "2 Feb 2026", lastVisitDaysAgo: 141, nextAppt: "25 Jun 2026", messages: false, group: "atRisk", accordion: { hospitalVisits: 0, pendingForms: 1, pendingTasks: 1 } },
+  { id: "grace-kim", name: "Grace Kim", dob: "14 Aug 2011", age: 14, risks: ["Low TIR", "DD"], tir: 58, gmi: 7.8, cgm: true, pump: true, lastVisit: "2 Feb 2026", lastVisitDaysAgo: 141, nextAppt: "25 Jun 2026", messages: false, group: "atRisk", accordion: { hospitalVisits: 0, pendingForms: 1, pendingTasks: 1 } },
   { id: "henry-patel", name: "Henry Patel", dob: "9 Dec 2014", age: 11, risks: [], tir: 69, gmi: 7.4, cgm: true, pump: false, lastVisit: "14 Apr 2026", lastVisitDaysAgo: 39, nextAppt: "14 Jul 2026", messages: true, group: "others", accordion: { hospitalVisits: 0, pendingForms: 0, pendingTasks: 2 } },
   { id: "isla-santos", name: "Isla Santos", dob: "3 Feb 2018", age: 7, risks: [], tir: 74, gmi: 6.9, cgm: true, pump: true, lastVisit: "6 May 2026", lastVisitDaysAgo: 17, nextAppt: "Today", nextApptSub: "Today · 9:00 AM", messages: false, group: "today", accordion: { hospitalVisits: 0, pendingForms: 1, pendingTasks: 0 } },
   { id: "jake-morrison", name: "Jake Morrison", dob: "27 Jul 2008", age: 17, risks: ["A1c"], tir: 61, gmi: 7.9, cgm: false, pump: false, lastVisit: "20 Jan 2026", lastVisitDaysAgo: 153, nextAppt: "1 Jul 2026", messages: false, group: "atRisk", accordion: { hospitalVisits: 1, pendingForms: 0, pendingTasks: 1 } },
   { id: "kira-lefevre", name: "Kira Lefèvre", dob: "11 Oct 2015", age: 10, risks: [], tir: 76, gmi: 7.0, cgm: true, pump: true, lastVisit: "30 Apr 2026", lastVisitDaysAgo: 23, nextAppt: "30 Jul 2026", messages: false, group: "others", accordion: { hospitalVisits: 0, pendingForms: 0, pendingTasks: 0 } },
-  { id: "liam-chen", name: "Liam Chen", dob: "16 May 2013", age: 12, risks: ["DKA", "A1c"], tir: 35, gmi: 9.4, cgm: true, pump: true, lastVisit: "8 Dec 2025", lastVisitDaysAgo: 196, nextAppt: null, messages: true, group: "atRisk", accordion: { hospitalVisits: 2, pendingForms: 2, pendingTasks: 3 } },
+  { id: "liam-chen", name: "Liam Chen", dob: "16 May 2013", age: 12, risks: ["DKA", "A1c", "GMI"], tir: 35, gmi: 9.4, cgm: true, pump: true, lastVisit: "8 Dec 2025", lastVisitDaysAgo: 196, nextAppt: null, messages: true, group: "atRisk", accordion: { hospitalVisits: 2, pendingForms: 2, pendingTasks: 3 } },
   { id: "mia-johansson", name: "Mia Johansson", dob: "25 Jun 2017", age: 8, risks: [], tir: 80, gmi: 6.6, cgm: true, pump: false, lastVisit: "12 May 2026", lastVisitDaysAgo: 11, nextAppt: "12 Aug 2026", messages: false, group: "others", accordion: { hospitalVisits: 0, pendingForms: 1, pendingTasks: 0 } },
   { id: "noah-ibrahim", name: "Noah Ibrahim", dob: "8 Mar 2020", age: 5, risks: [], tir: 73, gmi: 7.1, cgm: true, pump: true, lastVisit: "25 Apr 2026", lastVisitDaysAgo: 28, nextAppt: "Today", nextApptSub: "Today · 1:00 PM", messages: false, group: "today", accordion: { hospitalVisits: 0, pendingForms: 0, pendingTasks: 1 } },
-  { id: "olivia-tremblay", name: "Olivia Tremblay", dob: "19 Nov 2012", age: 13, risks: ["Low TIR"], tir: 55, gmi: 8.0, cgm: true, pump: false, lastVisit: "18 Feb 2026", lastVisitDaysAgo: 124, nextAppt: "2 Jul 2026", messages: true, group: "atRisk", accordion: { hospitalVisits: 0, pendingForms: 1, pendingTasks: 2 } },
+  { id: "olivia-tremblay", name: "Olivia Tremblay", dob: "19 Nov 2012", age: 13, risks: ["Low TIR", "DD"], tir: 55, gmi: 8.0, cgm: true, pump: false, lastVisit: "18 Feb 2026", lastVisitDaysAgo: 124, nextAppt: "2 Jul 2026", messages: true, group: "atRisk", accordion: { hospitalVisits: 0, pendingForms: 1, pendingTasks: 2 } },
 ];
 
-function deriveGroup(p: Patient): "atRisk" | "today" | "others" {
-  if (p.risks.length > 0) return "atRisk";
+function deriveGroup(
+  p: Patient,
+  flags: ReturnType<typeof usePlatformConfig>["config"]["flags"],
+): "atRisk" | "today" | "others" {
+  const visible = p.risks.filter((r) => flags[FLAG_KEY_MAP[r]]?.clinician !== false);
+  if (visible.length > 0) return "atRisk";
   if (p.nextAppt === "Today") return "today";
   return "others";
 }
@@ -170,15 +183,21 @@ const FILTERS: { key: FilterKey; label: string; icon: ReactNode }[] = [
 
 
 function RiskPills({ risks }: { risks: Risk[] }) {
-  if (risks.length === 0) return <span style={{ color: MUTED }}>—</span>;
+  const { config } = usePlatformConfig();
+  const visibleRisks = risks.filter(
+    (r) => config.flags[FLAG_KEY_MAP[r]]?.clinician !== false,
+  );
+  if (visibleRisks.length === 0) return <span style={{ color: MUTED }}>—</span>;
   const styles: Record<Risk, { bg: string; color: string }> = {
     DKA: { bg: "#fcebeb", color: "#791f1f" },
     A1c: { bg: "#faeeda", color: "#633806" },
     "Low TIR": { bg: "#fff3e0", color: "#854f0b" },
+    GMI: { bg: "#e8f5e9", color: "#1b5e20" },
+    DD: { bg: "#f3e5f5", color: "#4a148c" },
   };
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 3, alignItems: "flex-start" }}>
-      {risks.map((r) => (
+      {visibleRisks.map((r) => (
         <span
           key={r}
           style={{
@@ -252,6 +271,11 @@ function PatientRow({
   onToggle: () => void;
 }) {
   const navigate = useNavigate();
+  const { config } = usePlatformConfig();
+  const anyAccordionCol =
+    config.accordionCols.hospitalVisits ||
+    config.accordionCols.pendingForms ||
+    config.accordionCols.pendingTasks;
   const tirRed = p.tir < 70;
   const lastVisitRed = (p.lastVisitDaysAgo ?? 0) > 90;
   const avatarColors: Record<string, { bg: string; color: string }> = {
@@ -276,7 +300,7 @@ function PatientRow({
           color: DARK,
         }}
       >
-        <MessageBubble hasMessages={p.messages} />
+        {config.chatEnabled && <MessageBubble hasMessages={p.messages} />}
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <div style={{
             width: 34, height: 34, borderRadius: "50%", flexShrink: 0,
@@ -351,44 +375,47 @@ function PatientRow({
           >
             Dashboard
           </button>
-          <button
-            type="button"
-            aria-label={open ? "Collapse patient row" : "Expand patient row"}
-            onClick={(e) => {
-              e.stopPropagation();
-              onToggle();
-            }}
-            style={{
-              border: "none",
-              background: "transparent",
-              padding: 2,
-              margin: 0,
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              cursor: "pointer",
-              flexShrink: 0,
-            }}
-          >
-            <ChevronDown
-              size={14}
-              color={TEAL}
-              style={{ transform: open ? "rotate(180deg)" : "none", transition: "transform 0.15s" }}
-            />
-          </button>
+          {anyAccordionCol && (
+            <button
+              type="button"
+              aria-label={open ? "Collapse patient row" : "Expand patient row"}
+              onClick={(e) => {
+                e.stopPropagation();
+                onToggle();
+              }}
+              style={{
+                border: "none",
+                background: "transparent",
+                padding: 2,
+                margin: 0,
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                flexShrink: 0,
+              }}
+            >
+              <ChevronDown
+                size={14}
+                color={TEAL}
+                style={{ transform: open ? "rotate(180deg)" : "none", transition: "transform 0.15s" }}
+              />
+            </button>
+          )}
         </div>
       </div>
-      {open && <AccordionRow data={p.accordion} />}
+      {open && anyAccordionCol && <AccordionRow data={p.accordion} />}
     </>
   );
 }
 
 function AccordionRow({ data }: { data: AccordionData }) {
-  const sections: { label: string; value: number; icon: ReactNode; teal?: boolean }[] = [
-    { label: "Hospital visits", value: data.hospitalVisits, icon: <Activity size={11} /> },
-    { label: "Pending forms", value: data.pendingForms, icon: <FileText size={11} /> },
-    { label: "Pending tasks", value: data.pendingTasks, icon: <ClipboardList size={11} /> },
-  ];
+  const { config } = usePlatformConfig();
+  const sections = [
+    config.accordionCols.hospitalVisits && { label: "Hospital visits", value: data.hospitalVisits, icon: <Activity size={11} /> },
+    config.accordionCols.pendingForms && { label: "Pending forms", value: data.pendingForms, icon: <FileText size={11} /> },
+    config.accordionCols.pendingTasks && { label: "Pending tasks", value: data.pendingTasks, icon: <ClipboardList size={11} /> },
+  ].filter(Boolean) as { label: string; value: number; icon: ReactNode; teal?: boolean }[];
   return (
     <div
       style={{
@@ -436,6 +463,7 @@ function AccordionRow({ data }: { data: AccordionData }) {
 }
 
 function RosterPage() {
+  const { config } = usePlatformConfig();
   const [clinician, setClinician] = useState("Dr. Reyes");
   const [sort, setSort] = useState("At risk first");
   const [filterOpen, setFilterOpen] = useState(false);
@@ -477,9 +505,9 @@ function RosterPage() {
     };
     const sorted = [...filtered].sort(sortFn);
     return {
-      atRisk: sorted.filter((p) => deriveGroup(p) === "atRisk"),
-      today: sorted.filter((p) => deriveGroup(p) === "today"),
-      others: sorted.filter((p) => deriveGroup(p) === "others"),
+      atRisk: sorted.filter((p) => deriveGroup(p, config.flags) === "atRisk"),
+      today: sorted.filter((p) => deriveGroup(p, config.flags) === "today"),
+      others: sorted.filter((p) => deriveGroup(p, config.flags) === "others"),
     };
   }, [activeFilters, sort]);
 
