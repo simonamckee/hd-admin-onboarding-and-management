@@ -549,8 +549,18 @@ function AGPTab() {
         {["350", "250", "180", "70", "54", "0"].map((l, i) => (
           <text key={l} x="4" y={20 + i * 45} fontSize="10" fill={WF_MID}>{l}</text>
         ))}
-        {["12am", "3am", "6am", "9am", "12pm", "3pm", "6pm", "9pm", "12am"].map((l, i) => (
-          <text key={l} x={i * 87.5} y="258" fontSize="10" fill={WF_MID}>{l}</text>
+        {[
+          { label: "12am", key: "12am-start" },
+          { label: "3am", key: "3am" },
+          { label: "6am", key: "6am" },
+          { label: "9am", key: "9am" },
+          { label: "12pm", key: "12pm" },
+          { label: "3pm", key: "3pm" },
+          { label: "6pm", key: "6pm" },
+          { label: "9pm", key: "9pm" },
+          { label: "12am", key: "12am-end" },
+        ].map(({ label, key }, i) => (
+          <text key={key} x={i * 87.5} y="258" fontSize="10" fill={WF_MID}>{label}</text>
         ))}
         {["95%", "75%", "50%", "25%", "5%"].map((l, i) => (
           <text key={l} x="678" y={30 + i * 55} fontSize="10" fill={WF_MID}>{l}</text>
