@@ -949,8 +949,8 @@ function LabsModule() {
           <div key={l.id}>
             <div style={{
               display: "grid",
-              gridTemplateColumns: "1fr 120px 120px 120px",
-              alignItems: "flex-start",
+              gridTemplateColumns: "1.6fr 100px 105px 140px",
+              alignItems: "center",
               padding: "8px 0",
               borderBottom: "0.5px solid #f0f2f3",
               gap: 8,
