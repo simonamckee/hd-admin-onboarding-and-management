@@ -1,16 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { createContext, useContext, useMemo, useRef, useState } from "react";
 import type { ReactNode, CSSProperties } from "react";
+import { usePlatformConfig } from "@/lib/platform-config";
 import {
   WF_BG, WF_DARK, WF_MID, TEAL, SURFACE, BORDER, TINT,
 } from "@/components/wireframe";
 import { MessageBubble } from "@/components/message-bubble";
 
 export const Route = createFileRoute("/patient/dashboard")({ component: PatientDashboard });
-
-// ============ Platform config (mock) ============
-
-const chatEnabled = true;
 
 // ============ Notification context ============
 
