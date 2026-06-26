@@ -375,44 +375,47 @@ function PatientRow({
           >
             Dashboard
           </button>
-          <button
-            type="button"
-            aria-label={open ? "Collapse patient row" : "Expand patient row"}
-            onClick={(e) => {
-              e.stopPropagation();
-              onToggle();
-            }}
-            style={{
-              border: "none",
-              background: "transparent",
-              padding: 2,
-              margin: 0,
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              cursor: "pointer",
-              flexShrink: 0,
-            }}
-          >
-            <ChevronDown
-              size={14}
-              color={TEAL}
-              style={{ transform: open ? "rotate(180deg)" : "none", transition: "transform 0.15s" }}
-            />
-          </button>
+          {anyAccordionCol && (
+            <button
+              type="button"
+              aria-label={open ? "Collapse patient row" : "Expand patient row"}
+              onClick={(e) => {
+                e.stopPropagation();
+                onToggle();
+              }}
+              style={{
+                border: "none",
+                background: "transparent",
+                padding: 2,
+                margin: 0,
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                flexShrink: 0,
+              }}
+            >
+              <ChevronDown
+                size={14}
+                color={TEAL}
+                style={{ transform: open ? "rotate(180deg)" : "none", transition: "transform 0.15s" }}
+              />
+            </button>
+          )}
         </div>
       </div>
-      {open && <AccordionRow data={p.accordion} />}
+      {open && anyAccordionCol && <AccordionRow data={p.accordion} />}
     </>
   );
 }
 
 function AccordionRow({ data }: { data: AccordionData }) {
-  const sections: { label: string; value: number; icon: ReactNode; teal?: boolean }[] = [
-    { label: "Hospital visits", value: data.hospitalVisits, icon: <Activity size={11} /> },
-    { label: "Pending forms", value: data.pendingForms, icon: <FileText size={11} /> },
-    { label: "Pending tasks", value: data.pendingTasks, icon: <ClipboardList size={11} /> },
-  ];
+  const { config } = usePlatformConfig();
+  const sections = [
+    config.accordionCols.hospitalVisits && { label: "Hospital visits", value: data.hospitalVisits, icon: <Activity size={11} /> },
+    config.accordionCols.pendingForms && { label: "Pending forms", value: data.pendingForms, icon: <FileText size={11} /> },
+    config.accordionCols.pendingTasks && { label: "Pending tasks", value: data.pendingTasks, icon: <ClipboardList size={11} /> },
+  ].filter(Boolean) as { label: string; value: number; icon: ReactNode; teal?: boolean }[];
   return (
     <div
       style={{
