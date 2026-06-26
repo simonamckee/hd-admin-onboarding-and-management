@@ -697,8 +697,8 @@ function NavIcon({ kind }: { kind: TabKey }) {
   }
 }
 
-function BottomNav({ active, onTab }: {
-  active: TabKey; onTab: (k: TabKey) => void;
+function BottomNav({ active, onTab, chatEnabled }: {
+  active: TabKey; onTab: (k: TabKey) => void; chatEnabled: boolean;
 }) {
   const notif = useNotif();
   const tabs: { key: TabKey; label: string; dotCat?: Category }[] = [
