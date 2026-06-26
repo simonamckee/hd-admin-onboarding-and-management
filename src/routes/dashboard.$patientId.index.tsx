@@ -983,10 +983,9 @@ function LabsModule() {
                     borderRadius: 4,
                     padding: "6px 10px",
                   }}>
-                    <div style={{ fontWeight: 500, color: WF_DARK, marginBottom: 2 }}>
+                    <div style={{ fontWeight: 500, color: WF_DARK }}>
                       Recommended: {l.recommended}
                     </div>
-                    {l.description}
                   </div>
                 )}
               </div>
