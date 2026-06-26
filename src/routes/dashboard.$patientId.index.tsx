@@ -884,7 +884,6 @@ type LabRow = {
   next: string;
   overdue: boolean;
   recommended: string;
-  description: string;
   labUrl: string;
 };
 
@@ -893,32 +892,26 @@ function LabsModule() {
     { id: "a1c", name: "A1c",
       last: "2026-01-01", next: "2026-04-01", overdue: false,
       recommended: "Every 3 months",
-      description: "Measures average blood glucose over the past 2–3 months. A key indicator of long-term glycaemic control.",
       labUrl: "https://labresults.example.com/patient/sarah-chen/a1c" },
     { id: "lipid", name: "Lipid panel",
       last: "2025-01-14", next: "2028-01-14", overdue: false,
       recommended: "Every 3 years",
-      description: "Measures cholesterol and triglycerides. People with T1D have an increased risk of cardiovascular disease.",
       labUrl: "https://labresults.example.com/patient/sarah-chen/lipid" },
     { id: "renal", name: "Renal function",
       last: "2025-01-14", next: "2026-01-14", overdue: false,
       recommended: "Yearly",
-      description: "Checks kidney health including eGFR and urine albumin-to-creatinine ratio. Diabetes is a leading cause of kidney disease.",
       labUrl: "https://labresults.example.com/patient/sarah-chen/renal" },
     { id: "thyroid", name: "Thyroid panel",
       last: "2024-03-03", next: "2025-03-03", overdue: true,
       recommended: "Every 2 years",
-      description: "Screens for thyroid dysfunction, which is more common in people with T1D and can affect glucose control.",
       labUrl: "https://labresults.example.com/patient/sarah-chen/thyroid" },
     { id: "retino", name: "Retinopathy",
       last: "2023-11-22", next: "2024-11-22", overdue: true,
       recommended: "Yearly",
-      description: "Dilated eye exam to screen for diabetic retinopathy, a leading cause of blindness that is preventable with early detection.",
       labUrl: "https://labresults.example.com/patient/sarah-chen/retinopathy" },
     { id: "neuro", name: "Neuropathy",
       last: "2023-11-22", next: "2024-11-22", overdue: true,
       recommended: "Yearly",
-      description: "Assessment for nerve damage including peripheral and autonomic neuropathy, common complications of T1D.",
       labUrl: "https://labresults.example.com/patient/sarah-chen/neuropathy" },
   ]);
   const [editId, setEditId] = useState<string | null>(null);
@@ -935,7 +928,7 @@ function LabsModule() {
       <div style={{ padding: 16 }}>
         <div style={{
           display: "grid",
-          gridTemplateColumns: "1fr 120px 120px 120px",
+          gridTemplateColumns: "1.6fr 100px 105px 140px",
           gap: 8,
           padding: "0 0 6px 0",
           borderBottom: `0.5px solid ${BORDER}`,
@@ -949,8 +942,8 @@ function LabsModule() {
           <div key={l.id}>
             <div style={{
               display: "grid",
-              gridTemplateColumns: "1fr 120px 120px 120px",
-              alignItems: "flex-start",
+              gridTemplateColumns: "1.6fr 100px 105px 140px",
+              alignItems: "center",
               padding: "8px 0",
               borderBottom: "0.5px solid #f0f2f3",
               gap: 8,
@@ -983,10 +976,9 @@ function LabsModule() {
                     borderRadius: 4,
                     padding: "6px 10px",
                   }}>
-                    <div style={{ fontWeight: 500, color: WF_DARK, marginBottom: 2 }}>
+                    <div style={{ fontWeight: 500, color: WF_DARK }}>
                       Recommended: {l.recommended}
                     </div>
-                    {l.description}
                   </div>
                 )}
               </div>
