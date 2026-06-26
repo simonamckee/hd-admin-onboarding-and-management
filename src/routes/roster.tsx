@@ -271,6 +271,11 @@ function PatientRow({
   onToggle: () => void;
 }) {
   const navigate = useNavigate();
+  const { config } = usePlatformConfig();
+  const anyAccordionCol =
+    config.accordionCols.hospitalVisits ||
+    config.accordionCols.pendingForms ||
+    config.accordionCols.pendingTasks;
   const tirRed = p.tir < 70;
   const lastVisitRed = (p.lastVisitDaysAgo ?? 0) > 90;
   const avatarColors: Record<string, { bg: string; color: string }> = {
@@ -295,7 +300,7 @@ function PatientRow({
           color: DARK,
         }}
       >
-        <MessageBubble hasMessages={p.messages} />
+        {config.chatEnabled ? <MessageBubble hasMessages={p.messages} /> : <div />}
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <div style={{
             width: 34, height: 34, borderRadius: "50%", flexShrink: 0,
