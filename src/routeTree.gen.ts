@@ -15,6 +15,7 @@ import { Route as SmsPhoneRouteImport } from './routes/sms-phone'
 import { Route as RosterRouteImport } from './routes/roster'
 import { Route as PatientRouteImport } from './routes/patient'
 import { Route as PasswordRouteImport } from './routes/password'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as ExpiredRouteImport } from './routes/expired'
 import { Route as CompleteSkippedRouteImport } from './routes/complete-skipped'
 import { Route as CompleteRouteImport } from './routes/complete'
@@ -92,6 +93,11 @@ const PatientRoute = PatientRouteImport.update({
 const PasswordRoute = PasswordRouteImport.update({
   id: '/password',
   path: '/password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ExpiredRoute = ExpiredRouteImport.update({
@@ -346,6 +352,7 @@ export interface FileRoutesByFullPath {
   '/complete': typeof CompleteRoute
   '/complete-skipped': typeof CompleteSkippedRoute
   '/expired': typeof ExpiredRoute
+  '/login': typeof LoginRoute
   '/password': typeof PasswordRoute
   '/patient': typeof PatientRouteWithChildren
   '/roster': typeof RosterRoute
@@ -401,6 +408,7 @@ export interface FileRoutesByTo {
   '/complete': typeof CompleteRoute
   '/complete-skipped': typeof CompleteSkippedRoute
   '/expired': typeof ExpiredRoute
+  '/login': typeof LoginRoute
   '/password': typeof PasswordRoute
   '/patient': typeof PatientRouteWithChildren
   '/roster': typeof RosterRoute
@@ -452,6 +460,7 @@ export interface FileRoutesById {
   '/complete': typeof CompleteRoute
   '/complete-skipped': typeof CompleteSkippedRoute
   '/expired': typeof ExpiredRoute
+  '/login': typeof LoginRoute
   '/password': typeof PasswordRoute
   '/patient': typeof PatientRouteWithChildren
   '/roster': typeof RosterRoute
@@ -510,6 +519,7 @@ export interface FileRouteTypes {
     | '/complete'
     | '/complete-skipped'
     | '/expired'
+    | '/login'
     | '/password'
     | '/patient'
     | '/roster'
@@ -565,6 +575,7 @@ export interface FileRouteTypes {
     | '/complete'
     | '/complete-skipped'
     | '/expired'
+    | '/login'
     | '/password'
     | '/patient'
     | '/roster'
@@ -615,6 +626,7 @@ export interface FileRouteTypes {
     | '/complete'
     | '/complete-skipped'
     | '/expired'
+    | '/login'
     | '/password'
     | '/patient'
     | '/roster'
@@ -672,6 +684,7 @@ export interface RootRouteChildren {
   CompleteRoute: typeof CompleteRoute
   CompleteSkippedRoute: typeof CompleteSkippedRoute
   ExpiredRoute: typeof ExpiredRoute
+  LoginRoute: typeof LoginRoute
   PasswordRoute: typeof PasswordRoute
   PatientRoute: typeof PatientRouteWithChildren
   RosterRoute: typeof RosterRoute
@@ -724,6 +737,13 @@ declare module '@tanstack/react-router' {
       path: '/password'
       fullPath: '/password'
       preLoaderRoute: typeof PasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/expired': {
@@ -1226,6 +1246,7 @@ const rootRouteChildren: RootRouteChildren = {
   CompleteRoute: CompleteRoute,
   CompleteSkippedRoute: CompleteSkippedRoute,
   ExpiredRoute: ExpiredRoute,
+  LoginRoute: LoginRoute,
   PasswordRoute: PasswordRoute,
   PatientRoute: PatientRouteWithChildren,
   RosterRoute: RosterRoute,
