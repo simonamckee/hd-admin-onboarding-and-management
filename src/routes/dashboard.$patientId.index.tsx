@@ -1730,7 +1730,7 @@ function AssignedTasksTab({ role }: { role: Role }) {
               <span>{t.due}</span>
             </span>
             <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-              {overdue && <OverdueBadge />}
+              
               {overdue && <GhostBtnSmall>Send reminder</GhostBtnSmall>}
             </span>
             <span style={{ display: "inline-flex", justifyContent: "flex-end", minWidth: 14 }}>
