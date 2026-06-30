@@ -1956,10 +1956,49 @@ function DashboardPage() {
             ))}
           </div>
         </div>
-        <div style={{ padding: 24, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, alignItems: "start" }}>
-          <div>{renderColumn(leftIds)}</div>
-          <div>{renderColumn(rightIds)}</div>
-        </div>
+        {role === "clinician" ? (
+          <div style={{ padding: 24, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, alignItems: "start" }}>
+            <div>{renderColumn(leftIds)}</div>
+            <div>{renderColumn(rightIds)}</div>
+          </div>
+        ) : (
+          <div style={{ padding: 24, display: "flex", justifyContent: "center", background: WF_BG }}>
+            <div style={{
+              position: "relative",
+              width: 390,
+              height: 800,
+              background: "#000",
+              borderRadius: 44,
+              padding: 10,
+              boxShadow: "0 20px 50px rgba(0,0,0,0.25)",
+            }}>
+              {/* Notch */}
+              <div style={{
+                position: "absolute",
+                top: 14,
+                left: "50%",
+                transform: "translateX(-50%)",
+                width: 120,
+                height: 26,
+                background: "#000",
+                borderRadius: 999,
+                zIndex: 2,
+              }} />
+              <iframe
+                src="/patient/dashboard"
+                title="Patient dashboard preview"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  border: "none",
+                  borderRadius: 34,
+                  background: "#fff",
+                  display: "block",
+                }}
+              />
+            </div>
+          </div>
+        )}
         <div style={{
           background: SURFACE, padding: "10px 24px", borderTop: `0.5px solid ${BORDER}`,
           fontSize: 11, color: WF_MID, display: "flex", justifyContent: "space-between",
