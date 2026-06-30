@@ -1211,7 +1211,7 @@ function CareProfilePage() {
             WebkitOverflowScrolling: "touch",
           }}>
             <div style={{ display: "inline-flex", gap: 6 }}>
-              {NAV_SECTIONS.map((s) => {
+              {NAV_SECTIONS.filter((s) => s.id !== "other" || role === "clinician").map((s) => {
                 const a = active === s.id;
                 return (
                   <button

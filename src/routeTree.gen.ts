@@ -34,6 +34,7 @@ import { Route as PatientCompleteRouteImport } from './routes/patient.complete'
 import { Route as PatientAuthenticatorVerifyRouteImport } from './routes/patient.authenticator-verify'
 import { Route as PatientAuthenticatorQrRouteImport } from './routes/patient.authenticator-qr'
 import { Route as DashboardPatientIdRouteImport } from './routes/dashboard.$patientId'
+import { Route as ClinicianProfileRouteImport } from './routes/clinician.profile'
 import { Route as AdminResourcesRouteImport } from './routes/admin.resources'
 import { Route as AdminPlatformRouteImport } from './routes/admin.platform'
 import { Route as AdminPatientsRouteImport } from './routes/admin.patients'
@@ -187,6 +188,11 @@ const PatientAuthenticatorQrRoute = PatientAuthenticatorQrRouteImport.update({
 const DashboardPatientIdRoute = DashboardPatientIdRouteImport.update({
   id: '/dashboard/$patientId',
   path: '/dashboard/$patientId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClinicianProfileRoute = ClinicianProfileRouteImport.update({
+  id: '/clinician/profile',
+  path: '/clinician/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminResourcesRoute = AdminResourcesRouteImport.update({
@@ -353,6 +359,7 @@ export interface FileRoutesByFullPath {
   '/admin/patients': typeof AdminPatientsRouteWithChildren
   '/admin/platform': typeof AdminPlatformRoute
   '/admin/resources': typeof AdminResourcesRouteWithChildren
+  '/clinician/profile': typeof ClinicianProfileRoute
   '/dashboard/$patientId': typeof DashboardPatientIdRouteWithChildren
   '/patient/authenticator-qr': typeof PatientAuthenticatorQrRoute
   '/patient/authenticator-verify': typeof PatientAuthenticatorVerifyRoute
@@ -403,6 +410,7 @@ export interface FileRoutesByTo {
   '/admin/audit': typeof AdminAuditRoute
   '/admin/dashboards': typeof AdminDashboardsRoute
   '/admin/platform': typeof AdminPlatformRoute
+  '/clinician/profile': typeof ClinicianProfileRoute
   '/patient/authenticator-qr': typeof PatientAuthenticatorQrRoute
   '/patient/authenticator-verify': typeof PatientAuthenticatorVerifyRoute
   '/patient/complete': typeof PatientCompleteRoute
@@ -457,6 +465,7 @@ export interface FileRoutesById {
   '/admin/patients': typeof AdminPatientsRouteWithChildren
   '/admin/platform': typeof AdminPlatformRoute
   '/admin/resources': typeof AdminResourcesRouteWithChildren
+  '/clinician/profile': typeof ClinicianProfileRoute
   '/dashboard/$patientId': typeof DashboardPatientIdRouteWithChildren
   '/patient/authenticator-qr': typeof PatientAuthenticatorQrRoute
   '/patient/authenticator-verify': typeof PatientAuthenticatorVerifyRoute
@@ -514,6 +523,7 @@ export interface FileRouteTypes {
     | '/admin/patients'
     | '/admin/platform'
     | '/admin/resources'
+    | '/clinician/profile'
     | '/dashboard/$patientId'
     | '/patient/authenticator-qr'
     | '/patient/authenticator-verify'
@@ -564,6 +574,7 @@ export interface FileRouteTypes {
     | '/admin/audit'
     | '/admin/dashboards'
     | '/admin/platform'
+    | '/clinician/profile'
     | '/patient/authenticator-qr'
     | '/patient/authenticator-verify'
     | '/patient/complete'
@@ -617,6 +628,7 @@ export interface FileRouteTypes {
     | '/admin/patients'
     | '/admin/platform'
     | '/admin/resources'
+    | '/clinician/profile'
     | '/dashboard/$patientId'
     | '/patient/authenticator-qr'
     | '/patient/authenticator-verify'
@@ -666,6 +678,7 @@ export interface RootRouteChildren {
   SmsPhoneRoute: typeof SmsPhoneRoute
   SmsVerifyRoute: typeof SmsVerifyRoute
   VerifyMethodRoute: typeof VerifyMethodRoute
+  ClinicianProfileRoute: typeof ClinicianProfileRoute
   DashboardPatientIdRoute: typeof DashboardPatientIdRouteWithChildren
 }
 
@@ -844,6 +857,13 @@ declare module '@tanstack/react-router' {
       path: '/dashboard/$patientId'
       fullPath: '/dashboard/$patientId'
       preLoaderRoute: typeof DashboardPatientIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/clinician/profile': {
+      id: '/clinician/profile'
+      path: '/clinician/profile'
+      fullPath: '/clinician/profile'
+      preLoaderRoute: typeof ClinicianProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/resources': {
@@ -1212,6 +1232,7 @@ const rootRouteChildren: RootRouteChildren = {
   SmsPhoneRoute: SmsPhoneRoute,
   SmsVerifyRoute: SmsVerifyRoute,
   VerifyMethodRoute: VerifyMethodRoute,
+  ClinicianProfileRoute: ClinicianProfileRoute,
   DashboardPatientIdRoute: DashboardPatientIdRouteWithChildren,
 }
 export const routeTree = rootRouteImport

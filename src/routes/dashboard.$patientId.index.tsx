@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Trash2, User, X, ArrowLeft, ChevronUp, Calendar } from "lucide-react";
 import { MessageBubble } from "@/components/message-bubble";
 import { AdminShell } from "@/components/admin-shell";
@@ -1023,14 +1023,6 @@ function LabsModule() {
                   gap: 6,
                 }}>
                   <span style={{ whiteSpace: "nowrap" }}>{fmt(l.next)}</span>
-                  {l.overdue && (
-                    <span style={{
-                      fontSize: 11, fontWeight: 600,
-                      background: ERROR_BG, color: ERROR_TEXT,
-                      borderRadius: 4, padding: "2px 6px",
-                      flexShrink: 0,
-                    }}>Overdue</span>
-                  )}
                 </div>
                 <span
                   onClick={() => { setEditId(l.id); setEditLast(l.last); setEditNext(l.next); }}
@@ -1479,7 +1471,12 @@ function GhostBtnSmall({ children, onClick }: { children: React.ReactNode; onCli
 }
 
 function FormsModule({ role }: { role: Role }) {
-  const [tab, setTab] = useState<"Assigned" | "Completed">("Assigned");
+  const [tab, setTab] = useState<"Assigned" | "Completed">(
+    role === "clinician" ? "Completed" : "Assigned"
+  );
+  useEffect(() => {
+    setTab(role === "clinician" ? "Completed" : "Assigned");
+  }, [role]);
   return (
     <div style={CARD}>
       <div style={CARD_HEADER}>
@@ -1537,7 +1534,6 @@ function AssignedFormsTab({ role }: { role: Role }) {
           >
             <div style={{ fontSize: 15, color: WF_DARK, display: "flex", alignItems: "center", flexWrap: "wrap", gap: 6 }}>
               <span>{r.name}</span>
-              {overdue && <OverdueBadge />}
               {overdue && <GhostBtnSmall>Send reminder</GhostBtnSmall>}
             </div>
             <div style={{ fontSize: 15, color: WF_DARK }}>{r.assigned}</div>
@@ -1672,7 +1668,12 @@ function CompletedFormsTab({ role }: { role: Role }) {
 }
 
 function TasksModule({ role }: { role: Role }) {
-  const [tab, setTab] = useState<"Assigned" | "Completed">("Assigned");
+  const [tab, setTab] = useState<"Assigned" | "Completed">(
+    role === "clinician" ? "Completed" : "Assigned"
+  );
+  useEffect(() => {
+    setTab(role === "clinician" ? "Completed" : "Assigned");
+  }, [role]);
   return (
     <div style={CARD}>
       <div style={CARD_HEADER}>
@@ -1729,7 +1730,7 @@ function AssignedTasksTab({ role }: { role: Role }) {
               <span>{t.due}</span>
             </span>
             <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-              {overdue && <OverdueBadge />}
+              
               {overdue && <GhostBtnSmall>Send reminder</GhostBtnSmall>}
             </span>
             <span style={{ display: "inline-flex", justifyContent: "flex-end", minWidth: 14 }}>
@@ -1955,10 +1956,49 @@ function DashboardPage() {
             ))}
           </div>
         </div>
-        <div style={{ padding: 24, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, alignItems: "start" }}>
-          <div>{renderColumn(leftIds)}</div>
-          <div>{renderColumn(rightIds)}</div>
-        </div>
+        {role === "clinician" ? (
+          <div style={{ padding: 24, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, alignItems: "start" }}>
+            <div>{renderColumn(leftIds)}</div>
+            <div>{renderColumn(rightIds)}</div>
+          </div>
+        ) : (
+          <div style={{ padding: 24, display: "flex", justifyContent: "center", background: WF_BG }}>
+            <div style={{
+              position: "relative",
+              width: 390,
+              height: 800,
+              background: "#000",
+              borderRadius: 44,
+              padding: 10,
+              boxShadow: "0 20px 50px rgba(0,0,0,0.25)",
+            }}>
+              {/* Notch */}
+              <div style={{
+                position: "absolute",
+                top: 14,
+                left: "50%",
+                transform: "translateX(-50%)",
+                width: 120,
+                height: 26,
+                background: "#000",
+                borderRadius: 999,
+                zIndex: 2,
+              }} />
+              <iframe
+                src="/patient/dashboard"
+                title="Patient dashboard preview"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  border: "none",
+                  borderRadius: 34,
+                  background: "#fff",
+                  display: "block",
+                }}
+              />
+            </div>
+          </div>
+        )}
         <div style={{
           background: SURFACE, padding: "10px 24px", borderTop: `0.5px solid ${BORDER}`,
           fontSize: 11, color: WF_MID, display: "flex", justifyContent: "space-between",
