@@ -131,7 +131,19 @@ export function AdminShell({ heading, children }: { heading: string; children: R
 
         </nav>
         <div style={{ borderTop: "1px solid rgba(255,255,255,0.15)", padding: 16 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+          <Link
+            to="/clinician/profile"
+            style={{
+              textDecoration: "none",
+              display: "flex",
+              alignItems: "center",
+              gap: 10,
+              cursor: "pointer",
+              marginBottom: 8,
+            }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.opacity = "0.85"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.opacity = "1"; }}
+          >
             <img
               src="https://randomuser.me/api/portraits/men/32.jpg"
               alt="Dr. Reyes"
@@ -144,7 +156,7 @@ export function AdminShell({ heading, children }: { heading: string; children: R
               <div style={{ fontSize: 14, color: "rgba(255,255,255,0.9)" }}>Dr. Reyes</div>
               <div style={{ fontSize: 12, color: "rgba(255,255,255,0.6)" }}>Clinician</div>
             </div>
-          </div>
+          </Link>
           <Link
             to="/complete"
             style={{ fontSize: 14, color: "rgba(255,255,255,0.7)", textDecoration: "none" }}
