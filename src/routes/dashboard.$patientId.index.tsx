@@ -1023,14 +1023,6 @@ function LabsModule() {
                   gap: 6,
                 }}>
                   <span style={{ whiteSpace: "nowrap" }}>{fmt(l.next)}</span>
-                  {l.overdue && (
-                    <span style={{
-                      fontSize: 11, fontWeight: 600,
-                      background: ERROR_BG, color: ERROR_TEXT,
-                      borderRadius: 4, padding: "2px 6px",
-                      flexShrink: 0,
-                    }}>Overdue</span>
-                  )}
                 </div>
                 <span
                   onClick={() => { setEditId(l.id); setEditLast(l.last); setEditNext(l.next); }}
