@@ -248,7 +248,7 @@ function ClinicianList() {
           <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 15 }}>
             <thead>
               <tr style={{ background: "#F5F5F5", borderBottom: `1px solid ${WF_MID}` }}>
-                {["Name", "Title", "Role", "Email", "Status", "Last sign-in", "Actions"].map((h) => (
+                {["Name", "FUNCTION", "Role", "Email", "Status", "Last sign-in", "Actions"].map((h) => (
                   <th key={h} style={{ padding: "10px 14px", textAlign: "left", fontSize: 13, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, fontWeight: 500 }}>
                     {h}
                   </th>
