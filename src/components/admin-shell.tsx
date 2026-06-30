@@ -26,6 +26,19 @@ export function AdminShell({ heading, children }: { heading: string; children: R
   const adminActive = ADMIN_NAV.some((i) => i.to === pathname);
   const [adminOpen, setAdminOpen] = useState(true);
   const rosterActive = pathname === PATIENT_ROSTER_TO;
+  const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
 
   return (
     <div style={{ minHeight: "100vh", background: WF_BG, color: WF_DARK, display: "flex" }}>
