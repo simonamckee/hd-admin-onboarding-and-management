@@ -27,6 +27,7 @@ function Screen1A() {
       <TestingLink to="/admin/patients">skip to Patient management →</TestingLink>
       <TestingLink to="/patient/password">go to patient setup flow →</TestingLink>
       <TestingLink to="/patient/dashboard">skip to patient dashboard →</TestingLink>
+      <TestingLink to="/login">go to login screen →</TestingLink>
     </Page>
   );
 }

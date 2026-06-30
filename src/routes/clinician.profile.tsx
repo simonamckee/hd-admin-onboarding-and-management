@@ -29,6 +29,13 @@ function ClinicianProfilePage() {
   const [confirmPw, setConfirmPw] = useState("");
   const [pwError, setPwError] = useState("");
 
+  const [toast, setToast] = useState<string | null>(null);
+
+  function showToast(msg: string) {
+    setToast(msg);
+    setTimeout(() => setToast(null), 3000);
+  }
+
   const onPick = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
     if (f) setAvatarUrl(URL.createObjectURL(f));
@@ -148,6 +155,66 @@ function ClinicianProfilePage() {
                 padding: 0, marginTop: 6, fontFamily: "inherit" }}
             >Change password</button>
           </>
+        )}
+
+        {/* Support */}
+        <div style={heading}>Support</div>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: 16, marginBottom: 16 }}>
+          <div>
+            <div style={{ fontSize: 14, fontWeight: 500, color: WF_DARK, marginBottom: 4 }}>
+              Clinic support
+            </div>
+            <div style={{ fontSize: 13, color: WF_MID, lineHeight: 1.5, marginBottom: 8 }}>
+              For changes to your profile information, access requests, or other
+              clinic-related questions, contact your clinic administrator.
+            </div>
+            <a
+              href="mailto:admin@bcchildrens.ca?subject=Clinic%20support%20request"
+              onClick={() => showToast("Opening your email client…")}
+              style={{ fontSize: 14, color: TEAL, textDecoration: "underline" }}
+            >
+              Contact clinic administrator
+            </a>
+          </div>
+
+          <div>
+            <div style={{ fontSize: 14, fontWeight: 500, color: WF_DARK, marginBottom: 4 }}>
+              Platform support
+            </div>
+            <div style={{ fontSize: 13, color: WF_MID, lineHeight: 1.5, marginBottom: 8 }}>
+              For issues with the Haibu Diabetes platform itself, or to suggest a
+              new feature, reach out to the Haibu Health team.
+            </div>
+            <div style={{ display: "flex", gap: 16 }}>
+              <a
+                href="mailto:support@haibudiabetes.com?subject=Report%20an%20issue"
+                onClick={() => showToast("Opening your email client…")}
+                style={{ fontSize: 14, color: TEAL, textDecoration: "underline" }}
+              >
+                Report an issue
+              </a>
+              <a
+                href="mailto:support@haibudiabetes.com?subject=Feature%20request"
+                onClick={() => showToast("Opening your email client…")}
+                style={{ fontSize: 14, color: TEAL, textDecoration: "underline" }}
+              >
+                Request a feature
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {toast && (
+          <div
+            style={{
+              position: "fixed", bottom: 24, left: "50%", transform: "translateX(-50%)",
+              background: TEAL, color: "#fff", padding: "10px 18px", borderRadius: 6,
+              fontSize: 14, boxShadow: "0 4px 16px rgba(0,0,0,0.15)", zIndex: 100,
+            }}
+          >
+            {toast}
+          </div>
         )}
       </div>
 

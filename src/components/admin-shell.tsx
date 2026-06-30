@@ -66,7 +66,12 @@ export function AdminShell({ heading, children }: { heading: string; children: R
             boxSizing: "border-box",
           }}
         >
-          <img src={HAIBU_LOGO_URL} alt="Haibu Diabetes" style={{ height: 34, filter: "brightness(0) invert(1)" }} />
+          <Link
+            to="/login"
+            style={{ display: "flex", alignItems: "center", height: "100%", textDecoration: "none" }}
+          >
+            <img src={HAIBU_LOGO_URL} alt="Haibu Diabetes" style={{ height: 34, filter: "brightness(0) invert(1)" }} />
+          </Link>
         </div>
         <nav style={{ flex: 1, paddingTop: 12 }}>
           <button
