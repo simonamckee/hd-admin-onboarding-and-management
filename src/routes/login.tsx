@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { WF_DARK, WF_MID, WF_BG, TEAL, BORDER, SURFACE, TopBar, TestingLink } from "@/components/wireframe";
+import { WF_DARK, WF_MID, WF_BG, TEAL, BORDER, SURFACE, HAIBU_LOGO_URL, TestingLink } from "@/components/wireframe";
 
 export const Route = createFileRoute("/login")({ component: LoginScreen });
 
@@ -13,7 +13,19 @@ function LoginScreen() {
 
   return (
     <div style={{ minHeight: "100vh", background: WF_BG }}>
-      <TopBar />
+      <div
+        style={{
+          background: SURFACE,
+          padding: "10px 20px",
+          borderBottom: `1px solid ${BORDER}66`,
+          display: "flex",
+          justifyContent: "flex-start",
+          alignItems: "center",
+          minHeight: 44,
+        }}
+      >
+        <img src={HAIBU_LOGO_URL} alt="Haibu Diabetes" style={{ height: 34, display: "block" }} />
+      </div>
       <div
         style={{
           display: "flex",
