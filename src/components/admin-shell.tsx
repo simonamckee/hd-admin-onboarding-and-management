@@ -1,5 +1,5 @@
-import { Link, useRouterState } from "@tanstack/react-router";
-import { useState, type ReactNode } from "react";
+import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Settings, Users, ChevronDown, ChevronRight } from "lucide-react";
 import { WF_BG, WF_DARK, WF_MID, TEAL, HAIBU_LOGO_URL } from "./wireframe";
 
@@ -26,6 +26,19 @@ export function AdminShell({ heading, children }: { heading: string; children: R
   const adminActive = ADMIN_NAV.some((i) => i.to === pathname);
   const [adminOpen, setAdminOpen] = useState(true);
   const rosterActive = pathname === PATIENT_ROSTER_TO;
+  const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
 
   return (
     <div style={{ minHeight: "100vh", background: WF_BG, color: WF_DARK, display: "flex" }}>
@@ -131,32 +144,65 @@ export function AdminShell({ heading, children }: { heading: string; children: R
 
         </nav>
         <div style={{ borderTop: "1px solid rgba(255,255,255,0.15)", padding: 16 }}>
-          <Link
-            to="/clinician/profile"
-            style={{
-              textDecoration: "none",
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-              cursor: "pointer",
-              marginBottom: 8,
-            }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.opacity = "0.85"; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.opacity = "1"; }}
-          >
-            <img
-              src="https://randomuser.me/api/portraits/men/32.jpg"
-              alt="Dr. Reyes"
+          <div ref={menuRef} style={{ position: "relative", marginBottom: 8 }}>
+            <button
+              type="button"
+              onClick={() => setMenuOpen((v) => !v)}
               style={{
-                width: 32, height: 32, borderRadius: "50%",
-                border: "1.5px solid rgba(255,255,255,0.6)", objectFit: "cover", flexShrink: 0,
+                background: "transparent", border: "none", padding: 0,
+                display: "flex", alignItems: "center", gap: 10, cursor: "pointer",
+                width: "100%", textAlign: "left", fontFamily: "inherit",
               }}
-            />
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <div style={{ fontSize: 14, color: "rgba(255,255,255,0.9)" }}>Dr. Reyes</div>
-              <div style={{ fontSize: 12, color: "rgba(255,255,255,0.6)" }}>Clinician</div>
-            </div>
-          </Link>
+              onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.opacity = "0.85"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.opacity = "1"; }}
+            >
+              <img
+                src="https://randomuser.me/api/portraits/men/32.jpg"
+                alt="Dr. Reyes"
+                style={{
+                  width: 32, height: 32, borderRadius: "50%",
+                  border: "1.5px solid rgba(255,255,255,0.6)", objectFit: "cover", flexShrink: 0,
+                }}
+              />
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                <div style={{ fontSize: 14, color: "rgba(255,255,255,0.9)" }}>Dr. Reyes</div>
+                <div style={{ fontSize: 12, color: "rgba(255,255,255,0.6)" }}>Clinician</div>
+              </div>
+            </button>
+            {menuOpen && (
+              <div
+                style={{
+                  position: "absolute", bottom: "calc(100% + 6px)", left: 0,
+                  background: "#fff", borderRadius: 8, minWidth: 180,
+                  boxShadow: "0 8px 24px rgba(0,0,0,0.18)", overflow: "hidden",
+                  zIndex: 50,
+                }}
+              >
+                <Link
+                  to="/clinician/profile"
+                  onClick={() => setMenuOpen(false)}
+                  style={{
+                    display: "block", padding: "10px 14px", fontSize: 14,
+                    color: "#1A1A1A", textDecoration: "none",
+                  }}
+                >My profile</Link>
+                <div style={{ height: 1, background: "rgba(0,0,0,0.08)" }} />
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMenuOpen(false);
+                    navigate({ to: "/" });
+                  }}
+                  style={{
+                    display: "block", width: "100%", textAlign: "left",
+                    padding: "10px 14px", fontSize: 14, color: "#1A1A1A",
+                    background: "transparent", border: "none", cursor: "pointer",
+                    fontFamily: "inherit",
+                  }}
+                >Log out</button>
+              </div>
+            )}
+          </div>
           <Link
             to="/complete"
             style={{ fontSize: 14, color: "rgba(255,255,255,0.7)", textDecoration: "none" }}
