@@ -209,7 +209,7 @@ function CsvForm({ navigate }: { navigate: ReturnType<typeof useNavigate> }) {
             <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 14 }}>
               <thead>
                 <tr style={{ background: "#F5F5F5", borderBottom: `1px solid ${WF_MID}` }}>
-                  {["Row", "First name", "Last name", "Email", "Title", "Role", "Status"].map((h) => (
+                  {["Row", "First name", "Last name", "Email", "FUNCTION", "Role", "Status"].map((h) => (
                     <th key={h} style={{ padding: "8px 10px", textAlign: "left", fontSize: 13, color: WF_MID, textTransform: "uppercase", letterSpacing: 0.5, fontWeight: 500 }}>
                       {h}
                     </th>
