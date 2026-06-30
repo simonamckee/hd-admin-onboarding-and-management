@@ -1479,7 +1479,12 @@ function GhostBtnSmall({ children, onClick }: { children: React.ReactNode; onCli
 }
 
 function FormsModule({ role }: { role: Role }) {
-  const [tab, setTab] = useState<"Assigned" | "Completed">("Assigned");
+  const [tab, setTab] = useState<"Assigned" | "Completed">(
+    role === "clinician" ? "Completed" : "Assigned"
+  );
+  useEffect(() => {
+    setTab(role === "clinician" ? "Completed" : "Assigned");
+  }, [role]);
   return (
     <div style={CARD}>
       <div style={CARD_HEADER}>
