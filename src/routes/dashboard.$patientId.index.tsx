@@ -1534,7 +1534,6 @@ function AssignedFormsTab({ role }: { role: Role }) {
           >
             <div style={{ fontSize: 15, color: WF_DARK, display: "flex", alignItems: "center", flexWrap: "wrap", gap: 6 }}>
               <span>{r.name}</span>
-              {overdue && <OverdueBadge />}
               {overdue && <GhostBtnSmall>Send reminder</GhostBtnSmall>}
             </div>
             <div style={{ fontSize: 15, color: WF_DARK }}>{r.assigned}</div>
