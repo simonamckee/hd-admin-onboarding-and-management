@@ -40,7 +40,9 @@ function PlatformConfig() {
       </h1>
 
       <ChatSection />
+      <Divider />
       <RosterColumnsSection />
+
       <Divider />
       <RosterSection />
 
