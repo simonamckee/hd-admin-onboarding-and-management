@@ -461,12 +461,6 @@ function RosterColumnsSection() {
           </Row>
         </div>
       ))}
-      <div style={{ borderTop: `0.5px solid ${BORDER}66` }}>
-        <LockedRow
-          label="Dashboard button"
-          helper="Opens the patient's full clinical dashboard, including glucose trends, insulin data, tasks, forms, and recommendations."
-        />
-      </div>
 
       <div
         style={{
