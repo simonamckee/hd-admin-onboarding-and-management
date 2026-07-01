@@ -40,9 +40,6 @@ function PlatformConfig() {
       </h1>
 
       <ChatSection />
-      <Divider />
-      <CliniciansSection />
-      <Divider />
       <RosterColumnsSection />
       <Divider />
       <RosterSection />
@@ -244,57 +241,6 @@ function ChatSection() {
   );
 }
 
-/* ----------------- Clinician role definitions ----------------- */
-
-function CliniciansSection() {
-  const rows: Array<{ label: string; helper: string }> = [
-    {
-      label: "Patient management",
-      helper:
-        "Allow clinicians to add new patients and edit existing patient information, including inviting additional supporters to the platform.",
-    },
-    {
-      label: "Form library",
-      helper: "Allow clinicians to create new form templates and edit existing ones.",
-    },
-    {
-      label: "Task library",
-      helper: "Allow clinicians to create new task templates and edit existing ones.",
-    },
-    {
-      label: "Resource library",
-      helper: "Allow clinicians access to add new patient resources and edit existing ones.",
-    },
-  ];
-
-  const [states, setStates] = useState<boolean[]>(() => rows.map(() => false));
-  const [savedAt, setSavedAt] = useState<number[]>(() => rows.map(() => 0));
-
-  return (
-    <SectionCard title="Clinician permissions">
-      <DescriptionBox>
-        Control which parts of the admin section clinicians can access. These permissions apply to all clinician accounts in this clinic.
-      </DescriptionBox>
-      {rows.map((r, i) => (
-        <div key={r.label} style={{ borderTop: i === 0 ? "none" : `0.5px solid ${BORDER}66` }}>
-          <Row>
-            <LabelBlock label={r.label} helper={r.helper} />
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <SavedFlash when={savedAt[i]} />
-              <Toggle
-                on={states[i]}
-                onClick={() => {
-                  setStates((prev) => prev.map((v, j) => (j === i ? !v : v)));
-                  setSavedAt((prev) => prev.map((v, j) => (j === i ? Date.now() : v)));
-                }}
-              />
-            </div>
-          </Row>
-        </div>
-      ))}
-    </SectionCard>
-  );
-}
 
 /* ----------------- Patient roster configuration ----------------- */
 
