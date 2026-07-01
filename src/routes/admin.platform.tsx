@@ -40,9 +40,6 @@ function PlatformConfig() {
       </h1>
 
       <ChatSection />
-      <Divider />
-      <CliniciansSection />
-      <Divider />
       <RosterColumnsSection />
       <Divider />
       <RosterSection />
@@ -244,57 +241,6 @@ function ChatSection() {
   );
 }
 
-/* ----------------- Clinician role definitions ----------------- */
-
-function CliniciansSection() {
-  const rows: Array<{ label: string; helper: string }> = [
-    {
-      label: "Patient management",
-      helper:
-        "Allow clinicians to add new patients and edit existing patient information, including inviting additional supporters to the platform.",
-    },
-    {
-      label: "Form library",
-      helper: "Allow clinicians to create new form templates and edit existing ones.",
-    },
-    {
-      label: "Task library",
-      helper: "Allow clinicians to create new task templates and edit existing ones.",
-    },
-    {
-      label: "Resource library",
-      helper: "Allow clinicians access to add new patient resources and edit existing ones.",
-    },
-  ];
-
-  const [states, setStates] = useState<boolean[]>(() => rows.map(() => false));
-  const [savedAt, setSavedAt] = useState<number[]>(() => rows.map(() => 0));
-
-  return (
-    <SectionCard title="Clinician permissions">
-      <DescriptionBox>
-        Control which parts of the admin section clinicians can access. These permissions apply to all clinician accounts in this clinic.
-      </DescriptionBox>
-      {rows.map((r, i) => (
-        <div key={r.label} style={{ borderTop: i === 0 ? "none" : `0.5px solid ${BORDER}66` }}>
-          <Row>
-            <LabelBlock label={r.label} helper={r.helper} />
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <SavedFlash when={savedAt[i]} />
-              <Toggle
-                on={states[i]}
-                onClick={() => {
-                  setStates((prev) => prev.map((v, j) => (j === i ? !v : v)));
-                  setSavedAt((prev) => prev.map((v, j) => (j === i ? Date.now() : v)));
-                }}
-              />
-            </div>
-          </Row>
-        </div>
-      ))}
-    </SectionCard>
-  );
-}
 
 /* ----------------- Patient roster configuration ----------------- */
 
@@ -416,7 +362,7 @@ function RosterColumnsSection() {
   return (
     <SectionCard title="Patient roster configuration">
       <DescriptionBox>
-        Choose which columns appear on the patient roster. Patient (name, DOB, age) and the Dashboard button are always shown and cannot be removed.
+        Choose which columns appear on the patient roster. The Patient column (name, DOB, age) is always shown and cannot be removed. The Dashboard button is always visible regardless of column configuration.
       </DescriptionBox>
 
       {/* Locked: Patient */}
@@ -515,38 +461,32 @@ function RosterColumnsSection() {
           </Row>
         </div>
       ))}
-      <div style={{ borderTop: `0.5px solid ${BORDER}66` }}>
-        <LockedRow
-          label="Dashboard button"
-          helper="Opens the patient's full clinical dashboard, including glucose trends, insulin data, tasks, forms, and recommendations."
-        />
-      </div>
 
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 8,
-          marginTop: 24,
-          marginBottom: 4,
-          paddingTop: 16,
-          borderTop: `1px dashed ${BORDER}`,
-        }}
-      >
-        <span
-          style={{
-            fontSize: 11,
-            fontWeight: 700,
-            color: TEAL,
-            textTransform: "uppercase",
-            letterSpacing: 0.8,
-          }}
-        >
-          ↳ Accordion row
-        </span>
-        <span style={{ fontSize: 12, color: WF_MID, fontStyle: "italic" }}>
-          Expanded when a clinician opens a patient row
-        </span>
+      <div style={{
+        display: "flex", alignItems: "center", gap: 10,
+        marginTop: 28, marginBottom: 8, paddingTop: 20,
+        borderTop: `1px dashed ${BORDER}`,
+      }}>
+        <div style={{
+          width: 24, height: 24, borderRadius: 6,
+          background: TEAL, display: "flex", alignItems: "center",
+          justifyContent: "center", flexShrink: 0,
+        }}>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+            stroke="#fff" strokeWidth="2.5" strokeLinecap="round"
+            strokeLinejoin="round">
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </div>
+        <div>
+          <div style={{ fontSize: 13, fontWeight: 700, color: WF_DARK,
+            textTransform: "uppercase", letterSpacing: 0.6 }}>
+            Expanded row
+          </div>
+          <div style={{ fontSize: 12, color: WF_MID, marginTop: 1 }}>
+            Shown when a clinician expands a patient row on the roster
+          </div>
+        </div>
       </div>
       {accordionCols.map((c, i) => (
         <div key={c.key} style={{ borderTop: i === 0 ? "none" : `0.5px solid ${BORDER}66` }}>
@@ -624,16 +564,29 @@ function RosterPreview({ cols }: { cols: { devices: boolean; lastVisit: boolean;
       style={{
         border: `1px solid ${BORDER}66`,
         borderRadius: 8,
-        overflow: "hidden",
+        overflowX: "auto",
         background: SURFACE,
       }}
     >
       <div style={{ overflowX: "auto" }}>
-        <table style={{ width: "100%", borderCollapse: "collapse" }}>
+        <table style={{ width: "100%", borderCollapse: "collapse", tableLayout: "auto", minWidth: "100%" }}>
           <thead>
             <tr>
               {headers.map((h) => (
-                <th key={h.key} style={{ ...headStyle, textAlign: "left" }}>
+                <th
+                  key={h.key}
+                  style={{
+                    ...headStyle,
+                    textAlign: h.key === "dash" ? "right" : "left",
+                    ...(h.key === "dash" ? {
+                      position: "sticky",
+                      right: 0,
+                      background: WF_BG,
+                      boxShadow: "-2px 0 4px rgba(0,0,0,0.04)",
+                      width: 100,
+                    } : {}),
+                  }}
+                >
                   {h.label}
                 </th>
               ))}
@@ -642,7 +595,20 @@ function RosterPreview({ cols }: { cols: { devices: boolean; lastVisit: boolean;
           <tbody>
             <tr>
               {headers.map((h) => (
-                <td key={h.key} style={cellStyle}>
+                <td
+                  key={h.key}
+                  style={{
+                    ...cellStyle,
+                    ...(h.key === "dash" ? {
+                      position: "sticky",
+                      right: 0,
+                      background: SURFACE,
+                      boxShadow: "-2px 0 4px rgba(0,0,0,0.04)",
+                      textAlign: "right",
+                      width: 100,
+                    } : {}),
+                  }}
+                >
                   {renderCell(h.key)}
                 </td>
               ))}
