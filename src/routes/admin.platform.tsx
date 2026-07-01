@@ -362,7 +362,7 @@ function RosterColumnsSection() {
   return (
     <SectionCard title="Patient roster configuration">
       <DescriptionBox>
-        Choose which columns appear on the patient roster. Patient (name, DOB, age) and the Dashboard button are always shown and cannot be removed.
+        Choose which columns appear on the patient roster. The Patient column (name, DOB, age) is always shown and cannot be removed. The Dashboard button is always visible regardless of column configuration.
       </DescriptionBox>
 
       {/* Locked: Patient */}
