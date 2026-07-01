@@ -462,31 +462,31 @@ function RosterColumnsSection() {
         </div>
       ))}
 
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 8,
-          marginTop: 24,
-          marginBottom: 4,
-          paddingTop: 16,
-          borderTop: `1px dashed ${BORDER}`,
-        }}
-      >
-        <span
-          style={{
-            fontSize: 11,
-            fontWeight: 700,
-            color: TEAL,
-            textTransform: "uppercase",
-            letterSpacing: 0.8,
-          }}
-        >
-          ↳ Accordion row
-        </span>
-        <span style={{ fontSize: 12, color: WF_MID, fontStyle: "italic" }}>
-          Expanded when a clinician opens a patient row
-        </span>
+      <div style={{
+        display: "flex", alignItems: "center", gap: 10,
+        marginTop: 28, marginBottom: 8, paddingTop: 20,
+        borderTop: `1px dashed ${BORDER}`,
+      }}>
+        <div style={{
+          width: 24, height: 24, borderRadius: 6,
+          background: TEAL, display: "flex", alignItems: "center",
+          justifyContent: "center", flexShrink: 0,
+        }}>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+            stroke="#fff" strokeWidth="2.5" strokeLinecap="round"
+            strokeLinejoin="round">
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </div>
+        <div>
+          <div style={{ fontSize: 13, fontWeight: 700, color: WF_DARK,
+            textTransform: "uppercase", letterSpacing: 0.6 }}>
+            Expanded row
+          </div>
+          <div style={{ fontSize: 12, color: WF_MID, marginTop: 1 }}>
+            Shown when a clinician expands a patient row on the roster
+          </div>
+        </div>
       </div>
       {accordionCols.map((c, i) => (
         <div key={c.key} style={{ borderTop: i === 0 ? "none" : `0.5px solid ${BORDER}66` }}>
