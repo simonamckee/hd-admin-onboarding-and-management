@@ -569,11 +569,24 @@ function RosterPreview({ cols }: { cols: { devices: boolean; lastVisit: boolean;
       }}
     >
       <div style={{ overflowX: "auto" }}>
-        <table style={{ width: "100%", borderCollapse: "collapse" }}>
+        <table style={{ width: "100%", borderCollapse: "collapse", tableLayout: "auto", minWidth: "100%" }}>
           <thead>
             <tr>
               {headers.map((h) => (
-                <th key={h.key} style={{ ...headStyle, textAlign: "left" }}>
+                <th
+                  key={h.key}
+                  style={{
+                    ...headStyle,
+                    textAlign: h.key === "dash" ? "right" : "left",
+                    ...(h.key === "dash" ? {
+                      position: "sticky",
+                      right: 0,
+                      background: WF_BG,
+                      boxShadow: "-2px 0 4px rgba(0,0,0,0.04)",
+                      width: 100,
+                    } : {}),
+                  }}
+                >
                   {h.label}
                 </th>
               ))}
@@ -582,7 +595,20 @@ function RosterPreview({ cols }: { cols: { devices: boolean; lastVisit: boolean;
           <tbody>
             <tr>
               {headers.map((h) => (
-                <td key={h.key} style={cellStyle}>
+                <td
+                  key={h.key}
+                  style={{
+                    ...cellStyle,
+                    ...(h.key === "dash" ? {
+                      position: "sticky",
+                      right: 0,
+                      background: SURFACE,
+                      boxShadow: "-2px 0 4px rgba(0,0,0,0.04)",
+                      textAlign: "right",
+                      width: 100,
+                    } : {}),
+                  }}
+                >
                   {renderCell(h.key)}
                 </td>
               ))}
