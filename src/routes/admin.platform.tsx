@@ -564,7 +564,7 @@ function RosterPreview({ cols }: { cols: { devices: boolean; lastVisit: boolean;
       style={{
         border: `1px solid ${BORDER}66`,
         borderRadius: 8,
-        overflow: "hidden",
+        overflowX: "auto",
         background: SURFACE,
       }}
     >
